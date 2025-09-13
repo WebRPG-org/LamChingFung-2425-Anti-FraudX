@@ -19,9 +19,9 @@ bash
 bash
     cd backend
     python -m venv .venv
-    # Windows:
+    #Windows:
     .\.venv\Scripts\activate
-    # macOS/Linux:
+    #macOS/Linux:
     source .venv/bin/activate
 
     #make sure showed up (.venv) in terminal
