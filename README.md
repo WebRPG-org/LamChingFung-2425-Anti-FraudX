@@ -52,4 +52,13 @@ bash
 
     npm install
 
+# Run docker
+
+bash
+
+    docker-compose up --build
+
+    uvicorn app.main.app --reload
+
+    #fastapi server auto reload
 
