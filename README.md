@@ -8,33 +8,47 @@ make sure installed below software
     2. Node.js
 
 
-1. Clone repo
+# 1. Clone repo
+
 bash
+
     git clone https://github.com/LamChingFung-2425/AI-Agent.git
 
     cd AI-AGENT
 
 
-2. Setup backend
+# 2. Setup backend
+
 bash
+
     cd backend
+
     python -m venv .venv
+
     #Windows:
+
     .\.venv\Scripts\activate
+
     #macOS/Linux:
+
     source .venv/bin/activate
 
     #make sure showed up (.venv) in terminal
+
     pip install -r requirements.txt
 
     
     cp .env.example .env
+
     #replace your own GCP API key in .env
+
     #GOOGLE_API_KEY="xxxxxxxxxxxxxxxxxxxx"
 
 
-3. Setup frontend
+# 3. Setup frontend
+
     cd ../frontend
+
     npm install
 
 '''
