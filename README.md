@@ -1,7 +1,8 @@
 # AI-Agents
-'''
+
 Getting Started (for first time)
 make sure installed below software
+
     1. Python
     2. Docker
     3. git
@@ -51,4 +52,4 @@ bash
 
     npm install
 
-'''
+
