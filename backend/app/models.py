@@ -1,19 +1,18 @@
 from pydantic import BaseModel, Field
 from typing import Optional
 
-
-
-class BusRouteProperties(BaseModel):
-    ROUTE_ID: int
-    ROUTE_SEQ: int
-    COMPANY_CODE: Optional[str] = None
-    ROUTE_NAME_E: str = Field(..., alias='ROUTE_NAMEE') # Use alias to refine irregular API field names
-    ST_STOP_NAME_C: Optional[str] = Field(None, alias='ST_STOP_NAMEC')  #Starting bus stop name_Chinese_Traditional
-    ST_STOP_NAME_S: Optional[str] = Field(None, alias='ST_STOP_NAMES')  #Starting bus stop name_Chinese_Simplified
-    ST_STOP_NAME_E: Optional[str] = Field(None, alias='ST_STOP_NAMEE')  #Starting bus stop name_English
-    ED_STOP_NAME_C: Optional[str] = Field(None, alias='ED_STOP_NAMEC')  #Terminal Bus Stop Name_Chinese_Traditional
-    ED_STOP_NAME_S: Optional[str] = Field(None, alias='ED_STOP_NAMES')  #Terminal Bus Stop Name_Chinese_Simplified
-    ED_STOP_NAME_E: Optional[str] = Field(None, alias='ED_STOP_NAMEE')  #Terminal Bus Stop Name_English
+# according to KMB API doc (kmb_eta_data_dictionary.pdf, 2.1 Route / Route List) to build data model
+class KmbBusRoute(BaseModel):
+    co: Optional[str] = None
+    route: str
+    bound: str
+    service_type: str = Field(..., alias='service_type')
+    orig_en: Optional[str] = None
+    orig_tc: Optional[str] = None
+    orig_sc: Optional[str] = None
+    dest_en: Optional[str] = None
+    dest_tc: Optional[str] = None
+    dest_sc: Optional[str] = None
 
     class Config:
-        populate_by_name = True #allow to use alias to assign the key (eg. ROUTE_NAME_E , even the key is ROUTE_NAMEE in json)
+        populate_by_name = True # allow alias

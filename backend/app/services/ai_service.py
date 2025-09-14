@@ -1,8 +1,16 @@
-import google.generativeai as genai
 import os
+import google.generativeai as genai
+from dotenv import load_dotenv
 
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-model = genai.GenerativeModel('gemini-2.5-flash')
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', '..', '.env')
+load_dotenv(dotenv_path=dotenv_path)
+api_key = os.getenv("GOOGLE_API_KEY")
+if not api_key:
+    raise ValueError("錯誤：找不到 GOOGLE_API_KEY 環境變數。請檢查您的 .env 檔案。")
+
+genai.configure(api_key=api_key)
+
+model = genai.GenerativeModel('gemini-2.5-flash-lite')
 
 
 def generate_transport_suggestion(user_query: str, context_data: list):
