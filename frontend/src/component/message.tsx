@@ -1,11 +1,11 @@
 import React from 'react';
 
-export interface messageprops {
+export interface MessageProps {
     text: string;
     sender: 'user' | 'genai';
 }
 
-const message: React.FC<messageprops> = ({ text, sender }) => {
+const Message: React.FC<MessageProps> = ({ text, sender }) => {
     const messageclass = sender === 'user' ? 'message user-message' : 'message genai-message';
     return (
         <div className={messageclass}>
@@ -14,4 +14,5 @@ const message: React.FC<messageprops> = ({ text, sender }) => {
     );
 };
 
-export default message;
+export default Message;
+

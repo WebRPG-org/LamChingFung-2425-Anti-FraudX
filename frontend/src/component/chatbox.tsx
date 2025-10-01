@@ -1,12 +1,12 @@
 import React from 'react';
 import Message from './message';
-import type { messageprops } from './message';
+import type { MessageProps } from './message';
 
-interface chatboxprops {
-    messages: messageprops[];
+interface ChatboxProps {
+    messages: MessageProps[];
 }
 
-const chatbox: React.FC<chatboxprops> = ({ messages }) => {
+const Chatbox: React.FC<ChatboxProps> = ({ messages }) => {
     return (
         <div className="chatbox">
             {messages.map((msg, index) => (
@@ -15,4 +15,6 @@ const chatbox: React.FC<chatboxprops> = ({ messages }) => {
         </div>
     );
 };
-export default chatbox;
+
+export default Chatbox;
+
