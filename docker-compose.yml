@@ -1,0 +1,44 @@
+services:
+  backend:
+    image: ai-agents-backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ./debug_output:/app/debug_output
+    depends_on:
+      - mongo
+    environment:
+      - PYTHONUNBUFFERED=1
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+  mongo:
+    image: mongo:latest
+    container_name: financialAI-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=myuser
+      - MONGO_INITDB_ROOT_PASSWORD=mypassword
+  redis:
+    image: "redis:alpine"
+    container_name: financialAI-redis
+    ports:
+      - "6379:6379"
+volumes:
+  mongo_data:
