@@ -1,12 +1,14 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, UploadFile, File, Form
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Union
 import logging
 from datetime import datetime
 from app.fraud_detect import checker
 from app.ai_service import generate_response, generate_rag_response, initialize_rag_system
 from app.ai_service import ai_service
 from app.rag_service import rag_service
+from app.audio_service import audio_service
+from app.file_service import file_service
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +20,14 @@ class ChatRequest(BaseModel):
     session_id: Optional[str] = "default"
     use_rag: Optional[bool] = True
 
+<<<<<<< HEAD
+=======
+class MultiMediaChatRequest(BaseModel):
+    text_query: Optional[str] = None
+    session_id: Optional[str] = "default"
+    use_rag: Optional[bool] = True
+
+>>>>>>> master
 @router.post("/chat", tags=["Chat UI"])
 async def handle_chat(request: ChatRequest):
     """
@@ -188,3 +198,126 @@ async def get_data_summary():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error occurred while getting data summary: {str(e)}")
 
+<<<<<<< HEAD
+=======
+@router.post("/chat/multimedia", tags=["Multimedia Chat"])
+async def handle_multimedia_chat(
+    text_query: Optional[str] = Form(None),
+    audio_file: Optional[UploadFile] = File(None),
+    file: Optional[UploadFile] = File(None),
+    session_id: Optional[str] = Form("default"),
+    use_rag: Optional[bool] = Form(True)
+):
+    """
+    處理多媒體聊天請求：支持文字、音頻和文件輸入
+    """
+    try:
+        # 收集所有輸入內容
+        input_sources = []
+        combined_text = ""
+        
+        # 處理文字輸入
+        if text_query and text_query.strip():
+            combined_text += f"文字輸入: {text_query.strip()}\n\n"
+            input_sources.append("text")
+        
+        # 處理音頻輸入
+        if audio_file:
+            logger.info(f"Processing audio file: {audio_file.filename}")
+            audio_result = await audio_service.process_audio_file(audio_file)
+            
+            if audio_result["success"] and audio_result["text"]:
+                combined_text += f"語音轉文字: {audio_result['text']}\n\n"
+                input_sources.append("audio")
+            else:
+                logger.warning(f"Audio processing failed: {audio_result.get('error', 'Unknown error')}")
+        
+        # 處理文件輸入
+        if file:
+            logger.info(f"Processing file: {file.filename}")
+            file_result = await file_service.process_file(file)
+            
+            if file_result["success"] and file_result["text"]:
+                combined_text += f"文件內容: {file_result['text']}\n\n"
+                input_sources.append("file")
+            else:
+                logger.warning(f"File processing failed: {file_result.get('error', 'Unknown error')}")
+        
+        # 檢查是否有有效輸入
+        if not combined_text.strip():
+            return {
+                "success": False,
+                "response": "請提供文字、音頻或文件輸入",
+                "source": "no_input"
+            }
+        
+        # 使用AI服務處理組合的輸入
+        if use_rag:
+            logger.info(f"Using AI service to process multimedia input (Session ID: {session_id})")
+            result = await ai_service.generate_response(combined_text, session_id)
+            
+            if "error" in result:
+                return {
+                    "success": False,
+                    "response": result["error"],
+                    "source": "ai_error",
+                    "input_sources": input_sources
+                }
+            else:
+                return {
+                    "success": True,
+                    "response": result["response"],
+                    "metadata": result.get("metadata", {}),
+                    "source": "unified_ai",
+                    "input_sources": input_sources,
+                    "combined_text": combined_text
+                }
+        else:
+            # 使用傳統RAG系統
+            logger.info(f"Using RAG system to process multimedia input (Session ID: {session_id})")
+            result = await generate_rag_response(combined_text, session_id)
+            
+            if "error" in result:
+                return {
+                    "success": False,
+                    "response": result["error"],
+                    "source": "rag_error",
+                    "input_sources": input_sources
+                }
+            else:
+                return {
+                    "success": True,
+                    "response": result["response"],
+                    "source": "rag",
+                    "input_sources": input_sources,
+                    "combined_text": combined_text
+                }
+        
+    except Exception as e:
+        logger.error(f"Multimedia chat processing failed: {e}")
+        return {
+            "success": False,
+            "response": f"多媒體聊天處理失敗: {str(e)}",
+            "source": "error"
+        }
+
+@router.get("/chat/supported-formats", tags=["Multimedia Chat"])
+async def get_supported_formats():
+    """
+    獲取支援的多媒體格式
+    """
+    return {
+        "audio": {
+            "supported_formats": audio_service.get_supported_formats(),
+            "max_file_size": audio_service.get_max_file_size(),
+            "max_file_size_mb": audio_service.get_max_file_size() // (1024 * 1024)
+        },
+        "file": {
+            "supported_formats": file_service.get_supported_formats(),
+            "max_file_size": file_service.get_max_file_size(),
+            "max_file_size_mb": file_service.get_max_file_size() // (1024 * 1024),
+            "max_text_length": file_service.get_max_text_length()
+        }
+    }
+
+>>>>>>> master

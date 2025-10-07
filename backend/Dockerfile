@@ -9,6 +9,8 @@ RUN apt-get update && apt-get install -y \
     gnupg \
     unzip \
     curl \
+    ffmpeg \
+    libmagic1 \
     && rm -rf /var/lib/apt/lists/*
 
 # install Google Chrome (for SFC scraper)
