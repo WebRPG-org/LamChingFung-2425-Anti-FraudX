@@ -8,7 +8,7 @@ interface InputboxProps {
 
 const Inputbox: React.FC<InputboxProps> = ({ onSendMessage, isLoading }) => {
   const [input, setInput] = useState('');
-  const { isDarkMode } = useTheme();
+    const { } = useTheme();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

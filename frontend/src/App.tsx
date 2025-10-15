@@ -2,6 +2,8 @@ import { useState, useEffect, useRef, createContext, useContext } from 'react';
 import axios from 'axios';
 import Chatbox from './component/chatbox'; 
 import Inputbox from './component/inputbox'; 
+import ScreenRecorder from './component/ScreenRecorder';
+import ElderMode from './component/ElderMode';
 import type { MessageProps } from './component/message'; 
 import './App.css';
 
@@ -64,6 +66,10 @@ function App() {
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [eyePosition, setEyePosition] = useState({ x: 0, y: 0 });
+  const [isElderMode, setIsElderMode] = useState(false);
+  const [safetySuggestions, setSafetySuggestions] = useState<string[]>([]);
+  const [showScreenRecorder, setShowScreenRecorder] = useState(false);
+  const [lastAIResponse, setLastAIResponse] = useState<string>('');
   const chatboxRef = useRef<HTMLDivElement>(null);
   const avatarRef = useRef<HTMLDivElement>(null);
 
@@ -236,6 +242,13 @@ function App() {
       
       // Display the AI's response
       const aiMessage: MessageProps = { text: response.data.response, sender: 'genai' };
+      setLastAIResponse(response.data.response);
+      
+      // Extract safety suggestions if available
+      if (response.data.safety_suggestions) {
+        setSafetySuggestions(response.data.safety_suggestions);
+      }
+      
       setMessages(prevMessages => {
         const newMessages = [...prevMessages, aiMessage];
         
@@ -255,6 +268,70 @@ function App() {
       setMessages(prevMessages => [...prevMessages, errorMessage]);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleScreenRecording = async (blob: Blob) => {
+    try {
+      setIsLoading(true);
+      
+      // Create FormData for file upload
+      const formData = new FormData();
+      formData.append('file', blob, `screen-recording-${Date.now()}.webm`);
+      
+      // Upload file to backend
+      await axios.post(
+        'http://localhost:8000/api/v1/media/upload-video',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+      
+      // Add message about video upload
+      const uploadMessage: MessageProps = { 
+        text: '螢幕錄影已上傳，正在分析中...', 
+        sender: 'genai' 
+      };
+      setMessages(prevMessages => [...prevMessages, uploadMessage]);
+      
+    } catch (error) {
+      console.error("Screen recording upload error:", error);
+      const errorMessage: MessageProps = { 
+        text: '螢幕錄影上傳失敗，請重試', 
+        sender: 'genai' 
+      };
+      setMessages(prevMessages => [...prevMessages, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleElderModeToggle = (enabled: boolean) => {
+    setIsElderMode(enabled);
+    localStorage.setItem('elderMode', enabled.toString());
+  };
+
+  const handleElderModeSettingsChange = (settings: any) => {
+    // Apply elder mode settings to the app
+    if (settings.largeText) {
+      document.body.classList.add('elder-large-text');
+    } else {
+      document.body.classList.remove('elder-large-text');
+    }
+    
+    if (settings.highContrast) {
+      document.body.classList.add('elder-high-contrast');
+    } else {
+      document.body.classList.remove('elder-high-contrast');
+    }
+    
+    if (settings.simplifiedUI) {
+      document.body.classList.add('elder-simplified-ui');
+    } else {
+      document.body.classList.remove('elder-simplified-ui');
     }
   };
 
@@ -310,11 +387,19 @@ function App() {
                 ☰
               </button>
               <h1>Hong Kong Financial AI Assistant</h1>
-              <button 
-                className={`theme-toggle-switch ${isDarkMode ? 'dark' : 'light'}`} 
-                onClick={toggleTheme} 
-                title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              >
+              <div className="header-controls">
+                <button 
+                  className={`screen-recorder-toggle ${showScreenRecorder ? 'active' : ''}`}
+                  onClick={() => setShowScreenRecorder(!showScreenRecorder)}
+                  title="螢幕錄影功能"
+                >
+                  📹
+                </button>
+                <button 
+                  className={`theme-toggle-switch ${isDarkMode ? 'dark' : 'light'}`} 
+                  onClick={toggleTheme} 
+                  title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                >
                 <div className="toggle-track">
                   {isDarkMode ? (
                     <>
@@ -336,11 +421,30 @@ function App() {
                   )}
                 </div>
               </button>
+              </div>
             </div>
           </div>
           <div className="message-list-container" ref={chatboxRef}>
             <Chatbox messages={messages} />
           </div>
+          
+          {/* Elder Mode Component */}
+          <ElderMode
+            isEnabled={isElderMode}
+            onToggle={handleElderModeToggle}
+            onSettingsChange={handleElderModeSettingsChange}
+            safetySuggestions={safetySuggestions}
+            aiResponse={lastAIResponse}
+          />
+          
+          {/* Screen Recorder Component */}
+          {showScreenRecorder && (
+            <ScreenRecorder
+              onRecordingComplete={handleScreenRecording}
+              isElderMode={isElderMode}
+            />
+          )}
+          
           <Inputbox onSendMessage={handleSendMessage} isLoading={isLoading} />
         </div>
 

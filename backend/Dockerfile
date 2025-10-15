@@ -21,7 +21,7 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearm
 COPY requirements.txt .
 
 # install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --cache-dir /tmp/pip-cache -r requirements.txt
 
 
 COPY ./app ./app

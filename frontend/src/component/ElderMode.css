@@ -1,0 +1,350 @@
+.elder-mode {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 16px 0;
+  border: 2px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.elder-mode.enabled {
+  border-color: var(--success-color);
+  background: var(--success-light);
+}
+
+.elder-mode-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.elder-mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.toggle-switch {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.toggle-switch:hover {
+  transform: scale(1.05);
+}
+
+.toggle-track {
+  width: 80px;
+  height: 40px;
+  background: var(--disabled-color);
+  border-radius: 20px;
+  position: relative;
+  transition: all 0.3s ease;
+  border: 2px solid var(--border-color);
+}
+
+.toggle-switch.active .toggle-track {
+  background: var(--success-color);
+  border-color: var(--success-color);
+}
+
+.toggle-thumb {
+  width: 32px;
+  height: 32px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch.active .toggle-thumb {
+  transform: translateX(40px);
+}
+
+.toggle-label h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 20px;
+}
+
+.toggle-label p {
+  margin: 4px 0 0 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.settings-btn {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.settings-btn:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-color);
+}
+
+.elder-settings {
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 16px;
+  border: 1px solid var(--border-color);
+}
+
+.elder-settings h4 {
+  margin: 0 0 16px 0;
+  color: var(--text-primary);
+  font-size: 18px;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+}
+
+.setting-item label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.setting-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--primary-color);
+}
+
+.setting-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.elder-response {
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 16px;
+  border-left: 4px solid var(--primary-color);
+}
+
+.response-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.response-header h4 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 18px;
+}
+
+.response-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.voice-btn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.voice-btn:hover {
+  background: var(--primary-hover);
+}
+
+.response-text {
+  color: var(--text-primary);
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.response-text.large-text {
+  font-size: 20px;
+  line-height: 1.8;
+}
+
+.safety-suggestions {
+  margin-top: 20px;
+}
+
+.safety-suggestions h4 {
+  margin: 0 0 16px 0;
+  color: var(--text-primary);
+  font-size: 18px;
+}
+
+.suggestions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+.suggestion-card {
+  background: var(--warning-light);
+  border: 2px solid var(--warning-color);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.suggestion-card:hover {
+  background: var(--warning-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-content {
+  flex: 1;
+}
+
+.suggestion-text {
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.copy-btn {
+  background: var(--warning-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  min-width: 36px;
+  height: 36px;
+}
+
+.copy-btn:hover {
+  background: var(--warning-hover);
+  transform: scale(1.1);
+}
+
+.copy-btn .copied {
+  color: var(--success-color);
+}
+
+/* High contrast mode */
+.elder-mode.enabled.high-contrast {
+  border-color: #000;
+  background: #fff;
+}
+
+.elder-mode.enabled.high-contrast .toggle-track {
+  background: #000;
+  border-color: #000;
+}
+
+.elder-mode.enabled.high-contrast .toggle-thumb {
+  background: #fff;
+  color: #000;
+}
+
+.elder-mode.enabled.high-contrast .suggestion-card {
+  background: #ffff00;
+  border-color: #000;
+  color: #000;
+}
+
+.elder-mode.enabled.high-contrast .suggestion-text {
+  color: #000;
+  font-weight: bold;
+}
+
+/* Dark mode support */
+.dark .elder-mode {
+  background: var(--bg-secondary-dark);
+  border-color: var(--border-color-dark);
+}
+
+.dark .elder-mode.enabled {
+  background: var(--success-light-dark);
+  border-color: var(--success-color);
+}
+
+.dark .elder-settings {
+  background: var(--bg-tertiary-dark);
+  border-color: var(--border-color-dark);
+}
+
+.dark .elder-response {
+  background: var(--bg-tertiary-dark);
+}
+
+.dark .suggestion-card {
+  background: var(--warning-light-dark);
+}
+
+.dark .suggestion-card:hover {
+  background: var(--warning-hover-dark);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .elder-mode {
+    padding: 16px;
+  }
+  
+  .elder-mode-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .suggestions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .response-text.large-text {
+    font-size: 18px;
+  }
+}
+

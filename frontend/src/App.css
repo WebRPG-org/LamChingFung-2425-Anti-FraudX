@@ -1021,3 +1021,101 @@ body {
   }
 }
 
+/* Header Controls */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.screen-recorder-toggle {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s ease;
+}
+
+.screen-recorder-toggle:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-color);
+}
+
+.screen-recorder-toggle.active {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+/* Elder Mode Styles */
+.elder-large-text {
+  font-size: 1.2em;
+  line-height: 1.6;
+}
+
+.elder-large-text .message-text {
+  font-size: 1.1em;
+}
+
+.elder-large-text .input-text {
+  font-size: 1.1em;
+}
+
+.elder-high-contrast {
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f0f0f0;
+  --border-color: #000000;
+}
+
+.elder-high-contrast .message {
+  border: 2px solid var(--border-color);
+}
+
+.elder-high-contrast .user-message {
+  background: #0000ff;
+  color: #ffffff;
+}
+
+.elder-high-contrast .ai-message {
+  background: #ffff00;
+  color: #000000;
+}
+
+.elder-simplified-ui .model-sidebar {
+  display: none;
+}
+
+.elder-simplified-ui .history-sidebar {
+  width: 200px;
+}
+
+.elder-simplified-ui .chat-container {
+  margin-left: 200px;
+  margin-right: 0;
+}
+
+/* Additional color variables for elder mode */
+:root {
+  --primary-color: #007bff;
+  --primary-hover: #0056b3;
+  --primary-light: #e3f2fd;
+  --success-color: #28a745;
+  --success-light: #d4edda;
+  --warning-color: #ffc107;
+  --warning-light: #fff3cd;
+  --warning-hover: #e0a800;
+  --error-color: #dc3545;
+  --disabled-color: #6c757d;
+  --bg-secondary-dark: #2f2f2f;
+  --bg-tertiary-dark: #3f3f3f;
+  --border-color-dark: #404040;
+  --success-light-dark: #1e4d2b;
+  --warning-light-dark: #4d3a00;
+  --warning-hover-dark: #b8860b;
+  --primary-light-dark: #1a365d;
+}
+

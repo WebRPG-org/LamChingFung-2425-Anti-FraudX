@@ -7,7 +7,7 @@ export interface MessageProps {
 }
 
 const Message: React.FC<MessageProps> = ({ text, sender }) => {
-    const { isDarkMode } = useTheme();
+    const { } = useTheme();
     const messageclass = sender === 'user' ? 'message user-message' : 'message genai-message';
     
     return (

@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import fraud_routes, ingestion_routes, chat_routes
+from app.api import fraud_routes, ingestion_routes, chat_routes, auth_routes, media_routes
 from app.core.mongo_client import mongo_client
 from app.startup_manager import startup_manager
 from app.ai_service import ai_service
@@ -54,6 +54,8 @@ app.add_middleware(
 app.include_router(chat_routes.router, prefix="/api/v1", tags=["Chat"])
 app.include_router(fraud_routes.router, prefix="/api/v1", tags=["Fraud Detection"])
 app.include_router(ingestion_routes.router, prefix="/api/v1", tags=["Ingestion"])
+app.include_router(auth_routes.router, prefix="/api/v1/auth", tags=["Authentication"])
+app.include_router(media_routes.router, prefix="/api/v1/media", tags=["Media Processing"])
 
 @app.get("/health", summary="Health Check", tags=["Monitoring"])
 async def health_check():

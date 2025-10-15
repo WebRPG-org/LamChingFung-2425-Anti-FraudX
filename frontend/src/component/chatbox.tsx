@@ -8,7 +8,7 @@ interface ChatboxProps {
 }
 
 const Chatbox: React.FC<ChatboxProps> = ({ messages }) => {
-    const { isDarkMode } = useTheme();
+    const { } = useTheme();
     
     return (
         <div className="chatbox">

@@ -1,0 +1,25 @@
+{
+  "name": "video-analysis-function",
+  "version": "1.0.0",
+  "description": "Cloud Function for video analysis using AI services",
+  "main": "index.js",
+  "scripts": {
+    "start": "functions-framework --target=analyzeVideo",
+    "deploy": "gcloud functions deploy analyzeVideo --runtime nodejs18 --trigger-bucket=ai-agent-videos"
+  },
+  "dependencies": {
+    "firebase-functions": "^4.8.0",
+    "firebase-admin": "^12.0.0",
+    "@google-cloud/storage": "^7.7.0",
+    "@google-cloud/video-intelligence": "^4.0.0",
+    "@google-cloud/speech": "^6.0.0",
+    "@google-cloud/vision": "^4.0.0",
+    "@google-cloud/vertexai": "^1.0.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "node-fetch": "^2.7.0"
+  },
+  "engines": {
+    "node": "18"
+  }
+}
+

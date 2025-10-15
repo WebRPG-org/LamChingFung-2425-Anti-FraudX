@@ -1,0 +1,311 @@
+.screen-recorder {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 16px 0;
+  border: 1px solid var(--border-color);
+}
+
+.screen-recorder.elder-mode {
+  font-size: 18px;
+  padding: 32px;
+}
+
+.recorder-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.recorder-header h3 {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.ios-notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--warning-color);
+  font-size: 14px;
+}
+
+.ios-instructions {
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 16px 0;
+}
+
+.ios-instructions h4 {
+  margin: 0 0 16px 0;
+  color: var(--text-primary);
+}
+
+.instruction-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.step-number {
+  background: var(--primary-color);
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.step-content strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+
+.step-content p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.close-instructions {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 16px;
+  font-size: 16px;
+}
+
+.recorder-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.start-btn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 16px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.start-btn:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.start-btn:disabled {
+  background: var(--disabled-color);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.recording-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.recording-info {
+  text-align: center;
+}
+
+.recording-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--error-color);
+  font-weight: 600;
+}
+
+.pulse {
+  width: 12px;
+  height: 12px;
+  background: var(--error-color);
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.control-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.pause-btn, .stop-btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.pause-btn {
+  background: var(--warning-color);
+  color: white;
+}
+
+.pause-btn:hover {
+  background: #d97706;
+}
+
+.stop-btn {
+  background: var(--error-color);
+  color: white;
+}
+
+.stop-btn:hover {
+  background: #dc2626;
+}
+
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.upload-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.upload-divider::before,
+.upload-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-color);
+}
+
+.upload-btn {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 2px dashed var(--border-color);
+  padding: 16px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.upload-btn:hover {
+  border-color: var(--primary-color);
+  background: var(--primary-light);
+}
+
+.preview-section {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+.preview-section h4 {
+  margin: 0 0 16px 0;
+  color: var(--text-primary);
+}
+
+.preview-video {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 8px;
+  background: var(--bg-tertiary);
+}
+
+.preview-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* Elder mode specific styles */
+.screen-recorder.elder-mode .start-btn,
+.screen-recorder.elder-mode .pause-btn,
+.screen-recorder.elder-mode .stop-btn,
+.screen-recorder.elder-mode .upload-btn {
+  font-size: 20px;
+  padding: 20px 32px;
+  min-height: 60px;
+}
+
+.screen-recorder.elder-mode .step-content {
+  font-size: 18px;
+}
+
+.screen-recorder.elder-mode .recording-indicator {
+  font-size: 20px;
+}
+
+/* Dark mode support */
+.dark .screen-recorder {
+  background: var(--bg-secondary-dark);
+  border-color: var(--border-color-dark);
+}
+
+.dark .ios-instructions {
+  background: var(--bg-tertiary-dark);
+}
+
+.dark .upload-btn {
+  background: var(--bg-tertiary-dark);
+  border-color: var(--border-color-dark);
+}
+
+.dark .upload-btn:hover {
+  background: var(--primary-light-dark);
+}
+
