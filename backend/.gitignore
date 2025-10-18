@@ -1,0 +1,14 @@
+# Virtual Environment
+venv/
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# Database files
+*.sqlite3
+db/chroma.sqlite3
+
+# VSCode
+.vscode/
