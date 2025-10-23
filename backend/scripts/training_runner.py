@@ -37,22 +37,33 @@ def run_agent_with_runner(agent, message: str, session_id: str = None):
         session_id = f"session_{int(time.time() * 1000)}"
     
     try:
-        # Create session service and ensure session exists
+        # InMemorySessionService in ADK 1.16.0: manually create session
         session_service = InMemorySessionService()
         user_id = "training_user"
+        app_name = "agents"
         
-        # Create session first
-        try:
-            session_service.create_session_sync(
+        # InMemorySessionService uses nested dict: sessions[app_name][user_id][session_id]
+        if not hasattr(session_service, 'sessions'):
+            session_service.sessions = {}
+        
+        # Initialize nested structure
+        if app_name not in session_service.sessions:
+            session_service.sessions[app_name] = {}
+        
+        if user_id not in session_service.sessions[app_name]:
+            session_service.sessions[app_name][user_id] = {}
+        
+        # Create session if not exists
+        if session_id not in session_service.sessions[app_name][user_id]:
+            from google.adk.sessions import Session
+            session_service.sessions[app_name][user_id][session_id] = Session(
+                id=session_id,
                 user_id=user_id,
-                session_id=session_id,
-                app_name="agents"
+                app_name=app_name,
+                events=[]
             )
-        except Exception:
-            # Session might already exist, that's okay
-            pass
         
-        runner = Runner(app_name="agents", agent=agent, session_service=session_service)
+        runner = Runner(app_name=app_name, agent=agent, session_service=session_service)
         from google.genai import types as genai_types
         content_msg = genai_types.Content(
             role="user",

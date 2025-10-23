@@ -129,25 +129,33 @@ class RealDialogueRunner:
     
     async def _ensure_session_async(self, user_id: str, session_id: str) -> None:
         """Ensure session established in non-blocking way to avoid blocking event loop."""
+        # InMemorySessionService uses nested dict: sessions[app_name][user_id][session_id]
         try:
-            await asyncio.to_thread(
-                self.session_service.create_session_sync,
-                user_id,
-                session_id,
-                self.app_name,
-            )
-            log.info(f"[ADK] create_session_sync ok app={self.app_name} user={user_id} session={session_id}")
-        except Exception:
-            try:
-                await asyncio.to_thread(
-                    self.session_service.get_session_sync,
-                    user_id,
-                    session_id,
-                    self.app_name,
+            if not hasattr(self.session_service, 'sessions'):
+                self.session_service.sessions = {}
+            
+            # Initialize nested structure
+            if self.app_name not in self.session_service.sessions:
+                self.session_service.sessions[self.app_name] = {}
+            
+            if user_id not in self.session_service.sessions[self.app_name]:
+                self.session_service.sessions[self.app_name][user_id] = {}
+            
+            # Create session if not exists
+            if session_id not in self.session_service.sessions[self.app_name][user_id]:
+                from google.adk.sessions import Session
+                self.session_service.sessions[self.app_name][user_id][session_id] = Session(
+                    id=session_id,
+                    user_id=user_id,
+                    app_name=self.app_name,
+                    events=[]
                 )
-                log.info(f"[ADK] get_session_sync ok app={self.app_name} user={user_id} session={session_id}")
-            except Exception:
-                raise
+                log.info(f"[ADK] Manually created session app={self.app_name} user={user_id} session={session_id}")
+            else:
+                log.info(f"[ADK] Session already exists app={self.app_name} user={user_id} session={session_id}")
+        except Exception as e:
+            import traceback
+            log.warning(f"[ADK] Session creation failed: {e}\n{traceback.format_exc()}")
 
     async def run_agent_with_adk(self, agent, message: str, session_id: str) -> str:
         """Run agent via Google ADK"""
