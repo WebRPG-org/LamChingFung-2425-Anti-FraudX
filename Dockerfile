@@ -1,30 +1,46 @@
-# syntax=docker/dockerfile:1.7-labs
-# AI 反詐騙模擬訓練平台 - Docker配置（優化快取與建置時間）
-FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04
+# 多阶段构建 - AI反诈骗训练平台
+# Stage 1: Base image with system dependencies
+FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04 AS base
 
-# 設置工作目錄
+# 设置工作目录
 WORKDIR /app
 
-# 安裝系統依賴
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    python3 python3-venv python3-pip \
-    curl wget git build-essential \
-    && rm -rf /var/lib/apt/lists/*
+# 安装系统依赖
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    python3.10 \
+    python3.10-venv \
+    python3-pip \
+    curl \
+    wget \
+    git \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && ln -sf /usr/bin/python3.10 /usr/bin/python \
+    && ln -sf /usr/bin/python3.10 /usr/bin/python3
 
-# 安裝 Ollama
-RUN curl -fsSL https://ollama.ai/install.sh | sh
+# 升级pip
+RUN python -m pip install --no-cache-dir --upgrade pip setuptools wheel
 
-# 先僅複製依賴清單，讓 pip 充分利用層快取
-COPY backend/requirements.txt ./requirements.txt
+# Stage 2: Dependencies installation
+FROM base AS dependencies
 
-# 安裝 Python 依賴（過濾 Windows 專用套件）
-RUN python3 - <<'PY'
-import sys, io, codecs
-src = 'requirements.txt'
+# 复制requirements文件
+COPY backend/requirements.txt /tmp/requirements.txt
+
+# 过滤Windows专用包并安装依赖
+RUN python3 - <<'PY' && \
+    pip install --no-cache-dir -r /tmp/requirements.filtered
+import codecs
+
+src = '/tmp/requirements.txt'
 dst = '/tmp/requirements.filtered'
-# Read raw bytes and detect UTF-16 by presence of NUL bytes or BOM
+
+# 读取并检测编码
 raw = open(src, 'rb').read()
 text = None
+
+# 尝试UTF-16编码
 if raw.startswith(codecs.BOM_UTF16_LE) or raw.startswith(codecs.BOM_UTF16_BE) or b'\x00' in raw:
     for enc in ('utf-16', 'utf-16-le', 'utf-16-be'):
         try:
@@ -32,49 +48,118 @@ if raw.startswith(codecs.BOM_UTF16_LE) or raw.startswith(codecs.BOM_UTF16_BE) or
             break
         except Exception:
             pass
+
+# 默认UTF-8
 if text is None:
     text = raw.decode('utf-8', errors='ignore')
 
+# 过滤Windows专用包
 windows_only = ('pywin32', 'pyreadline', 'pyreadline3')
 with open(dst, 'w', encoding='utf-8') as f_out:
     for line in text.splitlines():
         s = line.strip()
         if not s or s.startswith('#'):
-            f_out.write(line + '\n')
             continue
         low = s.lower()
-        if low.startswith(windows_only) or any(low.startswith(p) for p in windows_only):
+        if any(low.startswith(p) for p in windows_only):
             continue
         f_out.write(line + '\n')
-print('Filtered requirements written to', dst)
+
+print(f'✅ Filtered requirements written to {dst}')
 PY
-RUN --mount=type=cache,target=/root/.cache/pip pip3 install -r /tmp/requirements.filtered
 
-# 複製專案程式碼（這層之後的變更不會使依賴層失效）
-COPY backend/ ./backend/
-COPY frontend/ ./frontend/
-COPY start_server.py ./
+# Stage 3: Final application image
+FROM base AS final
 
-# 創建必要的目錄
-RUN mkdir -p backend/training_data backend/models backend/db
+# 从dependencies阶段复制已安装的Python包
+COPY --from=dependencies /usr/local/lib/python3.10/dist-packages /usr/local/lib/python3.10/dist-packages
+COPY --from=dependencies /usr/local/bin /usr/local/bin
 
-# 設置環境變量
+# 创建非root用户
+RUN groupadd -r appuser && useradd -r -g appuser -u 1000 appuser
+
+# 创建必要的目录并设置权限
+RUN mkdir -p \
+    /app/backend/training_data \
+    /app/backend/models \
+    /app/backend/db \
+    /app/backend/arms_race_data \
+    /app/backend/agent_versions \
+    /app/backend/ab_test_results \
+    /app/backend/agents/backups \
+    && chown -R appuser:appuser /app
+
+# 复制应用代码
+COPY --chown=appuser:appuser backend/ /app/backend/
+COPY --chown=appuser:appuser frontend/ /app/frontend/
+COPY --chown=appuser:appuser start_server.py /app/
+
+# 设置环境变量
 ENV PYTHONPATH=/app/backend \
+    PYTHONUNBUFFERED=1 \
     OLLAMA_BASE_URL=http://ollama:11434 \
-    AGENT_MODEL=gemma3:27b\
+    AGENT_MODEL=gemma3:4b \
     OLLAMA_LLM_LIBRARY=cuda \
     NVIDIA_VISIBLE_DEVICES=all \
-    NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+    APP_ENV=production
 
 # 暴露端口
-EXPOSE 8000 11434
+EXPOSE 8000
 
-# 創建啟動腳本（直接以 uvicorn 啟動後端）
-RUN echo '#!/bin/bash\nset -e\necho "🚀 啟動 AI 反詐騙模擬訓練平台"\necho "======================================"\necho "🌐 啟動 Web 服務..."\ncd /app/backend\nexec uvicorn main:app --host 0.0.0.0 --port 8000\n' > /app/start.sh && chmod +x /app/start.sh
+# 创建启动脚本
+RUN echo '#!/bin/bash\n\
+set -e\n\
+\n\
+echo "================================================"\n\
+echo "🚀 AI反诈骗训练平台启动中..."\n\
+echo "================================================"\n\
+echo ""\n\
+echo "⏰ 时间: $(date)"\n\
+echo "🐍 Python版本: $(python --version)"\n\
+echo "📍 工作目录: $(pwd)"\n\
+echo "👤 用户: $(whoami)"\n\
+echo ""\n\
+\n\
+# 等待Ollama服务就绪\n\
+echo "⏳ 等待Ollama服务就绪..."\n\
+echo "   使用URL: ${OLLAMA_BASE_URL}"\n\
+max_attempts=30\n\
+attempt=0\n\
+while [ $attempt -lt $max_attempts ]; do\n\
+    if curl -sf ${OLLAMA_BASE_URL}/api/tags > /dev/null 2>&1; then\n\
+        echo "✅ Ollama服务已就绪"\n\
+        break\n\
+    fi\n\
+    attempt=$((attempt + 1))\n\
+    echo "   尝试 $attempt/$max_attempts..."\n\
+    sleep 2\n\
+done\n\
+\n\
+if [ $attempt -eq $max_attempts ]; then\n\
+    echo "❌ 警告: Ollama服务未响应，但继续启动..."\n\
+fi\n\
+\n\
+echo ""\n\
+echo "🌐 启动Web服务器..."\n\
+echo "   地址: http://0.0.0.0:8000"\n\
+echo "   环境: ${APP_ENV}"\n\
+echo "   模型: ${AGENT_MODEL}"\n\
+echo ""\n\
+\n\
+cd /app/backend\n\
+exec uvicorn main:app --host 0.0.0.0 --port 8000 --log-level ${LOG_LEVEL:-info}\n\
+' > /app/start.sh && chmod +x /app/start.sh
 
-# 健康檢查
+# 健康检查
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:8000/ || exit 1
+    CMD curl -f http://localhost:8000/health || exit 1
 
-# 啟動命令
+# 切换到非root用户
+USER appuser
+
+# 工作目录
+WORKDIR /app
+
+# 启动命令
 CMD ["/app/start.sh"]

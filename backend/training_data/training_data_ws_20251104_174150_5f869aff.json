@@ -1,0 +1,158 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": {
+      "trust_level": {
+        "towards_scammer": 100,
+        "towards_expert": 50,
+        "alarm_level": 25,
+        "emotional_state": "anxious"
+      }
+    },
+    "victim_trust_analysis": {
+      "initial_state": "high_trust",
+      "turning_point": "scammer impersonating a trusted authority figure",
+      "final_state": "complete_trust",
+      "primary_influencing_factors": [
+        "scammer's use of authoritative language and tone",
+        "victim's lack of familiarity with handling financial matters"
+      ],
+      "decision_process": "victim quickly agrees to transfer funds without verifying scammer's identity or the legitimacy of the request"
+    },
+    "scam_analysis": {
+      "effective_tactics": [
+        "impersonation of a trusted authority figure",
+        "creating a sense of urgency and fear",
+        "exploiting victim's lack of financial literacy"
+      ],
+      "psychological_manipulation": "scammer uses social engineering tactics to induce anxiety and gain victim's compliance",
+      "role_consistency": "scammer maintains a consistent persona throughout the interaction",
+      "failure_reason": "The scammer successfully impersonated a trusted authority figure, exploiting the victim's high trust level. The expert's attempts at intervention were ineffective due to the victim's complete trust in the scammer and lack of suspicion. This failure can be attributed to the significant trust gap between the victim and the expert, the scammer's effective use of authoritative language and tactics, and the victim's initial high trust level."
+    },
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "scammer",
+        "dialogue": "你好，我係星光淘寶嘅主管陳志強。你嘅購物記錄顯示，有部分商品未結清款項，涉及數千蚊。這情況屬於嚴重違規，會影響你嘅購物權益。請立即提供銀行卡號及餘額，我哋會安排馬上退款。時間有限，請配合！",
+        "analysis": "The scammer impersonates a trusted authority figure and creates a sense of urgency to pressure the victim into complying with their request."
+      },
+      {
+        "round": 2,
+        "speaker": "victim",
+        "dialogue": "哎呀，陳主管啊，你話咁快？我真係好驚，點算好呀？數千蚊啊！我啲錢啊！我唔識處理啲錢事，我即刻去轉帳啊，你話我點樣轉？要轉去邊個銀行？我真係好擔心，咁樣會唔會再跌啲價啊？我而家就轉帳，你俾个詳細嘅銀行冧 naby，我慢慢仔細咁樣。",
+        "analysis": "The victim, trusting the scammer, agrees to transfer funds without verifying the scammer's identity or the legitimacy of the request."
+      }
+    ],
+    "scam_tactic": "虛假購物平台",
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "failure_reason": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "timestamp": "2025-11-04T17:41:57.974121",
+    "total_turns": 2
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 1,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 50,
+      "alertness": 25,
+      "emotional_state": "anxious",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-04T17:41:48.720230",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-04T17:41:50.280183",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-04T17:41:50.280189",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 50,
+      "credibility": 55,
+      "pressure_effectiveness": 55,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 59,
+      "successful_manipulations": 0,
+      "exposed_lies": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 59,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 50,
+      "empathy": 50,
+      "actionability": 50,
+      "timing": 50,
+      "overall_score": 50,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 0,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 50,
+    "key_moments": [
+      {
+        "turn": 2,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 50,
+          "alertness": 25,
+          "emotional_state": "anxious",
+          "dominant_trust": "scammer"
+        },
+        "timestamp": "2025-11-04T17:41:50.280369"
+      }
+    ],
+    "summary": "对话共1轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 59/100。"
+  },
+  "metadata": {
+    "simulation_id": "5f869aff-a038-4428-8168-e1dbdc32d128",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「你好，我係星光淘寶嘅主管陳志強。你嘅購物記錄顯示，有部分商品未結清款項，涉及數千蚊。這情況屬於嚴重違規，會影響你嘅購物權益。請立即提供銀行卡號及餘額，我哋會安排馬上退款。時間有限，請配合！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "「哎呀，陳主管啊，你話咁快？我真係好驚，點算好呀？數千蚊啊！我啲錢啊！我唔識處理啲錢事，我即刻去轉帳啊，你話我點樣轉？要轉去邊個銀行？我真係好擔心，咁樣會唔會再跌啲價啊？我而家就轉帳，你俾個詳細嘅銀行冧 naby，我慢慢仔細咁樣。」"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「你好，我係星光淘寶嘅主管陳志強。你嘅購物記錄顯示，有部分商品未結清款項，涉及數千蚊。這情況屬於嚴重違規，會影響你嘅購物權益。請立即提供銀行卡號及餘額，我哋會安排馬上退款。時間有限，請配合！」"
+    },
+    {
+      "type": "victim",
+      "message": "「哎呀，陳主管啊，你話咁快？我真係好驚，點算好呀？數千蚊啊！我啲錢啊！我唔識處理啲錢事，我即刻去轉帳啊，你話我點樣轉？要轉去邊個銀行？我真係好擔心，咁樣會唔會再跌啲價啊？我而家就轉帳，你俾個詳細嘅銀行冧 naby，我慢慢仔細咁樣。」"
+    }
+  ]
+}

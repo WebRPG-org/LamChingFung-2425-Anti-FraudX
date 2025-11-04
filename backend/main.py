@@ -13,6 +13,23 @@ from fastapi.middleware.cors import CORSMiddleware
 # Load environment variables from .env file
 load_dotenv()
 
+# GPU检查（启动时执行）
+try:
+    from utils.gpu_checker import check_and_enforce_gpu
+    log.info("正在执行GPU检测...")
+    gpu_available = check_and_enforce_gpu()
+    if gpu_available:
+        log.info("✅ GPU已启用，将使用GPU加速")
+    else:
+        log.warning("⚠️ 未使用GPU，性能可能受限")
+except Exception as e:
+    log.error(f"GPU检测失败: {e}")
+    # 如果FORCE_GPU=1，则失败退出
+    if os.getenv("FORCE_GPU", "1") == "1":
+        log.error("强制GPU模式启用，但GPU检测失败，程序退出")
+        import sys
+        sys.exit(1)
+
 # Setting the agent model name from environment variables
 AGENT_MODEL_NAME = os.getenv("AGENT_MODEL", "gemma3:4b")
 

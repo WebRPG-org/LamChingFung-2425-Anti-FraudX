@@ -65,11 +65,17 @@ class RealDialogueRunner:
         try:
             log.info("正在初始化智能體...")
             
-            # Initialize agents
+            # Initialize agents (每个Agent初始化时会记录模型信息)
+            log.info("=" * 60)
+            log.info("📋 Agent模型配置信息：")
+            log.info("=" * 60)
+            
             self.scammer = ScammerAgent()
             self.victim = VictimAgent(persona_type=victim_persona)
             self.expert = ExpertAgent()
             self.recorder = RecorderAgent()
+            
+            log.info("=" * 60)
             # Ensure each agent's Ollama endpoint is reachable, otherwise fallback to default 11434
             self._ensure_llm_reachable(self.scammer)
             self._ensure_llm_reachable(self.victim)

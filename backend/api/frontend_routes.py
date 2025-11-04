@@ -35,6 +35,19 @@ async def serve_frontend_alias():
     }
     return FileResponse(frontend_path, headers=headers)
 
+@router.get("/test")
+async def serve_test_page():
+    """提供WebSocket测试页面"""
+    test_path = os.path.join(os.path.dirname(__file__), '..', '..', 'frontend', 'test.html')
+    if not os.path.exists(test_path):
+        raise HTTPException(status_code=404, detail="测试页面未找到")
+    headers = {
+        "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+        "Pragma": "no-cache",
+        "Expires": "0",
+    }
+    return FileResponse(test_path, headers=headers)
+
 @router.post("/api/training/single")
 async def start_single_real_dialogue(request_data: Dict[str, Any] | None = None):
     """只使用真實 AI 對話，不回退模擬"""

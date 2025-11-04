@@ -97,6 +97,16 @@
             box-shadow: 0 10px 20px rgba(23, 162, 184, 0.3);
         }
 
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(231, 76, 60, 0.3);
+        }
+
         .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
@@ -459,17 +469,11 @@
                 <button class="btn btn-primary" id="singleTrainingBtn" onclick="startSingleTraining()">
                     🔄 開始對話
                 </button>
-                <button class="btn btn-success" id="startLoopBtn" onclick="startLoopTraining()">
-                    ⚡ 循環訓練
-                </button>
-                <button class="btn btn-info" id="stopLoopBtn" onclick="stopLoopTraining()" style="display:none;">
-                    🛑 停止訓練（本輪後）
+                <button class="btn btn-danger" id="stopNowBtn" onclick="stopNow()" disabled>
+                    ⛔ 停止對話
                 </button>
                 <button class="btn btn-info" id="viewRecordsBtn" onclick="viewRecords()">
                     🗂 查看訓練記錄
-                </button>
-                <button class="btn btn-info" id="stopNowBtn" onclick="stopNow()" style="display:none;">
-                    ⛔ 立即停止
                 </button>
             </div>
 
@@ -480,6 +484,13 @@
                     <span class="status-label">狀態:</span>
                     <span class="status-value" id="trainingStatus">待機中</span>
                 </div>
+                <div class="status-item" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="status-label">自動訓練:</span>
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                        <input type="checkbox" id="autoTrainToggle" checked onchange="toggleAutoTraining()" style="width: 20px; height: 20px; cursor: pointer;">
+                        <span class="status-value" id="autoTrainStatus">已啟用（對話結束後自動開始新輪次）</span>
+                    </label>
+                </div>
                 <div class="status-item">
                     <span class="status-label">當前詐騙手法:</span>
                     <span class="status-value" id="currentScamTactic">-</span>
@@ -487,6 +498,10 @@
                 <div class="status-item">
                     <span class="status-label">受騙者類型:</span>
                     <span class="status-value" id="victimPersona">-</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">模擬 ID:</span>
+                    <span class="status-value" id="currentSimulationId" style="font-family: monospace; font-size: 0.9em;">-</span>
                 </div>
             </div>
 
@@ -524,8 +539,8 @@
         // 全局變量
         let isTraining = false;
         let trainingOptions = null;
-        let loopRunning = false;
-        let trainingInterval = null;
+        let autoTrainingEnabled = true;  // 自動訓練已啟用
+        let currentSimulationId = null;
         let statusPollTimer = null;
         let lastSeq = 0;
 
@@ -576,18 +591,29 @@
                 const resp = await fetch('/simulation/start', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ victim_persona: victimPersona, scam_tactic: scamTactic, mode: mode })
+                    body: JSON.stringify({ 
+                        victim_persona: victimPersona, 
+                        scam_tactic: scamTactic, 
+                        mode: mode,
+                        auto_train: autoTrainingEnabled
+                    })
                 });
                 const sim = await resp.json();
                 const simId = (sim && sim.simulation_id) || (sim && sim.data && sim.data.simulation_id);
                 const wsUrl = ((location.protocol === 'https:') ? 'wss://' : 'ws://') + location.host + '/ws/simulation/' + simId;
                 if (!simId) throw new Error('無法取得模擬 ID');
 
+                currentSimulationId = simId;
+                document.getElementById('currentSimulationId').textContent = simId.substring(0, 8) + '...';
+                
                 const ws = new WebSocket(wsUrl);
                 window.__activeWS = ws;
+                window.__currentSimId = simId;
                 ws.onopen = () => {
                     addMessage('recorder', '已連線，開始實時對話...');
-                    document.getElementById('stopNowBtn').style.display = 'inline-block';
+                    const stopBtn = document.getElementById('stopNowBtn');
+                    stopBtn.disabled = false;
+                    stopBtn.style.display = 'inline-block';
                     window.__wsRetries = 0; // reset on success
                 };
                 const onMessage = (ev) => {
@@ -618,10 +644,36 @@
                             addMessage('recorder', `已達上限 ${p.max_turns || ''} 回合，準備分析...`);
                          } else if (t === 'simulation_end') {
                             addMessage('recorder', `對話完成 - 結果: ${p.outcome || 'UNKNOWN'}`);
-                            document.getElementById('trainingStatus').textContent = '已完成';
+                            document.getElementById('trainingStatus').textContent = '已完成，等待開始新輪次...';
                             isTraining = false;
+                            const stopBtn = document.getElementById('stopNowBtn');
+                            stopBtn.disabled = true;
                             updateUI();
-                            ws.close();
+                            // 延迟关闭连接，确保能收到 auto_new_round_starting 事件
+                            setTimeout(() => {
+                                if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
+                                    ws.close();
+                                }
+                            }, 3000);  // 等待3秒，足够后端发送 auto_new_round_starting 事件
+                        } else if (t === 'auto_new_round_starting') {
+                            // 新轮次自动开始
+                            const newSimId = p.new_simulation_id;
+                            const newVictimPersona = p.victim_persona;
+                            const newScamTactic = p.scam_tactic;
+                            
+                            addMessage('recorder', `🔄 後端已自動開始新一輪模擬`);
+                            addMessage('recorder', `   受害者類型: ${newVictimPersona}, 詐騙手法: ${newScamTactic}`);
+                            
+                            // 只有在自动训练启用时才自动连接
+                            if (autoTrainingEnabled) {
+                                addMessage('recorder', `✅ 自動訓練已啟用，正在連接到新輪次...`);
+                                setTimeout(() => {
+                                    connectToNewSimulation(newSimId, newVictimPersona, newScamTactic);
+                                }, 1000);
+                            } else {
+                                addMessage('recorder', `⏸️ 自動訓練已禁用，不會自動連接。如需繼續，請手動點擊「開始對話」`);
+                                document.getElementById('trainingStatus').textContent = '待機中（新輪次已準備，請手動開始）';
+                            }
                         } else if (t === 'heartbeat') {
                             // ignore
                         }
@@ -670,7 +722,9 @@
                             poll();
                         }
                     }
-                    document.getElementById('stopNowBtn').style.display = 'none';
+                    const stopBtn = document.getElementById('stopNowBtn');
+                    stopBtn.disabled = true;
+                    stopBtn.style.display = 'inline-block';
                 };
             } catch (e) {
                 addMessage('recorder', `啟動實時對話失敗：${e}`);
@@ -679,28 +733,6 @@
             }
         }
 
-        // 開始無限次訓練
-        function startInfiniteTraining() {
-            if (isTraining) return;
-            
-            isTraining = true;
-            updateUI();
-            
-            trainingInterval = setInterval(async () => {
-                await startSingleTraining();
-            }, 5000); // 每5秒一次訓練
-        }
-
-        // 停止訓練
-        function stopTraining() {
-            isTraining = false;
-            if (trainingInterval) {
-                clearInterval(trainingInterval);
-                trainingInterval = null;
-            }
-            updateUI();
-            document.getElementById('trainingStatus').textContent = '已停止';
-        }
 
         // 查看記錄
         async function viewRecords() {
@@ -774,52 +806,107 @@
             modal.classList.add('hidden');
         }
 
-        // 循環訓練（加速模式）
-        async function startLoopTraining() {
-            if (loopRunning) return;
-            try {
-                const modeSelect = document.getElementById('modeSelect');
-                const mode = (modeSelect && modeSelect.value) || 'fast';
-                const interval = mode === 'fast' ? 0.1 : 0.5;
-                const resp = await fetch('/api/training/loop/start', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ interval_seconds: interval, mode: mode })
-                });
-                const result = await resp.json();
-                loopRunning = true;
-                document.getElementById('trainingStatus').textContent = mode === 'fast' ? '循環訓練中（加速）' : '循環訓練中（演示）';
-                updateUI();
-                // 開啟狀態輪詢與記錄自動刷新
-                startStatusPolling();
-                if (!document.getElementById('recordsContainer').classList.contains('hidden')) {
-                    await loadRecords();
-                }
-            } catch (e) {
-                addMessage('recorder', `啟動循環失敗：${e}`);
+        // 連接到新的模擬（自動訓練）
+        async function connectToNewSimulation(newSimId, victimPersona, scamTactic) {
+            if (!autoTrainingEnabled) {
+                addMessage('recorder', '⏸️ 自動訓練已禁用，跳過自動連接');
+                return;
             }
-        }
-
-        async function stopLoopTraining() {
-            try {
-                await fetch('/api/training/loop/stop', { method: 'POST' });
-                loopRunning = false;
-                document.getElementById('trainingStatus').textContent = '已停止';
-                updateUI();
-                stopStatusPolling();
-            } catch (e) {
-                addMessage('recorder', `停止循環失敗：${e}`);
-            }
+            
+            currentSimulationId = newSimId;
+            document.getElementById('currentSimulationId').textContent = newSimId.substring(0, 8) + '...';
+            document.getElementById('currentScamTactic').textContent = scamTactic;
+            document.getElementById('victimPersona').textContent = victimPersona;
+            document.getElementById('trainingStatus').textContent = '對話中（自動訓練模式）';
+            
+            isTraining = true;
+            updateUI();
+            
+            const wsUrl = ((location.protocol === 'https:') ? 'wss://' : 'ws://') + location.host + '/ws/simulation/' + newSimId;
+            const ws = new WebSocket(wsUrl);
+            window.__activeWS = ws;
+            window.__currentSimId = newSimId;
+            
+            ws.onopen = () => {
+                addMessage('recorder', '已連線到新輪次，開始實時對話...');
+                const stopBtn = document.getElementById('stopNowBtn');
+                stopBtn.disabled = false;
+                stopBtn.style.display = 'inline-block';
+                window.__wsRetries = 0;
+            };
+            
+            const onMessage = (ev) => {
+                try {
+                    const data = JSON.parse(ev.data);
+                    if (typeof data.seq === 'number') {
+                        lastSeq = Math.max(lastSeq, data.seq);
+                    }
+                    const t = data.event_type;
+                    const p = data.payload || {};
+                    if (t === 'agent_turn') {
+                        const name = p.character_name || '';
+                        const d = p.dialogue || '';
+                        let type = 'recorder';
+                        if (name.indexOf('騙徒') !== -1) type = 'scammer';
+                        else if (name.indexOf('受騙者') !== -1) type = 'victim';
+                        else if (name.indexOf('專家') !== -1) type = 'expert';
+                        addMessage(type, d);
+                    } else if (t === 'simulation_start') {
+                        addMessage('recorder', '模擬開始');
+                    } else if (t === 'turn_progress') {
+                        const cur = p.current_turn || 0;
+                        const max = p.max_turns || 0;
+                        document.getElementById('trainingStatus').textContent = `對話中（第 ${cur}/${max} 回合，自動訓練）`;
+                    } else if (t === 'simulation_end') {
+                        addMessage('recorder', `對話完成 - 結果: ${p.outcome || 'UNKNOWN'}`);
+                        document.getElementById('trainingStatus').textContent = autoTrainingEnabled 
+                            ? '已完成，等待自動開始新輪次...' 
+                            : '已完成';
+                        isTraining = false;
+                        updateUI();
+                        // 延迟关闭连接，确保能收到 auto_new_round_starting 事件
+                        setTimeout(() => {
+                            if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
+                                ws.close();
+                            }
+                        }, 3000);
+                    } else if (t === 'auto_new_round_starting') {
+                        const newSimId = p.new_simulation_id;
+                        const newVictimPersona = p.victim_persona;
+                        const newScamTactic = p.scam_tactic;
+                        addMessage('recorder', `🔄 後端已自動開始新一輪模擬`);
+                        addMessage('recorder', `   受害者類型: ${newVictimPersona}, 詐騙手法: ${newScamTactic}`);
+                        if (autoTrainingEnabled) {
+                            addMessage('recorder', `✅ 自動訓練已啟用，正在連接到新輪次...`);
+                            setTimeout(() => {
+                                connectToNewSimulation(newSimId, newVictimPersona, newScamTactic);
+                            }, 1000);
+                        } else {
+                            addMessage('recorder', `⏸️ 自動訓練已禁用，不會自動連接。如需繼續，請手動點擊「開始對話」`);
+                            document.getElementById('trainingStatus').textContent = '待機中（新輪次已準備，請手動開始）';
+                        }
+                    }
+                } catch (_) { /* ignore */ }
+            };
+            
+            ws.onmessage = onMessage;
+            ws.onerror = () => {
+                addMessage('recorder', 'WebSocket 錯誤');
+            };
+            ws.onclose = () => {
+                document.getElementById('stopNowBtn').style.display = 'none';
+            };
         }
 
         async function refreshStatus() {
             try {
                 const resp = await fetch('/api/training/status');
                 const result = await resp.json();
-                const running = !!(result && result.running);
-                loopRunning = running;
-                document.getElementById('trainingStatus').textContent = running ? '循環訓練中（加速）' : '待機中';
-                updateUI();
+                // 更新统计信息显示（如果有）
+                if (result && result.statistics) {
+                    const stats = result.statistics;
+                    // 可以在状态面板中添加统计信息显示
+                }
             } catch (_) { /* ignore */ }
         }
 
@@ -900,26 +987,143 @@
             return messages[outcome];
         }
 
+        // 切換自動訓練開關
+        function toggleAutoTraining() {
+            const toggle = document.getElementById('autoTrainToggle');
+            autoTrainingEnabled = toggle.checked;
+            updateUI();
+            
+            if (autoTrainingEnabled) {
+                addMessage('recorder', '✅ 自動訓練已啟用');
+            } else {
+                addMessage('recorder', '⏸️ 自動訓練已禁用（當前對話結束後不會自動開始新輪次）');
+            }
+        }
+
         // 更新UI狀態（容錯處理，元素不存在時跳過）
         function updateUI() {
             const singleBtn = document.getElementById('singleTrainingBtn');
-            if (singleBtn) singleBtn.disabled = !!isTraining || loopRunning;
-            const startLoopBtn = document.getElementById('startLoopBtn');
-            const stopLoopBtn = document.getElementById('stopLoopBtn');
-            if (startLoopBtn) startLoopBtn.style.display = loopRunning ? 'none' : 'inline-block';
-            if (stopLoopBtn) stopLoopBtn.style.display = loopRunning ? 'inline-block' : 'none';
+            if (singleBtn) singleBtn.disabled = !!isTraining;
             const stopNowBtn = document.getElementById('stopNowBtn');
-            if (stopNowBtn) stopNowBtn.style.display = isTraining ? 'inline-block' : 'none';
+            if (stopNowBtn) {
+                stopNowBtn.style.display = 'inline-block';
+                stopNowBtn.disabled = !isTraining;
+            }
+            
+            // 更新自动训练状态显示
+            const autoTrainToggle = document.getElementById('autoTrainToggle');
+            const autoTrainStatus = document.getElementById('autoTrainStatus');
+            if (autoTrainToggle) {
+                autoTrainToggle.checked = autoTrainingEnabled;
+            }
+            if (autoTrainStatus) {
+                if (autoTrainingEnabled) {
+                    autoTrainStatus.textContent = '已啟用（對話結束後自動開始新輪次）';
+                    autoTrainStatus.className = 'status-value success';
+                } else {
+                    autoTrainStatus.textContent = '已禁用（對話結束後不會自動開始新輪次）';
+                    autoTrainStatus.className = 'status-value warning';
+                }
+            }
         }
 
         function stopNow() {
             try {
                 const ws = window.__activeWS;
-                if (ws && ws.readyState === WebSocket.OPEN) {
-                    ws.send('stop_now');
-                    addMessage('recorder', '已發送立即停止指令');
+                const stopBtn = document.getElementById('stopNowBtn');
+                
+                if (!ws) {
+                    addMessage('recorder', '⚠️ 沒有活動的對話連接');
+                    if (stopBtn) stopBtn.disabled = true;
+                    return;
                 }
-            } catch (_) { /* ignore */ }
+                
+                // 检查 WebSocket 状态
+                if (ws.readyState === WebSocket.CLOSED || ws.readyState === WebSocket.CLOSING) {
+                    addMessage('recorder', '⚠️ 連接已關閉');
+                    if (stopBtn) stopBtn.disabled = true;
+                    isTraining = false;
+                    updateUI();
+                    return;
+                }
+                
+                // 发送停止指令
+                try {
+                    ws.send('stop_now');
+                    addMessage('recorder', '⛔ 已發送立即停止指令...');
+                    if (stopBtn) {
+                        stopBtn.disabled = true;
+                        stopBtn.textContent = '⏳ 正在停止...';
+                    }
+                    
+                    // 监听 WebSocket 消息，检查是否有 ack 响应
+                    const ackHandler = (ev) => {
+                        try {
+                            const data = JSON.parse(ev.data);
+                            if (data.event_type === 'ack' && data.payload && data.payload.command === 'stop_now') {
+                                addMessage('recorder', '✅ 服務器已確認停止指令');
+                                ws.removeEventListener('message', ackHandler);
+                            }
+                        } catch (e) {
+                            // 忽略解析错误
+                        }
+                    };
+                    ws.addEventListener('message', ackHandler);
+                    
+                    // 监听关闭事件
+                    const closeHandler = () => {
+                        addMessage('recorder', '連接已關閉');
+                        if (stopBtn) {
+                            stopBtn.textContent = '⛔ 停止對話';
+                            stopBtn.disabled = false;
+                        }
+                        isTraining = false;
+                        updateUI();
+                        ws.removeEventListener('close', closeHandler);
+                    };
+                    ws.addEventListener('close', closeHandler);
+                    
+                    // 如果5秒后还没关闭，强制关闭
+                    setTimeout(() => {
+                        if (ws.readyState !== WebSocket.CLOSED && ws.readyState !== WebSocket.CLOSING) {
+                            ws.close();
+                            addMessage('recorder', '連接已強制關閉');
+                        }
+                        if (stopBtn) {
+                            stopBtn.textContent = '⛔ 停止對話';
+                            stopBtn.disabled = false;
+                        }
+                        isTraining = false;
+                        updateUI();
+                        ws.removeEventListener('message', ackHandler);
+                        ws.removeEventListener('close', closeHandler);
+                    }, 5000);
+                } catch (sendError) {
+                    console.error('发送停止指令失败:', sendError);
+                    addMessage('recorder', '❌ 發送停止指令失敗，嘗試強制關閉連接');
+                    try {
+                        ws.close();
+                    } catch (e) {
+                        // 忽略关闭错误
+                    }
+                    if (stopBtn) {
+                        stopBtn.textContent = '⛔ 停止對話';
+                        stopBtn.disabled = false;
+                    }
+                    isTraining = false;
+                    updateUI();
+                }
+            } catch (e) {
+                console.error('停止對話時發生錯誤:', e);
+                addMessage('recorder', '❌ 停止對話時發生錯誤: ' + e.message);
+                const stopBtn = document.getElementById('stopNowBtn');
+                if (stopBtn) {
+                    stopBtn.disabled = false;
+                    stopBtn.textContent = '⛔ 停止對話';
+                }
+                isTraining = false;
+                updateUI();
+            }
         }
 
         // 更新統計信息（已移除訓練統計，保留空實作避免報錯）
@@ -992,7 +1196,8 @@
             updateStats();
             await loadTrainingOptions();
             await refreshStatus();
-            if (loopRunning) startStatusPolling();
+            // 启动状态轮询（用于自动刷新记录）
+            startStatusPolling();
         });
     </script>
 </body>

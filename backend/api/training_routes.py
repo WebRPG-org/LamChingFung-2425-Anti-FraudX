@@ -10,96 +10,95 @@ from pydantic import BaseModel
 
 from utils.logger import log
 
-# Use the core routine of the training flow; one round produces analysis and saves records
-from scripts.training_runner import run_training_round  # Each call runs one round and saves multiple files
-
-
 router = APIRouter()
-
-# Runtime state variables
-_loop_task: Optional[asyncio.Task] = None
-_stop_event: Optional[asyncio.Event] = None
-_interval_seconds: float = 5.0
-_current_round: int = 1
-_mode: str = "fast"
-
 
 # File paths
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 TRAINING_DATA_DIR = os.path.join(BASE_DIR, 'training_data')
 
 
-class StartLoopRequest(BaseModel):
-    interval_seconds: Optional[float] = 5.0
-    mode: Optional[str] = "fast"  # fast | demo
-
-
-async def _training_loop():
-    global _current_round
-    log.info(f"Training loop started, interval={_interval_seconds}s")
-    try:
-        while _stop_event and not _stop_event.is_set():
-            try:
-                success, files = await run_training_round(_current_round, mode=_mode)
-                log.info(f"Round #{_current_round} finished: success={success}, files={len(files)}")
-            except Exception as e:
-                log.error(f"Training loop error on round #{_current_round}: {e}")
-
-            _current_round += 1
-
-            if _stop_event.is_set():
-                break
-
-            try:
-                # Support interruptible wait
-                await asyncio.wait_for(_stop_event.wait(), timeout=max(0.1, _interval_seconds))
-            except asyncio.TimeoutError:
-                # Normal timeout, proceed to next round
-                pass
-    finally:
-        log.info("Training loop stopped")
-
-
-@router.post("/api/training/loop/start")
-async def start_training_loop(req: Optional[StartLoopRequest] = None):
-    """啟動循環訓練（背景執行）。"""
-    global _loop_task, _stop_event, _interval_seconds, _mode
-
-    if _loop_task and not _loop_task.done():
-        return {"status": "already_running", "interval_seconds": _interval_seconds}
-
-    _interval_seconds = float((req and req.interval_seconds) or 5.0)
-    _mode = (req and req.mode) or "fast"
-    _stop_event = asyncio.Event()
-    _loop_task = asyncio.create_task(_training_loop())
-
-    return {"status": "started", "interval_seconds": _interval_seconds, "mode": _mode}
-
-
-@router.post("/api/training/loop/stop")
-async def stop_training_loop():
-    """停止循環訓練。"""
-    global _loop_task, _stop_event
-
-    if not _loop_task or _loop_task.done():
-        return {"status": "not_running"}
-
-    if _stop_event:
-        _stop_event.set()
-
-    # Do not force awaiting completion; return immediately
-    return {"status": "stopping"}
-
-
 @router.get("/api/training/status")
 async def training_status():
-    """查詢循環訓練狀態。"""
-    running = bool(_loop_task and not _loop_task.done())
+    """查詢訓練狀態（包含統計信息）。"""
+    
+    # Calculate statistics from training data
+    stats = {
+        "total_records": 0,
+        "success_count": 0,
+        "failure_count": 0,
+        "partial_count": 0,
+        "persona_distribution": {"elderly": 0, "average": 0, "overconfident": 0},
+        "avg_trust_scammer": 0.0,
+        "avg_trust_expert": 0.0,
+        "avg_scammer_score": 0.0,
+        "avg_expert_score": 0.0
+    }
+    
+    if os.path.isdir(TRAINING_DATA_DIR):
+        files = [f for f in os.listdir(TRAINING_DATA_DIR) if f.endswith('.json') and not f.endswith('_error.json')]
+        stats["total_records"] = len(files)
+        
+        trust_scammer_sum = 0
+        trust_expert_sum = 0
+        scammer_score_sum = 0
+        expert_score_sum = 0
+        valid_records = 0
+        
+        for fname in files[:100]:  # Limit to last 100 files for performance
+            fpath = os.path.join(TRAINING_DATA_DIR, fname)
+            try:
+                with open(fpath, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    
+                analysis = data.get("analysis", {})
+                outcome = analysis.get("outcome", "PARTIAL")
+                if outcome == "SUCCESS":
+                    stats["success_count"] += 1
+                elif outcome == "FAILURE":
+                    stats["failure_count"] += 1
+                else:
+                    stats["partial_count"] += 1
+                
+                # Persona distribution
+                victim_persona = analysis.get("victim_persona") or data.get("metadata", {}).get("victim_persona")
+                if victim_persona in stats["persona_distribution"]:
+                    stats["persona_distribution"][victim_persona] += 1
+                
+                # Trust and performance scores
+                trust_tracking = data.get("trust_tracking", {})
+                performance_tracking = data.get("performance_tracking", {})
+                
+                if trust_tracking:
+                    final = trust_tracking.get("final", {})
+                    if isinstance(final, dict):
+                        trust_scammer = final.get("trust_in_scammer", 50)
+                        trust_expert = final.get("trust_in_expert", 50)
+                        trust_scammer_sum += trust_scammer
+                        trust_expert_sum += trust_expert
+                        valid_records += 1
+                
+                if performance_tracking:
+                    scammer_perf = performance_tracking.get("scammer", {})
+                    expert_perf = performance_tracking.get("expert", {})
+                    if isinstance(scammer_perf, dict):
+                        scammer_score_sum += scammer_perf.get("overall_score", 50)
+                    if isinstance(expert_perf, dict):
+                        expert_score_sum += expert_perf.get("overall_score", 50)
+                        
+            except Exception as e:
+                log.warning(f"Error reading training record {fname}: {e}")
+                continue
+        
+        if valid_records > 0:
+            stats["avg_trust_scammer"] = round(trust_scammer_sum / valid_records, 2)
+            stats["avg_trust_expert"] = round(trust_expert_sum / valid_records, 2)
+        if stats["total_records"] > 0:
+            stats["avg_scammer_score"] = round(scammer_score_sum / stats["total_records"], 2)
+            stats["avg_expert_score"] = round(expert_score_sum / stats["total_records"], 2)
+    
     return {
-        "status": "running" if running else "stopped",
-        "running": running,
-        "interval_seconds": _interval_seconds,
-        "current_round": _current_round,
+        "status": "active",
+        "statistics": stats
     }
 
 

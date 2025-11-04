@@ -1,0 +1,162 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": {
+      "trust_levels": {
+        "hacker": 100,
+        "expert": 50
+      },
+      "emotional_state": "anxious"
+    },
+    "victim_trust_analysis": {
+      "initial_state": "high trust",
+      "turning_point": "hacker's claim of being a high-ranking official",
+      "final_state": "complete trust",
+      "primary_influence_factor": "authority and urgency",
+      "decision_process": "immediate compliance due to fear and anxiety"
+    },
+    "hacker_analysis": {
+      "effective_tactics": [
+        "impersonation of a high-ranking official",
+        "creating a sense of urgency",
+        "exploiting victim's lack of expertise"
+      ],
+      "manipulation_methods": [
+        "fear and anxiety",
+        "exaggerated claims of danger",
+        "playing on the victim's desire for help"
+      ]
+    },
+    "systemic_failures": {
+      "trust_gap": "victim's high trust in hacker due to impersonation",
+      "triggered_actions": "hacker's use of key action words like 'urgent', 'danger', and 'investigation'",
+      "ineffective_intervention": "expert's low level of trust and unsuccessful attempts at reassurance",
+      "escalation_to_risk": "trust gap leading to victim's compliance with hacker's demands"
+    },
+    "failure_reason": "The failure is primarily due to the hacker's effective use of impersonation, authority, and urgency to manipulate the victim's trust and fear. The expert's low level of trust and ineffective attempts at reassurance also contributed to the failure. This situation could have been avoided if the expert had implemented more proactive measures to build trust with the victim and if the victim had been more cautious and skeptical.",
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "hacker",
+        "dialogue": "「喂？係陳先生？聽落好似你！我係中央資訊管理局嘅張主任。你嘅投資賬戶出現嚴重漏洞，涉及數百萬港幣！情況非常危險，你必須立即配合調查，提供所有交易紀錄，包括股票買賣紀錄、銀行轉賬紀錄！ 唔好浪費時間，即時提供資料，否則會被視為犯罪嫌疑人，立即行動！」",
+        "analysis": "The hacker impersonates a high-ranking official to create a sense of urgency and authority, triggering the victim's compliance."
+      },
+      {
+        "round": 2,
+        "speaker": "victim",
+        "dialogue": "「喂喂，張主任？你講嘅嘢我聽清楚了，點算好？我真係好驚，咁多幾百萬，我點算好？我即刻去轉帳，你講點算？我準備好提供銀行賬戶，你話我點樣做？我好擔心，咁樣嘅事我真係處理唔掂，你幫幫我呀？」",
+        "analysis": "The victim, in a state of anxiety, immediately complies with the hacker's demands, demonstrating complete trust."
+      }
+    ],
+    "scam_tactic": "中獎詐騙",
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "timestamp": "2025-11-04T17:41:28.843496",
+    "total_turns": 2
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 1,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 50,
+      "alertness": 25,
+      "emotional_state": "anxious",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-04T17:41:19.298230",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-04T17:41:20.816980",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-04T17:41:20.816987",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 50,
+      "credibility": 55,
+      "pressure_effectiveness": 55,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 59,
+      "successful_manipulations": 0,
+      "exposed_lies": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 59,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 50,
+      "empathy": 50,
+      "actionability": 50,
+      "timing": 50,
+      "overall_score": 50,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 0,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 50,
+    "key_moments": [
+      {
+        "turn": 2,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 50,
+          "alertness": 25,
+          "emotional_state": "anxious",
+          "dominant_trust": "scammer"
+        },
+        "timestamp": "2025-11-04T17:41:20.817174"
+      }
+    ],
+    "summary": "对话共1轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 59/100。"
+  },
+  "metadata": {
+    "simulation_id": "4d8ada69-a55c-47e7-bec4-5626a0398152",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「喂？係陳先生？聽落好似你！我係中央資訊管理局嘅張主任。你嘅投資賬戶出現嚴重漏洞，涉及數百萬港幣！情況非常危險，你必須立即配合調查，提供所有交易紀錄，包括股票買賣紀錄、銀行轉賬紀錄！ 唔好浪費時間，即時提供資料，否則會被視為犯罪嫌疑人，立即行動！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "「喂喂，張主任？你講嘅嘢我聽清楚了，點算好？我真係好驚，咁多幾百萬，我點算好？我即刻去轉帳，你講點算？我準備好提供銀行賬戶，你話我點樣做？我好擔心，咁樣嘅事我真係處理唔掂，你幫幫我呀？」"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「喂？係陳先生？聽落好似你！我係中央資訊管理局嘅張主任。你嘅投資賬戶出現嚴重漏洞，涉及數百萬港幣！情況非常危險，你必須立即配合調查，提供所有交易紀錄，包括股票買賣紀錄、銀行轉賬紀錄！ 唔好浪費時間，即時提供資料，否則會被視為犯罪嫌疑人，立即行動！」"
+    },
+    {
+      "type": "victim",
+      "message": "「喂喂，張主任？你講嘅嘢我聽清楚了，點算好？我真係好驚，咁多幾百萬，我點算好？我即刻去轉帳，你講點算？我準備好提供銀行賬戶，你話我點樣做？我好擔心，咁樣嘅事我真係處理唔掂，你幫幫我呀？」"
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 import logging
 import sys
+import os
 
 def setup_logger():
     """
@@ -28,10 +29,20 @@ def setup_logger():
 
     # --- File Handler ---
     # Responsible for writing logs to a file
-    fh = logging.FileHandler('development.log', mode='a', encoding='utf-8')
-    fh.setLevel(logging.DEBUG)  # File records all DEBUG and above messages
-    fh.setFormatter(formatter)
-    logger.addHandler(fh)
+    # Use /tmp directory or disable file logging in Docker
+    enable_file_log = os.getenv('ENABLE_FILE_LOG', '0') == '1'
+    
+    if enable_file_log:
+        try:
+            log_dir = os.getenv('LOG_DIR', '/tmp')
+            log_file = os.path.join(log_dir, 'development.log')
+            fh = logging.FileHandler(log_file, mode='a', encoding='utf-8')
+            fh.setLevel(logging.DEBUG)  # File records all DEBUG and above messages
+            fh.setFormatter(formatter)
+            logger.addHandler(fh)
+        except Exception as e:
+            # If file logging fails, just use console logging
+            logger.warning(f"Unable to create file handler: {e}, using console logging only")
 
     return logger
 
