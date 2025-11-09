@@ -49,6 +49,41 @@ VICTIM_PERSONAS = ["elderly", "average", "overconfident"]
 class RealDialogueRunner:
     """真實對話運行器"""
     
+    @staticmethod
+    def clean_response(text: str) -> str:
+        """
+        清理 LLM 生成的旁白、動作描述、語氣提示等
+        只保留實際對話內容
+        """
+        import re
+        if not text:
+            return text
+        
+        # 移除所有括號內的描述性內容 (英文括號)
+        # 匹配包含特定關鍵詞的括號內容
+        keywords = ['語氣', '深吸', '心裡', '內心', '表情', '動作', '回覆', '想著', '思考', '猶豫', '嘆氣', '笑', '哭']
+        for keyword in keywords:
+            text = re.sub(rf'\([^)]*{keyword}[^)]*\)', '', text)
+        
+        # 移除所有括號內的描述性內容 (中文括號)
+        for keyword in keywords:
+            text = re.sub(rf'（[^）]*{keyword}[^）]*）', '', text)
+        
+        # 移除完全由動作/描述構成的括號 (可能沒有關鍵詞但全是描述)
+        # 如果括號內沒有對話標點，可能是純描述
+        text = re.sub(r'\([^)]*(?:地|著|了|地|著|了)[^)]*\)', '', text)
+        text = re.sub(r'（[^）]*(?:地|著|了)[^）]*）', '', text)
+        
+        # 移除行首的旁白標記
+        text = re.sub(r'^\s*\*[^*]*\*\s*', '', text, flags=re.MULTILINE)
+        text = re.sub(r'^\s*【[^】]*】\s*', '', text, flags=re.MULTILINE)
+        
+        # 清理多餘空白
+        text = re.sub(r'\n\s*\n+', '\n\n', text)
+        text = text.strip()
+        
+        return text
+    
     def __init__(self):
         self.scammer = None
         self.victim = None
@@ -212,15 +247,18 @@ class RealDialogueRunner:
                                 collected.append(t.strip())
                         if collected:
                             text_joined = "\n".join(collected)
-                            log.info(f"[ADK] agent={getattr(agent,'name','?')} session={session_id} events={len(events)} parts_text_len={len(text_joined)}")
-                            return text_joined
+                            cleaned = self.clean_response(text_joined)
+                            log.info(f"[ADK] agent={getattr(agent,'name','?')} session={session_id} events={len(events)} parts_text_len={len(cleaned)}")
+                            return cleaned
                     text_attr = getattr(content, 'text', None)
                     if isinstance(text_attr, str) and text_attr.strip():
-                        log.info(f"[ADK] agent={getattr(agent,'name','?')} session={session_id} events={len(events)} text_len={len(text_attr)}")
-                        return text_attr.strip()
+                        cleaned = self.clean_response(text_attr.strip())
+                        log.info(f"[ADK] agent={getattr(agent,'name','?')} session={session_id} events={len(events)} text_len={len(cleaned)}")
+                        return cleaned
                 if hasattr(last, 'text') and isinstance(last.text, str) and last.text.strip():
-                    log.info(f"[ADK] agent={getattr(agent,'name','?')} session={session_id} events={len(events)} text_len={len(last.text)}")
-                    return last.text.strip()
+                    cleaned = self.clean_response(last.text.strip())
+                    log.info(f"[ADK] agent={getattr(agent,'name','?')} session={session_id} events={len(events)} text_len={len(cleaned)}")
+                    return cleaned
             # ADK produced no text → fallback to direct Ollama
             direct = await self._run_direct_llm(agent, message)
             if direct:
@@ -274,6 +312,8 @@ class RealDialogueRunner:
                 if not text_collected:
                     await asyncio.sleep(0.3)
             text = "\n".join(text_collected).strip()
+            if text:
+                text = self.clean_response(text)
             if not text:
                 agent_name = getattr(agent, 'name', 'Unknown')
                 log.warning(f"[DIRECT] empty response agent={agent_name}")
