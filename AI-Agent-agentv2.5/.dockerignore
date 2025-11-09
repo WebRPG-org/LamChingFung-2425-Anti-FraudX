@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Training data (可能很大，开发时挂载volume)
+backend/training_data/*.json
+backend/db/chroma_db/
+
+# Models (可能很大)
+backend/models/*.gguf
+backend/models/*.bin
+
+# Logs
+*.log
+
+# Documentation (不需要在容器中)
+*.md
+!README.md
+
+# Batch files (Windows专用)
+*.bat
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Arms race data (开发数据)
+backend/arms_race_data/
+backend/agent_versions/
+backend/ab_test_results/
+
+# Agent backups
+backend/agents/backups/

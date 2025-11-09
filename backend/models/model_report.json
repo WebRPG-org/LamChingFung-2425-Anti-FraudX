@@ -1,0 +1,32 @@
+{
+    "model_info": {
+        "name": "anti-fraud-expert",
+        "base_model": "gemma3:4b",
+        "created_at": "2025-10-21T01:01:14.483669",
+        "total_training_samples": 31
+    },
+    "training_statistics": {
+        "victim_persona_distribution": {
+            "average": 15,
+            "elderly": 11,
+            "overconfident": 5
+        },
+        "scam_tactic_distribution": {
+            "刷單騙案": 4,
+            "愛情詐騙": 4,
+            "WhatsApp 對話詐騙": 3,
+            "虛假購物平台": 4,
+            "虛假投資應用程式": 3,
+            "假短訊釣魚": 3,
+            "中獎詐騙": 5,
+            "假網站冒充政府": 3,
+            "假冒官員詐騙": 1,
+            "假網站冒充銀行": 1
+        }
+    },
+    "performance_metrics": {
+        "training_accuracy": "待評估",
+        "validation_accuracy": "待評估",
+        "inference_speed": "待測試"
+    }
+}

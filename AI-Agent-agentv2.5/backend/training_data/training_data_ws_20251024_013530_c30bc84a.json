@@ -1,0 +1,27 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "reason": "stopped_by_user",
+    "victim_persona": "elderly",
+    "scam_tactic": "虛假投資應用程式",
+    "timestamp": "2025-10-24T01:35:30.435070",
+    "total_turns": 1
+  },
+  "metadata": {
+    "simulation_id": "c30bc84a-4674-48f3-931f-a1685222412c",
+    "mode": "fast",
+    "source": "websocket_simulation_user_stop"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "我們有一個高回報的投資機會，保證月收益20%以上。"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "我們有一個高回報的投資機會，保證月收益20%以上。"
+    }
+  ]
+}

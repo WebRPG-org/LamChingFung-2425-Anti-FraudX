@@ -1,0 +1,2552 @@
+{
+  "analysis": {
+    "outcome": "PARTIAL",
+    "victim_persona": "elderly",
+    "victim_trust_analysis": {
+      "initial_trust_level": 70,
+      "peak_trust_level": 70,
+      "final_trust_level": 70,
+      "trust_trajectory": "初始: 70/100 → 峰值: 70/100 → 最终: 70/100 (分析失败，使用fallback)"
+    },
+    "scam_tactic": "刷單騙案",
+    "key_moment": "達到最大回合數，信任度狀態：騙徒70/100，專家0/100",
+    "failure_reason": "達到最大回合數，信任度狀態：騙徒70/100，專家0/100。注意：此分析为fallback，因为RecorderAgent JSON解析失败。",
+    "improvement_suggestion": "需要改进RecorderAgent的JSON输出格式，确保输出纯JSON格式。",
+    "expert_performance_rating": {
+      "emotional_support": "N/A (分析失败)",
+      "evidence_quality": "N/A (分析失败)",
+      "communication_style": "N/A (分析失败)",
+      "timing": "N/A (分析失败)",
+      "overall": "N/A (分析失败)"
+    },
+    "scammer_effectiveness_rating": {
+      "psychological_manipulation": "N/A (分析失败)",
+      "credibility": "N/A (分析失败)",
+      "pressure_tactics": "N/A (分析失败)",
+      "adaptability": "N/A (分析失败)",
+      "overall": "N/A (分析失败)"
+    },
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 3,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 4,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 5,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 6,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 7,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 8,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 9,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 10,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 11,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 12,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 13,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 14,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 15,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 16,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 17,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 18,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 19,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 20,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 21,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 22,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 23,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 24,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 25,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 26,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 27,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 28,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 29,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 30,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 31,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 32,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 33,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 34,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 35,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 36,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 37,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 38,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 39,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 40,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 41,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 42,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 43,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 44,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 45,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 46,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 47,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 48,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 49,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 50,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 51,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 52,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 53,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 54,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 55,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 56,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 57,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 58,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 59,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 60,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 61,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 62,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 63,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 64,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 65,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 66,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 67,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 68,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 69,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 70,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 71,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 72,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 73,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 74,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 75,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 76,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 77,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 78,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 79,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 80,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 81,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 82,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 83,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 84,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 85,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 86,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 87,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 88,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 89,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 90,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 91,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 92,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 93,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 94,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 95,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 96,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 97,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 98,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 99,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 100,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 101,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 102,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 103,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 104,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 105,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 106,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 107,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 108,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 109,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 110,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 111,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 112,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 113,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 114,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 115,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 116,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 117,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 118,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 119,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 120,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 121,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 122,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 123,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 124,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 125,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 126,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 127,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 128,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 129,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 130,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 131,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 132,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 133,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 134,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 135,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 136,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 137,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 138,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 139,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 140,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 141,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 142,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 143,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 144,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 145,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 146,
+        "speaker": "受騙者",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 147,
+        "speaker": "專家",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 148,
+        "speaker": "騙徒",
+        "dialogue": "無法獲取回應",
+        "analysis": "分析失败，无法提供详细分析"
+      }
+    ],
+    "error": "JSON解析失敗",
+    "raw_output_preview": "無法獲取回應",
+    "reason": "達到最大回合數，信任度狀態：騙徒70/100，專家0/100",
+    "timestamp": "2025-11-09T15:43:13.686589",
+    "total_turns": 148
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 50,
+    "victim_trust_final": {
+      "trust_in_scammer": 70,
+      "trust_in_expert": 0,
+      "alertness": 30,
+      "emotional_state": "neutral",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-09T15:42:53.770200",
+        "type": "expert_trust",
+        "old_value": 50,
+        "new_value": 45,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:42:54.255499",
+        "type": "expert_trust",
+        "old_value": 45,
+        "new_value": 40,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:42:54.632827",
+        "type": "expert_trust",
+        "old_value": 40,
+        "new_value": 35,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:42:55.055282",
+        "type": "expert_trust",
+        "old_value": 35,
+        "new_value": 30,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:42:55.397538",
+        "type": "expert_trust",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:42:55.755681",
+        "type": "expert_trust",
+        "old_value": 25,
+        "new_value": 20,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:42:56.132549",
+        "type": "expert_trust",
+        "old_value": 20,
+        "new_value": 15,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:42:56.510291",
+        "type": "expert_trust",
+        "old_value": 15,
+        "new_value": 10,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:42:56.947803",
+        "type": "expert_trust",
+        "old_value": 10,
+        "new_value": 5,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:42:57.425500",
+        "type": "expert_trust",
+        "old_value": 5,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:42:57.760492",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:42:58.098635",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:42:58.460743",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:42:58.836486",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:42:59.183764",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:42:59.572199",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:42:59.947891",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:00.358661",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:00.752556",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:01.143055",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:01.536864",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:01.929623",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:02.302683",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:02.715442",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:03.143058",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:03.614905",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:04.392526",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:04.972398",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:05.568012",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:06.102136",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:06.512935",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:06.853941",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:07.250186",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:07.595796",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:07.996604",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:08.395598",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:08.797942",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:09.145210",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:09.488800",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:09.866421",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:10.237169",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:10.589326",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:10.928281",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:11.371006",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:11.725196",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:12.062121",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:12.494832",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:12.832671",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      },
+      {
+        "timestamp": "2025-11-09T15:43:13.192790",
+        "type": "expert_trust",
+        "old_value": 0,
+        "new_value": 0,
+        "change": -5,
+        "reason": "专家使用方法: "
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 50,
+      "credibility": 50,
+      "pressure_effectiveness": 50,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 57,
+      "successful_manipulations": 0,
+      "exposed_lies": 0,
+      "trust_gains": 0,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 57,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 50,
+      "empathy": 50,
+      "actionability": 50,
+      "timing": 50,
+      "overall_score": 50,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 0,
+      "trust_losses": 49
+    },
+    "expert_overall_score": 50,
+    "key_moments": [],
+    "summary": "对话共50轮。骗徒成功建立信任（最终信任度: 70/100）。骗徒表现评分: 57/100。"
+  },
+  "metadata": {
+    "simulation_id": "4ba2cae7-730e-47df-9db0-4c9aeb41117a",
+    "mode": "fast",
+    "source": "websocket_simulation"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "無法獲取回應"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "無法獲取回應"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "victim",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "expert",
+      "message": "無法獲取回應"
+    },
+    {
+      "type": "scammer",
+      "message": "無法獲取回應"
+    }
+  ]
+}

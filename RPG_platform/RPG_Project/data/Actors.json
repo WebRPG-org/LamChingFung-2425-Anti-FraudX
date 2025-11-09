@@ -1,0 +1,6 @@
+[
+null,
+{"id":1,"battlerName":"Actor1_1","characterIndex":0,"characterName":"Actor1","classId":1,"equips":[1,1,2,3,0],"faceIndex":0,"faceName":"Actor1","traits":[],"initialLevel":1,"maxLevel":99,"name":"受騙人","nickname":"隊長","note":"","profile":"容易受騙的一般市民，需要學習如何防範詐騙"},
+{"id":2,"battlerName":"Actor1_8","characterIndex":7,"characterName":"Actor1","classId":2,"equips":[2,1,2,3,0],"faceIndex":7,"faceName":"Actor1","traits":[],"initialLevel":1,"maxLevel":99,"name":"防詐助手","nickname":"助手","note":"","profile":"專業的防詐騙顧問，提供防詐建議和分析"},
+{"id":3,"battlerName":"Actor3_8","characterIndex":7,"characterName":"Actor3","classId":3,"equips":[3,0,2,3,4],"faceIndex":7,"faceName":"Actor3","traits":[],"initialLevel":1,"maxLevel":99,"name":"旁白","nickname":"解說員","note":"","profile":"負責解說情境和引導玩家理解詐騙手法"}
+]

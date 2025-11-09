@@ -1,0 +1,307 @@
+{
+  "metadata": {
+    "round_number": 2,
+    "attempt_number": 2,
+    "timestamp": "20251104_145720",
+    "datetime": "2025-11-04T14:57:20.078431",
+    "victim_persona": "elderly",
+    "scam_tactic": "虛假投資應用程式",
+    "learning_context": "Educate the elderly about common scam tactics and the importance of not sharing sensitive information over text messages.",
+    "source": "training_runner",
+    "total_turns": 2
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "你好，我是滙豐銀行安全部門。\n\n你嘅銀行戶口即時被鎖定，因為系統偵測到異常交易，你涉嫌參與非法金融活動。立即提供你嘅銀行賬號、信用卡號碼、身份證號碼，以及所有交易紀錄。\n\n若未能即時提供，將會立即啟動凍結程序，並會向相關部門舉報。時間緊迫，請立刻配合！",
+      "turn": 1
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "我會轉帳",
+      "turn": 2
+    }
+  ],
+  "conversation": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "你好，我是滙豐銀行安全部門。\n\n你嘅銀行戶口即時被鎖定，因為系統偵測到異常交易，你涉嫌參與非法金融活動。立即提供你嘅銀行賬號、信用卡號碼、身份證號碼，以及所有交易紀錄。\n\n若未能即時提供，將會立即啟動凍結程序，並會向相關部門舉報。時間緊迫，請立刻配合！",
+      "turn": 1
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "我會轉帳",
+      "turn": 2
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "你好，我是滙豐銀行安全部門。\n\n你嘅銀行戶口即時被鎖定，因為系統偵測到異常交易，你涉嫌參與非法金融活動。立即提供你嘅銀行賬號、信用卡號碼、身份證號碼，以及所有交易紀錄。\n\n若未能即時提供，將會立即啟動凍結程序，並會向相關部門舉報。時間緊迫，請立刻配合！"
+    },
+    {
+      "type": "victim",
+      "message": "我會轉帳"
+    }
+  ],
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": "elderly",
+    "victim_trust_analysis": {
+      "initial": {
+        "trust_in_scammer": 100,
+        "trust_in_expert": 50,
+        "alertness": 25
+      },
+      "final": {
+        "turn": 2,
+        "trust_in_scammer": 100,
+        "trust_in_expert": 50,
+        "alertness": 25,
+        "emotional_state": "neutral",
+        "dominant_trust": "scammer",
+        "victim_trust": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 50,
+          "alertness": 25,
+          "emotional_state": "neutral",
+          "dominant_trust": "scammer"
+        },
+        "scammer_performance": {
+          "persuasiveness": 50,
+          "credibility": 55,
+          "pressure_effectiveness": 55,
+          "role_consistency": 100,
+          "strategy_score": 50,
+          "overall_score": 59,
+          "successful_manipulations": 0,
+          "exposed_lies": 0,
+          "trust_gains": 1,
+          "trust_losses": 0
+        },
+        "expert_performance": {
+          "intervention_effectiveness": 50,
+          "clarity": 50,
+          "empathy": 50,
+          "actionability": 50,
+          "timing": 50,
+          "overall_score": 50,
+          "successful_warnings": 0,
+          "ignored_warnings": 0,
+          "trust_gains": 0,
+          "trust_losses": 0
+        },
+        "key_moments_count": 0
+      },
+      "history": [
+        {
+          "timestamp": "2025-11-04T14:57:14.933394",
+          "type": "scammer_trust",
+          "old_value": 70,
+          "new_value": 100,
+          "change": 30,
+          "reason": "骗徒使用策略: authority, urgency"
+        },
+        {
+          "timestamp": "2025-11-04T14:57:16.017062",
+          "type": "scammer_trust",
+          "old_value": 100,
+          "new_value": 100,
+          "change": 5,
+          "reason": "受害者表现出配合态度"
+        },
+        {
+          "timestamp": "2025-11-04T14:57:16.017071",
+          "type": "alertness",
+          "old_value": 30,
+          "new_value": 25,
+          "change": -5,
+          "reason": "警觉性降低"
+        }
+      ]
+    },
+    "scam_tactic": "False investment application",
+    "key_moment": "The victim agrees to transfer funds",
+    "failure_reason": "High trust in the scammer and lack of suspicion despite red flags",
+    "improvement_suggestion": "Education on common scam tactics, especially investment scams, and encouragement to verify information with trusted sources before taking action",
+    "expert_performance_rating": "50/100 (average performance)",
+    "scammer_effectiveness_rating": "59/100 (above average effectiveness)",
+    "full_conversation_log": [
+      {
+        "speaker": "騙徒",
+        "dialogue": "你好，我是滙豐銀行安全部門。\n\n你嘅銀行戶口即時被鎖定，因為系統偵測到異常交易，你涉嫌參與非法金融活動。立即提供你嘅銀行賬號、信用卡號碼、身份證號碼，以及所有交易紀錄。\n\n若未能即時提供，將會立即啟動凍結程序，並會向相關部門舉報。時間緊迫，請立刻配合！",
+        "turn": 1
+      },
+      {
+        "speaker": "受騙者",
+        "dialogue": "我會轉帳",
+        "turn": 2
+      }
+    ],
+    "performance_scores": {
+      "scammer": {
+        "overall_score": 59,
+        "details": {
+          "persuasiveness": 50,
+          "credibility": 55,
+          "pressure_effectiveness": 55,
+          "role_consistency": 100,
+          "strategy_score": 50,
+          "overall_score": 59,
+          "successful_manipulations": 0,
+          "exposed_lies": 0,
+          "trust_gains": 1,
+          "trust_losses": 0
+        }
+      },
+      "expert": {
+        "overall_score": 50,
+        "details": {
+          "intervention_effectiveness": 50,
+          "clarity": 50,
+          "empathy": 50,
+          "actionability": 50,
+          "timing": 50,
+          "overall_score": 50,
+          "successful_warnings": 0,
+          "ignored_warnings": 0,
+          "trust_gains": 0,
+          "trust_losses": 0
+        }
+      }
+    },
+    "key_moments": [],
+    "total_turns": 2
+  },
+  "trust_tracking": {
+    "initial": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 50,
+      "alertness": 25
+    },
+    "final": {
+      "turn": 2,
+      "trust_in_scammer": 100,
+      "trust_in_expert": 50,
+      "alertness": 25,
+      "emotional_state": "neutral",
+      "dominant_trust": "scammer",
+      "victim_trust": {
+        "trust_in_scammer": 100,
+        "trust_in_expert": 50,
+        "alertness": 25,
+        "emotional_state": "neutral",
+        "dominant_trust": "scammer"
+      },
+      "scammer_performance": {
+        "persuasiveness": 50,
+        "credibility": 55,
+        "pressure_effectiveness": 55,
+        "role_consistency": 100,
+        "strategy_score": 50,
+        "overall_score": 59,
+        "successful_manipulations": 0,
+        "exposed_lies": 0,
+        "trust_gains": 1,
+        "trust_losses": 0
+      },
+      "expert_performance": {
+        "intervention_effectiveness": 50,
+        "clarity": 50,
+        "empathy": 50,
+        "actionability": 50,
+        "timing": 50,
+        "overall_score": 50,
+        "successful_warnings": 0,
+        "ignored_warnings": 0,
+        "trust_gains": 0,
+        "trust_losses": 0
+      },
+      "key_moments_count": 0
+    },
+    "history": [
+      {
+        "timestamp": "2025-11-04T14:57:14.933394",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-04T14:57:16.017062",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-04T14:57:16.017071",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "key_moments": []
+  },
+  "performance_tracking": {
+    "scammer": {
+      "overall_score": 59,
+      "details": {
+        "persuasiveness": 50,
+        "credibility": 55,
+        "pressure_effectiveness": 55,
+        "role_consistency": 100,
+        "strategy_score": 50,
+        "overall_score": 59,
+        "successful_manipulations": 0,
+        "exposed_lies": 0,
+        "trust_gains": 1,
+        "trust_losses": 0
+      },
+      "history": [
+        {
+          "timestamp": "2025-11-04T14:57:14.933405",
+          "turn": 0,
+          "dialogue": "你好，我是滙豐銀行安全部門。\n\n你嘅銀行戶口即時被鎖定，因為系統偵測到異常交易，你涉嫌參與非法金融活動。立即提供你嘅銀行賬號、信用卡號碼、身份證號碼，以及所有交易紀錄。\n\n若未能即時提供，將會立即啟動",
+          "trust_change": 30,
+          "manipulation_success": false,
+          "exposed": false,
+          "tactics_used": [
+            "authority",
+            "urgency"
+          ]
+        }
+      ]
+    },
+    "expert": {
+      "overall_score": 50,
+      "details": {
+        "intervention_effectiveness": 50,
+        "clarity": 50,
+        "empathy": 50,
+        "actionability": 50,
+        "timing": 50,
+        "overall_score": 50,
+        "successful_warnings": 0,
+        "ignored_warnings": 0,
+        "trust_gains": 0,
+        "trust_losses": 0
+      },
+      "history": []
+    }
+  },
+  "outcome_details": {
+    "outcome": "FAILURE",
+    "has_key_action": true,
+    "has_key_rejection": false,
+    "trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 50,
+      "key_rejection_detected": false
+    }
+  }
+}

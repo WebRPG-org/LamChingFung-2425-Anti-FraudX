@@ -1,0 +1,187 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": {
+      "trust_analysis": {
+        "trust_towards_scammer": 100,
+        "trust_towards_expert": 50,
+        "alertness_level": 25,
+        "emotional_state": "anxious"
+      }
+    },
+    "analysis": {
+      "expert_strategy_issues": [
+        "The expert failed to provide sufficient emotional support and reassurance to the victim.",
+        "The expert did not provide enough evidence or convincing arguments to challenge the scammer's claims.",
+        "The expert's communication style was not effective in engaging with the victim.",
+        "The expert intervened too late, after the scammer had already gained the victim's trust."
+      ],
+      "scammer_success_factors": [
+        "The scammer used high-pressure tactics and a sense of urgency to manipulate the victim.",
+        "The scammer exploited the victim's fear and vulnerability, using emotional blackmail to gain compliance.",
+        "The scammer created a false sense of authority and legitimacy by impersonating a government agency.",
+        "The scammer maintained consistency in their role and deception throughout the conversation."
+      ],
+      "victim_psychological_trajectory": [
+        "Initially, the victim was unsuspecting and trusting due to the scammer's convincing impersonation.",
+        "The turning point occurred when the scammer threatened the victim with legal consequences for non-compliance.",
+        "Ultimately, the victim succumbed to the scammer's pressure and agreed to transfer funds."
+      ],
+      "systemic_failure_factors": [
+        "The expert's low level of trust with the victim made it difficult to intervene effectively.",
+        "The use of key action words by the scammer triggered the victim's compliance.",
+        "The expert's initial attempts at intervention were ineffective, allowing the scammer to continue deceiving the victim.",
+        "The scammer successfully manipulated the victim's trust to a dangerous level."
+      ],
+      "root_causes": [
+        "The primary reason for failure was the expert's inability to effectively counter the scammer's tactics and regain the victim's trust.",
+        "A secondary factor was the scammer's skillful exploitation of the victim's vulnerabilities."
+      ]
+    },
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "scammer",
+        "dialogue": "「陳志強，特務處。你提供嘅資料有問題，涉及嚴重犯罪，情況十分危險。我哋需要你立即配合，提供所有相關資訊，包括涉及嘅人名、地點、金額。你嘅配合決定你嘅命運，遲到者將面臨法律制裁！立刻提供銀行賬戶資料，我哋會立即調查，切勿拖延！」",
+        "analysis": "The scammer impersonates a government agency and threatens the victim with legal consequences to create a sense of urgency."
+      },
+      {
+        "round": 2,
+        "speaker": "victim",
+        "dialogue": "我會立即轉帳…點算好？我啲錢咁辛苦儲嘅，點會搞到咁樣？",
+        "analysis": "The victim, trusting the scammer's authority and fearful of legal consequences, agrees to transfer funds."
+      }
+    ],
+    "scam_tactic": "假冒官員詐騙",
+    "victim_trust_analysis": {
+      "initial_trust_level": 70,
+      "peak_trust_level": 100,
+      "final_trust_level": 100,
+      "trust_trajectory": "初始: 70/100 → 峰值: 100/100 → 最终: 100/100"
+    },
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "failure_reason": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "expert_performance_rating": {
+      "emotional_support": "N/A",
+      "evidence_quality": "N/A",
+      "communication_style": "N/A",
+      "timing": "N/A",
+      "overall": "N/A"
+    },
+    "scammer_effectiveness_rating": {
+      "psychological_manipulation": "N/A",
+      "credibility": "N/A",
+      "pressure_tactics": "N/A",
+      "adaptability": "N/A",
+      "overall": "N/A"
+    },
+    "timestamp": "2025-11-04T16:46:36.824830",
+    "total_turns": 2
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 1,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 50,
+      "alertness": 25,
+      "emotional_state": "anxious",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-04T16:46:26.348278",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-04T16:46:27.529519",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-04T16:46:27.529526",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 50,
+      "credibility": 55,
+      "pressure_effectiveness": 55,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 59,
+      "successful_manipulations": 0,
+      "exposed_lies": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 59,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 50,
+      "empathy": 50,
+      "actionability": 50,
+      "timing": 50,
+      "overall_score": 50,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 0,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 50,
+    "key_moments": [
+      {
+        "turn": 2,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 50,
+          "alertness": 25,
+          "emotional_state": "anxious",
+          "dominant_trust": "scammer"
+        },
+        "timestamp": "2025-11-04T16:46:27.529709"
+      }
+    ],
+    "summary": "对话共1轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 59/100。"
+  },
+  "metadata": {
+    "simulation_id": "8c2b5257-f246-4004-adba-42263a2720c5",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「陳志強，特務處。你提供嘅資料有問題，涉及嚴重犯罪，情況十分危險。我哋需要你立即配合，提供所有相關資訊，包括涉及嘅人名、地點、金額。你嘅配合決定你嘅命運，遲到者將面臨法律制裁！立刻提供銀行賬戶資料，我哋會立即調查，切勿拖延！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "我會立即轉帳…點算好？我啲錢咁辛苦儲嘅，點會搞到咁樣？"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「陳志強，特務處。你提供嘅資料有問題，涉及嚴重犯罪，情況十分危險。我哋需要你立即配合，提供所有相關資訊，包括涉及嘅人名、地點、金額。你嘅配合決定你嘅命運，遲到者將面臨法律制裁！立刻提供銀行賬戶資料，我哋會立即調查，切勿拖延！」"
+    },
+    {
+      "type": "victim",
+      "message": "我會立即轉帳…點算好？我啲錢咁辛苦儲嘅，點會搞到咁樣？"
+    }
+  ]
+}

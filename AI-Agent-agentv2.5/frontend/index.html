@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 反詐騙模擬訓練平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .control-panel {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+        }
+
+        .btn-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(23, 162, 184, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .status-panel {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .status-label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .status-value {
+            color: #6c757d;
+        }
+
+        .status-value.success {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .status-value.failure {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .status-value.warning {
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        .dialogue-container {
+            background: #2c3e50;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .dialogue-title {
+            color: white;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .dialogue-message {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .message-scammer {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            margin-left: 20px;
+        }
+
+        .message-victim {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            margin-right: 20px;
+        }
+
+        .message-expert {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            margin-left: 20px;
+        }
+
+        .message-recorder {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            color: white;
+            margin-right: 20px;
+        }
+
+        .message-header {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .message-content {
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        .records-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        /* Modal for full record viewing */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .modal.hidden {
+            display: none;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 80vh;
+            overflow: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .close-btn {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        pre.json-view {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            white-space: pre-wrap;
+            font-family: Consolas, Monospace;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .records-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .record-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .record-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .record-id {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .record-outcome {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .outcome-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .outcome-failure {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .outcome-unclear {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .record-details {
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .parameter-panel {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 5px solid #17a2b8;
+        }
+
+        .parameter-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .parameter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .parameter-group label {
+            display: block;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .parameter-select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            transition: border-color 0.3s ease;
+        }
+
+        .parameter-select:focus {
+            outline: none;
+            border-color: #17a2b8;
+            box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.1);
+        }
+
+        .parameter-select option {
+            padding: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .control-panel {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ AI 反詐騙對話平台</h1>
+            <p>多智能體真實 AI 對話</p>
+        </div>
+
+        <div class="main-content">
+            <!-- 參數選擇面板 -->
+            <div class="parameter-panel">
+                <h3 style="margin-bottom: 20px; color: #2c3e50;">⚙️ 對話參數</h3>
+                <div class="parameter-row">
+                    <div class="parameter-group">
+                        <label for="scamTacticSelect">詐騙手法:</label>
+                        <select id="scamTacticSelect" class="parameter-select">
+                            <option value="random">🎲 隨機選擇</option>
+                        </select>
+                    </div>
+                    <div class="parameter-group">
+                        <label for="victimPersonaSelect">受騙者類型:</label>
+                        <select id="victimPersonaSelect" class="parameter-select">
+                            <option value="random">🎲 隨機選擇</option>
+                        </select>
+                    </div>
+                    <div class="parameter-group">
+                        <label for="modeSelect">模式:</label>
+                        <select id="modeSelect" class="parameter-select">
+                            <option value="fast">加速模式（推薦）</option>
+                            <option value="demo">演示模式（每輪延遲 3–5 秒）</option>
+                        </select>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- 控制面板 -->
+            <div class="control-panel">
+                <button class="btn btn-primary" id="singleTrainingBtn" onclick="startSingleTraining()">
+                    🔄 開始對話
+                </button>
+                <button class="btn btn-danger" id="stopNowBtn" onclick="stopNow()" disabled>
+                    ⛔ 停止對話
+                </button>
+                <button class="btn btn-info" id="viewRecordsBtn" onclick="viewRecords()">
+                    🗂 查看訓練記錄
+                </button>
+            </div>
+
+            <!-- 狀態面板 -->
+            <div class="status-panel">
+                <h3 style="margin-bottom: 20px; color: #2c3e50;">📈 對話狀態</h3>
+                <div class="status-item">
+                    <span class="status-label">狀態:</span>
+                    <span class="status-value" id="trainingStatus">待機中</span>
+                </div>
+                <div class="status-item" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="status-label">自動訓練:</span>
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                        <input type="checkbox" id="autoTrainToggle" checked onchange="toggleAutoTraining()" style="width: 20px; height: 20px; cursor: pointer;">
+                        <span class="status-value" id="autoTrainStatus">已啟用（對話結束後自動開始新輪次）</span>
+                    </label>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">當前詐騙手法:</span>
+                    <span class="status-value" id="currentScamTactic">-</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">受騙者類型:</span>
+                    <span class="status-value" id="victimPersona">-</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">模擬 ID:</span>
+                    <span class="status-value" id="currentSimulationId" style="font-family: monospace; font-size: 0.9em;">-</span>
+                </div>
+            </div>
+
+            <!-- 對話顯示區域 -->
+            <div class="dialogue-container">
+                <div class="dialogue-title">💬 實時對話</div>
+                <div id="dialogueContent">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>等待訓練開始...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 記錄清單區域 -->
+            <div id="recordsContainer" class="records-container hidden">
+                <div class="records-title">🗂 訓練記錄</div>
+                <div id="recordsContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 單筆記錄 Modal -->
+    <div id="recordModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="margin:0;color:#2c3e50;">完整記錄</h3>
+                <button class="close-btn" onclick="closeRecordModal()">關閉</button>
+            </div>
+            <pre id="recordJson" class="json-view">載入中...</pre>
+        </div>
+    </div>
+
+    <script>
+        // 全局變量
+        let isTraining = false;
+        let trainingOptions = null;
+        let autoTrainingEnabled = true;  // 自動訓練已啟用
+        let currentSimulationId = null;
+        let statusPollTimer = null;
+        let lastSeq = 0;
+
+        // 模擬對話數據
+        const scamTactics = [
+            "WhatsApp 對話詐騙",
+            "假短訊釣魚", 
+            "虛假投資應用程式",
+            "假網站冒充銀行",
+            "刷單騙案",
+            "中獎詐騙",
+            "假冒官員詐騙",
+            "假網站冒充政府",
+            "虛假購物平台",
+            "愛情詐騙"
+        ];
+
+        const victimPersonas = ["elderly", "average", "overconfident"];
+        
+
+        // 開始單次對話（WebSocket 實時）
+        async function startSingleTraining() {
+            if (isTraining) return;
+            isTraining = true;
+            updateUI();
+
+            const scamTacticSelect = document.getElementById('scamTacticSelect');
+            const victimPersonaSelect = document.getElementById('victimPersonaSelect');
+            const modeSelect = document.getElementById('modeSelect');
+
+            const scamTactic = scamTacticSelect.value === 'random' ?
+                scamTactics[Math.floor(Math.random() * scamTactics.length)] :
+                scamTacticSelect.value;
+            const victimPersona = victimPersonaSelect.value === 'random' ?
+                victimPersonas[Math.floor(Math.random() * victimPersonas.length)] :
+                victimPersonaSelect.value;
+            const mode = (modeSelect && modeSelect.value) || 'fast';
+
+            document.getElementById('currentScamTactic').textContent = scamTactic;
+            document.getElementById('victimPersona').textContent = victimPersona;
+            document.getElementById('trainingStatus').textContent = (mode === 'demo')
+              ? '對話進行中（演示模式，預計 30–60 秒）'
+              : '對話中（加速模式）';
+            document.getElementById('dialogueContent').innerHTML = '';
+
+            try {
+                // 先啟動模擬，建立 WS URL
+                const resp = await fetch('/simulation/start', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        victim_persona: victimPersona, 
+                        scam_tactic: scamTactic, 
+                        mode: mode,
+                        auto_train: autoTrainingEnabled
+                    })
+                });
+                const sim = await resp.json();
+                const simId = (sim && sim.simulation_id) || (sim && sim.data && sim.data.simulation_id);
+                const wsUrl = ((location.protocol === 'https:') ? 'wss://' : 'ws://') + location.host + '/ws/simulation/' + simId;
+                if (!simId) throw new Error('無法取得模擬 ID');
+
+                currentSimulationId = simId;
+                document.getElementById('currentSimulationId').textContent = simId.substring(0, 8) + '...';
+                
+                const ws = new WebSocket(wsUrl);
+                window.__activeWS = ws;
+                window.__currentSimId = simId;
+                ws.onopen = () => {
+                    addMessage('recorder', '已連線，開始實時對話...');
+                    const stopBtn = document.getElementById('stopNowBtn');
+                    stopBtn.disabled = false;
+                    stopBtn.style.display = 'inline-block';
+                    window.__wsRetries = 0; // reset on success
+                };
+                const onMessage = (ev) => {
+                    try {
+                        const data = JSON.parse(ev.data);
+                        if (typeof data.seq === 'number') {
+                            lastSeq = Math.max(lastSeq, data.seq);
+                        }
+                        const t = data.event_type;
+                        const p = data.payload || {};
+                        if (t === 'agent_turn') {
+                            const name = p.character_name || '';
+                            const d = p.dialogue || '';
+                            let type = 'recorder';
+                            if (name.indexOf('騙徒') !== -1) type = 'scammer';
+                            else if (name.indexOf('受騙者') !== -1) type = 'victim';
+                            else if (name.indexOf('專家') !== -1) type = 'expert';
+                            addMessage(type, d);
+                        } else if (t === 'tool_use') {
+                            addMessage('recorder', `${p.character_name || '系統'}：${p.action || ''}`);
+                        } else if (t === 'simulation_start') {
+                            addMessage('recorder', '模擬開始');
+                        } else if (t === 'turn_progress') {
+                            const cur = p.current_turn || 0;
+                            const max = p.max_turns || 0;
+                            document.getElementById('trainingStatus').textContent = `對話中（第 ${cur}/${max} 回合）`;
+                        } else if (t === 'cap_reached') {
+                            addMessage('recorder', `已達上限 ${p.max_turns || ''} 回合，準備分析...`);
+                         } else if (t === 'simulation_end') {
+                            addMessage('recorder', `對話完成 - 結果: ${p.outcome || 'UNKNOWN'}`);
+                            document.getElementById('trainingStatus').textContent = '已完成，等待開始新輪次...';
+                            isTraining = false;
+                            const stopBtn = document.getElementById('stopNowBtn');
+                            stopBtn.disabled = true;
+                            updateUI();
+                            // 延迟关闭连接，确保能收到 auto_new_round_starting 事件
+                            setTimeout(() => {
+                                if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
+                                    ws.close();
+                                }
+                            }, 3000);  // 等待3秒，足够后端发送 auto_new_round_starting 事件
+                        } else if (t === 'auto_new_round_starting') {
+                            // 新轮次自动开始
+                            const newSimId = p.new_simulation_id;
+                            const newVictimPersona = p.victim_persona;
+                            const newScamTactic = p.scam_tactic;
+                            
+                            addMessage('recorder', `🔄 後端已自動開始新一輪模擬`);
+                            addMessage('recorder', `   受害者類型: ${newVictimPersona}, 詐騙手法: ${newScamTactic}`);
+                            
+                            // 只有在自动训练启用时才自动连接
+                            if (autoTrainingEnabled) {
+                                addMessage('recorder', `✅ 自動訓練已啟用，正在連接到新輪次...`);
+                                setTimeout(() => {
+                                    connectToNewSimulation(newSimId, newVictimPersona, newScamTactic);
+                                }, 1000);
+                            } else {
+                                addMessage('recorder', `⏸️ 自動訓練已禁用，不會自動連接。如需繼續，請手動點擊「開始對話」`);
+                                document.getElementById('trainingStatus').textContent = '待機中（新輪次已準備，請手動開始）';
+                            }
+                        } else if (t === 'heartbeat') {
+                            // ignore
+                        }
+                    } catch (_) { /* ignore */ }
+                };
+                ws.onmessage = onMessage;
+                ws.onerror = () => {
+                    addMessage('recorder', 'WebSocket 錯誤');
+                };
+                ws.onclose = () => {
+                    if (isTraining) {
+                        addMessage('recorder', '連線中斷，嘗試重新連線...');
+                        let retries = (window.__wsRetries || 0);
+                        if (retries < 5) {
+                            window.__wsRetries = retries + 1;
+                            setTimeout(() => {
+                                const ws2 = new WebSocket(wsUrl);
+                                window.__activeWS = ws2;
+                                ws2.onopen = () => {
+                                    addMessage('recorder', '已重新連線');
+                                    try { ws2.send(JSON.stringify({ command: 'replay' })); } catch (_) {}
+                                };
+                                ws2.onmessage = onMessage;
+                                ws2.onerror = () => addMessage('recorder', 'WebSocket 錯誤');
+                                ws2.onclose = ws.onclose;
+                            }, 500 * Math.pow(2, retries));
+                        } else {
+                            // fallback 輪詢最近事件（保持 isTraining 為 true）
+                            addMessage('recorder', '切換為輪詢模式');
+                            document.getElementById('trainingStatus').textContent = '對話中（輪詢模式）';
+                            const poll = async () => {
+                                if (!isTraining) return;
+                                try {
+                                    const resp = await fetch(`/simulation/events/${encodeURIComponent(simId)}?since_seq=${lastSeq}`);
+                                    const json = await resp.json();
+                                    const events = json && json.events ? json.events : [];
+                                    for (const evt of events) {
+                                        try {
+                                            lastSeq = Math.max(lastSeq, evt.seq || 0);
+                                            onMessage({ data: JSON.stringify(evt) });
+                                        } catch (_) {}
+                                    }
+                                } catch (_) {}
+                                setTimeout(poll, 1500);
+                            };
+                            poll();
+                        }
+                    }
+                    const stopBtn = document.getElementById('stopNowBtn');
+                    stopBtn.disabled = true;
+                    stopBtn.style.display = 'inline-block';
+                };
+            } catch (e) {
+                addMessage('recorder', `啟動實時對話失敗：${e}`);
+                isTraining = false;
+                updateUI();
+            }
+        }
+
+
+        // 查看記錄
+        async function viewRecords() {
+            const recordsContainer = document.getElementById('recordsContainer');
+            const recordsContent = document.getElementById('recordsContent');
+            if (recordsContainer.classList.contains('hidden')) {
+                recordsContainer.classList.remove('hidden');
+                recordsContent.innerHTML = '<div class="loading"><div class="spinner"></div><p>載入記錄中...</p></div>';
+                await loadRecords();
+            } else {
+                recordsContainer.classList.add('hidden');
+            }
+        }
+
+        // 載入記錄（從後端 API）
+        async function loadRecords() {
+            const recordsContent = document.getElementById('recordsContent');
+            try {
+                const resp = await fetch('/api/training/records?limit=50');
+                const result = await resp.json();
+                const records = (result && result.data && result.data.records) || [];
+                if (!records.length) {
+                    recordsContent.innerHTML = '<div class="loading">暫無記錄</div>';
+                    return;
+                }
+                let html = '';
+                records.forEach(r => {
+                    const outcome = (r.outcome || 'UNCLEAR').toLowerCase();
+                    const outcomeClass = `outcome-${outcome}`;
+                    const ts = r.timestamp || new Date(r.created_at * 1000).toLocaleString('zh-TW');
+                    html += `
+                        <div class="record-item">
+                            <div class="record-header">
+                                <span class="record-id">${r.filename}</span>
+                                <span class="record-outcome ${outcomeClass}">${r.outcome || 'UNCLEAR'}</span>
+                            </div>
+                            <div class="record-details">
+                                <div>詐騙手法: ${r.scam_tactic || '-'}</div>
+                                <div>受騙者類型: ${r.victim_persona || '-'}</div>
+                                <div>時間: ${ts}</div>
+                                <div style="margin-top:8px">
+                                    <button class="btn btn-info" onclick="openRecord('${r.filename}')">查看完整記錄</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                recordsContent.innerHTML = html;
+            } catch (e) {
+                recordsContent.innerHTML = `<div class="loading">載入失敗：${e}</div>`;
+            }
+        }
+
+        async function openRecord(recordId) {
+            const modal = document.getElementById('recordModal');
+            const pre = document.getElementById('recordJson');
+            modal.classList.remove('hidden');
+            pre.textContent = '載入中...';
+            try {
+                const resp = await fetch(`/api/training/records/${encodeURIComponent(recordId)}`);
+                const result = await resp.json();
+                const json = result && result.data ? result.data : result;
+                pre.textContent = JSON.stringify(json, null, 2);
+            } catch (e) {
+                pre.textContent = `載入失敗：${e}`;
+            }
+        }
+
+        function closeRecordModal() {
+            const modal = document.getElementById('recordModal');
+            modal.classList.add('hidden');
+        }
+
+        // 連接到新的模擬（自動訓練）
+        async function connectToNewSimulation(newSimId, victimPersona, scamTactic) {
+            if (!autoTrainingEnabled) {
+                addMessage('recorder', '⏸️ 自動訓練已禁用，跳過自動連接');
+                return;
+            }
+            
+            currentSimulationId = newSimId;
+            document.getElementById('currentSimulationId').textContent = newSimId.substring(0, 8) + '...';
+            document.getElementById('currentScamTactic').textContent = scamTactic;
+            document.getElementById('victimPersona').textContent = victimPersona;
+            document.getElementById('trainingStatus').textContent = '對話中（自動訓練模式）';
+            
+            isTraining = true;
+            updateUI();
+            
+            const wsUrl = ((location.protocol === 'https:') ? 'wss://' : 'ws://') + location.host + '/ws/simulation/' + newSimId;
+            const ws = new WebSocket(wsUrl);
+            window.__activeWS = ws;
+            window.__currentSimId = newSimId;
+            
+            ws.onopen = () => {
+                addMessage('recorder', '已連線到新輪次，開始實時對話...');
+                const stopBtn = document.getElementById('stopNowBtn');
+                stopBtn.disabled = false;
+                stopBtn.style.display = 'inline-block';
+                window.__wsRetries = 0;
+            };
+            
+            const onMessage = (ev) => {
+                try {
+                    const data = JSON.parse(ev.data);
+                    if (typeof data.seq === 'number') {
+                        lastSeq = Math.max(lastSeq, data.seq);
+                    }
+                    const t = data.event_type;
+                    const p = data.payload || {};
+                    if (t === 'agent_turn') {
+                        const name = p.character_name || '';
+                        const d = p.dialogue || '';
+                        let type = 'recorder';
+                        if (name.indexOf('騙徒') !== -1) type = 'scammer';
+                        else if (name.indexOf('受騙者') !== -1) type = 'victim';
+                        else if (name.indexOf('專家') !== -1) type = 'expert';
+                        addMessage(type, d);
+                    } else if (t === 'simulation_start') {
+                        addMessage('recorder', '模擬開始');
+                    } else if (t === 'turn_progress') {
+                        const cur = p.current_turn || 0;
+                        const max = p.max_turns || 0;
+                        document.getElementById('trainingStatus').textContent = `對話中（第 ${cur}/${max} 回合，自動訓練）`;
+                    } else if (t === 'simulation_end') {
+                        addMessage('recorder', `對話完成 - 結果: ${p.outcome || 'UNKNOWN'}`);
+                        document.getElementById('trainingStatus').textContent = autoTrainingEnabled 
+                            ? '已完成，等待自動開始新輪次...' 
+                            : '已完成';
+                        isTraining = false;
+                        updateUI();
+                        // 延迟关闭连接，确保能收到 auto_new_round_starting 事件
+                        setTimeout(() => {
+                            if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
+                                ws.close();
+                            }
+                        }, 3000);
+                    } else if (t === 'auto_new_round_starting') {
+                        const newSimId = p.new_simulation_id;
+                        const newVictimPersona = p.victim_persona;
+                        const newScamTactic = p.scam_tactic;
+                        addMessage('recorder', `🔄 後端已自動開始新一輪模擬`);
+                        addMessage('recorder', `   受害者類型: ${newVictimPersona}, 詐騙手法: ${newScamTactic}`);
+                        if (autoTrainingEnabled) {
+                            addMessage('recorder', `✅ 自動訓練已啟用，正在連接到新輪次...`);
+                            setTimeout(() => {
+                                connectToNewSimulation(newSimId, newVictimPersona, newScamTactic);
+                            }, 1000);
+                        } else {
+                            addMessage('recorder', `⏸️ 自動訓練已禁用，不會自動連接。如需繼續，請手動點擊「開始對話」`);
+                            document.getElementById('trainingStatus').textContent = '待機中（新輪次已準備，請手動開始）';
+                        }
+                    }
+                } catch (_) { /* ignore */ }
+            };
+            
+            ws.onmessage = onMessage;
+            ws.onerror = () => {
+                addMessage('recorder', 'WebSocket 錯誤');
+            };
+            ws.onclose = () => {
+                document.getElementById('stopNowBtn').style.display = 'none';
+            };
+        }
+
+        async function refreshStatus() {
+            try {
+                const resp = await fetch('/api/training/status');
+                const result = await resp.json();
+                // 更新统计信息显示（如果有）
+                if (result && result.statistics) {
+                    const stats = result.statistics;
+                    // 可以在状态面板中添加统计信息显示
+                }
+            } catch (_) { /* ignore */ }
+        }
+
+        function startStatusPolling() {
+            if (statusPollTimer) return;
+            statusPollTimer = setInterval(async () => {
+                await refreshStatus();
+                if (!document.getElementById('recordsContainer').classList.contains('hidden')) {
+                    await loadRecords();
+                }
+            }, 3000);
+        }
+
+        function stopStatusPolling() {
+            if (statusPollTimer) {
+                clearInterval(statusPollTimer);
+                statusPollTimer = null;
+            }
+        }
+
+        // 模擬對話
+        async function simulateDialogue(scamTactic, victimPersona, outcome) {
+            const dialogueContent = document.getElementById('dialogueContent');
+            
+            // 添加對話標題
+            addMessage('recorder', `開始第 ${++currentRound} 輪訓練 - 詐騙手法: ${scamTactic}, 受騙者類型: ${victimPersona}`);
+            
+            // 模擬6輪對話
+            const messages = [
+                { type: 'scammer', text: sampleMessages.scammer[Math.floor(Math.random() * sampleMessages.scammer.length)] },
+                { type: 'victim', text: sampleMessages.victim[Math.floor(Math.random() * sampleMessages.victim.length)] },
+                { type: 'expert', text: sampleMessages.expert[Math.floor(Math.random() * sampleMessages.expert.length)] },
+                { type: 'scammer', text: sampleMessages.scammer[Math.floor(Math.random() * sampleMessages.scammer.length)] },
+                { type: 'victim', text: sampleMessages.victim[Math.floor(Math.random() * sampleMessages.victim.length)] },
+                { type: 'expert', text: sampleMessages.expert[Math.floor(Math.random() * sampleMessages.expert.length)] }
+            ];
+            
+            for (let i = 0; i < messages.length; i++) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                addMessage(messages[i].type, messages[i].text);
+            }
+            
+            // 添加結果
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            addMessage('recorder', `分析結果: ${outcome} - ${getOutcomeMessage(outcome)}`);
+        }
+
+        // 添加消息到對話區域
+        function addMessage(type, text) {
+            const dialogueContent = document.getElementById('dialogueContent');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `dialogue-message message-${type}`;
+            
+            const timestamp = new Date().toLocaleTimeString('zh-TW');
+            const typeNames = {
+                scammer: '騙徒',
+                victim: '受騙者', 
+                expert: '防騙專家',
+                recorder: '記錄員'
+            };
+            
+            messageDiv.innerHTML = `
+                <div class="message-header">[${timestamp}] ${typeNames[type]}</div>
+                <div class="message-content">${text}</div>
+            `;
+            
+            dialogueContent.appendChild(messageDiv);
+            dialogueContent.scrollTop = dialogueContent.scrollHeight;
+        }
+
+        // 獲取結果消息
+        function getOutcomeMessage(outcome) {
+            const messages = {
+                SUCCESS: '防騙成功！受騙者識破了騙局。',
+                FAILURE: '防騙失敗！受騙者可能已經上當。',
+                UNCLEAR: '結果不明確，需要進一步觀察。'
+            };
+            return messages[outcome];
+        }
+
+        // 切換自動訓練開關
+        function toggleAutoTraining() {
+            const toggle = document.getElementById('autoTrainToggle');
+            autoTrainingEnabled = toggle.checked;
+            updateUI();
+            
+            if (autoTrainingEnabled) {
+                addMessage('recorder', '✅ 自動訓練已啟用');
+            } else {
+                addMessage('recorder', '⏸️ 自動訓練已禁用（當前對話結束後不會自動開始新輪次）');
+            }
+        }
+
+        // 更新UI狀態（容錯處理，元素不存在時跳過）
+        function updateUI() {
+            const singleBtn = document.getElementById('singleTrainingBtn');
+            if (singleBtn) singleBtn.disabled = !!isTraining;
+            const stopNowBtn = document.getElementById('stopNowBtn');
+            if (stopNowBtn) {
+                stopNowBtn.style.display = 'inline-block';
+                stopNowBtn.disabled = !isTraining;
+            }
+            
+            // 更新自动训练状态显示
+            const autoTrainToggle = document.getElementById('autoTrainToggle');
+            const autoTrainStatus = document.getElementById('autoTrainStatus');
+            if (autoTrainToggle) {
+                autoTrainToggle.checked = autoTrainingEnabled;
+            }
+            if (autoTrainStatus) {
+                if (autoTrainingEnabled) {
+                    autoTrainStatus.textContent = '已啟用（對話結束後自動開始新輪次）';
+                    autoTrainStatus.className = 'status-value success';
+                } else {
+                    autoTrainStatus.textContent = '已禁用（對話結束後不會自動開始新輪次）';
+                    autoTrainStatus.className = 'status-value warning';
+                }
+            }
+        }
+
+        function stopNow() {
+            try {
+                const ws = window.__activeWS;
+                const stopBtn = document.getElementById('stopNowBtn');
+                
+                if (!ws) {
+                    addMessage('recorder', '⚠️ 沒有活動的對話連接');
+                    if (stopBtn) stopBtn.disabled = true;
+                    return;
+                }
+                
+                // 检查 WebSocket 状态
+                if (ws.readyState === WebSocket.CLOSED || ws.readyState === WebSocket.CLOSING) {
+                    addMessage('recorder', '⚠️ 連接已關閉');
+                    if (stopBtn) stopBtn.disabled = true;
+                    isTraining = false;
+                    updateUI();
+                    return;
+                }
+                
+                // 发送停止指令
+                try {
+                    ws.send('stop_now');
+                    addMessage('recorder', '⛔ 已發送立即停止指令...');
+                    if (stopBtn) {
+                        stopBtn.disabled = true;
+                        stopBtn.textContent = '⏳ 正在停止...';
+                    }
+                    
+                    // 监听 WebSocket 消息，检查是否有 ack 响应
+                    const ackHandler = (ev) => {
+                        try {
+                            const data = JSON.parse(ev.data);
+                            if (data.event_type === 'ack' && data.payload && data.payload.command === 'stop_now') {
+                                addMessage('recorder', '✅ 服務器已確認停止指令');
+                                ws.removeEventListener('message', ackHandler);
+                            }
+                        } catch (e) {
+                            // 忽略解析错误
+                        }
+                    };
+                    ws.addEventListener('message', ackHandler);
+                    
+                    // 监听关闭事件
+                    const closeHandler = () => {
+                        addMessage('recorder', '連接已關閉');
+                        if (stopBtn) {
+                            stopBtn.textContent = '⛔ 停止對話';
+                            stopBtn.disabled = false;
+                        }
+                        isTraining = false;
+                        updateUI();
+                        ws.removeEventListener('close', closeHandler);
+                    };
+                    ws.addEventListener('close', closeHandler);
+                    
+                    // 如果5秒后还没关闭，强制关闭
+                    setTimeout(() => {
+                        if (ws.readyState !== WebSocket.CLOSED && ws.readyState !== WebSocket.CLOSING) {
+                            ws.close();
+                            addMessage('recorder', '連接已強制關閉');
+                        }
+                        if (stopBtn) {
+                            stopBtn.textContent = '⛔ 停止對話';
+                            stopBtn.disabled = false;
+                        }
+                        isTraining = false;
+                        updateUI();
+                        ws.removeEventListener('message', ackHandler);
+                        ws.removeEventListener('close', closeHandler);
+                    }, 5000);
+                } catch (sendError) {
+                    console.error('发送停止指令失败:', sendError);
+                    addMessage('recorder', '❌ 發送停止指令失敗，嘗試強制關閉連接');
+                    try {
+                        ws.close();
+                    } catch (e) {
+                        // 忽略关闭错误
+                    }
+                    if (stopBtn) {
+                        stopBtn.textContent = '⛔ 停止對話';
+                        stopBtn.disabled = false;
+                    }
+                    isTraining = false;
+                    updateUI();
+                }
+            } catch (e) {
+                console.error('停止對話時發生錯誤:', e);
+                addMessage('recorder', '❌ 停止對話時發生錯誤: ' + e.message);
+                const stopBtn = document.getElementById('stopNowBtn');
+                if (stopBtn) {
+                    stopBtn.disabled = false;
+                    stopBtn.textContent = '⛔ 停止對話';
+                }
+                isTraining = false;
+                updateUI();
+            }
+        }
+
+        // 更新統計信息（已移除訓練統計，保留空實作避免報錯）
+        function updateStats() { /* no-op */ }
+
+        // 載入訓練選項
+        async function loadTrainingOptions() {
+            try {
+                const response = await fetch('/api/options');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    trainingOptions = result.data;
+                    
+                    // 填充詐騙手法選項
+                    const scamTacticSelect = document.getElementById('scamTacticSelect');
+                    trainingOptions.scam_tactics.forEach(tactic => {
+                        const option = document.createElement('option');
+                        option.value = tactic;
+                        option.textContent = tactic;
+                        scamTacticSelect.appendChild(option);
+                    });
+                    
+                    // 填充受騙者類型選項
+                    const victimPersonaSelect = document.getElementById('victimPersonaSelect');
+                    Object.keys(trainingOptions.persona_descriptions).forEach(persona => {
+                        const option = document.createElement('option');
+                        option.value = persona;
+                        option.textContent = `${persona} - ${trainingOptions.persona_descriptions[persona]}`;
+                        victimPersonaSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('載入選項失敗:', error);
+            }
+        }
+
+        // 顯示對話
+        async function displayDialogue(dialogue, mode) {
+            if (!dialogue || dialogue.length === 0) {
+                addMessage('recorder', '沒有對話數據');
+                return;
+            }
+            
+            for (let i = 0; i < dialogue.length; i++) {
+                const message = dialogue[i];
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                let messageType = 'recorder';
+                if (message.type) {
+                    messageType = message.type;
+                } else if (message.speaker) {
+                    const speakerMap = {
+                        '騙徒': 'scammer',
+                        '受騙者': 'victim',
+                        '專家': 'expert',
+                        '記錄員': 'recorder'
+                    };
+                    messageType = speakerMap[message.speaker] || 'recorder';
+                }
+                
+                const messageText = message.message || message.dialogue || '無消息內容';
+                addMessage(messageType, messageText);
+            }
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', async function() {
+            updateUI();
+            updateStats();
+            await loadTrainingOptions();
+            await refreshStatus();
+            // 启动状态轮询（用于自动刷新记录）
+            startStatusPolling();
+        });
+    </script>
+</body>
+</html>
