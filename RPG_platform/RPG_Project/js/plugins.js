@@ -6,6 +6,6 @@ var $plugins =
 {"name":"MadeWithMv","status":true,"description":"Show a Splash Screen \"Made with MV\" and/or a Custom Splash Screen before going to main screen.","parameters":{"Show Made With MV":"true","Made with MV Image":"MadeWithMv","Show Custom Splash":"false","Custom Image":"","Fade Out Time":"120","Fade In Time":"120","Wait Time":"160"}},
 {"name":"AI_Bridge","status":true,"description":"AI Bridge Plugin - 連接 RPG Maker MV 與 AI-Agent 系統","parameters":{}},
 {"name":"AntiFraudGame","status":true,"description":"防詐騙教育遊戲插件 - 整合 AI-Agent 系統 (RPG Maker MV)","parameters":{}},
-{"name":"AutoScamBattle","status":false,"description":"自动防诈骗战斗系统 - 完全自动化的对话战斗 (已禁用)","parameters":{"API_URL":"http://localhost:8000"}},
+{"name":"AutoScamBattle","status":true,"description":"自动防诈骗战斗系统 - 完全自动化的对话战斗","parameters":{"API_URL":"http://localhost:8000"}},
 {"name":"RotatingScamSystem","status":true,"description":"輪換詐騙系統 - 6個NPC輪流使用10種騙局","parameters":{"API_URL":"http://localhost:8000"}}
 ];

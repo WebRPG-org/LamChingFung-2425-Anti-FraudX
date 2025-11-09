@@ -45,7 +45,7 @@ async def call_ollama(role: str, message: str, history: List[Dict] = None) -> st
     }
     
     try:
-        response = requests.post(OLLAMA_API_URL, json=payload, timeout=60)
+        response = requests.post(OLLAMA_API_URL, json=payload, timeout=180)
         response.raise_for_status()
         result = response.json()
         return result.get("message", {}).get("content", "抱歉，我無法回應。")

@@ -25,7 +25,7 @@
     
     const parameters = PluginManager.parameters('AutoScamBattle');
     const API_URL = String(parameters['API_URL'] || 'http://localhost:8000');
-    const USE_MOCK_DATA = true; // 设为true使用模拟数据测试（先测试界面，确认无误后改为false连接真实API）
+    const USE_MOCK_DATA = false; // ✅ 改為 false 以使用真實 AI 對話
     
     // 战斗相关变量
     let isAutoScamBattle = false;
@@ -59,17 +59,135 @@
         Window_Base.prototype.initialize.call(this, 0, 0, width, height);
         this._lines = [];
         this._scrollY = 0;
+        // 🔧 考慮更大行間距重新計算（36px 行高 + 8px 間距 = 44px 總高度）
+        this._maxVisibleLines = Math.floor((height - 72) / 44);
         this.opacity = 255;
         this.refresh();
     };
     
     Window_ScamDialogue.prototype.addLine = function(text) {
-        this._lines.push(text);
-        // 自动滚动到底部
-        if (this._lines.length > 20) {
-            this._scrollY++;
+        // 🔧 限制每行最多28個字，自動換行
+        const maxCharsPerLine = 28;
+        const wrappedLines = this.wrapText(text, maxCharsPerLine);
+        
+        wrappedLines.forEach(line => {
+            this._lines.push(line);
+        });
+        
+        // 🔧 自動滾動：當行數超過可見範圍時滾動
+        if (this._lines.length > this._maxVisibleLines) {
+            this._scrollY = this._lines.length - this._maxVisibleLines;
         }
+        
         this.refresh();
+    };
+    
+    // 🔧 新增：文字自動換行函數（改進版，正確處理控制碼、原始換行和強制換行）
+    Window_ScamDialogue.prototype.wrapText = function(text, maxChars) {
+        const lines = [];
+        let currentLine = '';
+        let currentLength = 0;
+        let controlCodes = ''; // 儲存當前有效的控制碼
+        
+        let i = 0;
+        while (i < text.length) {
+            const char = text[i];
+            
+            // 🔧 關鍵修正：檢測原始換行符號 \n，但不產生空行
+            if (char === '\n') {
+                // 遇到換行符號，保存當前行（如果有內容）
+                if (currentLine.trim() || currentLength > 0) {
+                    if (controlCodes) {
+                        currentLine += '\\C[0]';
+                    }
+                    lines.push(currentLine);
+                }
+                
+                // 重置新行，但保留顏色控制碼，不添加空行
+                currentLine = controlCodes || '';
+                currentLength = 0;
+                i++;
+                continue;
+            }
+            
+            // 檢查是否為控制字符
+            if (char === '\\' && i + 1 < text.length) {
+                const nextChar = text[i + 1];
+                
+                // 處理 \C[xx] 顏色控制碼
+                if (nextChar === 'C' && text[i + 2] === '[') {
+                    const endBracket = text.indexOf(']', i + 3);
+                    if (endBracket !== -1) {
+                        const controlCode = text.substring(i, endBracket + 1);
+                        currentLine += controlCode;
+                        
+                        // 如果是重置顏色 \C[0]，清除控制碼記錄
+                        if (controlCode === '\\C[0]') {
+                            controlCodes = '';
+                        } else {
+                            controlCodes = controlCode; // 記錄當前顏色
+                        }
+                        
+                        i = endBracket + 1;
+                        continue;
+                    }
+                }
+            }
+            
+            // 普通字符
+            currentLine += char;
+            currentLength++;
+            i++;
+            
+            // 檢查是否達到最大字符數需要換行
+            if (currentLength >= maxChars) {
+                // 如果當前有顏色控制碼，在行尾重置顏色
+                if (controlCodes) {
+                    currentLine += '\\C[0]';
+                }
+                lines.push(currentLine);
+                
+                // 新行開始時，如果之前有顏色控制碼，在行首重新應用
+                currentLine = controlCodes || '';
+                currentLength = 0;
+            }
+        }
+        
+        // 添加最後一行（如果有內容）
+        if (currentLine.trim() || currentLength > 0) {
+            lines.push(currentLine);
+        }
+        
+        return lines.length > 0 ? lines : [''];
+    };
+    
+    // 🔧 新增：手動滾動功能
+    Window_ScamDialogue.prototype.update = function() {
+        Window_Base.prototype.update.call(this);
+        
+        // 方向鍵上下滾動
+        if (this._lines.length > this._maxVisibleLines) {
+            if (Input.isRepeated('up')) {
+                this.scrollUp();
+            } else if (Input.isRepeated('down')) {
+                this.scrollDown();
+            }
+        }
+    };
+    
+    Window_ScamDialogue.prototype.scrollUp = function() {
+        if (this._scrollY > 0) {
+            this._scrollY--;
+            this.refresh();
+        }
+    };
+    
+    Window_ScamDialogue.prototype.scrollDown = function() {
+        const maxScroll = Math.max(0, this._lines.length - this._maxVisibleLines);
+        if (this._scrollY < maxScroll) {
+            this._scrollY++;
+            this.refresh();
+        }
     };
     
     Window_ScamDialogue.prototype.clear = function() {
@@ -80,14 +198,26 @@
     
     Window_ScamDialogue.prototype.refresh = function() {
         this.contents.clear();
-        const lineHeight = 36;
+        const lineHeight = 36; // 行高
+        const lineSpacing = 2;  // 🔧 增加行間距至 2px，確保不重疊
         let y = 0;
         
-        // 从滚动位置开始显示
-        for (let i = this._scrollY; i < this._lines.length; i++) {
-            if (y >= this.contents.height - lineHeight) break;
+        // 🔧 從滾動位置開始顯示，確保顯示最新內容
+        const startIndex = Math.max(0, this._scrollY);
+        const endIndex = Math.min(this._lines.length, startIndex + this._maxVisibleLines);
+        
+        for (let i = startIndex; i < endIndex; i++) {
+            // 🔧 每次繪製前重置字體設定，避免殘留
+            this.resetFontSettings();
             this.drawTextEx(this._lines[i], 0, y);
-            y += lineHeight;
+            y += lineHeight + lineSpacing; // 使用行高加間距
+        }
+        
+        // 🔧 顯示滾動指示器（位置調整，避免與文字重疊）
+        if (this._lines.length > this._maxVisibleLines) {
+            const scrollPercent = Math.round((this._scrollY / (this._lines.length - this._maxVisibleLines)) * 100);
+            const indicatorY = this.contents.height - lineHeight - 10;
+            this.drawText(`▼ ${scrollPercent}%`, this.contents.width - 100, indicatorY, 100, 'right');
         }
     };
     
@@ -143,21 +273,21 @@
     }
     
     //=============================================================================
-    // 获取骗局信息
+    // 获取骗局信息（與 RotatingScamSystem.js 的 SCAM_TYPES 對應）
     //=============================================================================
     
     function getScamTypeInfo(scamTypeId) {
         const scamTypes = {
-            1: { name: '假冒親友', role: '假冒親友者' },
-            2: { name: '投資理財', role: '投資顧問' },
-            3: { name: '網購詐騙', role: '賣家' },
-            4: { name: '公務機關', role: '公務員' },
-            5: { name: '愛情交友', role: '網友' },
-            6: { name: '工作兼職', role: '招聘人員' },
-            7: { name: '虛擬綁架', role: '綁匪' },
-            8: { name: '中獎通知', role: '客服人員' },
-            9: { name: '健康產品', role: '銷售員' },
-            10: { name: '技術支援', role: '技術人員' }
+            1: { name: '投資詐騙', role: '投資顧問' },
+            2: { name: '假警察詐騙', role: '刑警' },
+            3: { name: '交友詐騙', role: '網友' },
+            4: { name: '網購詐騙', role: '賣家' },
+            5: { name: '假中獎詐騙', role: '客服人員' },
+            6: { name: '假貸款詐騙', role: '貸款專員' },
+            7: { name: '假客服詐騙', role: '客服專員' },
+            8: { name: '刷單兼職詐騙', role: '招聘人員' },
+            9: { name: '虛假招聘詐騙', role: '人資主管' },
+            10: { name: '假冒親友詐騙', role: '你的朋友' }
         };
         return scamTypes[scamTypeId] || scamTypes[1];
     }
@@ -170,10 +300,21 @@
     Scene_Battle.prototype.start = function() {
         _Scene_Battle_start.call(this);
         
-        if (isAutoScamBattle) {
-            console.log('防诈骗战斗开始');
+        // 🔧 優先從 BattleManager 讀取（場景切換時不會被重置）
+        const scamTypeId = BattleManager._scamTypeId || $gameVariables.value(30);
+        
+        if (scamTypeId && scamTypeId >= 1 && scamTypeId <= 10) {
+            console.log('[AutoScamBattle] 偵測到詐騙戰鬥，scamTypeId =', scamTypeId);
+            isAutoScamBattle = true;
+            
+            // 從變量或 BattleManager 獲取騙局信息
+            currentScamType = getScamTypeInfo(scamTypeId);
+            console.log(`[AutoScamBattle] 騙局: ${currentScamType.name}, 角色: ${currentScamType.role}`);
+            
             // 初始化会话
             initializeScamSession();
+        } else {
+            console.log('[AutoScamBattle] 非詐騙戰鬥，scamTypeId =', scamTypeId);
         }
     };
     
@@ -182,6 +323,23 @@
     //=============================================================================
     
     function initializeScamSession() {
+        // 🔧 優先從 BattleManager 讀取 session_id（由 RotatingScamSystem 設置）
+        const existingSessionId = BattleManager._scamSessionId || $gameVariables.value(21);
+        
+        if (existingSessionId && existingSessionId !== '' && existingSessionId !== 0) {
+            // 使用已存在的 session
+            sessionId = existingSessionId;
+            console.log(`[AutoScamBattle] 使用現有會話: ${sessionId}`);
+            console.log(`[AutoScamBattle] 來源: ${BattleManager._scamSessionId ? 'BattleManager' : '$gameVariables'}`);
+            
+            // 顯示開場並開始對話
+            displayOpeningAndStart();
+            return;
+        }
+        
+        // 如果沒有現有 session，才創建新的
+        console.log(`[AutoScamBattle] 沒有現有會話，創建新會話...`);
+        
         // 動態選擇受害者角色（從變數22讀取，如果沒有則隨機選擇）
         let personaType = $gameVariables.value(22);
         
@@ -197,15 +355,62 @@
         // 儲存當前角色類型到變數
         $gameVariables.setValue(22, personaType);
         
-        // 顯示角色名稱
+        if (USE_MOCK_DATA) {
+            // 使用模拟数据
+            sessionId = 'mock_session_' + Date.now();
+            $gameVariables.setValue(21, sessionId);
+            console.log(`[測試模式] 使用模擬會話: ${sessionId}`);
+            
+            displayOpeningAndStart();
+            return;
+        }
+        
+        // 尝试连接真实API
+        fetch(`${API_URL}/api/game/start`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                persona_type: personaType,
+                scam_type: currentScamType.name
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            sessionId = data.session_id;
+            $gameVariables.setValue(21, sessionId);
+            console.log(`[AutoScamBattle] 會話創建成功: ${sessionId}`);
+            
+            displayOpeningAndStart();
+        })
+        .catch(error => {
+            console.error("创建会话失败:", error);
+            if (customDialogueWindow) {
+                customDialogueWindow.addLine(`\\C[2]連接AI服務失敗！\\C[0]`);
+                customDialogueWindow.addLine(`\\C[2]API端點: ${API_URL}/api/game/start\\C[0]`);
+                customDialogueWindow.addLine(`\\C[6]提示：可在插件中開啟測試模式\\C[0]`);
+            }
+            setTimeout(() => {
+                BattleManager.processVictory();
+            }, 3000);
+        });
+    }
+    
+    //=============================================================================
+    // 顯示開場文字並開始對話（提取為獨立函數）
+    //=============================================================================
+    
+    function displayOpeningAndStart() {
+        const personaType = $gameVariables.value(22) || 'A';
         const personaNames = {
+            'A': '陳老伯（長者）',
+            'B': '林小姐（一般市民）',
+            'C': '王先生（過度自信者）',
+            'D': '李同學（年輕學生）',
             'elderly': '陳婆婆（長者）',
             'average': '一般市民',
             'overconfident': '過度自信者'
         };
         const personaName = personaNames[personaType] || personaType;
-        
-        console.log(`[AutoScamBattle] 受害者角色: ${personaName}`);
         
         // 显示开场介绍
         setTimeout(() => {
@@ -216,9 +421,9 @@
                 console.log('  - 窗口不透明度:', customDialogueWindow.opacity);
                 
                 customDialogueWindow.clear();
-                customDialogueWindow.addLine(`\\C[14]╔═══════════════════════════╗\\C[0]`);
+                customDialogueWindow.addLine(`\\C[14]╔══════════════════════════╗\\C[0]`);
                 customDialogueWindow.addLine(`\\C[14]║   防詐騙實戰訓練   ║\\C[0]`);
-                customDialogueWindow.addLine(`\\C[14]╚═══════════════════════════╝\\C[0]`);
+                customDialogueWindow.addLine(`\\C[14]╚══════════════════════════╝\\C[0]`);
                 customDialogueWindow.addLine('');
                 customDialogueWindow.addLine(`\\C[11]騙局類型：${currentScamType.name}\\C[0]`);
                 customDialogueWindow.addLine(`\\C[11]騙徒角色：${currentScamType.role}\\C[0]`);
@@ -236,50 +441,12 @@
             } else {
                 console.error('[AutoScamBattle] 自定義窗口不存在！無法顯示開場文字');
             }
+            
+            // 延遲後開始對話
+            setTimeout(() => {
+                startAutoDialogue();
+            }, USE_MOCK_DATA ? OPENING_DELAY : 2000);
         }, 500);
-        
-        if (USE_MOCK_DATA) {
-            // 使用模拟数据
-            sessionId = 'mock_session_' + Date.now();
-            $gameVariables.setValue(21, sessionId);
-            console.log(`[測試模式] 使用模擬會話: ${sessionId}`);
-            
-            setTimeout(() => {
-                startAutoDialogue();
-            }, OPENING_DELAY);
-            return;
-        }
-        
-        // 尝试连接真实API
-        fetch(`${API_URL}/api/game/start`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                persona_type: personaType,
-                scam_type: currentScamType.name
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            sessionId = data.session_id;
-            $gameVariables.setValue(21, sessionId);
-            console.log(`会话创建成功: ${sessionId}`);
-            
-            setTimeout(() => {
-                startAutoDialogue();
-            }, 2000);
-        })
-        .catch(error => {
-            console.error("创建会话失败:", error);
-            if (customDialogueWindow) {
-                customDialogueWindow.addLine(`\\C[2]連接AI服務失敗！\\C[0]`);
-                customDialogueWindow.addLine(`\\C[2]API端點: ${API_URL}/api/game/start\\C[0]`);
-                customDialogueWindow.addLine(`\\C[6]提示：可在插件中開啟測試模式\\C[0]`);
-            }
-            setTimeout(() => {
-                BattleManager.processVictory();
-            }, 3000);
-        });
     }
     
     //=============================================================================
@@ -420,22 +587,39 @@
             return;
         }
         
+        // 🔧 使用與 RotatingScamSystem 相同的 API 格式
+        const personaType = $gameVariables.value(22) || 'A';
+        const history = dialogueHistory || [];
+        const lastScammerMsg = history.length > 0 ? history[history.length - 1].scammer : currentScamType.name;
+        const victimPrompt = `騙徒剛剧說：「${lastScammerMsg}」\n\n請以你的角色身份自然回應。注意：這是一個${currentScamType.name}的騙局，但你現在可能還不確定是否為詐騙。請根據你的人設特點來回應。`;
+        
+        console.log(`[AutoScamBattle] 發送受害者訊息 (session: ${sessionId})`);
+        
         fetch(`${API_URL}/api/game/message`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 session_id: sessionId,
-                message: '受害人回应',
-                role: 'victim'
+                message: victimPrompt,
+                target_ai: "AI-A",  // 使用受害者AI
+                persona_type: personaType
             })
         })
         .then(response => response.json())
         .then(data => {
-            callback(data.response || data.message || '...');
+            const reply = data.reply || "我考慮一下...";
+            console.log(`[AutoScamBattle] 受害者回應: ${reply.substring(0, 30)}...`);
+            callback(reply);
         })
         .catch(error => {
             console.error("生成受害人回应失败:", error);
-            callback('无法回应...');
+            const fallbacks = {
+                'A': '呃...我唔太明白，你可唔可以講清楚啲？',
+                'B': '等等，我需要確認一下這個資訊...',
+                'C': '我知道啦，但我想先了解清楚細節。',
+                'D': '這個...聽起來有點奇怪，你能證明嗎？'
+            };
+            callback(fallbacks[personaType] || "無法回應...");
         });
     }
     
@@ -461,22 +645,33 @@
             return;
         }
         
+        // 🔧 使用與 RotatingScamSystem 相同的 API 格式
+        const personaType = $gameVariables.value(22) || 'A';
+        
+        // 構建騙徒 prompt
+        const scammerPrompt = `受害者剛剛說：「${victimMsg}」\n\n你是${currentScamType.role}，正在進行${currentScamType.name}。\n\n請根據受害者的回應，繼續你的詐騙行為。記住要保持角色一致性，不要暴露自己是騙徒。用廣東話回應，保持真實感。`;
+        
+        console.log(`[AutoScamBattle] 發送騙子訊息 (session: ${sessionId})`);
+        
         fetch(`${API_URL}/api/game/message`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 session_id: sessionId,
-                message: victimMsg,
-                role: 'scammer'
+                message: scammerPrompt,
+                target_ai: "AI-D",  // 使用詐騙者AI
+                persona_type: personaType
             })
         })
         .then(response => response.json())
         .then(data => {
-            callback(data.response || data.message || '...');
+            const reply = data.reply || "那你再考慮看看...";
+            console.log(`[AutoScamBattle] 騙子回應: ${reply.substring(0, 30)}...`);
+            callback(reply);
         })
         .catch(error => {
             console.error("生成骗子回应失败:", error);
-            callback('...');
+            callback('那你再考慮看看...');
         });
     }
     
@@ -560,9 +755,9 @@
         if (!customDialogueWindow) return;
         
         customDialogueWindow.addLine('');
-        customDialogueWindow.addLine(`\\C[14]╔═══════════════════════════╗\\C[0]`);
+        customDialogueWindow.addLine(`\\C[14]╔══════════════════════════╗\\C[0]`);
         customDialogueWindow.addLine(`\\C[14]║      訓練結果評分      ║\\C[0]`);
-        customDialogueWindow.addLine(`\\C[14]╚═══════════════════════════╝\\C[0]`);
+        customDialogueWindow.addLine(`\\C[14]╚══════════════════════════╝\\C[0]`);
         customDialogueWindow.addLine('');
         customDialogueWindow.addLine(`\\C[11]防詐得分：${scoreData.score || 0}/100\\C[0]`);
         customDialogueWindow.addLine('');
@@ -608,22 +803,68 @@
     }
     
     //=============================================================================
-    // 修改战斗界面
+    // 修改战斗界面（最早觸發點）
     //=============================================================================
+    
+    const _Scene_Battle_create = Scene_Battle.prototype.create;
+    Scene_Battle.prototype.create = function() {
+        // 🔧 **優先從 BattleManager 讀取**（場景切換時不會被重置）
+        const scamTypeId = BattleManager._scamTypeId || $gameVariables.value(30);
+        console.log('[AutoScamBattle] Scene_Battle.create - BattleManager._scamTypeId =', BattleManager._scamTypeId);
+        console.log('[AutoScamBattle] Scene_Battle.create - 變量30 =', $gameVariables.value(30));
+        console.log('[AutoScamBattle] Scene_Battle.create - 最終使用 scamTypeId =', scamTypeId);
+        
+        if (scamTypeId && scamTypeId >= 1 && scamTypeId <= 10) {
+            console.log('[AutoScamBattle] ✅ 確認為詐騙戰鬥，準備攔截默認介面');
+            isAutoScamBattle = true;
+            currentScamType = getScamTypeInfo(scamTypeId);
+            
+            // 從 BattleManager 恢復 session 數據
+            if (BattleManager._scamSessionId) {
+                sessionId = BattleManager._scamSessionId;
+                console.log('[AutoScamBattle] 從 BattleManager 恢復 session:', sessionId);
+            }
+        }
+        
+        _Scene_Battle_create.call(this);
+    };
     
     const _Scene_Battle_createAllWindows = Scene_Battle.prototype.createAllWindows;
     Scene_Battle.prototype.createAllWindows = function() {
         _Scene_Battle_createAllWindows.call(this);
         
+        const scamTypeId = $gameVariables.value(30);
+        console.log('[AutoScamBattle] createAllWindows - 變量30 =', scamTypeId, ', isAutoScamBattle =', isAutoScamBattle);
+        
         if (isAutoScamBattle) {
             console.log('[AutoScamBattle] 設置自定義戰鬥窗口...');
             
-            // 隐藏默认窗口
-            this._partyCommandWindow.deactivate();
-            this._partyCommandWindow.visible = false;
-            this._actorCommandWindow.deactivate();
-            this._actorCommandWindow.visible = false;
-            this._logWindow.visible = false; // 隐藏默认log窗口
+            // 隐藏所有默认窗口
+            if (this._partyCommandWindow) {
+                this._partyCommandWindow.deactivate();
+                this._partyCommandWindow.visible = false;
+                this._partyCommandWindow.close();
+            }
+            
+            if (this._actorCommandWindow) {
+                this._actorCommandWindow.deactivate();
+                this._actorCommandWindow.visible = false;
+                this._actorCommandWindow.close();
+            }
+            
+            if (this._statusWindow) {
+                this._statusWindow.visible = false;
+                this._statusWindow.close();
+            }
+            
+            // 🔧 完全隱藏 log 窗口（這個顯示 "BAT EMERGED"）
+            if (this._logWindow) {
+                this._logWindow.visible = false;
+                this._logWindow.opacity = 0;
+                this._logWindow.close();
+                this._logWindow.clear();
+                console.log('[AutoScamBattle] Log 窗口已完全隱藏');
+            }
             
             // 创建自定义对话窗口
             customDialogueWindow = new Window_ScamDialogue();
@@ -632,16 +873,21 @@
             console.log('[AutoScamBattle] 自定義對話窗口創建完成');
             console.log('  - 窗口存在:', !!customDialogueWindow);
             console.log('  - 窗口可見:', customDialogueWindow.visible);
+        } else {
+            console.log('[AutoScamBattle] ❌ 非詐騙戰鬥，使用默認戰鬥介面');
         }
     };
     
     //=============================================================================
-    // 禁用默认战斗消息
+    // 禁用默认战斗消息（更早攔截）
     //=============================================================================
     
     const _BattleManager_displayStartMessages = BattleManager.displayStartMessages;
     BattleManager.displayStartMessages = function() {
-        if (isAutoScamBattle) {
+        // 🔧 檢查變量30判斷是否為詐騙戰鬥
+        const scamTypeId = $gameVariables.value(30);
+        if (scamTypeId && scamTypeId >= 1 && scamTypeId <= 10) {
+            console.log('[AutoScamBattle] 攔截默認戰鬥訊息 (變量30 =', scamTypeId, ')');
             // 不显示默认的战斗开始消息
             return;
         }
@@ -650,7 +896,9 @@
     
     const _BattleManager_startTurn = BattleManager.startTurn;
     BattleManager.startTurn = function() {
-        if (isAutoScamBattle) {
+        // 🔧 檢查變量30判斷是否為詐騙戰鬥
+        const scamTypeId = $gameVariables.value(30);
+        if (scamTypeId && scamTypeId >= 1 && scamTypeId <= 10) {
             // 防诈骗战斗不使用回合制
             return;
         }
@@ -659,11 +907,37 @@
     
     const _Game_Battler_performAction = Game_Battler.prototype.performAction;
     Game_Battler.prototype.performAction = function(action) {
-        if (isAutoScamBattle) {
+        // 🔧 檢查變量30判斷是否為詐騙戰鬥
+        const scamTypeId = $gameVariables.value(30);
+        if (scamTypeId && scamTypeId >= 1 && scamTypeId <= 10) {
             // 不显示动作动画
             return;
         }
         _Game_Battler_performAction.call(this, action);
+    };
+    
+    //=============================================================================
+    // 攔截戰鬥訊息窗口（隱藏 "BAT EMERGED"）
+    //=============================================================================
+    
+    const _Window_BattleLog_displayAction = Window_BattleLog.prototype.displayAction;
+    Window_BattleLog.prototype.displayAction = function(subject, item) {
+        const scamTypeId = $gameVariables.value(30);
+        if (scamTypeId && scamTypeId >= 1 && scamTypeId <= 10) {
+            console.log('[AutoScamBattle] 攔截戰鬥動作訊息');
+            return;
+        }
+        _Window_BattleLog_displayAction.call(this, subject, item);
+    };
+    
+    const _Window_BattleLog_startTurn = Window_BattleLog.prototype.startTurn;
+    Window_BattleLog.prototype.startTurn = function() {
+        const scamTypeId = $gameVariables.value(30);
+        if (scamTypeId && scamTypeId >= 1 && scamTypeId <= 10) {
+            console.log('[AutoScamBattle] 攔截回合開始訊息');
+            return;
+        }
+        _Window_BattleLog_startTurn.call(this);
     };
     
     //=============================================================================
@@ -678,6 +952,23 @@
             currentRound = 0;
             sessionId = null;
             dialogueHistory = [];
+            
+            // 🔧 隱藏並清理 log 窗口（防止返回地圖時顯示 "BAT EMERGED"）
+            if (this._logWindow) {
+                this._logWindow.visible = false;
+                this._logWindow.opacity = 0;
+                this._logWindow.close();
+                this._logWindow.clear();
+                console.log('[AutoScamBattle] 戰鬥結束，Log 窗口已隱藏');
+            }
+            
+            // 🔧 隱藏自定義對話窗口
+            if (customDialogueWindow) {
+                customDialogueWindow.visible = false;
+                customDialogueWindow.close();
+                customDialogueWindow = null;
+                console.log('[AutoScamBattle] 戰鬥結束，自定義對話窗口已關閉');
+            }
             
             // 轮换骗局类型
             if (window.RotatingScamSystem) {

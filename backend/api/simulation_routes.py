@@ -891,7 +891,7 @@ async def run_simulation_async(simulation_id: str, victim_persona: str, scam_tac
                     f"⚠️ 重要：直接進入角色，直接說話，不要任何前置說明、場景設定、角色介紹！",
                     f"{simulation_id}_scammer_1"
                 ),
-                timeout=60.0  # 60秒超时
+                timeout=180.0  # 3分鐘超時
             )
         except asyncio.TimeoutError:
             log.error("骗徒第一轮对话超时，使用fallback响应")
@@ -1134,7 +1134,7 @@ async def run_simulation_async(simulation_id: str, victim_persona: str, scam_tac
             try:
                 victim_turn = await asyncio.wait_for(
                     runner.run_agent_with_adk(runner.victim, prompt_for_victim, f"{simulation_id}_victim_{turn}"),
-                    timeout=60.0  # 60秒超时
+                    timeout=180.0  # 3分鐘超時
                 )
             except asyncio.TimeoutError:
                 log.error(f"受害者第{turn}轮对话超时，使用fallback响应")
@@ -1565,7 +1565,7 @@ async def run_simulation_async(simulation_id: str, victim_persona: str, scam_tac
             try:
                 expert_turn_raw = await asyncio.wait_for(
                     runner.run_agent_with_adk(runner.expert, prompt_for_expert, f"{simulation_id}_expert_{turn}"),
-                    timeout=60.0  # 60秒超时
+                    timeout=180.0  # 3分鐘超時
                 )
             except asyncio.TimeoutError:
                 log.error(f"专家第{turn}轮对话超时，使用fallback响应")
@@ -1892,7 +1892,7 @@ async def run_simulation_async(simulation_id: str, victim_persona: str, scam_tac
                         prompt_for_scammer, # 使用上面新定義的 prompt
                         f"{simulation_id}_scammer_{turn}"
                     ),
-                    timeout=60.0  # 60秒超时
+                    timeout=180.0  # 3分鐘超時
                 )
             except asyncio.TimeoutError:
                 log.error(f"骗徒第{turn}轮对话超时，使用fallback响应")

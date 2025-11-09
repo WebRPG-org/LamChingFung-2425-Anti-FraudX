@@ -82,6 +82,11 @@
     };
     
     // ============================================================================
+    // 🔧 全局变量 - 解決 RPG Maker $gameVariables 在 async 回調中失效的問題
+    // ============================================================================
+    let currentSessionId = null;
+    
+    // ============================================================================
     // 10種騙局配置
     // ============================================================================
     
@@ -453,11 +458,18 @@
         })
         .then(response => response.json())
         .then(data => {
-            $gameVariables.setValue(21, data.session_id);
-            console.log(`會話創建：${data.session_id}, 騙局：${scam.name}, 人設：${personaType}`);
+            const sessionId = data.session_id;
             
-            // 開始對話輪次
-            startDialogueLoop(npcId, scam, 0, isAutoMode);
+            // 🔧 双重保存：全局变量 + 游戏变量
+            currentSessionId = sessionId;  // JavaScript 全局变量（可靠）
+            $gameVariables.setValue(21, sessionId);  // RPG Maker 游戏变量（可能失效）
+            
+            console.log(`✅ 會話創建：${sessionId}`);
+            console.log(`✅ 驗證變量21 = ${$gameVariables.value(21)}`);
+            console.log(`✅ 驗證全局變量 currentSessionId = ${currentSessionId}`);
+            
+            // 開始對話輪次，直接传递 currentSessionId
+            startDialogueLoop(npcId, scam, 0, isAutoMode, currentSessionId);
         })
         .catch(error => {
             console.error("創建會話失敗:", error);
@@ -475,7 +487,7 @@
     // 對話循環
     // ============================================================================
     
-    function startDialogueLoop(npcId, scam, round, isAutoMode) {
+    function startDialogueLoop(npcId, scam, round, isAutoMode, overrideSessionId) {
         if (round >= 8) {
             // 達到輪數上限
             endBattle(npcId, scam, isAutoMode);
@@ -485,10 +497,13 @@
         console.log(`第 ${round + 1} 輪對話`);
         
         // 生成受騙人回應
-        generateVictimResponse(scam, (victimMsg) => {
+        generateVictimResponse(scam, overrideSessionId, (victimMsg) => {
             // 生成騙子回應
-            generateScammerResponse(scam, victimMsg, (scammerMsg) => {
-                // 顯示對話
+            generateScammerResponse(scam, victimMsg, overrideSessionId, (scammerMsg) => {
+                // 🔧 顯示對話（自動模式也要顯示）
+                console.log(`📢 顯示對話 - 受騙人: ${victimMsg.substring(0, 30)}...`);
+                console.log(`📢 顯示對話 - ${scam.role}: ${scammerMsg.substring(0, 30)}...`);
+                
                 $gameMessage.add(`受騙人：${victimMsg}`);
                 $gameMessage.add(`${scam.role}：${scammerMsg}`);
                 
@@ -499,25 +514,43 @@
                 if (shouldEndDialogue(victimMsg, scammerMsg)) {
                     endBattle(npcId, scam, isAutoMode);
                 } else {
-                    // 繼續下一輪
+                    // 繼續下一輪，继续传递 overrideSessionId
+                    // 🔧 自動模式下延遲更長，讓玩家能看到對話
+                    const delay = isAutoMode ? 4000 : 2000;
                     setTimeout(() => {
-                        startDialogueLoop(npcId, scam, round + 1, isAutoMode);
-                    }, 2000);
+                        startDialogueLoop(npcId, scam, round + 1, isAutoMode, overrideSessionId);
+                    }, delay);
                 }
             });
         });
     }
     
-    function generateVictimResponse(scam, callback) {
-        const sessionId = $gameVariables.value(21);
+    function generateVictimResponse(scam, overrideSessionId, callback) {
+        // 🔧 优先链：参数 > 全局变量 > 游戏变量
+        const sessionId = overrideSessionId || currentSessionId || $gameVariables.value(21);
         const personaType = $gameVariables.value(22) || 'A';
         const history = $gameVariables.value(23) || [];
+        
+        // 🔧 檢查 session_id 是否有效
+        if (!sessionId || sessionId === 0 || sessionId === "0") {
+            console.error("❌ 無效的 session_id:", sessionId);
+            console.log("提示：請先創建遊戲會話 (/api/game/start)");
+            const fallbacks = {
+                'A': '呃...我唔太明白，你可唔可以講清楚啲？',
+                'B': '等等，我需要確認一下這個資訊...',
+                'C': '我知道啦，但我想先了解清楚細節。',
+                'D': '這個...聽起來有點奇怪，你能證明嗎？'
+            };
+            callback(fallbacks[personaType] || "嗯...");
+            return;
+        }
         
         // 構建受害者的prompt，包含騙局資訊
         const lastScammerMsg = history.length > 0 ? history[history.length - 1].scammer : scam.opening;
         const victimPrompt = `騙徒剛剛說：「${lastScammerMsg}」\n\n請以你的角色身份自然回應。注意：這是一個${scam.name}的騙局，但你現在可能還不確定是否為詐騙。請根據你的人設特點來回應。`;
         
         // 使用 /api/game/message API，自動應用人設
+        console.log(`✅ 使用 session_id: ${sessionId} 發送受害者訊息`);
         fetch(`${API_URL}/api/game/message`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -547,8 +580,9 @@
         });
     }
     
-    function generateScammerResponse(scam, victimMsg, callback) {
-        const sessionId = $gameVariables.value(21);
+    function generateScammerResponse(scam, victimMsg, overrideSessionId, callback) {
+        // 🔧 优先链：参数 > 全局变量 > 游戏变量
+        const sessionId = overrideSessionId || currentSessionId || $gameVariables.value(21);
         const personaType = $gameVariables.value(22) || 'A';
         
         // 使用騙局的tactics構建詳細的騙徒prompt
@@ -1123,8 +1157,83 @@
         console.log(`骗局：${scam.name} (Type ${scamTypeId})`);
         console.log(`角色：${scam.role}`);
         
-        // 直接調用 AI 戰鬥函數
-        startAIBattle(npcId, scam, true);  // isAutoMode = true
+        // 🔧 標記進入戰鬥狀態
+        isInBattle = true;
+        
+        // 🔧 設置人設（用於 AutoScamBattle）
+        const currentPersona = $gameVariables.value(22) || 'A';
+        console.log(`當前人設: ${currentPersona}`);
+        
+        // 🎮 先創建 Session，再觸發戰鬥場景
+        console.log(`[RotatingScamSystem] 創建遊戲會話...`);
+        
+        fetch(`${API_URL}/api/game/start`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                persona_type: currentPersona,
+                scam_type: scam.name
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const sessionId = data.session_id;
+            
+            // 🔧 **關鍵修復**: 必須在觸發戰鬥前先設置所有變數！
+            // 先設置騙局相關變數（AutoScamBattle 依賴這些）
+            $gameVariables.setValue(30, scamTypeId);  // 當前騙局類型 ⚠️ 必須最先設置！
+            $gameVariables.setValue(31, 0);           // 當前回合
+            $gameVariables.setValue(32, '');          // 對話歷史
+            
+            // 再保存 session_id
+            currentSessionId = sessionId;
+            $gameVariables.setValue(21, sessionId);
+            
+            // 🔧 **終極修復**: 使用 BattleManager 傳遞數據（不會被場景切換重置）
+            BattleManager._scamTypeId = scamTypeId;
+            BattleManager._scamSessionId = sessionId;
+            BattleManager._scamPersona = currentPersona;
+            
+            console.log(`✅ 會話創建成功: ${sessionId}`);
+            console.log(`✅ 已儲存到變量21和全局變量`);
+            console.log(`✅ 變量30已設置為: ${scamTypeId} (騙局類型)`);
+            console.log(`✅ BattleManager 數據已設置 - scamTypeId: ${BattleManager._scamTypeId}`);
+            
+            // 🔧 **關鍵修復**: 使用 setTimeout 確保變數完全寫入後再觸發戰鬥
+            // RPG Maker 的變數系統需要一幀時間才能同步到新場景
+            setTimeout(() => {
+                // 再次驗證變數已設置
+                const verify30 = $gameVariables.value(30);
+                const verify21 = $gameVariables.value(21);
+                console.log(`🔍 延遲後驗證 - 變量30: ${verify30}, 變量21: ${verify21}`);
+                
+                // 計算敵人ID (5-14對應騙局1-10)
+                const enemyId = 4 + scamTypeId;
+                
+                console.log(`觸發戰鬥場景: Enemy ID ${enemyId}`);
+                
+                // 設置戰鬥
+                BattleManager.setup(1, false, false);  // troopId=1
+                BattleManager._troopId = enemyId;
+                $gamePlayer.makeEncounterCount();
+                
+                // 切換到戰鬥場景（此時變數已全部設置完畢）
+                SceneManager.push(Scene_Battle);
+                
+                console.log(`✅ 戰鬥場景已啟動 (NPC: ${npcId}, 騙局: ${scamTypeId}, Session: ${sessionId})`);
+            }, 100); // 100ms 延遲，確保變數寫入完成
+        })
+        .catch(error => {
+            console.error("❌ 創建會話失敗:", error);
+            console.log("嘗試使用模擬模式或檢查後端是否運行");
+            
+            // 失敗時清除戰鬥狀態，繼續下一個NPC
+            isInBattle = false;
+            if (autoModeActive) {
+                currentAutoNpcIndex++;
+                setTimeout(() => moveToNextNpc(), 2000);
+            }
+        });
     }
     
     // 修改endBattle以支持自動模式
