@@ -1,0 +1,12 @@
+{
+    "name": "antifraudx",
+    "main": "index.html",
+    "js-flags": "--expose-gc",
+    "window": {
+        "title": "AntiFraudX - AI 防詐騙教育系統",
+        "toolbar": false,
+        "width": 900,
+        "height": 700,
+        "icon": "icon/icon.png"
+    }
+}

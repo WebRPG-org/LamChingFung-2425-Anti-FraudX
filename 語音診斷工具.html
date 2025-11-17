@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>語音功能診斷工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'PingFang TC', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: 'Consolas', monospace;
+        }
+
+        .result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .result.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .result.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .test-voice {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .summary {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .summary h2 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .summary-item {
+            display: inline-block;
+            margin: 10px 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 語音功能完整診斷</h1>
+
+        <!-- 1. 基本環境檢測 -->
+        <div class="section">
+            <h2>1️⃣ 基本環境檢測</h2>
+            <div id="basicCheck"></div>
+        </div>
+
+        <!-- 2. 網絡連接測試 -->
+        <div class="section">
+            <h2>2️⃣ 網絡連接測試</h2>
+            <button onclick="testNetwork()">測試網絡</button>
+            <div id="networkCheck"></div>
+        </div>
+
+        <!-- 3. 麥克風權限測試 -->
+        <div class="section">
+            <h2>3️⃣ 麥克風權限測試</h2>
+            <button onclick="testMicrophone()">測試麥克風</button>
+            <div id="micCheck"></div>
+        </div>
+
+        <!-- 4. 語音識別測試 -->
+        <div class="section">
+            <h2>4️⃣ 語音識別測試</h2>
+            <button onclick="testSpeechRecognition()" id="recognitionBtn">測試語音識別</button>
+            <button onclick="stopRecognition()" id="stopBtn" disabled>停止</button>
+            <div id="recognitionCheck"></div>
+        </div>
+
+        <!-- 5. 語音合成測試 -->
+        <div class="section">
+            <h2>5️⃣ 語音合成測試</h2>
+            <div class="test-voice">
+                <input type="text" id="testText" value="你好，這是語音測試。" placeholder="輸入測試文字">
+                <button onclick="testSpeechSynthesis()">播放語音</button>
+            </div>
+            <div id="synthesisCheck"></div>
+        </div>
+
+        <!-- 6. 可用語音列表 -->
+        <div class="section">
+            <h2>6️⃣ 可用語音列表</h2>
+            <button onclick="listVoices()">查看語音列表</button>
+            <div id="voicesList"></div>
+        </div>
+
+        <!-- 7. Google服務測試 -->
+        <div class="section">
+            <h2>7️⃣ Google服務可達性</h2>
+            <button onclick="testGoogleServices()">測試Google服務</button>
+            <div id="googleCheck"></div>
+        </div>
+
+        <!-- 8. 完整診斷報告 -->
+        <div class="section">
+            <h2>8️⃣ 完整診斷報告</h2>
+            <button onclick="runFullDiagnostics()">運行完整診斷</button>
+            <div id="fullReport"></div>
+        </div>
+
+        <!-- 總結 -->
+        <div class="summary" id="summary" style="display:none;">
+            <h2>📊 診斷總結</h2>
+            <div id="summaryContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let recognition = null;
+        let isRecording = false;
+
+        // 1. 基本環境檢測
+        function checkBasicEnvironment() {
+            const results = [];
+            const container = document.getElementById('basicCheck');
+            
+            // 瀏覽器檢測
+            const ua = navigator.userAgent;
+            let browser = '未知';
+            if (ua.indexOf('Chrome') > -1) browser = 'Chrome';
+            else if (ua.indexOf('Safari') > -1) browser = 'Safari';
+            else if (ua.indexOf('Firefox') > -1) browser = 'Firefox';
+            else if (ua.indexOf('Edge') > -1) browser = 'Edge';
+            
+            results.push({
+                type: 'info',
+                msg: `瀏覽器: ${browser}`
+            });
+            
+            // 在線狀態
+            results.push({
+                type: navigator.onLine ? 'success' : 'error',
+                msg: `網絡狀態: ${navigator.onLine ? '✅ 在線' : '❌ 離線'}`
+            });
+            
+            // Speech Recognition支持
+            const hasRecognition = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+            results.push({
+                type: hasRecognition ? 'success' : 'error',
+                msg: `語音識別支持: ${hasRecognition ? '✅ 支持' : '❌ 不支持'}`
+            });
+            
+            // Speech Synthesis支持
+            const hasSynthesis = 'speechSynthesis' in window;
+            results.push({
+                type: hasSynthesis ? 'success' : 'error',
+                msg: `語音合成支持: ${hasSynthesis ? '✅ 支持' : '❌ 不支持'}`
+            });
+            
+            // HTTPS檢測
+            const isSecure = location.protocol === 'https:' || location.hostname === 'localhost';
+            results.push({
+                type: isSecure ? 'success' : 'warning',
+                msg: `安全連接: ${isSecure ? '✅ HTTPS/localhost' : '⚠️ HTTP（某些功能可能受限）'}`
+            });
+            
+            displayResults(container, results);
+        }
+
+        // 2. 網絡連接測試
+        async function testNetwork() {
+            const container = document.getElementById('networkCheck');
+            container.innerHTML = '<div class="loading"></div> 測試中...';
+            
+            const results = [];
+            
+            // 測試一般網絡
+            try {
+                await fetch('https://www.google.com', { mode: 'no-cors', signal: AbortSignal.timeout(5000) });
+                results.push({ type: 'success', msg: '✅ Google可訪問' });
+            } catch (error) {
+                results.push({ type: 'error', msg: `❌ Google不可訪問: ${error.message}` });
+            }
+            
+            // 測試DNS
+            try {
+                await fetch('https://dns.google', { mode: 'no-cors', signal: AbortSignal.timeout(5000) });
+                results.push({ type: 'success', msg: '✅ DNS正常' });
+            } catch (error) {
+                results.push({ type: 'warning', msg: '⚠️ DNS可能有問題' });
+            }
+            
+            displayResults(container, results);
+        }
+
+        // 3. 麥克風權限測試
+        async function testMicrophone() {
+            const container = document.getElementById('micCheck');
+            container.innerHTML = '<div class="loading"></div> 測試中...';
+            
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                
+                // 獲取音頻軌道信息
+                const audioTrack = stream.getAudioTracks()[0];
+                const settings = audioTrack.getSettings();
+                
+                const results = [
+                    { type: 'success', msg: '✅ 麥克風權限已授予' },
+                    { type: 'info', msg: `設備: ${audioTrack.label}` },
+                    { type: 'info', msg: `採樣率: ${settings.sampleRate}Hz` },
+                    { type: 'info', msg: `聲道數: ${settings.channelCount}` }
+                ];
+                
+                // 停止音頻流
+                stream.getTracks().forEach(track => track.stop());
+                
+                displayResults(container, results);
+            } catch (error) {
+                const results = [
+                    { type: 'error', msg: `❌ 麥克風訪問失敗: ${error.name}` },
+                    { type: 'warning', msg: '可能原因：權限被拒絕、設備被占用、或驅動問題' }
+                ];
+                displayResults(container, results);
+            }
+        }
+
+        // 4. 語音識別測試
+        async function testSpeechRecognition() {
+            const container = document.getElementById('recognitionCheck');
+            const btn = document.getElementById('recognitionBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            
+            if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+                container.innerHTML = '<div class="result error">❌ 您的瀏覽器不支持語音識別</div>';
+                return;
+            }
+            
+            try {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.lang = 'zh-HK';
+                recognition.continuous = false;
+                recognition.interimResults = true;
+                
+                container.innerHTML = '<div class="result info">🎤 請說話...</div>';
+                btn.disabled = true;
+                stopBtn.disabled = false;
+                
+                recognition.onstart = () => {
+                    container.innerHTML += '<div class="result success">✅ 語音識別已啟動</div>';
+                };
+                
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    const confidence = event.results[0][0].confidence;
+                    container.innerHTML += `<div class="result success">✅ 識別結果: ${transcript}</div>`;
+                    container.innerHTML += `<div class="result info">信心度: ${(confidence * 100).toFixed(2)}%</div>`;
+                };
+                
+                recognition.onerror = (event) => {
+                    let errorMsg = '';
+                    let solution = '';
+                    
+                    switch(event.error) {
+                        case 'network':
+                            errorMsg = '❌ 網絡錯誤';
+                            solution = '檢查網絡連接、關閉VPN、檢查防火墻';
+                            break;
+                        case 'not-allowed':
+                            errorMsg = '❌ 權限被拒絕';
+                            solution = '在瀏覽器設置中允許麥克風訪問';
+                            break;
+                        case 'no-speech':
+                            errorMsg = '⚠️ 未檢測到語音';
+                            solution = '請確保麥克風工作正常並說話';
+                            break;
+                        default:
+                            errorMsg = `❌ 錯誤: ${event.error}`;
+                            solution = '請查看瀏覽器控制台獲取更多信息';
+                    }
+                    
+                    container.innerHTML += `<div class="result error">${errorMsg}</div>`;
+                    container.innerHTML += `<div class="result warning">💡 解決方案: ${solution}</div>`;
+                    
+                    btn.disabled = false;
+                    stopBtn.disabled = true;
+                };
+                
+                recognition.onend = () => {
+                    container.innerHTML += '<div class="result info">語音識別已結束</div>';
+                    btn.disabled = false;
+                    stopBtn.disabled = true;
+                };
+                
+                recognition.start();
+                
+            } catch (error) {
+                container.innerHTML = `<div class="result error">❌ 啟動失敗: ${error.message}</div>`;
+                btn.disabled = false;
+                stopBtn.disabled = true;
+            }
+        }
+
+        function stopRecognition() {
+            if (recognition) {
+                recognition.stop();
+            }
+        }
+
+        // 5. 語音合成測試
+        function testSpeechSynthesis() {
+            const container = document.getElementById('synthesisCheck');
+            const text = document.getElementById('testText').value;
+            
+            if (!('speechSynthesis' in window)) {
+                container.innerHTML = '<div class="result error">❌ 您的瀏覽器不支持語音合成</div>';
+                return;
+            }
+            
+            try {
+                speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'zh-HK';
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+                
+                // 選擇廣東話語音
+                const voices = speechSynthesis.getVoices();
+                const cantoneseVoice = voices.find(v => 
+                    v.lang.includes('zh-HK') || 
+                    v.lang.includes('yue') ||
+                    v.name.includes('Cantonese')
+                );
+                
+                if (cantoneseVoice) {
+                    utterance.voice = cantoneseVoice;
+                }
+                
+                utterance.onstart = () => {
+                    container.innerHTML = '<div class="result success">✅ 開始播放...</div>';
+                };
+                
+                utterance.onend = () => {
+                    container.innerHTML += '<div class="result success">✅ 播放完成</div>';
+                };
+                
+                utterance.onerror = (event) => {
+                    container.innerHTML += `<div class="result error">❌ 播放失敗: ${event.error}</div>`;
+                };
+                
+                speechSynthesis.speak(utterance);
+                
+            } catch (error) {
+                container.innerHTML = `<div class="result error">❌ 錯誤: ${error.message}</div>`;
+            }
+        }
+
+        // 6. 列出可用語音
+        function listVoices() {
+            const container = document.getElementById('voicesList');
+            
+            if (!('speechSynthesis' in window)) {
+                container.innerHTML = '<div class="result error">❌ 不支持語音合成</div>';
+                return;
+            }
+            
+            const voices = speechSynthesis.getVoices();
+            
+            if (voices.length === 0) {
+                container.innerHTML = '<div class="result warning">⚠️ 語音列表為空，請稍後再試</div>';
+                return;
+            }
+            
+            let html = `<div class="result info">共找到 ${voices.length} 個語音</div>`;
+            
+            // 廣東話語音
+            const cantoneseVoices = voices.filter(v => 
+                v.lang.includes('zh-HK') || 
+                v.lang.includes('yue') ||
+                v.name.includes('Cantonese')
+            );
+            
+            if (cantoneseVoices.length > 0) {
+                html += '<div class="result success">✅ 廣東話語音：</div>';
+                html += '<pre>';
+                cantoneseVoices.forEach(v => {
+                    html += `${v.name} (${v.lang})${v.default ? ' [默認]' : ''}\n`;
+                });
+                html += '</pre>';
+            } else {
+                html += '<div class="result warning">⚠️ 未找到廣東話語音</div>';
+            }
+            
+            // 所有中文語音
+            const chineseVoices = voices.filter(v => v.lang.includes('zh'));
+            if (chineseVoices.length > 0) {
+                html += '<div class="result info">中文語音列表：</div>';
+                html += '<pre>';
+                chineseVoices.forEach(v => {
+                    html += `${v.name} (${v.lang})\n`;
+                });
+                html += '</pre>';
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // 7. Google服務測試
+        async function testGoogleServices() {
+            const container = document.getElementById('googleCheck');
+            container.innerHTML = '<div class="loading"></div> 測試中...';
+            
+            const results = [];
+            
+            const services = [
+                { name: 'Google主站', url: 'https://www.google.com' },
+                { name: 'Google API', url: 'https://www.googleapis.com' },
+                { name: 'Google Cloud', url: 'https://cloud.google.com' }
+            ];
+            
+            for (const service of services) {
+                try {
+                    const startTime = Date.now();
+                    await fetch(service.url, { 
+                        mode: 'no-cors',
+                        signal: AbortSignal.timeout(5000)
+                    });
+                    const elapsed = Date.now() - startTime;
+                    results.push({ 
+                        type: 'success', 
+                        msg: `✅ ${service.name} 可訪問 (${elapsed}ms)` 
+                    });
+                } catch (error) {
+                    results.push({ 
+                        type: 'error', 
+                        msg: `❌ ${service.name} 不可訪問: ${error.message}` 
+                    });
+                }
+            }
+            
+            displayResults(container, results);
+        }
+
+        // 8. 完整診斷
+        async function runFullDiagnostics() {
+            const container = document.getElementById('fullReport');
+            container.innerHTML = '<div class="loading"></div> 運行完整診斷中...';
+            
+            // 運行所有測試
+            checkBasicEnvironment();
+            await testNetwork();
+            await testMicrophone();
+            await testGoogleServices();
+            listVoices();
+            
+            // 生成報告
+            setTimeout(() => {
+                const summary = document.getElementById('summary');
+                const summaryContent = document.getElementById('summaryContent');
+                
+                let html = '';
+                html += '<div class="summary-item">✅ 診斷完成</div>';
+                
+                // 判斷語音識別是否可用
+                const hasRecognition = 'webkitSpeechRecognition' in window;
+                const isOnline = navigator.onLine;
+                
+                if (hasRecognition && isOnline) {
+                    html += '<div class="summary-item">⚠️ 語音識別：需要Google服務</div>';
+                } else if (!hasRecognition) {
+                    html += '<div class="summary-item">❌ 語音識別：瀏覽器不支持</div>';
+                } else if (!isOnline) {
+                    html += '<div class="summary-item">❌ 語音識別：網絡離線</div>';
+                }
+                
+                // 語音合成
+                if ('speechSynthesis' in window) {
+                    html += '<div class="summary-item">✅ 語音播放：可用</div>';
+                } else {
+                    html += '<div class="summary-item">❌ 語音播放：不可用</div>';
+                }
+                
+                summaryContent.innerHTML = html;
+                summary.style.display = 'block';
+                
+                container.innerHTML = '<div class="result success">✅ 完整診斷已完成，請查看上方各項測試結果</div>';
+            }, 3000);
+        }
+
+        // 輔助函數：顯示結果
+        function displayResults(container, results) {
+            let html = '';
+            results.forEach(result => {
+                html += `<div class="result ${result.type}">${result.msg}</div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        // 頁面加載時自動運行基本檢測
+        window.addEventListener('load', () => {
+            checkBasicEnvironment();
+            
+            // 確保語音列表已加載
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = () => {
+                    console.log('語音列表已加載');
+                };
+            }
+        });
+    </script>
+</body>
+</html>

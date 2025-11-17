@@ -1,0 +1,12 @@
+{
+  "gpu_available": false,
+  "gpu_info": {},
+  "environment": {
+    "NVIDIA_VISIBLE_DEVICES": null,
+    "NVIDIA_DRIVER_CAPABILITIES": null,
+    "CUDA_VISIBLE_DEVICES": null,
+    "OLLAMA_LLM_LIBRARY": null,
+    "FORCE_GPU": "1"
+  },
+  "ollama_url": "http://127.0.0.1:11434"
+}

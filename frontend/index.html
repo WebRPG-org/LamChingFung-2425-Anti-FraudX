@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 防詐騙訓練系統 - 模式選擇</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'PingFang TC', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .modes-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .mode-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .mode-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .mode-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .mode-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .mode-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .mode-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--card-color-1), var(--card-color-2));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .mode-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .mode-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .mode-card.pink {
+            --card-color-1: #ff6b9d;
+            --card-color-2: #c44569;
+        }
+
+        .mode-card.pink::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(135deg, rgba(255,107,157,0.1) 0%, rgba(196,69,105,0.1) 100%);
+            z-index: 0;
+        }
+
+        .mode-card.purple {
+            --card-color-1: #667eea;
+            --card-color-2: #764ba2;
+        }
+
+        .mode-card.purple::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%);
+            z-index: 0;
+        }
+
+        .mode-card.blue {
+            --card-color-1: #36d1dc;
+            --card-color-2: #5b86e5;
+        }
+
+        .mode-card.blue::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(135deg, rgba(54,209,220,0.1) 0%, rgba(91,134,229,0.1) 100%);
+            z-index: 0;
+        }
+
+        .mode-card.green {
+            --card-color-1: #11998e;
+            --card-color-2: #38ef7d;
+        }
+
+        .mode-card.green::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(135deg, rgba(17,153,142,0.1) 0%, rgba(56,239,125,0.1) 100%);
+            z-index: 0;
+        }
+
+        .mode-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .mode-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .mode-title {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .mode-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .mode-badge.new {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .mode-description {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .mode-features {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .mode-features li {
+            color: #666;
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .mode-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .mode-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .mode-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            padding: 20px;
+            opacity: 0.9;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .modes-container {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2.5em;
+            }
+
+            .mode-icon {
+                font-size: 60px;
+            }
+
+            .mode-title {
+                font-size: 1.8em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .mode-card {
+                padding: 30px;
+            }
+
+            .mode-icon {
+                font-size: 50px;
+            }
+
+            .mode-title {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🛡️ AI 防詐騙訓練系統</h1>
+        <p>多模式智能防詐教育平台</p>
+    </div>
+
+    <div class="modes-container">
+        <!-- RPG 遊戲模式 -->
+        <div class="mode-card pink" onclick="openMode('rpg')">
+            <div class="mode-content">
+                <span class="mode-icon">🎮</span>
+                <h2 class="mode-title">RPG 遊戲模式</h2>
+                <span class="mode-badge">已更新</span>
+                <p class="mode-description">
+                    互動式RPG遊戲<br>
+                    與NPC對話學習防詐技巧
+                </p>
+                <ul class="mode-features">
+                    <li>支持人設和騙局輪換</li>
+                    <li>遊戲化學習體驗</li>
+                    <li>實時 AI 對話</li>
+                </ul>
+                <button class="mode-button">開始遊戲</button>
+            </div>
+        </div>
+
+        <!-- 自動模擬模式 -->
+        <div class="mode-card purple" onclick="openMode('simulation')">
+            <div class="mode-content">
+                <span class="mode-icon">🤖</span>
+                <h2 class="mode-title">自動模擬模式</h2>
+                <p class="mode-description">
+                    觀看AI三方對話<br>
+                    騙徒 vs 受害者 vs 防詐專家
+                </p>
+                <ul class="mode-features">
+                    <li>全自動演示詐騙過程</li>
+                    <li>多輪對話模擬</li>
+                    <li>訓練數據生成</li>
+                </ul>
+                <button class="mode-button">開始觀看</button>
+            </div>
+        </div>
+
+        <!-- 個人對話模式 -->
+        <div class="mode-card green" onclick="openMode('chat')">
+            <div class="mode-content">
+                <span class="mode-icon">💬</span>
+                <h2 class="mode-title">個人對話模式</h2>
+                <span class="mode-badge new">全新</span>
+                <p class="mode-description">
+                    一對一 AI 對話<br>
+                    可切換助手或騙徒角色
+                </p>
+                <ul class="mode-features">
+                    <li>防詐助手：專業諮詢</li>
+                    <li>騙徒模擬：安全體驗</li>
+                    <li>10種騙局類型可選</li>
+                </ul>
+                <button class="mode-button">開始對話</button>
+            </div>
+        </div>
+
+        <!-- API 測試模式 -->
+        <div class="mode-card blue" onclick="openMode('test')">
+            <div class="mode-content">
+                <span class="mode-icon">🔧</span>
+                <h2 class="mode-title">API 測試模式</h2>
+                <p class="mode-description">
+                    測試插件功能<br>
+                    驗證 AI 團隊生成
+                </p>
+                <ul class="mode-features">
+                    <li>WebSocket 實時測試</li>
+                    <li>API 端點驗證</li>
+                    <li>系統健康檢查</li>
+                </ul>
+                <button class="mode-button">開始測試</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>🛡️ AI 防詐騙訓練系統 v2.0</p>
+        <p>使用 Google ADK + Ollama 技術 | 本地部署，數據安全</p>
+    </div>
+
+    <script>
+        // 打開指定模式
+        function openMode(mode) {
+            const routes = {
+                'rpg': '/rpg',
+                'simulation': '/app',
+                'chat': '/personal_chat.html',
+                'test': '/test'
+            };
+            
+            if (routes[mode]) {
+                window.location.href = routes[mode];
+            }
+        }
+
+        // 檢查後端服務狀態
+        async function checkBackendStatus() {
+            try {
+                const response = await fetch('http://localhost:8000/');
+                if (response.ok) {
+                    console.log('✅ 後端服務運行正常');
+                    return true;
+                }
+            } catch (error) {
+                console.warn('⚠️ 後端服務未運行，部分功能可能無法使用');
+                console.log('請執行: python backend/main.py');
+                
+                // 顯示警告提示
+                const warning = document.createElement('div');
+                warning.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: #ff9800;
+                    color: white;
+                    padding: 15px 30px;
+                    border-radius: 10px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                    z-index: 9999;
+                    font-weight: bold;
+                `;
+                warning.textContent = '⚠️ 後端服務未運行，請先啟動: python backend/main.py';
+                document.body.appendChild(warning);
+                
+                setTimeout(() => warning.remove(), 5000);
+                return false;
+            }
+        }
+
+        // 頁面加載時檢查
+        window.addEventListener('load', () => {
+            checkBackendStatus();
+        });
+
+        // 添加鍵盤快捷鍵
+        document.addEventListener('keydown', function(e) {
+            if (e.key === '1') openMode('rpg');
+            if (e.key === '2') openMode('simulation');
+            if (e.key === '3') openMode('chat');
+            if (e.key === '4') openMode('test');
+            
+            // ESC 鍵返回首頁（如果在子頁面）
+            if (e.key === 'Escape') {
+                if (window.location.pathname !== '/') {
+                    window.location.href = '/';
+                }
+            }
+        });
+
+        // 添加工具提示
+        console.log(`
+╔════════════════════════════════════════╗
+║   🛡️  AI 防詐騙訓練系統 v2.0          ║
+╠════════════════════════════════════════╣
+║  快捷鍵：                               ║
+║  1 - RPG 遊戲模式                      ║
+║  2 - 自動模擬模式                      ║
+║  3 - 個人對話模式 (新)                 ║
+║  4 - API 測試模式                      ║
+║  ESC - 返回首頁                        ║
+╚════════════════════════════════════════╝
+        `);
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+# 开发环境配置
+version: '3.8'
+
+services:
+  ollama:
+    # 开发环境可能需要更频繁的重启
+    restart: "no"
+    
+    # 开发环境日志
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ai-antiscam-backend:
+    # 开发环境配置
+    restart: "no"
+    
+    # 开发环境变量
+    environment:
+      - APP_ENV=development
+      - LOG_LEVEL=DEBUG
+      - PYTHONDONTWRITEBYTECODE=1
+      - RELOAD=true
+      - FORCE_GPU=${FORCE_GPU:-1}  # 开发环境默认强制GPU
+    
+    # 开发模式：挂载代码以支持热重载
+    volumes:
+      # 代码挂载(可读写，支持热重载)
+      - ./backend:/app/backend
+      - ./frontend:/app/frontend
+      - ./start_server.py:/app/start_server.py
+      
+      # 开发数据持久化到本地
+      - ./backend/training_data:/app/backend/training_data
+      - ./backend/models:/app/backend/models
+      - ./backend/db:/app/backend/db
+      - ./backend/arms_race_data:/app/backend/arms_race_data
+      - ./backend/agent_versions:/app/backend/agent_versions
+      - ./backend/ab_test_results:/app/backend/ab_test_results
+      - ./backend/agents/backups:/app/backend/agents/backups
+    
+    # 开发环境使用热重载启动
+    command: >
+      sh -c "
+      cd /app/backend &&
+      uvicorn main:app --host 0.0.0.0 --port 8000 --reload --log-level debug
+      "
+    
+    # 开发环境日志
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # 开发工具端口
+    ports:
+      - "8000:8000"
+      - "5678:5678"  # Python debugger端口(如果需要)
+

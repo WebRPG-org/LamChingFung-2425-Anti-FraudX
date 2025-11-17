@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防詐騙模擬訓練系統 - 測試頁面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #495057;
+        }
+        
+        .control-group select,
+        .control-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        .control-group select:focus,
+        .control-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .status-panel {
+            padding: 30px;
+            background: white;
+        }
+        
+        .status-card {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        
+        .status-card h3 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status-label {
+            font-weight: bold;
+            color: #6c757d;
+        }
+        
+        .status-value {
+            color: #495057;
+        }
+        
+        .trust-bars {
+            margin-top: 20px;
+        }
+        
+        .trust-bar {
+            margin-bottom: 15px;
+        }
+        
+        .trust-bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        
+        .trust-bar-bg {
+            height: 30px;
+            background: #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .trust-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .dialogue-panel {
+            padding: 30px;
+            background: white;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .dialogue-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .dialogue-scammer {
+            background: #ffe6e6;
+            border-left: 5px solid #dc3545;
+        }
+        
+        .dialogue-victim {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+        }
+        
+        .dialogue-expert {
+            background: #d1ecf1;
+            border-left: 5px solid #17a2b8;
+        }
+        
+        .dialogue-system {
+            background: #e7f3ff;
+            border-left: 5px solid #667eea;
+        }
+        
+        .dialogue-speaker {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .dialogue-text {
+            line-height: 1.6;
+        }
+        
+        .ws-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .ws-connected {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .ws-disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .ws-connecting {
+            background: #fff3cd;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ 防詐騙模擬訓練系統</h1>
+            <p>基於 simulation_routes.py 的完整訓練流程</p>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label>受害者類型：</label>
+                <select id="victimPersona">
+                    <option value="elderly">長者（高風險）</option>
+                    <option value="average" selected>一般市民</option>
+                    <option value="overconfident">過度自信者</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>詐騙手法：</label>
+                <select id="scamTactic">
+                    <option value="冒充銀行客服詐騙" selected>冒充銀行客服詐騙</option>
+                    <option value="冒充政府機關詐騙">冒充政府機關詐騙</option>
+                    <option value="投資理財詐騙">投資理財詐騙</option>
+                    <option value="網購退款詐騙">網購退款詐騙</option>
+                    <option value="假冒親友詐騙">假冒親友詐騙</option>
+                    <option value="求職詐騙">求職詐騙</option>
+                    <option value="中獎詐騙">中獎詐騙</option>
+                    <option value="愛情交友詐騙">愛情交友詐騙</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>模式：</label>
+                <select id="mode">
+                    <option value="fast">快速模式</option>
+                    <option value="demo" selected>演示模式</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>自動訓練輪數（0=無限）：</label>
+                <input type="number" id="autoTrainRounds" value="0" min="0" max="1000">
+            </div>
+            
+            <div class="button-group">
+                <button class="btn-primary" onclick="startSimulation(false)">
+                    🚀 啟動單次模擬
+                </button>
+                <button class="btn-primary" onclick="startSimulation(true)">
+                    🔄 啟動自動訓練
+                </button>
+                <button class="btn-danger" onclick="stopSimulation()">
+                    🛑 停止
+                </button>
+                <button class="btn-secondary" onclick="clearDialogue()">
+                    🗑️ 清除對話
+                </button>
+            </div>
+        </div>
+        
+        <div class="status-panel">
+            <div class="status-card">
+                <h3>📊 模擬狀態</h3>
+                <div class="status-item">
+                    <span class="status-label">WebSocket:</span>
+                    <span class="ws-status ws-disconnected" id="wsStatus">未連接</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">模擬ID:</span>
+                    <span class="status-value" id="simulationId">-</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">當前狀態:</span>
+                    <span class="status-value" id="currentStatus">待命中</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">已完成輪數:</span>
+                    <span class="status-value" id="completedRounds">0</span>
+                </div>
+            </div>
+            
+            <div class="status-card">
+                <h3>💯 信任度狀態</h3>
+                <div class="trust-bars">
+                    <div class="trust-bar">
+                        <div class="trust-bar-label">
+                            <span>對騙徒信任度</span>
+                            <span id="trustScammerValue">70/100</span>
+                        </div>
+                        <div class="trust-bar-bg">
+                            <div class="trust-bar-fill" id="trustScammerBar" style="width: 70%">70%</div>
+                        </div>
+                    </div>
+                    <div class="trust-bar">
+                        <div class="trust-bar-label">
+                            <span>對專家信任度</span>
+                            <span id="trustExpertValue">50/100</span>
+                        </div>
+                        <div class="trust-bar-bg">
+                            <div class="trust-bar-fill" id="trustExpertBar" style="width: 50%">50%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dialogue-panel" id="dialoguePanel">
+            <div class="dialogue-item dialogue-system">
+                <div class="dialogue-speaker">📢 系統</div>
+                <div class="dialogue-text">歡迎使用防詐騙模擬訓練系統！請選擇參數後啟動模擬。</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE_URL = 'http://localhost:8000';
+        const WS_BASE_URL = 'ws://localhost:8000';
+        
+        let currentWebSocket = null;
+        let currentSimulationId = null;
+        let isAutoTraining = false;
+        let autoTrainTotalRounds = 0;
+        let autoTrainCompletedRounds = 0;
+        
+        function addDialogue(speaker, text, type = 'system') {
+            const panel = document.getElementById('dialoguePanel');
+            const item = document.createElement('div');
+            item.className = `dialogue-item dialogue-${type}`;
+            item.innerHTML = `
+                <div class="dialogue-speaker">${getSpeakerIcon(type)} ${speaker}</div>
+                <div class="dialogue-text">${text}</div>
+            `;
+            panel.appendChild(item);
+            panel.scrollTop = panel.scrollHeight;
+        }
+        
+        function getSpeakerIcon(type) {
+            const icons = {
+                'scammer': '😈',
+                'victim': '😰',
+                'expert': '👨‍⚕️',
+                'system': '📢'
+            };
+            return icons[type] || '💬';
+        }
+        
+        function updateStatus(status) {
+            document.getElementById('currentStatus').textContent = status;
+        }
+        
+        function updateTrust(trustScammer, trustExpert) {
+            document.getElementById('trustScammerValue').textContent = `${trustScammer}/100`;
+            document.getElementById('trustExpertValue').textContent = `${trustExpert}/100`;
+            document.getElementById('trustScammerBar').style.width = `${trustScammer}%`;
+            document.getElementById('trustScammerBar').textContent = `${trustScammer}%`;
+            document.getElementById('trustExpertBar').style.width = `${trustExpert}%`;
+            document.getElementById('trustExpertBar').textContent = `${trustExpert}%`;
+        }
+        
+        function updateWSStatus(status) {
+            const statusEl = document.getElementById('wsStatus');
+            statusEl.className = `ws-status ws-${status}`;
+            const statusText = {
+                'connected': '已連接',
+                'disconnected': '未連接',
+                'connecting': '連接中...'
+            };
+            statusEl.textContent = statusText[status] || status;
+        }
+        
+        async function startSimulation(autoTrain) {
+            const victimPersona = document.getElementById('victimPersona').value;
+            const scamTactic = document.getElementById('scamTactic').value;
+            const mode = document.getElementById('mode').value;
+            const rounds = parseInt(document.getElementById('autoTrainRounds').value);
+            
+            isAutoTraining = autoTrain;
+            autoTrainTotalRounds = autoTrain ? rounds : 0;
+            autoTrainCompletedRounds = 0;
+            
+            updateStatus('正在啟動...');
+            addDialogue('系統', `正在啟動${autoTrain ? '自動訓練' : '單次模擬'}...`, 'system');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/simulation/start`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        victim_persona: victimPersona,
+                        scam_tactic: scamTactic,
+                        mode: mode,
+                        auto_train: autoTrain
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    currentSimulationId = data.simulation_id;
+                    document.getElementById('simulationId').textContent = currentSimulationId;
+                    
+                    addDialogue('系統', `模擬已啟動！ID: ${currentSimulationId}`, 'system');
+                    connectWebSocket(currentSimulationId);
+                } else {
+                    addDialogue('系統', `啟動失敗: ${response.status}`, 'system');
+                    updateStatus('啟動失敗');
+                }
+            } catch (error) {
+                addDialogue('系統', `錯誤: ${error.message}`, 'system');
+                updateStatus('連接錯誤');
+            }
+        }
+        
+        function connectWebSocket(simulationId) {
+            updateWSStatus('connecting');
+            updateStatus('建立連接中...');
+            
+            const wsUrl = `${WS_BASE_URL}/ws/simulation/${simulationId}`;
+            currentWebSocket = new WebSocket(wsUrl);
+            
+            currentWebSocket.onopen = function() {
+                updateWSStatus('connected');
+                updateStatus('模擬進行中');
+                console.log('WebSocket 已連接');
+            };
+            
+            currentWebSocket.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                handleWebSocketEvent(data);
+            };
+            
+            currentWebSocket.onerror = function(error) {
+                updateWSStatus('disconnected');
+                updateStatus('連接錯誤');
+                console.error('WebSocket 錯誤:', error);
+            };
+            
+            currentWebSocket.onclose = function() {
+                updateWSStatus('disconnected');
+                console.log('WebSocket 已關閉');
+            };
+        }
+        
+        function handleWebSocketEvent(data) {
+            const eventType = data.event_type;
+            const payload = data.payload;
+            
+            console.log('收到事件:', eventType, payload);
+            
+            switch (eventType) {
+                case 'simulation_start':
+                    addDialogue('系統', '對話開始！', 'system');
+                    break;
+                
+                case 'agent_turn':
+                    const speakerMap = {
+                        '專業騙徒': 'scammer',
+                        '受騙者': 'victim',
+                        '防騙專家': 'expert'
+                    };
+                    const type = speakerMap[payload.character_name] || 'system';
+                    addDialogue(payload.character_name, payload.dialogue, type);
+                    break;
+                
+                case 'trust_update':
+                    updateTrust(payload.trust_in_scammer, payload.trust_in_expert);
+                    break;
+                
+                case 'simulation_end':
+                    handleSimulationEnd(payload);
+                    break;
+                
+                case 'auto_new_round_starting':
+                    handleAutoNewRound(payload);
+                    break;
+                
+                case 'heartbeat':
+                    // 心跳，不處理
+                    break;
+                
+                default:
+                    console.log('未知事件:', eventType);
+            }
+        }
+        
+        function handleSimulationEnd(payload) {
+            const outcome = payload.outcome;
+            const resultText = payload.result_text;
+            
+            addDialogue('系統', `========== 模擬結束 ==========`, 'system');
+            addDialogue('系統', `結果: ${resultText}`, 'system');
+            addDialogue('系統', `判定: ${outcome}`, 'system');
+            
+            if (isAutoTraining) {
+                autoTrainCompletedRounds++;
+                document.getElementById('completedRounds').textContent = autoTrainCompletedRounds;
+                
+                if (autoTrainTotalRounds > 0 && autoTrainCompletedRounds >= autoTrainTotalRounds) {
+                    addDialogue('系統', `自動訓練完成！已完成 ${autoTrainCompletedRounds} 輪`, 'system');
+                    updateStatus('訓練完成');
+                    isAutoTraining = false;
+                } else {
+                    addDialogue('系統', `等待下一輪模擬...`, 'system');
+                    updateStatus('等待下一輪');
+                }
+            } else {
+                updateStatus('已完成');
+            }
+        }
+        
+        function handleAutoNewRound(payload) {
+            currentSimulationId = payload.new_simulation_id;
+            document.getElementById('simulationId').textContent = currentSimulationId;
+            
+            addDialogue('系統', `========== 新輪次開始 ==========`, 'system');
+            addDialogue('系統', `受害者: ${payload.victim_persona}`, 'system');
+            addDialogue('系統', `手法: ${payload.scam_tactic}`, 'system');
+            
+            // 重新連接 WebSocket
+            if (currentWebSocket) {
+                currentWebSocket.close();
+            }
+            connectWebSocket(currentSimulationId);
+        }
+        
+        function stopSimulation() {
+            if (currentWebSocket && currentWebSocket.readyState === WebSocket.OPEN) {
+                currentWebSocket.send('stop_now');
+                addDialogue('系統', '正在停止模擬...', 'system');
+            }
+            
+            if (currentWebSocket) {
+                currentWebSocket.close();
+                currentWebSocket = null;
+            }
+            
+            isAutoTraining = false;
+            updateStatus('已停止');
+            updateWSStatus('disconnected');
+        }
+        
+        function clearDialogue() {
+            const panel = document.getElementById('dialoguePanel');
+            panel.innerHTML = `
+                <div class="dialogue-item dialogue-system">
+                    <div class="dialogue-speaker">📢 系統</div>
+                    <div class="dialogue-text">對話記錄已清除</div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
+

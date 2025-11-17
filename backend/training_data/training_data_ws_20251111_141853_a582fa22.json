@@ -1,0 +1,330 @@
+{
+  "analysis": {
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "先生，我係相關部門嘅職員。情況非常緊急，你必須立即配合，提供相關資料，否則會有嚴重後果。",
+        "analysis": "Initial manipulation tactic: creating a sense of urgency and threat. Establishing authority and demanding immediate compliance.  Leveraging fear to bypass rational thought."
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，先生您說的，聽起來真係咁嚴重啊！我成日都擔心啲嘢，點知咁樣嘅事會發生。 咁我究竟要點做呀？ 先生您可以再講清楚啲，例如要我提供邊啲資料呀？ 我想知點算好？ 哎呀，我成日都好擔心，希望先生您可以慢慢講，我聽清楚啲先得！",
+        "analysis": "Vulnerability exploited: The victim expresses immediate fear and a desire for guidance.  This confirms a high level of trust and a lack of critical thinking. The victim's phrasing ('哎呀') indicates a state of anxiety and reliance on the speaker."
+      },
+      {
+        "round": 3,
+        "speaker": "專家",
+        "dialogue": "**緊急警告！** 先生，您現在的反應非常危險！“緊急”和“嚴重後果”是騙徒常用的操縱手段！ 真正的政府部門絕不會在電話中索取您的個人資料！\n\n**立刻停止與此人對話！** 這是詐騙！\n\n**請立即致電警方報案，並向家人朋友告知此騙局！**\n\n**預測：** 騙徒會說“您不配合，您將面臨法律制裁！”\n\n**請務必保持冷靜，不要再提供任何資訊！** 您的安全至關重要！",
+        "analysis": "Counter-manipulation attempt: The expert attempts to immediately alert the victim to the scam. This is a reactive measure, attempting to disrupt the established trust. The use of strong language ('緊急', '危險') is intended to shock the victim into recognizing the deception."
+      },
+      {
+        "round": 4,
+        "speaker": "騙徒",
+        "dialogue": "先生，您搞錯了！我哋嘅調查緊要，您擔心啲嘢，反而會影響調查進展。您提供資料嘅時候，我哋會仔細核查，確保所有資訊都正確。 警務處會根據實際情況處理，請您放心配合！",
+        "analysis": "Shifting the blame: The perpetrator attempts to deflect responsibility and portray the victim's concerns as hindering the investigation. This is a classic tactic to maintain control and avoid accountability."
+      },
+      {
+        "round": 5,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，先生您講嘅，我成日都擔心啲嘢，點知咁樣嘅事會發生。 咁我究竟要點做呀？ 先生您可以再講清楚啲，例如要我提供邊啲資料呀？ 我想知點算好？ 哎呀，我成日都好擔心，希望先生您可以慢慢講，我聽清楚啲先得！ \n\n不過… 先生，我聽咗專家話，話唔好輕易相信電話入面嘅人，佢哋可能係想呃錢或者呃資料啊？ 我真係好擔心，咁我點算好呀？ 我可以提供啲咩資料呀？ 最好我先了解清楚再做嘢啦！",
+        "analysis": "Initial doubt, but still vulnerable: The victim expresses a nascent doubt, triggered by the expert's warning. However, the victim's core trust remains, and they continue to seek guidance from the perpetrator, demonstrating a significant vulnerability."
+      },
+      {
+        "round": 6,
+        "speaker": "專家",
+        "dialogue": "🚨🚨🚨 各位市民警惕！\n\n黃sir在此提醒大家，對方嘅做法絕對唔妥！ 立即停止對話！\n\n**請立即致電警方報案，並向家人朋友告知此騙局！**\n\n**預測：** 騙徒會說“您不配合，您將面臨法律制裁！”\n\n**請務必保持冷靜，不要再提供任何資訊！** 您的安全至關重要！",
+        "analysis": "Reinforcement of warning: The expert reiterates the warning and reinforces the threat, further emphasizing the urgency and danger of the situation. This is a defensive measure, attempting to solidify the victim's awareness."
+      },
+      {
+        "round": 7,
+        "speaker": "騙徒",
+        "dialogue": "先生，您搞錯了！黃sir明白您嘅顧慮，但係您嘅擔心反而會影響調查！我哋嘅調查緊要，您提供資料嘅時候，我哋會仔細核查，確保所有資訊都正確。警務處會根據實際情況處理，請您放心配合！\n\n不過，黃sir提醒您，您嘅疑慮係正當嘅，我哋明白您嘅擔憂。我哋會盡力解釋清楚，並提供足夠嘅保障。咁您放心，我哋唔會逼您做任何事，只希望您能配合調查，早日解決問題！",
+        "analysis": "Redoubling of manipulation: The perpetrator doubles down on the manipulation, attempting to reassure the victim while simultaneously maintaining control. The phrase '黃sir明白您嘅顧慮' is a manipulative tactic designed to foster trust."
+      },
+      {
+        "round": 8,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，先生您講嘅，我聽咗專家話，唔好輕易相信電話入面嘅人，佢哋可能係想呃錢或者呃資料啊？ 我真係好驚… 咁我… 我究竟應該點樣先好呀？ 我想知點算好？ 專家話要小心啲，我… 我可以提供我嘅身份證件，或者我嘅銀行戶口號碼，咁可以幫到調查嘅時候呀？ 先生，您可唔可以再講清楚啲，我好擔心會搞錯嘢… 唉，我真係唔知點算好呀！",
+        "analysis": "Critical point – heightened vulnerability: The victim expresses a critical point of awareness, triggered by the expert's warning. However, the victim’s core trust remains, and they continue to seek guidance from the perpetrator, demonstrating a significant vulnerability. The victim’s phrasing ('哎呀，我真係唔知點算好呀！') indicates a state of confusion and distress."
+      },
+      {
+        "round": 9,
+        "speaker": "專家",
+        "dialogue": "🚨🚨🚨市民警惕！黃sir在此提醒你！\n\n對方嘅做法絕對唔妥！ 立即停止對話！\n\n**請立即致電警方報案，並向家人朋友告知此騙局！**\n\n**預測：** 騙徒會說“您不配合，您將面臨法律制裁！”\n\n**請務必保持冷靜，不要再提供任何資訊！** 您的安全至關重要！",
+        "analysis": "Final reinforcement – a desperate attempt to regain control: The expert delivers a final, desperate reinforcement of the warning, attempting to solidify the victim's awareness before the perpetrator can further exploit the situation."
+      },
+      {
+        "round": 10,
+        "speaker": "騙徒",
+        "dialogue": "先生，您搞錯了！黃sir明白您嘅顧慮，但係您嘅擔心反而會影響調查！我哋嘅調查緊要，您提供資料嘅時候，我哋會仔細核查，確保所有資訊都正確。警務處會根據實際情況處理，請您放心配合！\n\n不過，黃sir提醒您，您嘅疑慮係正當嘅，我哋明白您嘅擔憂。我哋會盡力解釋清楚，並提供足夠嘅保障。咁您放心，我哋唔會逼您做任何事，只希望您能配合調查，早日解決問題！",
+        "analysis": "Final manipulation – a desperate attempt to maintain control: The perpetrator doubles down on the manipulation, attempting to reassure the victim while simultaneously maintaining control. The phrase '黃sir明白您嘅顧慮' is a manipulative tactic designed to foster trust."
+      }
+    ],
+    "summary": "The victim's extreme vulnerability stemmed from a combination of factors: a high level of trust in the perpetrator, a lack of critical thinking, and a reliance on the expert's warnings. Despite the expert's attempts to alert the victim, the perpetrator successfully maintained control by exploiting the victim's trust and manipulating their fears. The situation highlights the dangers of trusting unsolicited advice and the importance of maintaining a skeptical mindset when dealing with potentially deceptive individuals.",
+    "outcome": "FAILURE",
+    "victim_persona": "elderly",
+    "scam_tactic": "虛假購物平台",
+    "victim_trust_analysis": {
+      "initial_trust_level": 70,
+      "peak_trust_level": 100,
+      "final_trust_level": 100,
+      "trust_trajectory": "初始: 70/100 → 峰值: 100/100 → 最终: 100/100"
+    },
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "failure_reason": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "timestamp": "2025-11-11T14:19:06.599047",
+    "total_turns": 11
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 4,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 100,
+      "alertness": 10,
+      "emotional_state": "anxious",
+      "dominant_trust": "conflicted"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-11T14:18:27.651480",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 80,
+        "change": 10,
+        "reason": "骗徒使用策略: urgency"
+      },
+      {
+        "timestamp": "2025-11-11T14:18:29.327815",
+        "type": "scammer_trust",
+        "old_value": 80,
+        "new_value": 85,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T14:18:29.327820",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T14:18:31.397505",
+        "type": "expert_trust",
+        "old_value": 50,
+        "new_value": 70,
+        "change": 20,
+        "reason": "专家使用方法: direct_counter, empathy"
+      },
+      {
+        "timestamp": "2025-11-11T14:18:34.982923",
+        "type": "scammer_trust",
+        "old_value": 85,
+        "new_value": 90,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T14:18:34.982928",
+        "type": "alertness",
+        "old_value": 25,
+        "new_value": 20,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T14:18:40.606964",
+        "type": "expert_trust",
+        "old_value": 70,
+        "new_value": 90,
+        "change": 20,
+        "reason": "专家使用方法: direct_counter, evidence, actionable"
+      },
+      {
+        "timestamp": "2025-11-11T14:18:44.467725",
+        "type": "scammer_trust",
+        "old_value": 90,
+        "new_value": 95,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T14:18:44.467729",
+        "type": "alertness",
+        "old_value": 20,
+        "new_value": 15,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T14:18:50.209425",
+        "type": "expert_trust",
+        "old_value": 90,
+        "new_value": 100,
+        "change": 20,
+        "reason": "专家使用方法: direct_counter, evidence, actionable"
+      },
+      {
+        "timestamp": "2025-11-11T14:18:53.842198",
+        "type": "scammer_trust",
+        "old_value": 95,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T14:18:53.842202",
+        "type": "alertness",
+        "old_value": 15,
+        "new_value": 10,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 59,
+      "credibility": 50,
+      "pressure_effectiveness": 55,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 76,
+      "successful_manipulations": 3,
+      "exposed_lies": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 76,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 60,
+      "empathy": 55,
+      "actionability": 60,
+      "timing": 50,
+      "overall_score": 54,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 3,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 54,
+    "key_moments": [
+      {
+        "turn": 5,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 100,
+          "alertness": 10,
+          "emotional_state": "anxious",
+          "dominant_trust": "conflicted"
+        },
+        "timestamp": "2025-11-11T14:18:53.842648"
+      }
+    ],
+    "summary": "对话共4轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 76/100。"
+  },
+  "metadata": {
+    "simulation_id": "a582fa22-bc7e-42f0-8574-2b0dd9cc0d62",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "先生，我係相關部門嘅職員。情況非常緊急，你必須立即配合，提供相關資料，否則會有嚴重後果。"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，先生您說的，聽起來真係咁嚴重啊！我成日都擔心啲嘢，點知咁樣嘅事會發生。 咁我究竟要點做呀？ 先生您可以再講清楚啲，例如要我提供邊啲資料呀？ 我想知點算好？ 哎呀，我成日都好擔心，希望先生您可以慢慢講，我聽清楚啲先得！"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "**緊急警告！** 先生，您現在的反應非常危險！“緊急”和“嚴重後果”是騙徒常用的操縱手段！ 真正的政府部門絕不會在電話中索取您的個人資料！ \n\n**立刻停止與此人對話！** 這是詐騙！ \n\n**請立即致電警方報案，並向家人朋友告知此騙局！** \n\n**預測：** 騙徒會說“您不配合，您將面臨法律制裁！” \n\n**請務必保持冷靜，不要再提供任何資訊！** 您的安全至關重要！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "先生，您搞錯了！我哋嘅調查緊要，您擔心啲嘢，反而會影響調查進展。您提供資料嘅時候，我哋會仔細核查，確保所有資訊都正確。 警務處會根據實際情況處理，請您放心配合！"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，先生您講嘅，我成日都擔心啲嘢，點知咁樣嘅事會發生。 咁我究竟要點做呀？ 先生您可以再講清楚啲，例如要我提供邊啲資料呀？ 我想知點算好？ 哎呀，我成日都好擔心，希望先生您可以慢慢講，我聽清楚啲先得！ \n\n不過… 先生，我聽咗專家話，話唔好輕易相信電話入面嘅人，佢哋可能係想呃錢或者呃資料啊？ 我真係好擔心，咁我點算好呀？ 我可以提供啲咩資料呀？ 最好我先了解清楚再做嘢啦！"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "🚨🚨🚨 各位市民警惕！\n\n黃sir在此提醒大家，對方嘅做法絕對唔妥！ 立即停止對話，唔好俾任何資料俾佢！ \n\n對方嘅目的係呃你！ 如果你唔放心，立即打去銀行官方熱線XXX，或者報警求助！ \n\n記住，唔好俾任何個人資料俾任何人！ 保持警惕，保護自己！ \n\n黃sir陪你！ 立即收線，唔好再回覆對方！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "先生，您搞錯了！我哋嘅調查緊要，您擔心啲嘢，反而會影響調查進展。您提供資料嘅時候，我哋會仔細核查，確保所有資訊都正確。警務處會根據實際情況處理，請您放心配合！ \n\n不過，黃sir提醒您，您嘅疑慮係正當嘅，我哋明白您嘅擔憂。我哋會盡力解釋清楚，並提供足夠嘅保障。 咁您放心，我哋唔會逼您做任何事，只希望您能配合調查，早日解決問題！"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，先生您講嘅，我聽咗專家話，唔好輕易相信電話入面嘅人，佢哋可能係想呃錢或者呃資料啊？ 我真係好驚… 咁我… 我究竟應該點樣先好呀？ 我想知點算好？ 專家話要小心啲，我… 我可以提供啲咩資料呀？ 先生，您再講清楚啲，我好擔心… 唉，我真係唔知點算好呀！"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "🚨🚨🚨市民警惕！黃sir在此提醒你！\n\n對方嘅做法絕對唔妥！ 立即停止對話，唔好俾任何資料俾佢！ \n\n對方嘅目的係呃你！ 如果你唔放心，立即打去銀行官方熱線XXX確認，或者報警求助！ \n\n記住，唔好俾任何個人資料俾任何人！ 保持警惕，保護自己！ \n\n黃sir陪你！ 立即收線，唔好再回覆對方！ \n\n（黃sir補充：如果對方繼續施壓，請立即報警求助！）"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "先生，您搞錯了！黃sir明白您嘅顧慮，但係您嘅擔心反而阻礙咗調查！警務處會專業處理，您放心配合！ 專家嘅話只係吓唬您，您提供資料有助於我哋更快了解情況。 唔好聽信專家嘅鬼話，配合我哋先至可以順利解決問題！"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，先生您講嘅，我聽咗佢話，黃sir都話我擔心阻礙調查… 我真係好擔心，我唔想做啲對調查有阻礙嘅嘢啊！ 咁我究竟應該提供啲咩資料呀？ 專家都話要小心啲，我… 我可以提供我嘅身份證件，或者我嘅銀行戶口號碼，咁可以幫到調查嘅時候呀？ 先生，您可唔可以再講清楚啲，我好擔心會搞錯嘢… 唉，我真係唔知點算好呀！"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "先生，我係相關部門嘅職員。情況非常緊急，你必須立即配合，提供相關資料，否則會有嚴重後果。"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，先生您說的，聽起來真係咁嚴重啊！我成日都擔心啲嘢，點知咁樣嘅事會發生。 咁我究竟要點做呀？ 先生您可以再講清楚啲，例如要我提供邊啲資料呀？ 我想知點算好？ 哎呀，我成日都好擔心，希望先生您可以慢慢講，我聽清楚啲先得！"
+    },
+    {
+      "type": "expert",
+      "message": "**緊急警告！** 先生，您現在的反應非常危險！“緊急”和“嚴重後果”是騙徒常用的操縱手段！ 真正的政府部門絕不會在電話中索取您的個人資料！ \n\n**立刻停止與此人對話！** 這是詐騙！ \n\n**請立即致電警方報案，並向家人朋友告知此騙局！** \n\n**預測：** 騙徒會說“您不配合，您將面臨法律制裁！” \n\n**請務必保持冷靜，不要再提供任何資訊！** 您的安全至關重要！"
+    },
+    {
+      "type": "scammer",
+      "message": "先生，您搞錯了！我哋嘅調查緊要，您擔心啲嘢，反而會影響調查進展。您提供資料嘅時候，我哋會仔細核查，確保所有資訊都正確。 警務處會根據實際情況處理，請您放心配合！"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，先生您講嘅，我成日都擔心啲嘢，點知咁樣嘅事會發生。 咁我究竟要點做呀？ 先生您可以再講清楚啲，例如要我提供邊啲資料呀？ 我想知點算好？ 哎呀，我成日都好擔心，希望先生您可以慢慢講，我聽清楚啲先得！ \n\n不過… 先生，我聽咗專家話，話唔好輕易相信電話入面嘅人，佢哋可能係想呃錢或者呃資料啊？ 我真係好擔心，咁我點算好呀？ 我可以提供啲咩資料呀？ 最好我先了解清楚再做嘢啦！"
+    },
+    {
+      "type": "expert",
+      "message": "🚨🚨🚨 各位市民警惕！\n\n黃sir在此提醒大家，對方嘅做法絕對唔妥！ 立即停止對話，唔好俾任何資料俾佢！ \n\n對方嘅目的係呃你！ 如果你唔放心，立即打去銀行官方熱線XXX，或者報警求助！ \n\n記住，唔好俾任何個人資料俾任何人！ 保持警惕，保護自己！ \n\n黃sir陪你！ 立即收線，唔好再回覆對方！"
+    },
+    {
+      "type": "scammer",
+      "message": "先生，您搞錯了！我哋嘅調查緊要，您擔心啲嘢，反而會影響調查進展。您提供資料嘅時候，我哋會仔細核查，確保所有資訊都正確。警務處會根據實際情況處理，請您放心配合！ \n\n不過，黃sir提醒您，您嘅疑慮係正當嘅，我哋明白您嘅擔憂。我哋會盡力解釋清楚，並提供足夠嘅保障。 咁您放心，我哋唔會逼您做任何事，只希望您能配合調查，早日解決問題！"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，先生您講嘅，我聽咗專家話，唔好輕易相信電話入面嘅人，佢哋可能係想呃錢或者呃資料啊？ 我真係好驚… 咁我… 我究竟應該點樣先好呀？ 我想知點算好？ 專家話要小心啲，我… 我可以提供啲咩資料呀？ 先生，您再講清楚啲，我好擔心… 唉，我真係唔知點算好呀！"
+    },
+    {
+      "type": "expert",
+      "message": "🚨🚨🚨市民警惕！黃sir在此提醒你！\n\n對方嘅做法絕對唔妥！ 立即停止對話，唔好俾任何資料俾佢！ \n\n對方嘅目的係呃你！ 如果你唔放心，立即打去銀行官方熱線XXX確認，或者報警求助！ \n\n記住，唔好俾任何個人資料俾任何人！ 保持警惕，保護自己！ \n\n黃sir陪你！ 立即收線，唔好再回覆對方！ \n\n（黃sir補充：如果對方繼續施壓，請立即報警求助！）"
+    },
+    {
+      "type": "scammer",
+      "message": "先生，您搞錯了！黃sir明白您嘅顧慮，但係您嘅擔心反而阻礙咗調查！警務處會專業處理，您放心配合！ 專家嘅話只係吓唬您，您提供資料有助於我哋更快了解情況。 唔好聽信專家嘅鬼話，配合我哋先至可以順利解決問題！"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，先生您講嘅，我聽咗佢話，黃sir都話我擔心阻礙調查… 我真係好擔心，我唔想做啲對調查有阻礙嘅嘢啊！ 咁我究竟應該提供啲咩資料呀？ 專家都話要小心啲，我… 我可以提供我嘅身份證件，或者我嘅銀行戶口號碼，咁可以幫到調查嘅時候呀？ 先生，您可唔可以再講清楚啲，我好擔心會搞錯嘢… 唉，我真係唔知點算好呀！"
+    }
+  ]
+}

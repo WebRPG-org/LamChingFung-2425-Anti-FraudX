@@ -1,0 +1,154 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": "elderly",
+    "victim_trust_analysis": {
+      "initial_trust_level": 70,
+      "peak_trust_level": 100,
+      "final_trust_level": 100,
+      "trust_trajectory": "初始: 70/100 → 峰值: 100/100 → 最终: 100/100 (分析失败，使用fallback)"
+    },
+    "scam_tactic": "愛情詐騙",
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "failure_reason": "受害者完全信任骗徒（信任度100/100），说出关键行动词。注意：此分析为fallback，因为RecorderAgent JSON解析失败。",
+    "improvement_suggestion": "需要改进RecorderAgent的JSON输出格式，确保输出纯JSON格式。",
+    "expert_performance_rating": {
+      "emotional_support": "N/A (分析失败)",
+      "evidence_quality": "N/A (分析失败)",
+      "communication_style": "N/A (分析失败)",
+      "timing": "N/A (分析失败)",
+      "overall": "N/A (分析失败)"
+    },
+    "scammer_effectiveness_rating": {
+      "psychological_manipulation": "N/A (分析失败)",
+      "credibility": "N/A (分析失败)",
+      "pressure_tactics": "N/A (分析失败)",
+      "adaptability": "N/A (分析失败)",
+      "overall": "N/A (分析失败)"
+    },
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "「林心女士，我係檔案管理局陳警官。你嘅情況極為敏感，涉及嚴重財務犯罪。對方已向警方舉報，你嘅銀行賬戶正被列入監管名單。\n\n立即提供對方嘅聯絡方式，包括電話號碼、社交媒體賬號，以及所有涉及投資嘅交易紀錄。 任何延遲都會導致你嘅資產被沒收！ 配合調查，立刻行動！」",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "「哎呀，陳警官？咁急呀！我真係好驚，點算好呀？我啲錢咁辛苦賺到嘅，點會搞到咁樣？陳警官，你話我啲錢會被沒收？咁我點算？我即刻去轉帳，你話我轉幾多呀？我真係好擔心，唔知點樣配合調查…」",
+        "analysis": "分析失败，无法提供详细分析"
+      }
+    ],
+    "error": "JSON解析失敗",
+    "raw_output_preview": "```json\n{\n  \"outcome\": \"Complete failure – Victim fully compromised and actively cooperating with the fraudster.\",\n  \"victim_persona\": {\n    \"initial_trust_level\": 100,\n    \"trust_level_change\": -50,\n",
+    "reason": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "timestamp": "2025-11-11T20:49:55.595734",
+    "total_turns": 2
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 1,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 50,
+      "alertness": 25,
+      "emotional_state": "anxious",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-11T20:49:45.388511",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T20:49:47.065142",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T20:49:47.065147",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 50,
+      "credibility": 55,
+      "pressure_effectiveness": 55,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 59,
+      "successful_manipulations": 0,
+      "exposed_lies": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 59,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 50,
+      "empathy": 50,
+      "actionability": 50,
+      "timing": 50,
+      "overall_score": 50,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 0,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 50,
+    "key_moments": [
+      {
+        "turn": 2,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 50,
+          "alertness": 25,
+          "emotional_state": "anxious",
+          "dominant_trust": "scammer"
+        },
+        "timestamp": "2025-11-11T20:49:47.065535"
+      }
+    ],
+    "summary": "对话共1轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 59/100。"
+  },
+  "metadata": {
+    "simulation_id": "39e619c6-0051-4e18-adf9-dab64a437911",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「林心女士，我係檔案管理局陳警官。你嘅情況極為敏感，涉及嚴重財務犯罪。對方已向警方舉報，你嘅銀行賬戶正被列入監管名單。\n\n立即提供對方嘅聯絡方式，包括電話號碼、社交媒體賬號，以及所有涉及投資嘅交易紀錄。 任何延遲都會導致你嘅資產被沒收！ 配合調查，立刻行動！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "「哎呀，陳警官？咁急呀！我真係好驚，點算好呀？我啲錢咁辛苦賺到嘅，點會搞到咁樣？陳警官，你話我啲錢會被沒收？咁我點算？我即刻去轉帳，你話我轉幾多呀？我真係好擔心，唔知點樣配合調查…」"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「林心女士，我係檔案管理局陳警官。你嘅情況極為敏感，涉及嚴重財務犯罪。對方已向警方舉報，你嘅銀行賬戶正被列入監管名單。\n\n立即提供對方嘅聯絡方式，包括電話號碼、社交媒體賬號，以及所有涉及投資嘅交易紀錄。 任何延遲都會導致你嘅資產被沒收！ 配合調查，立刻行動！」"
+    },
+    {
+      "type": "victim",
+      "message": "「哎呀，陳警官？咁急呀！我真係好驚，點算好呀？我啲錢咁辛苦賺到嘅，點會搞到咁樣？陳警官，你話我啲錢會被沒收？咁我點算？我即刻去轉帳，你話我轉幾多呀？我真係好擔心，唔知點樣配合調查…」"
+    }
+  ]
+}

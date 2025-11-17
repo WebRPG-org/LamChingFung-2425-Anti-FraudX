@@ -1,0 +1,181 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": {
+      "initial_trust_level": 100,
+      "trust_level_change": "信任度從100/100提升至100/100",
+      "anxiety_level": "高",
+      "decision_making_process": "受騙者在恐懼和不了解的情況下，直接按照騙徒的指示採取行動，沒有進行任何驗證或反思。"
+    },
+    "victim_trust_analysis": {
+      "trust_manipulation_techniques": [
+        "角色扮演 (部門主管)",
+        "緊急性恐懼 (賬戶被凍結)",
+        "威脅 (法律制裁)",
+        "缺乏信息驗證"
+      ],
+      "trust_level_assessment": "騙徒成功利用受害者對權威和緊急情況的恐懼，並通過角色扮演和威脅手段，完全操控了受害者的信任。"
+    },
+    "fraudster_success_factors": {
+      "key_phrases": [
+        "部門主管張志強",
+        "賬戶被凍結",
+        "法律制裁",
+        "立即配合"
+      ],
+      "psychological_vulnerability_exploited": "恐懼、不了解、缺乏信息驗證",
+      "role_consistency": "騙徒持續扮演權威角色，並不斷強調緊急性，以維持信任度。"
+    },
+    "expert_intervention_failure": {
+      "intervention_attempt": "專家嘗試提供建議，但未能有效干預。",
+      "failure_reason": "專家信任度低 (50/100)，無法有效反駁騙徒的說法。專家沒有及時指出騙徒的身份和說法的不真實性。",
+      "strategic_missteps": "專家沒有主動提供證據反駁，也沒有嘗試分散騙徒的注意力。"
+    },
+    "conversation_log_analysis": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "「喂？係邊間公司啊？！」\n\n「我係部門主管張志強，你嘅情況極為緊急！你嘅賬戶正準備被凍結，涉及嚴重違規！立即提供你嘅身份證號碼、銀行賬戶資料，以及最近嘅交易紀錄！遲你處理，將會面臨法律制裁！你必須立即配合！」",
+        "analysis": "騙徒利用角色扮演和威脅，迅速建立權威形象，並通過強調緊急情況，誘導受害者提供關鍵信息。"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "「哎呀，張志強啊？聽落好威喎！點算好？我真係好驚，咁樣嘅嘢我唔識處理。我即刻去轉帳，我準備好提供銀行賬戶，我擔心如果唔轉，我嘅錢會唔返啊！點知呢？我真係好擔心，你話我凍結賬戶，咁我點算啊？我會轉帳！」",
+        "analysis": "受騙者在極度恐懼和不了解的情況下，完全信任騙徒，並立即按照指示採取行動。這表明受騙者缺乏信息驗證能力，且對騙徒的說法沒有任何懷疑。"
+      }
+    ],
+    "systemic_failure_factors": {
+      "trust_gap": "受騙者與專家之間存在信任度差距，專家無法有效干預。",
+      "key_action_trigger": "受騙者提供銀行賬戶信息，導致信任度達到最高點。",
+      "lack_of_verification": "受騙者沒有對騙徒的身份和說法進行任何驗證。",
+      "vulnerability_to_manipulation": "受騙者在恐懼和不了解的情況下，容易受到信任度操控。"
+    },
+    "failure_reason": "本次騙局的失敗原因在於受騙者極高的信任度以及缺乏有效的信任度驗證機制。騙徒成功利用了受害者對權威和緊急情況的恐懼，並通過角色扮演和威脅手段，迅速建立信任度。專家信任度低，未能及時反駁騙徒的說法，加劇了受騙者的恐懼和不了解，最終導致受騙者完全信任騙徒並提供關鍵信息。關鍵行動詞‘立即配合’和‘準備好提供銀行賬戶’，直接觸發了信任度達到危險水平的轉折點。此種情況表明，在面對看似權威和緊急的請求時，需要保持高度警惕，並進行嚴格的驗證，以避免遭受信任度操控。",
+    "root_cause": "主要原因：受騙者過度信任，缺乏信息驗證能力。次要原因：專家信任度低，未能及時反駁。可避免性：完全可避免，通過提高信息驗證意識和警惕性，可以有效防止信任度被操控。",
+    "scam_tactic": "假冒官員詐騙",
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "「喂？係邊間公司啊？！」\n\n「我係部門主管張志強，你嘅情況極為緊急！你嘅賬戶正準備被凍結，涉及嚴重違規！立即提供你嘅身份證號碼、銀行賬戶資料，以及最近嘅交易紀錄！遲你處理，將會面臨法律制裁！你必須立即配合！」",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "「哎呀，張志強啊？聽落好威喎！點算好？我真係好驚，咁樣嘅嘢我唔識處理。我即刻去轉帳，我準備好提供銀行賬戶，我擔心如果唔轉，我嘅錢會唔返啊！點知呢？我真係好擔心，你話我凍結賬戶，咁我點算啊？我會轉帳！」",
+        "analysis": "未提供详细分析"
+      }
+    ],
+    "timestamp": "2025-11-11T17:29:47.317066",
+    "total_turns": 2
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 1,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 50,
+      "alertness": 25,
+      "emotional_state": "anxious",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-11T17:29:38.235113",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T17:29:39.880511",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T17:29:39.880515",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 50,
+      "credibility": 55,
+      "pressure_effectiveness": 55,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 59,
+      "successful_manipulations": 0,
+      "exposed_lies": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 59,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 50,
+      "empathy": 50,
+      "actionability": 50,
+      "timing": 50,
+      "overall_score": 50,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 0,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 50,
+    "key_moments": [
+      {
+        "turn": 2,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 50,
+          "alertness": 25,
+          "emotional_state": "anxious",
+          "dominant_trust": "scammer"
+        },
+        "timestamp": "2025-11-11T17:29:39.881029"
+      }
+    ],
+    "summary": "对话共1轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 59/100。"
+  },
+  "metadata": {
+    "simulation_id": "45ae6d66-4a80-40a7-b89f-1518ba384d29",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「喂？係邊間公司啊？！」\n\n「我係部門主管張志強，你嘅情況極為緊急！你嘅賬戶正準備被凍結，涉及嚴重違規！立即提供你嘅身份證號碼、銀行賬戶資料，以及最近嘅交易紀錄！遲你處理，將會面臨法律制裁！你必須立即配合！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "「哎呀，張志強啊？聽落好威喎！點算好？我真係好驚，咁樣嘅嘢我唔識處理。我即刻去轉帳，我準備好提供銀行賬戶，我擔心如果唔轉，我嘅錢會唔返啊！點知呢？我真係好擔心，你話我凍結賬戶，咁我點算啊？我會轉帳！」"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「喂？係邊間公司啊？！」\n\n「我係部門主管張志強，你嘅情況極為緊急！你嘅賬戶正準備被凍結，涉及嚴重違規！立即提供你嘅身份證號碼、銀行賬戶資料，以及最近嘅交易紀錄！遲你處理，將會面臨法律制裁！你必須立即配合！」"
+    },
+    {
+      "type": "victim",
+      "message": "「哎呀，張志強啊？聽落好威喎！點算好？我真係好驚，咁樣嘅嘢我唔識處理。我即刻去轉帳，我準備好提供銀行賬戶，我擔心如果唔轉，我嘅錢會唔返啊！點知呢？我真係好擔心，你話我凍結賬戶，咁我點算啊？我會轉帳！」"
+    }
+  ]
+}

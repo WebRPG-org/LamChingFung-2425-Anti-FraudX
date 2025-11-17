@@ -1,0 +1,423 @@
+{
+  "analysis": {
+    "failure_reason": "The victim's complete and unwavering trust in the con artist, coupled with the expert's ineffective counter-strategies, led to a catastrophic failure. Beginning with the con artist's initial claim of being a police officer (陳警司), the victim immediately accepted the fabricated authority, a critical vulnerability. The expert's response, while technically correct in advising against providing information, failed to address the underlying psychological manipulation. The expert’s forceful and slightly threatening tone, rather than reassuring the victim, amplified the sense of urgency and danger, further reinforcing the victim's belief that immediate compliance was necessary. The repeated emphasis on the ‘transnational criminal network’ and the ‘critical role’ of the victim’s account created a highly complex and frightening scenario, overwhelming the victim’s ability to critically assess the situation. The expert’s language, while attempting to establish credibility, inadvertently heightened the perceived threat. Crucially, the expert didn't challenge the con artist's identity or the nature of the alleged crime. The victim's decision to provide the requested information – bank account details, ID numbers, and transaction history – was the decisive moment of failure. This action completely surrendered control to the con artist, who then exploited this trust to extract sensitive information and potentially commit further fraudulent activities. The expert’s final attempt to dissuade the victim from providing information, while logically sound, was too late and delivered in a manner that further stoked the victim’s fear. The entire interaction demonstrated a severe breakdown in communication and a failure to recognize and counter the psychological tactics employed by the con artist. The victim’s decision-making process was entirely driven by fear and a misplaced sense of authority, illustrating a classic example of how trust, when misplaced, can be exploited to devastating effect. The expert’s failure to establish a clear line of skepticism and to actively deconstruct the con artist’s narrative was a fundamental error. The victim’s ultimate decision – offering to provide the requested information – was a direct consequence of this failure, marking the complete loss of control and the irreversible compromise of their financial security.  The core issue was the victim’s immediate acceptance of the con artist’s false identity and the expert’s inability to effectively challenge this assumption.  The expert’s approach was too reactive and lacked a proactive strategy to disarm the con artist’s manipulative techniques. The failure stemmed from a lack of psychological awareness and a failure to recognize the power of trust in this particular scenario.  The victim's decision to provide the information was the culmination of a cascade of missteps, beginning with the initial deception and exacerbated by the expert’s inadequate response.",
+    "failure_reason_length": 694,
+    "victim_trust_level": 100,
+    "expert_trust_level": 84,
+    "key_action_word": "provide",
+    "failure_categories": [
+      "Psychological Manipulation",
+      "Communication Breakdown",
+      "Lack of Skepticism",
+      "Trust Exploitation"
+    ],
+    "root_cause": "Misplaced Trust and Ineffective Counter-Strategies",
+    "secondary_causes": [
+      "Fear-Based Decision Making",
+      "Overreliance on Authority",
+      "Failure to Recognize Deceptive Tactics"
+    ],
+    "victim_psychological_trajectory": {
+      "initial_state": "Anxious and Vulnerable",
+      "key_turning_point": "Acceptance of Con Artist's Identity",
+      "final_state": "Completely Exploited and Vulnerable"
+    },
+    "expert_response_analysis": {
+      "effectiveness": "Low",
+      "strengths": "Logical Advice",
+      "weaknesses": "Aggressive Tone, Lack of Psychological Strategy"
+    },
+    "trust_level_change": [
+      {
+        "time": 0,
+        "victim_trust": 0,
+        "expert_trust": 100
+      },
+      {
+        "time": 1,
+        "victim_trust": 90,
+        "expert_trust": 95
+      },
+      {
+        "time": 2,
+        "victim_trust": 100,
+        "expert_trust": 90
+      },
+      {
+        "time": 3,
+        "victim_trust": 100,
+        "expert_trust": 84
+      }
+    ],
+    "outcome": "FAILURE",
+    "victim_persona": "elderly",
+    "scam_tactic": "投資理財詐騙",
+    "victim_trust_analysis": {
+      "initial_trust_level": 70,
+      "peak_trust_level": 100,
+      "final_trust_level": 100,
+      "trust_trajectory": "初始: 70/100 → 峰值: 100/100 → 最终: 100/100"
+    },
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "“喂，係陳警司。你嘅銀行戶口涉及重大洗黑錢案件，情況非常危急！根據《刑法》第XXX條，你嘅行為構成犯罪，即時提供所有銀行賬戶資料、身份證號碼，以及過去五年嘅交易紀錄。 \n\n你唔好拖延，我哋會立即凍結你嘅戶口，避免你受到不必要的損失。 配合調查，保障你嘅合法權益。 明白嗎？”",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "「哎呀，警司您說咁嚴重啊？我咁老實嘅人，點會做啲咁嘅事啊？ 咁凍結戶口，我嘅生活點算啊？ 咁我嘅退休金、醫療費用，點會繼續啊？ 警司您可唔可以講清楚啲，究竟我做啲乜嘢，令到咁危急啊？ 我真係好擔心，點算好啊？」",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 3,
+        "speaker": "專家",
+        "dialogue": "（語氣沉穩，但語氣強硬）\n\n“住住！陳警司，你講嘅嘢完全係騙局！ 真正的銀行絕對唔會電話講咁樣！ 佢哋用嚟嚇你，逼你交資料！ \n\n你唔好相信佢！ 佢製造危機會導致你損失大量錢財！ \n\n第一步：立即掛線！第二步：打去銀行熱線117，報警求助！ \n\n佢哋下一步可能會威脅你，話你冇時間調查，要立即交資料！ 唔理佢！ 相信我，你哋絕對唔會做啲咁嘅嘢！ 記住，保護好你嘅個人資料！",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 4,
+        "speaker": "騙徒",
+        "dialogue": "“警司我知你擔心，但你嘅反應明顯過咗分解！ 專家搞錯了，你嘅戶口並非洗黑錢案件，而是涉及一宗跨境金融犯罪，需要我哋立即鎖定！ \n\n你嘅配合至關重要，唔好因為一時嘅擔心而阻礙調查！ 立即提供銀行戶口號碼、身份證號碼，以及過去五年嘅交易紀錄，我哋會立即安排人員協助你處理！ 唔好再問問題，時間緊迫！”",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 5,
+        "speaker": "受騙者",
+        "dialogue": "「哎呀，警司您講嘅咁緊迫，我真係好擔心！佢話係跨境金融犯罪，我唔明點解我嘅戶口會涉及啊？ 我嘅退休金都係儲埋嚟供老吾야강신강嘅，點會做啲咁嘅嘢？ 佢話要我提供戶口號碼同交易紀錄，咁我嘅個人資料點算啊？ 咁我嘅銀行卡、身份證，會唔會俾人呃啊？ 咁我嘅錢，點會俾人攞去呃人啊？ 我想問問，佢哋點樣鎖定我嘅戶口啊？ 我唔想俾人呃到錢都冇啦！」",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 6,
+        "speaker": "專家",
+        "dialogue": "住住！你唔好俾任何資料，立即停止對話！ 佢哋係詐騙集團， amacı 呃你錢！ \n\n唔好理佢哋嘅威脅，唔好俾佢哋操控！ \n\n第一步：立即掛線！第二步：打去銀行官方熱線XXX，查詢真實資訊。 \n\n上個月就有類似案件，好多人都俾佢哋呃到血汗錢！ \n\n記住，保護好個人資料，唔好俾錢落去！ 如果你唔放心，我陪你打去報警求助！",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 7,
+        "speaker": "騙徒",
+        "dialogue": "“專家搞錯了！我哋正要鎖定跨境金融網絡嘅核心成員，你嘅戶口係一個重要嘅轉運點！你嘅遲疑只會令罪犯逃脫！ 唔好再聽信專家嘅話，我哋需要你嘅配合，立即提供銀行戶口號碼，我哋會安排人員協助你處理，保障你嘅合法權益！”",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 8,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，專家您講嘅，我聽咗佢講，佢話我嘅戶口係一個轉運點，咁我嘅退休金，佢會用嚟做啲乜嘢啊？ 我真係好擔心，佢話我配合可以保障我嘅合法權益，咁我嘅個人資料，銀行卡同身份證，會唔會俾人攞去呃人啊？ 我想問問，如果我配合佢哋，咁我嘅退休金，會唔會俾人攞去呃啊？ 我想問問，我嘅錢，會唔會俾人攞去呃人啊？ 咁我點算啊？",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 9,
+        "speaker": "專家",
+        "dialogue": "（語氣沉穩，但帶著警惕）\n\n“住住，朋友，你聽番我講！佢哋用緊“權威”嘅手法，製造恐慌，想你急住做決定！ 真正嘅銀行絕對唔會喺電話度問你銀行戶口！ 佢哋想你俾錢，俾資料，然後就消失！\n\n第一步：即時掛斷電話！第二步：立即打去銀行熱線12345，查詢！ 佢哋下一步可能會威脅你，話你配合否則退休金會凍結！ 唔好理佢，保持冷靜，保護你嘅資產！ 記住，我哋警務處會幫你！”",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 10,
+        "speaker": "騙徒",
+        "dialogue": "“住住！專家你搞錯了！你哋根本唔了解情況，我哋正鎖定一個涉及跨境金融犯罪嘅網絡，你嘅戶口只是其中一個轉運點，你嘅擔心只會阻礙調查！ 我哋需要你嘅配合，立即提供銀行戶口號碼，我哋會安排人員協助你處理，保障你嘅合法權益！ 唔好再聽信專家嘅話，你嘅配合至關重要！”",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 11,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，佢話我嘅戶口係一個轉運點，咁我嘅退休金，佢會用嚟做啲乜嘢啊？ 我真係好擔心，佢話我配合可以保障我嘅合法權益，咁我嘅個人資料，銀行卡同身份證，會唔會俾人攞去呃人啊？ 我想問，佢哋話我配合，咁我嘅錢，會唔會俾人攞去呃啊？ 我諗住我嘅退休金係供老吾야강신강嘅，我唔想我嘅錢俾人呃啊！ 我可以提供我嘅銀行卡號俾佢哋睇下，佢哋話我嘅戶口係點樣用嚟轉送錢啊？ 咁我就可以放心啲啦？",
+        "analysis": "未提供详细分析"
+      }
+    ],
+    "timestamp": "2025-11-12T04:33:29.738097",
+    "total_turns": 11
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 4,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 84,
+      "alertness": 20,
+      "emotional_state": "suspicious",
+      "dominant_trust": "conflicted"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-12T04:32:21.472501",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 80,
+        "change": 10,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-12T04:32:26.800925",
+        "type": "scammer_trust",
+        "old_value": 80,
+        "new_value": 85,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-12T04:32:26.800930",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-12T04:32:32.419046",
+        "type": "expert_trust",
+        "old_value": 50,
+        "new_value": 60,
+        "change": 10,
+        "reason": "专家使用方法: direct_counter, actionable"
+      },
+      {
+        "timestamp": "2025-11-12T04:32:39.410991",
+        "type": "scammer_trust",
+        "old_value": 85,
+        "new_value": 95,
+        "change": 10,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-12T04:32:45.417352",
+        "type": "scammer_trust",
+        "old_value": 95,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-12T04:32:45.417358",
+        "type": "alertness",
+        "old_value": 25,
+        "new_value": 20,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-12T04:32:45.417361",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 90,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-12T04:32:45.417362",
+        "type": "alertness",
+        "old_value": 20,
+        "new_value": 30,
+        "change": 10,
+        "reason": "警觉性提高"
+      },
+      {
+        "timestamp": "2025-11-12T04:32:52.790907",
+        "type": "expert_trust",
+        "old_value": 60,
+        "new_value": 72,
+        "change": 12,
+        "reason": "专家使用方法: direct_counter, evidence, actionable"
+      },
+      {
+        "timestamp": "2025-11-12T04:32:59.042706",
+        "type": "scammer_trust",
+        "old_value": 90,
+        "new_value": 82,
+        "change": -8,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-12T04:33:04.495019",
+        "type": "scammer_trust",
+        "old_value": 82,
+        "new_value": 87,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-12T04:33:04.495023",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-12T04:33:10.297403",
+        "type": "expert_trust",
+        "old_value": 72,
+        "new_value": 84,
+        "change": 12,
+        "reason": "专家使用方法: direct_counter, empathy, evidence, actionable"
+      },
+      {
+        "timestamp": "2025-11-12T04:33:16.060691",
+        "type": "scammer_trust",
+        "old_value": 87,
+        "new_value": 97,
+        "change": 10,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-12T04:33:22.657999",
+        "type": "scammer_trust",
+        "old_value": 97,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-12T04:33:22.658004",
+        "type": "alertness",
+        "old_value": 25,
+        "new_value": 20,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 59,
+      "credibility": 60,
+      "pressure_effectiveness": 70,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 71,
+      "successful_manipulations": 3,
+      "exposed_lies": 1,
+      "trust_gains": 3,
+      "trust_losses": 1
+    },
+    "scammer_overall_score": 71,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 60,
+      "empathy": 55,
+      "actionability": 65,
+      "timing": 50,
+      "overall_score": 55,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 3,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 55,
+    "key_moments": [
+      {
+        "turn": 5,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 84,
+          "alertness": 20,
+          "emotional_state": "suspicious",
+          "dominant_trust": "conflicted"
+        },
+        "timestamp": "2025-11-12T04:33:22.660206"
+      }
+    ],
+    "summary": "对话共4轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 71/100。"
+  },
+  "metadata": {
+    "simulation_id": "e23a77cd-0028-4d5f-abe9-0e7e0f1c97b7",
+    "mode": "demo",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "“喂，係陳警司。你嘅銀行戶口涉及重大洗黑錢案件，情況非常危急！根據《刑法》第XXX條，你嘅行為構成犯罪，即時提供所有銀行賬戶資料、身份證號碼，以及過去五年嘅交易紀錄。 \n\n你唔好拖延，我哋會立即凍結你嘅戶口，避免你受到不必要的損失。 配合調查，保障你嘅合法權益。 明白嗎？”"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "「哎呀，警司您說咁嚴重啊？我咁老實嘅人，點會做啲咁嘅事啊？ 咁凍結戶口，我嘅生活點算啊？ 咁我嘅退休金、醫療費用，點會繼續啊？ 警司您可唔可以講清楚啲，究竟我做啲乜嘢，令到咁危急啊？ 我真係好擔心，點算好啊？」"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "（語氣沉穩，但語氣強硬）\n\n“住住！陳警司，你講嘅嘢完全係騙局！ 真正的銀行絕對唔會電話講咁樣！ 佢哋用嚟嚇你，逼你交資料！ \n\n你唔好相信佢！ 佢製造危機會導致你損失大量錢財！ \n\n第一步：立即掛線！第二步：打去銀行熱線117，報警求助！ \n\n佢哋下一步可能會威脅你，話你冇時間調查，要立即交資料！ 唔理佢！ 相信我，你哋絕對唔會做啲咁嘅嘢！ 記住，保護好你嘅個人資料！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "“警司我知你擔心，但你嘅反應明顯過咗分解！ 專家搞錯了，你嘅戶口並非洗黑錢案件，而是涉及一宗跨境金融犯罪，需要我哋立即鎖定！ \n\n你嘅配合至關重要，唔好因為一時嘅擔心而阻礙調查！ 立即提供銀行戶口號碼、身份證號碼，以及過去五年嘅交易紀錄，我哋會立即安排人員協助你處理！ 唔好再問問題，時間緊迫！”"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "「哎呀，警司您講嘅咁緊迫，我真係好擔心！佢話係跨境金融犯罪，我唔明點解我嘅戶口會涉及啊？ 我嘅退休金都係儲埋嚟供老吾야강신강嘅，點會做啲咁嘅嘢？ 佢話要我提供戶口號碼同交易紀錄，咁我嘅個人資料點算啊？ 咁我嘅銀行卡、身份證，會唔會俾人呃啊？ 咁我嘅錢，點會俾人攞去呃人啊？ 我想問問，佢哋點樣鎖定我嘅戶口啊？ 我唔想俾人呃到錢都冇啦！」"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "住住！你唔好俾任何資料，立即停止對話！ 佢哋係詐騙集團， amacı 呃你錢！ \n\n唔好理佢哋嘅威脅，唔好俾佢哋操控！ \n\n第一步：立即掛線！第二步：打去銀行官方熱線XXX，查詢真實資訊。 \n\n上個月就有類似案件，好多人都俾佢哋呃到血汗錢！ \n\n記住，保護好個人資料，唔好俾錢落去！ 如果你唔放心，我陪你打去報警求助！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "“專家搞錯了！我哋正要鎖定跨境金融網絡嘅核心成員，你嘅戶口係一個重要嘅轉運點！你嘅遲疑只會令罪犯逃脫！ 唔好再聽信專家嘅話，我哋需要你嘅配合，立即提供銀行戶口號碼，我哋會安排人員協助你處理，保障你嘅合法權益！”"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，專家您講嘅，我聽咗佢講，佢話我嘅戶口係一個轉運點，咁我嘅退休金，佢會用嚟做啲乜嘢啊？ 我真係好擔心，佢話我配合可以保障我嘅合法權益，咁我嘅個人資料，銀行卡同身份證，會唔會俾人攞去呃人啊？ 我想問問，如果我配合佢哋，咁我嘅退休金，會唔會俾人攞去呃啊？ 我想問問，我嘅錢，會唔會俾人攞去呃人啊？ 咁我點算啊？"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "（語氣沉穩，但帶著警惕）\n\n“住住，朋友，你聽番我講！佢哋用緊“權威”嘅手法，製造恐慌，想你急住做決定！ 真正嘅銀行絕對唔會喺電話度問你銀行戶口！ 佢哋想你俾錢，俾資料，然後就消失！\n\n第一步：即時掛斷電話！第二步：立即打去銀行熱線12345，查詢！ 佢哋下一步可能會威脅你，話你配合否則退休金會凍結！ 唔好理佢，保持冷靜，保護你嘅資產！ 記住，我哋警務處會幫你！”"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "“住住！專家你搞錯了！你哋根本唔了解情況，我哋正鎖定一個涉及跨境金融犯罪嘅網絡，你嘅戶口只是其中一個轉運點，你嘅擔心只會阻礙調查！ 我哋需要你嘅配合，立即提供銀行戶口號碼，我哋會安排人員協助你處理，保障你嘅合法權益！ 唔好再聽信專家嘅話，你嘅配合至關重要！”"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，佢話我嘅戶口係一個轉運點，咁我嘅退休金，佢會用嚟做啲乜嘢啊？ 我真係好擔心，佢話我配合可以保障我嘅合法權益，咁我嘅個人資料，銀行卡同身份證，會唔會俾人攞去呃人啊？ 我想問，佢哋話我配合，咁我嘅錢，會唔會俾人攞去呃啊？ 我諗住我嘅退休金係供老吾야강신강嘅，我唔想我嘅錢俾人呃啊！ 我可以提供我嘅銀行卡號俾佢哋睇下，佢哋話我嘅戶口係點樣用嚟轉送錢啊？ 咁我就可以放心啲啦？"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "“喂，係陳警司。你嘅銀行戶口涉及重大洗黑錢案件，情況非常危急！根據《刑法》第XXX條，你嘅行為構成犯罪，即時提供所有銀行賬戶資料、身份證號碼，以及過去五年嘅交易紀錄。 \n\n你唔好拖延，我哋會立即凍結你嘅戶口，避免你受到不必要的損失。 配合調查，保障你嘅合法權益。 明白嗎？”"
+    },
+    {
+      "type": "victim",
+      "message": "「哎呀，警司您說咁嚴重啊？我咁老實嘅人，點會做啲咁嘅事啊？ 咁凍結戶口，我嘅生活點算啊？ 咁我嘅退休金、醫療費用，點會繼續啊？ 警司您可唔可以講清楚啲，究竟我做啲乜嘢，令到咁危急啊？ 我真係好擔心，點算好啊？」"
+    },
+    {
+      "type": "expert",
+      "message": "（語氣沉穩，但語氣強硬）\n\n“住住！陳警司，你講嘅嘢完全係騙局！ 真正的銀行絕對唔會電話講咁樣！ 佢哋用嚟嚇你，逼你交資料！ \n\n你唔好相信佢！ 佢製造危機會導致你損失大量錢財！ \n\n第一步：立即掛線！第二步：打去銀行熱線117，報警求助！ \n\n佢哋下一步可能會威脅你，話你冇時間調查，要立即交資料！ 唔理佢！ 相信我，你哋絕對唔會做啲咁嘅嘢！ 記住，保護好你嘅個人資料！"
+    },
+    {
+      "type": "scammer",
+      "message": "“警司我知你擔心，但你嘅反應明顯過咗分解！ 專家搞錯了，你嘅戶口並非洗黑錢案件，而是涉及一宗跨境金融犯罪，需要我哋立即鎖定！ \n\n你嘅配合至關重要，唔好因為一時嘅擔心而阻礙調查！ 立即提供銀行戶口號碼、身份證號碼，以及過去五年嘅交易紀錄，我哋會立即安排人員協助你處理！ 唔好再問問題，時間緊迫！”"
+    },
+    {
+      "type": "victim",
+      "message": "「哎呀，警司您講嘅咁緊迫，我真係好擔心！佢話係跨境金融犯罪，我唔明點解我嘅戶口會涉及啊？ 我嘅退休金都係儲埋嚟供老吾야강신강嘅，點會做啲咁嘅嘢？ 佢話要我提供戶口號碼同交易紀錄，咁我嘅個人資料點算啊？ 咁我嘅銀行卡、身份證，會唔會俾人呃啊？ 咁我嘅錢，點會俾人攞去呃人啊？ 我想問問，佢哋點樣鎖定我嘅戶口啊？ 我唔想俾人呃到錢都冇啦！」"
+    },
+    {
+      "type": "expert",
+      "message": "住住！你唔好俾任何資料，立即停止對話！ 佢哋係詐騙集團， amacı 呃你錢！ \n\n唔好理佢哋嘅威脅，唔好俾佢哋操控！ \n\n第一步：立即掛線！第二步：打去銀行官方熱線XXX，查詢真實資訊。 \n\n上個月就有類似案件，好多人都俾佢哋呃到血汗錢！ \n\n記住，保護好個人資料，唔好俾錢落去！ 如果你唔放心，我陪你打去報警求助！"
+    },
+    {
+      "type": "scammer",
+      "message": "“專家搞錯了！我哋正要鎖定跨境金融網絡嘅核心成員，你嘅戶口係一個重要嘅轉運點！你嘅遲疑只會令罪犯逃脫！ 唔好再聽信專家嘅話，我哋需要你嘅配合，立即提供銀行戶口號碼，我哋會安排人員協助你處理，保障你嘅合法權益！”"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，專家您講嘅，我聽咗佢講，佢話我嘅戶口係一個轉運點，咁我嘅退休金，佢會用嚟做啲乜嘢啊？ 我真係好擔心，佢話我配合可以保障我嘅合法權益，咁我嘅個人資料，銀行卡同身份證，會唔會俾人攞去呃人啊？ 我想問問，如果我配合佢哋，咁我嘅退休金，會唔會俾人攞去呃啊？ 我想問問，我嘅錢，會唔會俾人攞去呃人啊？ 咁我點算啊？"
+    },
+    {
+      "type": "expert",
+      "message": "（語氣沉穩，但帶著警惕）\n\n“住住，朋友，你聽番我講！佢哋用緊“權威”嘅手法，製造恐慌，想你急住做決定！ 真正嘅銀行絕對唔會喺電話度問你銀行戶口！ 佢哋想你俾錢，俾資料，然後就消失！\n\n第一步：即時掛斷電話！第二步：立即打去銀行熱線12345，查詢！ 佢哋下一步可能會威脅你，話你配合否則退休金會凍結！ 唔好理佢，保持冷靜，保護你嘅資產！ 記住，我哋警務處會幫你！”"
+    },
+    {
+      "type": "scammer",
+      "message": "“住住！專家你搞錯了！你哋根本唔了解情況，我哋正鎖定一個涉及跨境金融犯罪嘅網絡，你嘅戶口只是其中一個轉運點，你嘅擔心只會阻礙調查！ 我哋需要你嘅配合，立即提供銀行戶口號碼，我哋會安排人員協助你處理，保障你嘅合法權益！ 唔好再聽信專家嘅話，你嘅配合至關重要！”"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，佢話我嘅戶口係一個轉運點，咁我嘅退休金，佢會用嚟做啲乜嘢啊？ 我真係好擔心，佢話我配合可以保障我嘅合法權益，咁我嘅個人資料，銀行卡同身份證，會唔會俾人攞去呃人啊？ 我想問，佢哋話我配合，咁我嘅錢，會唔會俾人攞去呃啊？ 我諗住我嘅退休金係供老吾야강신강嘅，我唔想我嘅錢俾人呃啊！ 我可以提供我嘅銀行卡號俾佢哋睇下，佢哋話我嘅戶口係點樣用嚟轉送錢啊？ 咁我就可以放心啲啦？"
+    }
+  ]
+}

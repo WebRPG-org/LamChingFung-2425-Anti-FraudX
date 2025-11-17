@@ -1,0 +1,41 @@
+========================================
+  ⚠️  重要：必须完全关闭并重启 RPG Maker
+========================================
+
+当前状态：
+✅ 3 个新插件文件已成功复制到正确位置
+✅ 旧的 plugins.js 已删除（已备份）
+❌ RPG Maker 编辑器仍在运行（使用旧配置）
+
+必须执行的步骤：
+
+步骤 1: 完全关闭 RPG Maker MV
+--------------------------------
+- 关闭所有 RPG Maker 窗口（包括 Plugin Manager）
+- 关闭主编辑器窗口
+- 确认任务管理器中没有 RPG Maker 相关进程
+
+步骤 2: 重新打开 RPG Maker MV
+--------------------------------
+- 启动 RPG Maker MV
+- 打开项目：RPG_platform/RPG_Project
+- RPG Maker 会自动重新扫描插件目录
+- 自动生成新的 plugins.js 文件
+
+步骤 3: 验证插件是否可见
+--------------------------------
+- 打开 Tools → Plugin Manager
+- 应该能看到以下新插件：
+  ✓ SimulationTraining
+  ✓ SimulationTraining_Compatible
+  ✓ SimulationTraining_WithNPC
+
+如果仍然看不到：
+--------------------------------
+1. 确认 RPG Maker 已完全关闭（检查任务管理器）
+2. 删除并重新生成 plugins.js：
+   - 删除：RPG_platform\RPG_Project\js\plugins.js
+   - 重启 RPG Maker 让它自动重新生成
+
+========================================
+

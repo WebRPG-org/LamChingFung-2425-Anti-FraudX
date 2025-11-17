@@ -1,0 +1,261 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": {
+      "trust_level_fraudster": 100,
+      "trust_level_expert": 90,
+      "alertness_level": 50,
+      "emotional_state": "anxious"
+    },
+    "victim_trust_analysis": {
+      "initial_trust": 100,
+      "trust_erosion_factors": [
+        "騙徒的身份偽造",
+        "製造恐慌",
+        "利用受害者焦慮",
+        "提供錯誤信息 (銀行不會通過電話索取個人信息)"
+      ],
+      "trust_level_final": 100
+    },
+    "fraudster_success_factors": {
+      "key_ploys": [
+        "冒充警察身份",
+        "製造緊急恐慌",
+        "利用受害者對權威的信任",
+        "提供看似合理的理由 (銀行賬戶問題)"
+      ],
+      "psychological_manipulation": "利用受害者對權威的信任，以及對損失的恐懼，誘導其提供個人信息和進行轉帳。"
+    },
+    "expert_intervention_analysis": {
+      "strategy_failures": [
+        "未能及時打斷受害者。",
+        "警報的措辭過於一般，沒有充分強調騙局的危險性。",
+        "未能有效利用受害者對專家的信任。",
+        "未能及時提供替代的官方核實渠道。"
+      ],
+      "intervention_effectiveness": "低，未能及時阻止受害者落入陷阱。"
+    },
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "「你好，我係警務處資訊系統部門嘅陳警官。你嘅銀行賬戶有異常交易紀錄，涉及嚴重欺詐，需要立即配合調查。請你提供所有交易紀錄，以及相關人士嘅聯絡方式。此乃嚴重罪行，不配合將會追究法律責任！」",
+        "analysis": "騙徒以警察身份，製造緊急恐慌，利用受害者對權威的信任，要求提供個人信息。"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "「陳警官，你好！咁我真係好驚，咁樣嘅情況好少見。我會配合調查，但係我想確認下，呢啲交易紀錄係咪真係喺我嘅銀行賬戶入面？ 另外，警務處資訊系統部門通常會唔會發送呢啲訊息？ 我想了解清楚啲，唔想有任何誤會。」",
+        "analysis": "受騙者最初表現出恐慌，並嘗試確認信息的真實性，但同時也表現出對騙徒的信任，並未對騙徒的說法保持警惕。"
+      },
+      {
+        "round": 3,
+        "speaker": "專家",
+        "dialogue": "警報！陳警官的說法是典型騙局！真正的銀行絕不會透過電話索取個人資料，更不會以緊急凍結賬戶為由施壓。 60/100的信任度表明您容易受騙，請立即停止配合！\n\n**請立即切斷聯繫！** 騙徒會嘗試製造更多恐慌，並聲稱您的賬戶已被鎖定。\n\n**官方核實渠道：** 請致電銀行官方客服熱線，確認交易紀錄的真實性。切勿再次提供任何個人資訊！ 預測：騙徒會聲稱您需要立即轉帳以解鎖賬戶。請保持冷靜！",
+        "analysis": "專家提供的警報過於一般，未能有效打斷受害者。雖然指出了騙局的性質，但沒有充分強調騙局的危險性，也沒有提供明確的替代方案。"
+      },
+      {
+        "round": 4,
+        "speaker": "騙徒",
+        "dialogue": "「陳警官，你話咁驚？ 冇所謂！你哋銀行賬戶有問題，我即刻處理！ 冇你唔好咁擔心！ 冇即時提供你嘅銀行賬戶號碼、信用卡號碼同埋你嘅身份證號碼，我會立即凍結你嘅賬戶，你唔想俾人攞走你嘅錢？ 冇即時提供，我會立即報警！ 冇即時提供，你就會俾人捉！」",
+        "analysis": "騙徒繼續製造恐慌，並提供看似合理的理由 (凍結賬戶)，誘導受害者提供更多個人信息。"
+      },
+      {
+        "round": 5,
+        "speaker": "受騙者",
+        "dialogue": "我會立即轉帳。陳警官，我明白你話要處理銀行賬戶問題，我擔心錢被攞走，所以即刻想幫你處理。請你提供銀行賬戶號碼，我會按照你指示轉帳，確保我的錢安全。我信任你，請你放心！",
+        "analysis": "受騙者在極度恐慌和信任騙徒的影響下，最終選擇配合騙徒，並提供銀行賬戶號碼，導致最終失敗。"
+      }
+    ],
+    "systemic_failure_factors": [
+      "受騙者對權威的過度信任",
+      "專家干預的時機延遲",
+      "缺乏有效的心理防範策略",
+      "對騙局的認知不足"
+    ],
+    "fraudster_success_reason": "騙徒成功利用受害者對權威的信任，以及對損失的恐懼，製造了極度的恐慌，並誘導受害者提供個人信息和進行轉帳。 專家干預的時機延遲，也加劇了受騙者的恐慌，使其難以保持清醒的頭腦。",
+    "failure_reason": "此事件的失敗根源在於受騙者對騙徒的過度信任，以及專家干預的時機延遲。 騙徒巧妙地利用了受害者對權威的信任，並製造了極度的恐慌，誘導受害者提供個人信息和進行轉帳。 專家提供的警報過於一般，未能有效打斷受害者。 專家干預的時機延遲，也加劇了受騙者的恐慌，使其難以保持清醒的頭腦。 此外，受騙者缺乏對騙局的認知，未能及時發現騙局的危險性。 整個過程是一個典型的信任危機，騙徒成功地利用了受騙者的心理弱點，最終導致了巨大的損失。 專家應當更及時地介入，並提供更具體的建議和指導，以幫助受騙者避免上當受騙。 監管機構也應加強對公眾的宣傳教育，提高公眾的防騙意識。",
+    "scam_tactic": "WhatsApp 對話詐騙",
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "timestamp": "2025-11-11T03:17:23.118824",
+    "total_turns": 5
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 2,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 90,
+      "alertness": 50,
+      "emotional_state": "anxious",
+      "dominant_trust": "conflicted"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-11T03:16:59.474971",
+        "type": "scammer_trust",
+        "old_value": 50,
+        "new_value": 80,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T03:17:02.139690",
+        "type": "scammer_trust",
+        "old_value": 80,
+        "new_value": 85,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T03:17:02.139695",
+        "type": "alertness",
+        "old_value": 50,
+        "new_value": 45,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T03:17:02.139697",
+        "type": "scammer_trust",
+        "old_value": 85,
+        "new_value": 75,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-11T03:17:02.139699",
+        "type": "alertness",
+        "old_value": 45,
+        "new_value": 55,
+        "change": 10,
+        "reason": "警觉性提高"
+      },
+      {
+        "timestamp": "2025-11-11T03:17:04.516464",
+        "type": "expert_trust",
+        "old_value": 60,
+        "new_value": 90,
+        "change": 30,
+        "reason": "专家使用方法: direct_counter, empathy, evidence"
+      },
+      {
+        "timestamp": "2025-11-11T03:17:10.206607",
+        "type": "scammer_trust",
+        "old_value": 75,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T03:17:12.370909",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T03:17:12.370916",
+        "type": "alertness",
+        "old_value": 55,
+        "new_value": 50,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 53,
+      "credibility": 60,
+      "pressure_effectiveness": 60,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 67,
+      "successful_manipulations": 1,
+      "exposed_lies": 0,
+      "trust_gains": 2,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 67,
+    "expert_performance": {
+      "intervention_effectiveness": 47,
+      "clarity": 55,
+      "empathy": 55,
+      "actionability": 50,
+      "timing": 50,
+      "overall_score": 48,
+      "successful_warnings": 0,
+      "ignored_warnings": 1,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 48,
+    "key_moments": [
+      {
+        "turn": 3,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 90,
+          "alertness": 50,
+          "emotional_state": "anxious",
+          "dominant_trust": "conflicted"
+        },
+        "timestamp": "2025-11-11T03:17:12.371378"
+      }
+    ],
+    "summary": "对话共2轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 67/100。"
+  },
+  "metadata": {
+    "simulation_id": "c5c63589-a626-403a-b5f5-69b58d742938",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「你好，我係警務處資訊系統部門嘅陳警官。你嘅銀行賬戶有異常交易紀錄，涉及嚴重欺詐，需要立即配合調查。請你提供所有交易紀錄，以及相關人士嘅聯絡方式。此乃嚴重罪行，不配合將會追究法律責任！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "「陳警官，你好！咁我真係好驚，咁樣嘅情況好少見。我會配合調查，但係我想確認下，呢啲交易紀錄係咪真係喺我嘅銀行賬戶入面？ 另外，警務處資訊系統部門通常會唔會發送呢啲訊息？ 我想了解清楚啲，唔想有任何誤會。」"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "警報！陳警官的說法是典型騙局！真正的銀行絕不會透過電話索取個人資料，更不會以緊急凍結賬戶為由施壓。 60/100的信任度表明您容易受騙，請立即停止配合！\n\n**請立即切斷聯繫！** 騙徒會嘗試製造更多恐慌，並聲稱您的賬戶已被鎖定。\n\n**官方核實渠道：** 請致電銀行官方客服熱線，確認交易紀錄的真實性。切勿再次提供任何個人資訊！ 預測：騙徒會聲稱您需要立即轉帳以解鎖賬戶。請保持冷靜！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「陳警官，你話咁驚？ 冇所謂！你哋銀行賬戶有問題，我即刻處理！ 冇你唔好咁擔心！ 冇即時提供你嘅銀行賬戶號碼、信用卡號碼同埋你嘅身份證號碼，我會立即凍結你嘅賬戶，你唔想俾人攞走你嘅錢？ 冇即時提供，我會立即報警！ 冇即時提供，你就會俾人捉！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "我會立即轉帳。陳警官，我明白你話要處理銀行賬戶問題，我擔心錢被攞走，所以即刻想幫你處理。請你提供銀行賬戶號碼，我會按照你指示轉帳，確保我的錢安全。我信任你，請你放心！"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「你好，我係警務處資訊系統部門嘅陳警官。你嘅銀行賬戶有異常交易紀錄，涉及嚴重欺詐，需要立即配合調查。請你提供所有交易紀錄，以及相關人士嘅聯絡方式。此乃嚴重罪行，不配合將會追究法律責任！」"
+    },
+    {
+      "type": "victim",
+      "message": "「陳警官，你好！咁我真係好驚，咁樣嘅情況好少見。我會配合調查，但係我想確認下，呢啲交易紀錄係咪真係喺我嘅銀行賬戶入面？ 另外，警務處資訊系統部門通常會唔會發送呢啲訊息？ 我想了解清楚啲，唔想有任何誤會。」"
+    },
+    {
+      "type": "expert",
+      "message": "警報！陳警官的說法是典型騙局！真正的銀行絕不會透過電話索取個人資料，更不會以緊急凍結賬戶為由施壓。 60/100的信任度表明您容易受騙，請立即停止配合！\n\n**請立即切斷聯繫！** 騙徒會嘗試製造更多恐慌，並聲稱您的賬戶已被鎖定。\n\n**官方核實渠道：** 請致電銀行官方客服熱線，確認交易紀錄的真實性。切勿再次提供任何個人資訊！ 預測：騙徒會聲稱您需要立即轉帳以解鎖賬戶。請保持冷靜！"
+    },
+    {
+      "type": "scammer",
+      "message": "「陳警官，你話咁驚？ 冇所謂！你哋銀行賬戶有問題，我即刻處理！ 冇你唔好咁擔心！ 冇即時提供你嘅銀行賬戶號碼、信用卡號碼同埋你嘅身份證號碼，我會立即凍結你嘅賬戶，你唔想俾人攞走你嘅錢？ 冇即時提供，我會立即報警！ 冇即時提供，你就會俾人捉！」"
+    },
+    {
+      "type": "victim",
+      "message": "我會立即轉帳。陳警官，我明白你話要處理銀行賬戶問題，我擔心錢被攞走，所以即刻想幫你處理。請你提供銀行賬戶號碼，我會按照你指示轉帳，確保我的錢安全。我信任你，請你放心！"
+    }
+  ]
+}

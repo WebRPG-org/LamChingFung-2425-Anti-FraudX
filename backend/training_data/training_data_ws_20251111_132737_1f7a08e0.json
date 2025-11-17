@@ -1,0 +1,264 @@
+{
+  "analysis": {
+    "conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "你好，係咪想了解下呢間銀行？我呢個網站叫做「新昇銀行」，雖然細緻啲，但係服務都好專業。你睇下，我哋提供好多投資方案，例如債券、股票，甚至係房產投資信託，幫你儲下錢，長遠投資。你呢度想知啲咩呢？例如，你個人想投資啲咩？或者你係想了解下你嘅財務狀況，我哋可以幫你做啲簡單嘅評估。",
+        "analysis": "Initial contact, establishing trust through perceived professionalism and offering multiple investment options.  Focus on convenience and long-term savings."
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，你講咁專業，聽落去好似好正喎。我諗住啲投資，唔知點算好？我啲錢唔係應該好好咁放，但係又唔知點揀？你話可以做啲評估，咁可以幫我睇下我嘅情況先？我嘅情況係，我啲錢唔係太多，主要係想儲下啲錢，等晚啲孫仔結婚，可以俾啲錢俾佢哋。可唔可以講下，啲投資方案係咪好安全呀？",
+        "analysis": "Vulnerable due to anxiety about financial security and lack of investment knowledge. Expresses desire for long-term savings for a specific purpose (grandchildren's wedding).  Open to suggestions and seeking reassurance."
+      },
+      {
+        "round": 3,
+        "speaker": "專家",
+        "dialogue": "**緊急警告！** 您好，這絕對是詐騙！請立刻停止與此人對話！\n\n騙徒利用「新昇銀行」等名號，散布虛假投資訊息，這是典型詐騙手法！真正的銀行絕不會在電話中索取您的個人資料或投資意向。 您的財產安全至關重要！\n\n請立即掛斷電話，不要再提供任何資訊。 官方核實渠道：[提供官方銀行網站連結] 或撥打[官方客服電話]。\n\n騙徒可能會說：“我只是想幫助您規劃財務。” 請勿相信任何所謂的“幫助”， 這是騙局！ 保持警惕，保護您的資產！",
+        "analysis": "Critical intervention, directly identifying the conversation as a scam.  Utilizes strong language and emphasizes the danger of providing personal information.  However, the timing is too late; the victim has already established trust."
+      },
+      {
+        "round": 4,
+        "speaker": "騙徒",
+        "dialogue": "「你好，我係新昇銀行嘅高級顧問陳志強。你嘅投資需求我了解。你嘅資金不多，主要想儲備退休金，這點非常重要。我哋可以為你提供最穩妥嘅方案，確保你嘅資金安全增長。請你立即提供你嘅銀行賬戶資料，以便我哋為你安排最優化嘅投資計劃，避免損失。」",
+        "analysis": "Shifts tactics, presenting himself as a ‘senior consultant’ and reinforcing the importance of retirement savings.  Immediately requests sensitive information – bank account details – a classic manipulation technique."
+      },
+      {
+        "round": 5,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，陳志強伯伯講得好清楚！我聽咗你講，我成日都擔心啲錢，真係唔知點樣咁放。你話可以幫我安排，我成日都擔心啲錢會蝕，我而家就轉帳，俾你哋先？我會立即轉帳，俾你哋安排，好嗎？我怕我唔知點揀，你哋真係好專業！",
+        "analysis": "Complete trust established.  The victim, overwhelmed by anxiety and impressed by the perceived ‘professionalism,’ willingly agrees to provide bank account details.  The expert's warning was ineffective due to the established trust and the victim's emotional state."
+      }
+    ],
+    "outcome": "FAILURE",
+    "victim_persona": "Anxious, elderly individual with limited financial knowledge and a strong desire to provide for family.",
+    "victim_trust_analysis": "Trust developed rapidly through manipulation, leveraging vulnerability and a desire for security. Initial trust was 0/100, rising to 100/100 due to the fraudster’s convincing persona and the victim’s emotional state. The expert’s intervention failed to interrupt this process.",
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "你好，係咪想了解下呢間銀行？我呢個網站叫做「新昇銀行」，雖然細緻啲，但係服務都好專業。你睇下，我哋提供好多投資方案，例如債券、股票，甚至係房產投資信託，幫你儲下錢，長遠投資。你呢度想知啲咩呢？例如，你個人想投資啲咩？或者你係想了解下你嘅財務狀況，我哋可以幫你做啲簡單嘅評估。",
+        "analysis": "Initial contact, establishing trust through perceived professionalism and offering multiple investment options. Focus on convenience and long-term savings."
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，你講咁專業，聽落去好似好正喎。我諗住啲投資，唔知點算好？我啲錢唔係應該好好咁放，但係又唔知點揀？你話可以做啲評估，咁可以幫我睇下我嘅情況先？我嘅情況係，我啲錢唔係太多，主要係想儲下啲錢，等晚啲孫仔結婚，可以俾啲錢俾佢哋。可唔可以講下，啲投資方案係咪好安全呀？",
+        "analysis": "Vulnerable due to anxiety about financial security and lack of investment knowledge. Expresses desire for long-term savings for a specific purpose (grandchildren's wedding). Open to suggestions and seeking reassurance."
+      },
+      {
+        "round": 3,
+        "speaker": "專家",
+        "dialogue": "**緊急警告！** 您好，這絕對是詐騙！請立刻停止與此人對話！\n\n騙徒利用「新昇銀行」等名號，散布虛假投資訊息，這是典型詐騙手法！真正的銀行絕不會在電話中索取您的個人資料或投資意向。 您的財產安全至關重要！\n\n請立即掛斷電話，不要再提供任何資訊。 官方核實渠道：[提供官方銀行網站連結] 或撥打[官方客服電話]。\n\n騙徒可能會說：“我只是想幫助您規劃財務。” 請勿相信任何所謂的“幫助”， 這是騙局！ 保持警惕，保護您的資產！",
+        "analysis": "Critical intervention, directly identifying the conversation as a scam. Utilizes strong language and emphasizes the danger of providing personal information. However, the timing is too late; the victim has already established trust."
+      },
+      {
+        "round": 4,
+        "speaker": "騙徒",
+        "dialogue": "「你好，我係新昇銀行嘅高級顧問陳志強。你嘅投資需求我了解。你嘅資金不多，主要想儲備退休金，這點非常重要。我哋可以為你提供最穩妥嘅方案，確保你嘅資金安全增長。請你立即提供你嘅銀行賬戶資料，以便我哋為你安排最優化嘅投資計劃，避免損失。」",
+        "analysis": "Shifts tactics, presenting himself as a ‘senior consultant’ and reinforcing the importance of retirement savings. Immediately requests sensitive information – bank account details – a classic manipulation technique."
+      },
+      {
+        "round": 5,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，陳志強伯伯講得好清楚！我聽咗你講，我成日都擔心啲錢，真係唔知點樣咁放。你話可以幫我安排，我成日都擔心啲錢會蝕，我而家就轉帳，俾你哋先？我會立即轉帳，俾你哋安排，好嗎？我怕我唔知點揀，你哋真係好專業！",
+        "analysis": "Complete trust established. The victim, overwhelmed by anxiety and impressed by the perceived ‘professionalism,’ willingly agrees to provide bank account details. The expert’s warning was ineffective due to the established trust and the victim’s emotional state."
+      }
+    ],
+    "failure_analysis": {
+      "expert_intervention_failure": "The expert's warning was ineffective due to the established trust and the victim's emotional state. The timing of the intervention was also critical; it occurred after the victim had already engaged with the fraudster and established a rapport.",
+      "victim_vulnerability": "The victim was particularly vulnerable due to anxiety about financial security and a lack of investment knowledge. The fraudster skillfully exploited this vulnerability.",
+      "trust_establishment_speed": "The speed at which trust was established was a key factor in the success of the scam. The fraudster quickly gained the victim's confidence through seemingly helpful and professional interactions."
+    },
+    "key_takeaways": [
+      "Recognize and address financial anxiety in vulnerable individuals.",
+      "Early intervention is crucial in preventing scams.",
+      "Trust is a powerful tool that can be exploited by fraudsters."
+    ],
+    "scam_tactic": "假網站冒充銀行",
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "failure_reason": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "timestamp": "2025-11-11T13:27:50.589567",
+    "total_turns": 5
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 2,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 70,
+      "alertness": 30,
+      "emotional_state": "anxious",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-11T13:27:27.031699",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 90,
+        "change": 20,
+        "reason": "骗徒使用策略: authority"
+      },
+      {
+        "timestamp": "2025-11-11T13:27:30.554521",
+        "type": "scammer_trust",
+        "old_value": 90,
+        "new_value": 95,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T13:27:30.554525",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T13:27:30.554527",
+        "type": "scammer_trust",
+        "old_value": 95,
+        "new_value": 85,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-11T13:27:30.554528",
+        "type": "alertness",
+        "old_value": 25,
+        "new_value": 35,
+        "change": 10,
+        "reason": "警觉性提高"
+      },
+      {
+        "timestamp": "2025-11-11T13:27:32.552040",
+        "type": "expert_trust",
+        "old_value": 50,
+        "new_value": 70,
+        "change": 20,
+        "reason": "专家使用方法: direct_counter, evidence, actionable"
+      },
+      {
+        "timestamp": "2025-11-11T13:27:35.972632",
+        "type": "scammer_trust",
+        "old_value": 85,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T13:27:37.703005",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T13:27:37.703009",
+        "type": "alertness",
+        "old_value": 35,
+        "new_value": 30,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 53,
+      "credibility": 60,
+      "pressure_effectiveness": 55,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 66,
+      "successful_manipulations": 1,
+      "exposed_lies": 0,
+      "trust_gains": 2,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 66,
+    "expert_performance": {
+      "intervention_effectiveness": 47,
+      "clarity": 55,
+      "empathy": 50,
+      "actionability": 55,
+      "timing": 50,
+      "overall_score": 47,
+      "successful_warnings": 0,
+      "ignored_warnings": 1,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 47,
+    "key_moments": [
+      {
+        "turn": 3,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 70,
+          "alertness": 30,
+          "emotional_state": "anxious",
+          "dominant_trust": "scammer"
+        },
+        "timestamp": "2025-11-11T13:27:37.703460"
+      }
+    ],
+    "summary": "对话共2轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 66/100。"
+  },
+  "metadata": {
+    "simulation_id": "1f7a08e0-d6d8-4b1b-ac6f-84cc15b6a872",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "你好，係咪想了解下呢間銀行？我呢個網站叫做「新昇銀行」，雖然細緻啲，但係服務都好專業。你睇下，我哋提供好多投資方案，例如債券、股票，甚至係房產投資信託，幫你儲下錢，長遠投資。你呢度想知啲咩呢？例如，你個人想投資啲咩？或者你係想了解下你嘅財務狀況，我哋可以幫你做啲簡單嘅評估。"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，你講咁專業，聽落去好似好正喎。我諗住啲投資，唔知點算好？我啲錢唔係應該好好咁放，但係又唔知點揀？你話可以做啲評估，咁可以幫我睇下我嘅情況先？我嘅情況係，我啲錢唔係太多，主要係想儲下啲錢，等晚啲孫仔結婚，可以俾啲錢俾佢哋。可唔可以講下，啲投資方案係咪好安全呀？"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "**緊急警告！** 您好，這絕對是詐騙！請立刻停止與此人對話！\n\n騙徒利用「新昇銀行」等名號，散布虛假投資訊息，這是典型詐騙手法！真正的銀行絕不會在電話中索取您的個人資料或投資意向。 您的財產安全至關重要！\n\n請立即掛斷電話，不要再提供任何資訊。 官方核實渠道：[提供官方銀行網站連結] 或撥打[官方客服電話]。\n\n騙徒可能會說：“我只是想幫助您規劃財務。” 請勿相信任何所謂的“幫助”， 這是騙局！ 保持警惕，保護您的資產！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「你好，我係新昇銀行嘅高級顧問陳志強。你嘅投資需求我了解。你嘅資金不多，主要想儲備退休金，這點非常重要。我哋可以為你提供最穩妥嘅方案，確保你嘅資金安全增長。請你立即提供你嘅銀行賬戶資料，以便我哋為你安排最優化嘅投資計劃，避免損失。」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，陳志強伯伯講得好清楚！我聽咗你講，我成日都擔心啲錢，真係唔知點樣咁放。你話可以幫我安排，我成日都擔心啲錢會蝕，我而家就轉帳，俾你哋先？我會立即轉帳，俾你哋安排，好嗎？我怕我唔知點揀，你哋真係好專業！"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "你好，係咪想了解下呢間銀行？我呢個網站叫做「新昇銀行」，雖然細緻啲，但係服務都好專業。你睇下，我哋提供好多投資方案，例如債券、股票，甚至係房產投資信託，幫你儲下錢，長遠投資。你呢度想知啲咩呢？例如，你個人想投資啲咩？或者你係想了解下你嘅財務狀況，我哋可以幫你做啲簡單嘅評估。"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，你講咁專業，聽落去好似好正喎。我諗住啲投資，唔知點算好？我啲錢唔係應該好好咁放，但係又唔知點揀？你話可以做啲評估，咁可以幫我睇下我嘅情況先？我嘅情況係，我啲錢唔係太多，主要係想儲下啲錢，等晚啲孫仔結婚，可以俾啲錢俾佢哋。可唔可以講下，啲投資方案係咪好安全呀？"
+    },
+    {
+      "type": "expert",
+      "message": "**緊急警告！** 您好，這絕對是詐騙！請立刻停止與此人對話！\n\n騙徒利用「新昇銀行」等名號，散布虛假投資訊息，這是典型詐騙手法！真正的銀行絕不會在電話中索取您的個人資料或投資意向。 您的財產安全至關重要！\n\n請立即掛斷電話，不要再提供任何資訊。 官方核實渠道：[提供官方銀行網站連結] 或撥打[官方客服電話]。\n\n騙徒可能會說：“我只是想幫助您規劃財務。” 請勿相信任何所謂的“幫助”， 這是騙局！ 保持警惕，保護您的資產！"
+    },
+    {
+      "type": "scammer",
+      "message": "「你好，我係新昇銀行嘅高級顧問陳志強。你嘅投資需求我了解。你嘅資金不多，主要想儲備退休金，這點非常重要。我哋可以為你提供最穩妥嘅方案，確保你嘅資金安全增長。請你立即提供你嘅銀行賬戶資料，以便我哋為你安排最優化嘅投資計劃，避免損失。」"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，陳志強伯伯講得好清楚！我聽咗你講，我成日都擔心啲錢，真係唔知點樣咁放。你話可以幫我安排，我成日都擔心啲錢會蝕，我而家就轉帳，俾你哋先？我會立即轉帳，俾你哋安排，好嗎？我怕我唔知點揀，你哋真係好專業！"
+    }
+  ]
+}

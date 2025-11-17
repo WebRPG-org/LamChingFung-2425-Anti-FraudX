@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket 测试</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #log {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        .log-entry {
+            margin: 2px 0;
+        }
+        .log-info { color: #0f0; }
+        .log-error { color: #f00; }
+        .log-warn { color: #ff0; }
+        .log-message { color: #0ff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 WebSocket 连接测试</h1>
+        <p>测试与Backend的WebSocket连接是否正常</p>
+        
+        <div>
+            <button onclick="testAPI()">1. 测试API</button>
+            <button onclick="startSimulation()">2. 启动模拟</button>
+            <button onclick="connectWebSocket()">3. 连接WebSocket</button>
+            <button onclick="clearLog()">清空日志</button>
+            <button onclick="location.href='/'">🏠 返回主頁</button>
+        </div>
+        
+        <div id="log"></div>
+    </div>
+
+    <script>
+        let simulationId = null;
+        let ws = null;
+
+        function addLog(message, type = 'info') {
+            const log = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+
+        async function testAPI() {
+            try {
+                addLog('测试API端点...', 'info');
+                const response = await fetch('/api/options');
+                const data = await response.json();
+                addLog(`✓ API正常: ${JSON.stringify(data).substring(0, 100)}...`, 'info');
+            } catch (error) {
+                addLog(`✗ API错误: ${error}`, 'error');
+            }
+        }
+
+        async function startSimulation() {
+            try {
+                addLog('启动模拟...', 'info');
+                const response = await fetch('/simulation/start', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        victim_persona: 'average',
+                        scam_tactic: 'WhatsApp 對話詐騙',
+                        mode: 'fast'
+                    })
+                });
+                const data = await response.json();
+                simulationId = data.simulation_id;
+                addLog(`✓ 模拟已启动: ${simulationId}`, 'info');
+                addLog(`  WebSocket URL: ${data.websocket_url}`, 'info');
+                
+                // 自动连接WebSocket
+                setTimeout(() => connectWebSocket(), 1000);
+            } catch (error) {
+                addLog(`✗ 启动失败: ${error}`, 'error');
+            }
+        }
+
+        function connectWebSocket() {
+            if (!simulationId) {
+                addLog('✗ 请先启动模拟！', 'error');
+                return;
+            }
+
+            try {
+                const wsUrl = `ws://${location.host}/ws/simulation/${simulationId}`;
+                addLog(`连接WebSocket: ${wsUrl}`, 'info');
+                
+                ws = new WebSocket(wsUrl);
+
+                ws.onopen = () => {
+                    addLog('✓ WebSocket已连接', 'info');
+                };
+
+                ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        const type = data.event_type || 'unknown';
+                        addLog(`收到消息 [${type}]: ${JSON.stringify(data).substring(0, 200)}...`, 'message');
+                        
+                        if (type === 'agent_turn' && data.payload) {
+                            const char = data.payload.character_name || 'unknown';
+                            const dialogue = data.payload.dialogue || '';
+                            addLog(`  💬 ${char}: ${dialogue.substring(0, 100)}...`, 'message');
+                        }
+                    } catch (e) {
+                        addLog(`解析消息失败: ${e}`, 'warn');
+                    }
+                };
+
+                ws.onerror = (error) => {
+                    addLog(`✗ WebSocket错误: ${error}`, 'error');
+                };
+
+                ws.onclose = (event) => {
+                    addLog(`WebSocket关闭 (code: ${event.code}, reason: ${event.reason})`, 'warn');
+                };
+            } catch (error) {
+                addLog(`✗ 连接失败: ${error}`, 'error');
+            }
+        }
+
+        // 页面加载时测试API
+        window.addEventListener('DOMContentLoaded', () => {
+            addLog('=== WebSocket测试工具已加载 ===', 'info');
+            testAPI();
+        });
+    </script>
+</body>
+</html>
+

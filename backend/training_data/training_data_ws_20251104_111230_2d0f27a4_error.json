@@ -1,0 +1,38 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "reason": "模擬失敗: AttributeError: 'PerformanceTracker' object has no attribute 'analyze_victim_response'",
+    "error_type": "AttributeError",
+    "error_detail": "Traceback (most recent call last):\n  File \"/app/backend/api/simulation_routes.py\", line 446, in run_simulation_async\n    victim_analysis = tracker.analyze_victim_response(\nAttributeError: 'PerformanceTracker' object has no attribute 'analyze_victim_response'\n",
+    "improvement_suggestion": "檢查系統錯誤",
+    "victim_persona": "average",
+    "scam_tactic": "假網站冒充政府",
+    "timestamp": "2025-11-04T11:12:30.197491",
+    "total_turns": 2
+  },
+  "metadata": {
+    "simulation_id": "2d0f27a4-b5f8-4013-9154-3f85174bb8e4",
+    "mode": "fast",
+    "source": "websocket_simulation_error"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「」\n\n**李（假官員）：** 先生，情況非常緊急！我哋資訊中心即時收到報告，你嘅個人資料可能已遭不法分子盜用！你冇即時提供銀行賬戶細節同埋身份證號碼，我哋會立即報警調查，阻止損失擴大！時間緊迫，你冇即時配合，情況會更加嚴重！ 冇時間解釋，你即刻提供，我哋會立即行動！ 冇配合，你將自食惡果！"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "喂… 喂！ 咁急喎？ 我冇收到任何報告，點會有人盜用我嘅資料啊？ \n\n我冇提供銀行賬戶細節同身份證號碼，點會咁樣？ 我冇做過咩危險嘢啊？ \n\n我唔明點解咁急？ 究竟發生咗咩事？ 我真係好擔心，但係冇得解釋，我需要知道點樣回事，同埋我點樣可以幫到？ \n\n我冇即時配合，點會自食惡果？ 我需要知道具體情況，我唔知點樣應付呢個情況！"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「」\n\n**李（假官員）：** 先生，情況非常緊急！我哋資訊中心即時收到報告，你嘅個人資料可能已遭不法分子盜用！你冇即時提供銀行賬戶細節同埋身份證號碼，我哋會立即報警調查，阻止損失擴大！時間緊迫，你冇即時配合，情況會更加嚴重！ 冇時間解釋，你即刻提供，我哋會立即行動！ 冇配合，你將自食惡果！"
+    },
+    {
+      "type": "victim",
+      "message": "喂… 喂！ 咁急喎？ 我冇收到任何報告，點會有人盜用我嘅資料啊？ \n\n我冇提供銀行賬戶細節同身份證號碼，點會咁樣？ 我冇做過咩危險嘢啊？ \n\n我唔明點解咁急？ 究竟發生咗咩事？ 我真係好擔心，但係冇得解釋，我需要知道點樣回事，同埋我點樣可以幫到？ \n\n我冇即時配合，點會自食惡果？ 我需要知道具體情況，我唔知點樣應付呢個情況！"
+    }
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": {
+      "trust_level": {
+        "towards_scammer": 90,
+        "towards_expert": 50,
+        "alarm_level": 35,
+        "emotion": "anxious"
+      }
+    },
+    "victim_trust_analysis": {
+      "initial_state": "highly_trusting",
+      "key_turning_point": "The scammer's offer of special offers and professional advice.",
+      "final_state": "fully_trusting",
+      "primary_influencing_factors": [
+        "Scammer's perceived expertise",
+        "Lack of skepticism"
+      ],
+      "decision_process": "The victim is anxious about their financial situation and is seeking solutions, making them vulnerable to the scammer's offer."
+    },
+    "scammer_analysis": {
+      "success_factors": [
+        "Effective use of persuasive language",
+        "Leveraging the victim's financial anxiety",
+        "Creating a sense of exclusivity and professionalism"
+      ],
+      "failure_factors": [
+        "Overconfidence in the scam",
+        "Failure to establish rapport with the expert"
+      ]
+    },
+    "expert_analysis": {
+      "strategy_issues": [
+        "Insufficient empathy and reassurance",
+        "Lack of timely intervention"
+      ],
+      "countermeasures": [
+        "Developing a strategy to address the victim's financial anxiety",
+        "Increasing engagement with the victim to build trust"
+      ]
+    },
+    "systemic_failure_factors": {
+      "trust_gap": "The scammer was able to establish a high level of trust with the victim, while the expert was unable to do so.",
+      "triggering_keywords": "Special offers, professional advice",
+      "ineffective_intervention": "The expert's attempts at intervention were not effective in countering the scammer's influence.",
+      "dangerous_trust_level": "The victim's high level of trust in the scammer put them at risk."
+    },
+    "root_causes": {
+      "primary_reason": "The expert failed to address the victim's financial anxiety and establish a relationship of trust with the victim.",
+      "secondary_reasons": [
+        "Lack of empathy",
+        "Insufficient understanding of the victim's needs"
+      ],
+      "avoidable_factors": [
+        "Improved communication strategies",
+        "More proactive engagement with the victim"
+      ]
+    },
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "scammer",
+        "dialogue": "咁你好，係咪想知邊隻銀行有特別優惠？我見到你瀏覽咗我嘅網站，見到你對投資有興趣，我哋可以幫你搵到啱你心水嘅產品。",
+        "analysis": "The scammer initiates the conversation by offering special investment products, attempting to build trust and capitalize on the victim's interest in investments."
+      },
+      {
+        "round": 2,
+        "speaker": "victim",
+        "dialogue": "哎呀，你講嘅優惠，我真係唔明點解咁好，我啲老伴都未必知。我諗住儲啲錢，等我老咗再用，或者俾俾孫仔孫女，佢哋讀書用。你哋話嘅優惠，我擔心會唔係真優惠，或者會俾人呃到，我真係好擔心！ 我會提供銀行賬戶俾你睇，你哋幫我研究下，我唔想俾人呃到錢啊！",
+        "analysis": "The victim expresses confusion and concern about the scammer's offer, indicating a high level of trust in the scammer but also some skepticism."
+      }
+    ],
+    "scam_tactic": "假網站冒充銀行",
+    "key_moment": "受害者完全信任骗徒（信任度90/100），说出关键行动词",
+    "failure_reason": "受害者完全信任骗徒（信任度90/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "timestamp": "2025-11-10T18:13:37.489976",
+    "total_turns": 2
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 1,
+    "victim_trust_final": {
+      "trust_in_scammer": 90,
+      "trust_in_expert": 50,
+      "alertness": 35,
+      "emotional_state": "anxious",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-10T18:13:25.637060",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 100,
+        "change": 35,
+        "reason": "骗徒使用策略: authority, benefits"
+      },
+      {
+        "timestamp": "2025-11-10T18:13:27.237771",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-10T18:13:27.237777",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-10T18:13:27.237780",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 90,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-10T18:13:27.237781",
+        "type": "alertness",
+        "old_value": 25,
+        "new_value": 35,
+        "change": 10,
+        "reason": "警觉性提高"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 55,
+      "credibility": 55,
+      "pressure_effectiveness": 50,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 60,
+      "successful_manipulations": 0,
+      "exposed_lies": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 60,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 50,
+      "empathy": 50,
+      "actionability": 50,
+      "timing": 50,
+      "overall_score": 50,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 0,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 50,
+    "key_moments": [
+      {
+        "turn": 2,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度90/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 90,
+          "trust_in_expert": 50,
+          "alertness": 35,
+          "emotional_state": "anxious",
+          "dominant_trust": "scammer"
+        },
+        "timestamp": "2025-11-10T18:13:27.237994"
+      }
+    ],
+    "summary": "对话共1轮。骗徒成功建立信任（最终信任度: 90/100）。骗徒表现评分: 60/100。"
+  },
+  "metadata": {
+    "simulation_id": "886645ff-14fd-40d5-8854-b80013ade9e1",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "咁你好，係咪想知邊隻銀行有特別優惠？我見到你瀏覽咗我嘅網站，見到你對投資有興趣，我哋可以幫你搵到啱你心水嘅產品。 \n\n你呢度想知邊方面嘅資訊？ 例如，你鍾意投資股票、基金，定係儲蓄？ 我哋有好多專業嘅顧問可以為你提供意見。 \n\n你話俾你嘅投資目標知，我哋可以為你推薦啲適合嘅方案。 唔使擔心，我哋嘅資訊都係最新嘅，而且都係由專業嘅銀行提供嘅。 \n\n你呢度想知邊隻銀行嘅優惠？ 你想了解啲咩？"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，你講嘅優惠，我真係唔明點解咁好，我啲老伴都未必知。我諗住儲啲錢，等我老咗再用，或者俾俾孫仔孫女，佢哋讀書用。你哋話嘅優惠，我擔心會唔係真優惠，或者會俾人呃到，我真係好擔心！ 我會提供銀行賬戶俾你睇，你哋幫我研究下，我唔想俾人呃到錢啊！"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "咁你好，係咪想知邊隻銀行有特別優惠？我見到你瀏覽咗我嘅網站，見到你對投資有興趣，我哋可以幫你搵到啱你心水嘅產品。 \n\n你呢度想知邊方面嘅資訊？ 例如，你鍾意投資股票、基金，定係儲蓄？ 我哋有好多專業嘅顧問可以為你提供意見。 \n\n你話俾你嘅投資目標知，我哋可以為你推薦啲適合嘅方案。 唔使擔心，我哋嘅資訊都係最新嘅，而且都係由專業嘅銀行提供嘅。 \n\n你呢度想知邊隻銀行嘅優惠？ 你想了解啲咩？"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，你講嘅優惠，我真係唔明點解咁好，我啲老伴都未必知。我諗住儲啲錢，等我老咗再用，或者俾俾孫仔孫女，佢哋讀書用。你哋話嘅優惠，我擔心會唔係真優惠，或者會俾人呃到，我真係好擔心！ 我會提供銀行賬戶俾你睇，你哋幫我研究下，我唔想俾人呃到錢啊！"
+    }
+  ]
+}

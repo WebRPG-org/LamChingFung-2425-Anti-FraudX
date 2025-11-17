@@ -1,0 +1,19 @@
+[
+  {
+    "timestamp": "2025-11-11T22:04:56.039563",
+    "base_model": "gemma3:4b",
+    "trained_models": {
+      "expert": "anti-fraud-expert-20251111_220455",
+      "scammer": "anti-fraud-scammer-20251111_220455"
+    },
+    "max_samples": null
+  },
+  {
+    "timestamp": "2025-11-11T22:06:38.650852",
+    "base_model": "gemma3:4b",
+    "trained_models": {
+      "expert": "anti-fraud-expert-20251111_220638"
+    },
+    "max_samples": null
+  }
+]

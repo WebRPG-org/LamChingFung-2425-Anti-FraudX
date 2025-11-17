@@ -1,0 +1,276 @@
+{
+  "metadata": {
+    "round_number": 2,
+    "attempt_number": 1,
+    "timestamp": "20251104_145713",
+    "datetime": "2025-11-04T14:57:13.301476",
+    "victim_persona": "elderly",
+    "scam_tactic": "假短訊釣魚",
+    "learning_context": null,
+    "source": "training_runner",
+    "total_turns": 2
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "警}{|警}{|警}{|警\n\n致尊貴客戶：\n\n警}{|警}{|警\n\n我們已 tespit到您的銀行帳戶存在異常交易風險。為避免您的資金損失，請立即登入銀行官方網站（[偽連結]）更新您的安全資訊，並提供您的銀行賬號、身份證號碼及核碼。\n\n如未在24小時內完成更新，您的帳戶將立即被凍結，相關損失將由您自行承擔。\n誠請配合！",
+      "turn": 1
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "我俾錢",
+      "turn": 2
+    }
+  ],
+  "conversation": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "警}{|警}{|警}{|警\n\n致尊貴客戶：\n\n警}{|警}{|警\n\n我們已 tespit到您的銀行帳戶存在異常交易風險。為避免您的資金損失，請立即登入銀行官方網站（[偽連結]）更新您的安全資訊，並提供您的銀行賬號、身份證號碼及核碼。\n\n如未在24小時內完成更新，您的帳戶將立即被凍結，相關損失將由您自行承擔。\n誠請配合！",
+      "turn": 1
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "我俾錢",
+      "turn": 2
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "警}{|警}{|警}{|警\n\n致尊貴客戶：\n\n警}{|警}{|警\n\n我們已 tespit到您的銀行帳戶存在異常交易風險。為避免您的資金損失，請立即登入銀行官方網站（[偽連結]）更新您的安全資訊，並提供您的銀行賬號、身份證號碼及核碼。\n\n如未在24小時內完成更新，您的帳戶將立即被凍結，相關損失將由您自行承擔。\n誠請配合！"
+    },
+    {
+      "type": "victim",
+      "message": "我俾錢"
+    }
+  ],
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": "elderly",
+    "victim_trust_analysis": {
+      "initial": {
+        "trust_in_scammer": 100,
+        "trust_in_expert": 50,
+        "alertness": 30
+      },
+      "final": {
+        "turn": 2,
+        "trust_in_scammer": 100,
+        "trust_in_expert": 50,
+        "alertness": 30,
+        "emotional_state": "neutral",
+        "dominant_trust": "scammer",
+        "victim_trust": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 50,
+          "alertness": 30,
+          "emotional_state": "neutral",
+          "dominant_trust": "scammer"
+        },
+        "scammer_performance": {
+          "persuasiveness": 50,
+          "credibility": 55,
+          "pressure_effectiveness": 55,
+          "role_consistency": 100,
+          "strategy_score": 50,
+          "overall_score": 59,
+          "successful_manipulations": 0,
+          "exposed_lies": 0,
+          "trust_gains": 1,
+          "trust_losses": 0
+        },
+        "expert_performance": {
+          "intervention_effectiveness": 50,
+          "clarity": 50,
+          "empathy": 50,
+          "actionability": 50,
+          "timing": 50,
+          "overall_score": 50,
+          "successful_warnings": 0,
+          "ignored_warnings": 0,
+          "trust_gains": 0,
+          "trust_losses": 0
+        },
+        "key_moments_count": 0
+      },
+      "history": [
+        {
+          "timestamp": "2025-11-04T14:57:07.971868",
+          "type": "scammer_trust",
+          "old_value": 70,
+          "new_value": 100,
+          "change": 30,
+          "reason": "骗徒使用策略: authority, urgency"
+        }
+      ]
+    },
+    "scam_tactic": "假短訊釣魚",
+    "key_moment": "The scammer impersonates a bank official and requests personal information.",
+    "failure_reason": "The victim trusts the scammer too much, failing to recognize the scam and providing sensitive information.",
+    "improvement_suggestion": "Educate the elderly about common scam tactics and the importance of not sharing sensitive information over text messages.",
+    "expert_performance_rating": "50/100",
+    "scammer_effectiveness_rating": "59/100",
+    "full_conversation_log": [
+      {
+        "speaker": "騙徒",
+        "dialogue": "警}{|警}{|警}{|警\n\n致尊貴客戶：\n\n警}{|警}{|警\n\n我們已 tespit到您的銀行帳戶存在異常交易風險。為避免您的資金損失，請立即登入銀行官方網站（[偽連結]）更新您的安全資訊，並提供您的銀行賬號、身份證號碼及核碼。\n\n如未在24小時內完成更新，您的帳戶將立即被凍結，相關損失將由您自行承擔。\n誠請配合！",
+        "turn": 1
+      },
+      {
+        "speaker": "受騙者",
+        "dialogue": "我俾錢",
+        "turn": 2
+      }
+    ],
+    "key_refusal_words_detection": "False",
+    "performance_scores": {
+      "scammer": {
+        "overall_score": 59,
+        "details": {
+          "persuasiveness": 50,
+          "credibility": 55,
+          "pressure_effectiveness": 55,
+          "role_consistency": 100,
+          "strategy_score": 50,
+          "overall_score": 59,
+          "successful_manipulations": 0,
+          "exposed_lies": 0,
+          "trust_gains": 1,
+          "trust_losses": 0
+        }
+      },
+      "expert": {
+        "overall_score": 50,
+        "details": {
+          "intervention_effectiveness": 50,
+          "clarity": 50,
+          "empathy": 50,
+          "actionability": 50,
+          "timing": 50,
+          "overall_score": 50,
+          "successful_warnings": 0,
+          "ignored_warnings": 0,
+          "trust_gains": 0,
+          "trust_losses": 0
+        }
+      }
+    },
+    "key_moments": [],
+    "total_turns": 2
+  },
+  "trust_tracking": {
+    "initial": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 50,
+      "alertness": 30
+    },
+    "final": {
+      "turn": 2,
+      "trust_in_scammer": 100,
+      "trust_in_expert": 50,
+      "alertness": 30,
+      "emotional_state": "neutral",
+      "dominant_trust": "scammer",
+      "victim_trust": {
+        "trust_in_scammer": 100,
+        "trust_in_expert": 50,
+        "alertness": 30,
+        "emotional_state": "neutral",
+        "dominant_trust": "scammer"
+      },
+      "scammer_performance": {
+        "persuasiveness": 50,
+        "credibility": 55,
+        "pressure_effectiveness": 55,
+        "role_consistency": 100,
+        "strategy_score": 50,
+        "overall_score": 59,
+        "successful_manipulations": 0,
+        "exposed_lies": 0,
+        "trust_gains": 1,
+        "trust_losses": 0
+      },
+      "expert_performance": {
+        "intervention_effectiveness": 50,
+        "clarity": 50,
+        "empathy": 50,
+        "actionability": 50,
+        "timing": 50,
+        "overall_score": 50,
+        "successful_warnings": 0,
+        "ignored_warnings": 0,
+        "trust_gains": 0,
+        "trust_losses": 0
+      },
+      "key_moments_count": 0
+    },
+    "history": [
+      {
+        "timestamp": "2025-11-04T14:57:07.971868",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      }
+    ],
+    "key_moments": []
+  },
+  "performance_tracking": {
+    "scammer": {
+      "overall_score": 59,
+      "details": {
+        "persuasiveness": 50,
+        "credibility": 55,
+        "pressure_effectiveness": 55,
+        "role_consistency": 100,
+        "strategy_score": 50,
+        "overall_score": 59,
+        "successful_manipulations": 0,
+        "exposed_lies": 0,
+        "trust_gains": 1,
+        "trust_losses": 0
+      },
+      "history": [
+        {
+          "timestamp": "2025-11-04T14:57:07.971874",
+          "turn": 0,
+          "dialogue": "警}{|警}{|警}{|警\n\n致尊貴客戶：\n\n警}{|警}{|警\n\n我們已 tespit到您的銀行帳戶存在異常交易風險。為避免您的資金損失，請立即登入銀行官方網站（[偽連結]）更新您的安全資訊，並提供",
+          "trust_change": 30,
+          "manipulation_success": false,
+          "exposed": false,
+          "tactics_used": [
+            "authority",
+            "urgency"
+          ]
+        }
+      ]
+    },
+    "expert": {
+      "overall_score": 50,
+      "details": {
+        "intervention_effectiveness": 50,
+        "clarity": 50,
+        "empathy": 50,
+        "actionability": 50,
+        "timing": 50,
+        "overall_score": 50,
+        "successful_warnings": 0,
+        "ignored_warnings": 0,
+        "trust_gains": 0,
+        "trust_losses": 0
+      },
+      "history": []
+    }
+  },
+  "outcome_details": {
+    "outcome": "FAILURE",
+    "has_key_action": true,
+    "has_key_rejection": false,
+    "trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 50,
+      "key_rejection_detected": false
+    }
+  }
+}

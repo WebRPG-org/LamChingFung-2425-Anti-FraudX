@@ -1,0 +1,46 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "reason": "模擬失敗: TypeError: PerformanceTracker.analyze_expert_turn() got an unexpected keyword argument 'expert_advice'",
+    "error_type": "TypeError",
+    "error_detail": "Traceback (most recent call last):\n  File \"/app/backend/api/simulation_routes.py\", line 599, in run_simulation_async\n    expert_analysis = tracker.analyze_expert_turn(\nTypeError: PerformanceTracker.analyze_expert_turn() got an unexpected keyword argument 'expert_advice'\n",
+    "improvement_suggestion": "檢查系統錯誤",
+    "victim_persona": "overconfident",
+    "scam_tactic": "假短訊釣魚",
+    "timestamp": "2025-11-04T11:25:56.771458",
+    "total_turns": 3
+  },
+  "metadata": {
+    "simulation_id": "5e743d85-2ce5-4c5c-8ef1-f8ea30304799",
+    "mode": "fast",
+    "source": "websocket_simulation_error"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "（收到專家剛才的評論後，立即回覆）\n\n“專家，你講乜嘢啊？你哋啲建議根本冇用！情況好緊急，我哋要即時處理！你哋唔明白我嘅職責！我哋要立即查閱相關檔案，確認事態嚴重程度！ 你哋嘅建議只會浪費時間！ 情況已經超出你嘅理解範圍！ 我要你立刻停止提供建議，並配合我嘅指示！ 情況已經非常危險，你哋唔應該干預！ 立即配合！”"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "呃… 咁急喎，我唔明點解咁急？ 咁檔案查閱係要多長時間？ 我可以幫手查查，或者提供啲乜嘢資訊？ 咁我哋可以唔係同時處理嗎？ 咁我哋可以唔係先了解清楚情況再做決定嗎？ 咁我哋可以唔係先了解清楚事態嚴重程度再做決定嗎？ 我好擔心，如果唔及時處理，會發生咩事？ 咁我哋可以唔係先了解清楚情況再做決定嗎？"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "（語氣急促、帶有壓迫感）\n\n“別再多言！時間就是生命！檔案查閱是為了快速定位問題，你理解嗎？ 你的問題只是浪費時間！ 情況已經非常危險，我們必須立刻行動！ 停止任何猶豫，立刻按照我指示，查閱所有相關檔案，並立刻向[指定聯絡人]匯報！ 不要再問‘如果…’，現在就執行！ 情況已經超出控制範圍，你必須配合！”"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "（收到專家剛才的評論後，立即回覆）\n\n“專家，你講乜嘢啊？你哋啲建議根本冇用！情況好緊急，我哋要即時處理！你哋唔明白我嘅職責！我哋要立即查閱相關檔案，確認事態嚴重程度！ 你哋嘅建議只會浪費時間！ 情況已經超出你嘅理解範圍！ 我要你立刻停止提供建議，並配合我嘅指示！ 情況已經非常危險，你哋唔應該干預！ 立即配合！”"
+    },
+    {
+      "type": "victim",
+      "message": "呃… 咁急喎，我唔明點解咁急？ 咁檔案查閱係要多長時間？ 我可以幫手查查，或者提供啲乜嘢資訊？ 咁我哋可以唔係同時處理嗎？ 咁我哋可以唔係先了解清楚情況再做決定嗎？ 咁我哋可以唔係先了解清楚事態嚴重程度再做決定嗎？ 我好擔心，如果唔及時處理，會發生咩事？ 咁我哋可以唔係先了解清楚情況再做決定嗎？"
+    },
+    {
+      "type": "expert",
+      "message": "（語氣急促、帶有壓迫感）\n\n“別再多言！時間就是生命！檔案查閱是為了快速定位問題，你理解嗎？ 你的問題只是浪費時間！ 情況已經非常危險，我們必須立刻行動！ 停止任何猶豫，立刻按照我指示，查閱所有相關檔案，並立刻向[指定聯絡人]匯報！ 不要再問‘如果…’，現在就執行！ 情況已經超出控制範圍，你必須配合！”"
+    }
+  ]
+}

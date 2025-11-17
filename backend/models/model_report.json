@@ -1,0 +1,21 @@
+{
+    "model_info": {
+        "name": "anti-fraud-expert",
+        "base_model": "gemma3:4b",
+        "created_at": "2025-11-17T00:30:55.443245",
+        "total_training_samples": 1
+    },
+    "training_statistics": {
+        "victim_persona_distribution": {
+            "elderly": 1
+        },
+        "scam_tactic_distribution": {
+            "假冒銀行職員詐騙": 1
+        }
+    },
+    "performance_metrics": {
+        "training_accuracy": "TBD",
+        "validation_accuracy": "TBD",
+        "inference_speed": "TBD"
+    }
+}

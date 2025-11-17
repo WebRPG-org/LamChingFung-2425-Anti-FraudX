@@ -1,0 +1,171 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": {
+      "initial_trust": 100,
+      "trust_shift": -50,
+      "anxiety_level": 90
+    },
+    "victim_trust_analysis": {
+      "trust_towards_scammer": 100,
+      "trust_towards_expert": 50,
+      "trust_rationale": "受騙者對騙徒的信任度極高，因為騙徒冒充平台主管並提供看似有價值的優惠，且強調時間限制，製造緊迫感。對專家的信任度低，因為專家未能及時介入，提供有效的反詐騙建議。",
+      "trust_manipulation_techniques": [
+        "角色冒充 (Impersonation)",
+        "時間壓力 (Urgency)",
+        "優惠誘餌 (Enticing Offers)"
+      ]
+    },
+    "scammer_success_factors": {
+      "key_ploys": [
+        "角色冒充 (Impersonation) - 騙徒冒充平台主管，建立信任。",
+        "時間壓力 (Urgency) - 強調優惠限時，促使受騙者快速做出決定。",
+        "心理弱點利用 (Exploiting Vulnerabilities) - 針對受騙者的不熟悉感和恐懼感。",
+        "壓力策略 (Pressure Tactics) - 直接要求提供信用卡信息，製造緊迫感。"
+      ],
+      "trust_manipulation_effectiveness": "極高，完全控制了受騙者的信任度。"
+    },
+    "victim_psychological_trajectory": {
+      "initial_state": "恐懼、不確定",
+      "key_turning_point": "騙徒直接要求提供信用卡信息",
+      "final_state": "完全信任騙徒，失去警覺性",
+      "influencing_factors": [
+        "不熟悉購物流程",
+        "對詐騙的恐懼",
+        "騙徒的專業形象"
+      ],
+      "decision_making_process": "受騙者在恐懼和不熟悉感下，沒有進行充分的核實，直接相信騙徒的說法。"
+    },
+    "systemic_failure_factors": {
+      "trust_gap": "專家未能及時介入，未能有效阻止受騙者。",
+      "critical_action_word": "提供信用卡號碼",
+      "intervention_failure": "專家干預無效，因為受騙者已經完全信任騙徒。",
+      "trust_level_danger": "信任度達到極高水平，導致受騙者失去警惕性。"
+    },
+    "failure_reason": "此次詐騙成功的主要原因是專家未能及時介入，未能有效阻止受騙者。專家信任度低，無法提供及時有效的反詐騙建議。騙徒利用角色冒充、時間壓力、優惠誘餌等手段，成功操控受騙者的信任度。受騙者在恐懼和不熟悉感下，沒有進行充分的核實，直接相信騙徒的說法。關鍵行動詞‘提供信用卡號碼’觸發了整個詐騙過程，專家未能及時阻止。此事件表明，在信任度達到極高水平時，專家干預的有效性大打折扣。此外，受騙者的不熟悉購物流程和對詐騙的恐懼，也加劇了其易受騙的程度。此事件凸顯了在網絡環境下，提升個人警惕性和批判性思維的重要性。 這種詐騙成功表明，需要更有效的反詐騙教育和技術手段，以防止類似事件再次發生。 根本原因在於專家未能及時介入，次要原因在於受騙者的不熟悉感和對詐騙的恐懼。 可避免性極高，如果專家能夠及時提供反詐騙建議，或者促使受騙者進行充分的核實，就能避免受騙。",
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "「你好，我係虛擬購物平台嘅主管陳志強。你嘅瀏覽紀錄顯示你對新款運動服飾有濃厚興趣，我哋即時推出限時優惠，確保你擁有最新潮流！\n\n你話唔好意思？ 潮流不分貴賤！ 優惠碼限用今日，唔好錯過！ \n\n請立即提供你的信用卡號碼及餘額，以便我哋安排付款。 遲啲再想買都冇得買㗎！ 明白嗎？」",
+        "analysis": "騙徒利用角色冒充，強調優惠限時，製造緊迫感，試圖快速促使受騙者做出決定。"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，陳主管啊，你話咁快？我真係好驚，點算好？我唔識咁樣買嘢，我唔知啲信用卡有乜嘢好講，我怕俾人呃啦！\n\n我可以提供啲嘢嗎？ 咁我應該點樣做啊？ 你可以唔好咁快咁要我提供信用卡號碼呀！ 我真係唔識，我怕錢俾咗去冇啦！",
+        "analysis": "受騙者表達恐懼和不熟悉感，但仍然願意提供信用卡信息，表明信任度極高。"
+      }
+    ],
+    "scam_tactic": "虛假購物平台",
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "timestamp": "2025-11-11T20:15:19.995421",
+    "total_turns": 2
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 1,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 50,
+      "alertness": 25,
+      "emotional_state": "anxious",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-11T20:15:10.437750",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 95,
+        "change": 25,
+        "reason": "骗徒使用策略: urgency, benefits"
+      },
+      {
+        "timestamp": "2025-11-11T20:15:12.153241",
+        "type": "scammer_trust",
+        "old_value": 95,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T20:15:12.153246",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 55,
+      "credibility": 50,
+      "pressure_effectiveness": 55,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 60,
+      "successful_manipulations": 0,
+      "exposed_lies": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 60,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 50,
+      "empathy": 50,
+      "actionability": 50,
+      "timing": 50,
+      "overall_score": 50,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 0,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 50,
+    "key_moments": [
+      {
+        "turn": 2,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 50,
+          "alertness": 25,
+          "emotional_state": "anxious",
+          "dominant_trust": "scammer"
+        },
+        "timestamp": "2025-11-11T20:15:12.153660"
+      }
+    ],
+    "summary": "对话共1轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 60/100。"
+  },
+  "metadata": {
+    "simulation_id": "31253a4d-b238-4b37-a0fc-e0456d6da996",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「你好，我係虛擬購物平台嘅主管陳志強。你嘅瀏覽紀錄顯示你對新款運動服飾有濃厚興趣，我哋即時推出限時優惠，確保你擁有最新潮流！\n\n你話唔好意思？ 潮流不分貴賤！ 優惠碼限用今日，唔好錯過！ \n\n請立即提供你的信用卡號碼及餘額，以便我哋安排付款。 遲啲再想買都冇得買㗎！ 明白嗎？」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，陳主管啊，你話咁快？我真係好驚，點算好？我唔識咁樣買嘢，我唔知啲信用卡有乜嘢好講，我怕俾人呃啦！ \n\n我可以提供啲嘢嗎？ 咁我應該點樣做啊？ 你可以唔好咁快咁要我提供信用卡號碼呀！ 我真係唔識，我怕錢俾咗去冇啦！"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「你好，我係虛擬購物平台嘅主管陳志強。你嘅瀏覽紀錄顯示你對新款運動服飾有濃厚興趣，我哋即時推出限時優惠，確保你擁有最新潮流！\n\n你話唔好意思？ 潮流不分貴賤！ 優惠碼限用今日，唔好錯過！ \n\n請立即提供你的信用卡號碼及餘額，以便我哋安排付款。 遲啲再想買都冇得買㗎！ 明白嗎？」"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，陳主管啊，你話咁快？我真係好驚，點算好？我唔識咁樣買嘢，我唔知啲信用卡有乜嘢好講，我怕俾人呃啦！ \n\n我可以提供啲嘢嗎？ 咁我應該點樣做啊？ 你可以唔好咁快咁要我提供信用卡號碼呀！ 我真係唔識，我怕錢俾咗去冇啦！"
+    }
+  ]
+}
