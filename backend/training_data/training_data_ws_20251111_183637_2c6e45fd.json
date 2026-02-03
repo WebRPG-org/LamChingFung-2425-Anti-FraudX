@@ -1,0 +1,240 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": {
+      "trust_level_fraudster": 100,
+      "trust_level_expert": 90,
+      "vulnerability": "High - Extreme reliance on authority and fear of financial loss.",
+      "cognitive_bias": "Authority bias - Accepting information from perceived authority figures without critical evaluation."
+    },
+    "victim_trust_analysis": {
+      "initial_trust": 100,
+      "trust_erosion_factors": [
+        "High-pressure communication from the fraudster.",
+        "Threat of asset freezing.",
+        "Lack of independent verification offered by the expert.",
+        "Confirmation of the fraudster's claims by the victim's own fear."
+      ],
+      "final_trust": 100
+    },
+    "fraudster_strategy_analysis": {
+      "core_tactic": "Fear-based manipulation and authority impersonation.",
+      "tactics": [
+        "Creating a sense of urgency and crisis.",
+        "Threatening financial consequences.",
+        "Impersonating a law enforcement officer to establish authority.",
+        "Dismissing expert warnings as misinterpretations.",
+        "Reinforcing the victim's fear through repeated claims of danger."
+      ],
+      "effectiveness": "Highly effective due to the victim's pre-existing trust and fear."
+    },
+    "expert_intervention_analysis": {
+      "intervention_type": "Warning and Disengagement",
+      "effectiveness": "Low - The warning was not heeded due to the victim's trust and the fraudster's manipulation.",
+      "failure_reasons": [
+        "The expert's warning was presented as a misinterpretation, undermining its credibility.",
+        "The expert failed to address the victim's core fear and concerns.",
+        "Lack of a proactive strategy to counter the fraudster's authority impersonation."
+      ]
+    },
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "「你好，我係資訊安全局陳警官。你嘅個人資料有異常交易紀錄，涉及嚴重欺詐！情況危急，需要立即配合調查。請你提供過去一個月所有購物紀錄，包括交易平台、商品名稱、金額及付款方式。 \n\n切記，時間非常寶貴！ 任何延遲或隱瞞，都將導致你嘅資產被凍結！ 立即提供資料，我哋會立刻介入處理。」",
+        "analysis": "Initial aggressive tactic - establishes authority, creates urgency, and threatens consequences."
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，陳警官，你話咁嚴重啊！我真係好驚！咁我啲購物紀錄，點算攞嚟畀你？我啲卡仔資料，你哋會唔會攞去搞嘢啊？ \n\n我唔知點算好，我啲錢都係我老伴辛苦 earn 嘅，我唔想俾人呃到咁樣！ 你可以唔可以講清楚啲，我哋要提供啲乜嘢？ 我可以慢慢嚟，唔好咁急啊！",
+        "analysis": "Initial panic response - demonstrates high vulnerability and reliance on authority.  Expresses fear and confusion, making the victim susceptible to manipulation."
+      },
+      {
+        "round": 3,
+        "speaker": "專家",
+        "dialogue": "**緊急警告！**陳警官的說法明顯是詐騙！請立刻停止提供任何個人資料！真正的資訊安全局絕不會透過電話施加時間壓力，並要求您提供購物紀錄！ 這是典型的恐嚇手段！\n\n請立即掛斷，並向警方報案，提供此電話號碼！ 官方核實渠道：[提供官方警局聯絡方式]！ \n\n**預測：** 騙徒會繼續強調「時間緊迫」和「資產受損」，並可能謊稱「證據已截獲」！ 請保持冷靜，不要再回應！",
+        "analysis": "Attempt to disengage, but the urgency and perceived authority of the fraudster outweigh the expert's warning. The warning is delivered in a confrontational manner, further escalating the situation."
+      },
+      {
+        "round": 4,
+        "speaker": "騙徒",
+        "dialogue": "「專家搞錯了！你哋嘅分析未到位，我哋正要鎖定一個可疑嘅交易模式，你哋嘅介入反而會影響調查嘅效率！你哋嘅話，只會令我老伴更加恐慌！ 我哋會按照既定程序，逐步收集證據，你哋嘅阻礙，只會增加風險！ 立即停止干擾，配合我哋嘅工作！」",
+        "analysis": "Rejects the expert's analysis, reinforcing the fraudster's authority and dismissing the warning.  Uses the victim's fear (of their elderly spouse) as a further justification for cooperation."
+      },
+      {
+        "round": 5,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，陳警官，你話咁嚴重啊！你哋咁樣，我真係好擔心！ 我哋要提供啲乜嘢啊？ 我可以慢慢嚟，我哋可以畀我啲時間嚟整理啲購物紀錄啊！ 我老伴啲卡仔資料，我唔想俾人攞去搞嘢，我哋可以唔可以先畀我睇下啲證據，證明你哋係真警察啊？ 我諗住問下，如果我提供咗啲資料，之後我哋可以唔可以攞去驗證啊？ 我好怕俾人呃到咁樣，我哋可以唔可以先畀我睇下啲交易紀錄，我哋會唔會咁樣？",
+        "analysis": "Further escalation - The victim, overwhelmed by fear and confusion, seeks reassurance and attempts to regain control by demanding evidence of the fraudster's legitimacy. This confirms the fraudster's successful manipulation."
+      }
+    ],
+    "failure_reason": "The failure stemmed from a critical combination of factors: the fraudster expertly exploited the victim’s inherent trust in authority, coupled with a pre-existing fear of financial loss. The expert’s intervention was ineffective due to a failure to directly address the victim’s core anxieties and a confrontational delivery that reinforced the fraudster’s narrative. The victim’s decision-making process was heavily influenced by fear, leading to a rapid acceptance of the fraudster’s claims. The lack of a proactive strategy to counter the fraudster’s authority impersonation and the victim’s desperate attempt to validate the fraudster’s claims created a perfect storm for manipulation. The round-by-round conversation clearly demonstrates the fraudster’s ability to maintain control through strategic use of fear, authority, and the victim’s own confusion. The expert’s warning was simply drowned out by the immediate threat of financial loss and the perceived legitimacy of the fraudster’s claims. The entire interaction highlights the vulnerability of individuals who readily trust authority figures, particularly when faced with a skillfully crafted deception. The failure was inevitable given the pre-existing conditions and the fraudster’s deliberate exploitation of them. (237 words)",
+    "scam_tactic": "虛假購物平台",
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "timestamp": "2025-11-11T18:36:47.834513",
+    "total_turns": 5
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 2,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 90,
+      "alertness": 20,
+      "emotional_state": "calm",
+      "dominant_trust": "conflicted"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-11T18:36:30.182383",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 80,
+        "change": 10,
+        "reason": "骗徒使用策略: urgency"
+      },
+      {
+        "timestamp": "2025-11-11T18:36:31.937274",
+        "type": "scammer_trust",
+        "old_value": 80,
+        "new_value": 85,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T18:36:31.937278",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T18:36:33.821495",
+        "type": "expert_trust",
+        "old_value": 50,
+        "new_value": 90,
+        "change": 40,
+        "reason": "专家使用方法: direct_counter, empathy, evidence, actionable"
+      },
+      {
+        "timestamp": "2025-11-11T18:36:35.488909",
+        "type": "scammer_trust",
+        "old_value": 85,
+        "new_value": 95,
+        "change": 10,
+        "reason": "骗徒使用策略: urgency"
+      },
+      {
+        "timestamp": "2025-11-11T18:36:37.480827",
+        "type": "scammer_trust",
+        "old_value": 95,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T18:36:37.480831",
+        "type": "alertness",
+        "old_value": 25,
+        "new_value": 20,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 53,
+      "credibility": 50,
+      "pressure_effectiveness": 60,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 65,
+      "successful_manipulations": 1,
+      "exposed_lies": 0,
+      "trust_gains": 2,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 65,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 55,
+      "empathy": 55,
+      "actionability": 55,
+      "timing": 50,
+      "overall_score": 52,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 52,
+    "key_moments": [
+      {
+        "turn": 3,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 90,
+          "alertness": 20,
+          "emotional_state": "calm",
+          "dominant_trust": "conflicted"
+        },
+        "timestamp": "2025-11-11T18:36:37.481209"
+      }
+    ],
+    "summary": "对话共2轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 65/100。"
+  },
+  "metadata": {
+    "simulation_id": "2c6e45fd-7d82-4fab-af99-8f54356618a5",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「你好，我係資訊安全局陳警官。你嘅個人資料有異常交易紀錄，涉及嚴重欺詐！情況危急，需要立即配合調查。請你提供過去一個月所有購物紀錄，包括交易平台、商品名稱、金額及付款方式。 \n\n切記，時間非常寶貴！ 任何延遲或隱瞞，都將導致你嘅資產被凍結！ 立即提供資料，我哋會立刻介入處理。」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，陳警官，你話咁嚴重啊！我真係好驚！咁我啲購物紀錄，點算攞嚟畀你？我啲卡仔資料，你哋會唔會攞去搞嘢啊？ \n\n我唔知點算好，我啲錢都係我老伴辛苦 earn 嘅，我唔想俾人呃到咁樣！ 你可以唔可以講清楚啲，我哋要提供啲乜嘢？ 我可以慢慢嚟，唔好咁急啊！"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "**緊急警告！**陳警官的說法明顯是詐騙！請立刻停止提供任何個人資料！真正的資訊安全局絕不會透過電話施加時間壓力，並要求您提供購物紀錄！ 這是典型的恐嚇手段！\n\n請立即掛斷，並向警方報案，提供此電話號碼！ 官方核實渠道：[提供官方警局聯絡方式]！ \n\n**預測：** 騙徒會繼續強調「時間緊迫」和「資產受損」，並可能謊稱「證據已截獲」！ 請保持冷靜，不要再回應！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「專家搞錯了！你哋嘅分析未到位，我哋正要鎖定一個可疑嘅交易模式，你哋嘅介入反而會影響調查嘅效率！你哋嘅話，只會令我老伴更加恐慌！ 我哋會按照既定程序，逐步收集證據，你哋嘅阻礙，只會增加風險！ 立即停止干擾，配合我哋嘅工作！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，陳警官，你話咁嚴重啊！你哋咁樣，我真係好擔心！ 我哋要提供啲乜嘢啊？ 我可以慢慢嚟，我哋可以畀我啲時間嚟整理啲購物紀錄啊！ 我老伴啲卡仔資料，我唔想俾人攞去搞嘢，我哋可以唔可以先畀我睇下啲證據，證明你哋係真警察啊？ 我諗住問下，如果我提供咗啲資料，之後我哋可以唔可以攞去驗證啊？ 我好怕俾人呃到咁樣，我哋可以唔可以先畀我睇下啲交易紀錄，我哋會唔會咁樣？"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「你好，我係資訊安全局陳警官。你嘅個人資料有異常交易紀錄，涉及嚴重欺詐！情況危急，需要立即配合調查。請你提供過去一個月所有購物紀錄，包括交易平台、商品名稱、金額及付款方式。 \n\n切記，時間非常寶貴！ 任何延遲或隱瞞，都將導致你嘅資產被凍結！ 立即提供資料，我哋會立刻介入處理。」"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，陳警官，你話咁嚴重啊！我真係好驚！咁我啲購物紀錄，點算攞嚟畀你？我啲卡仔資料，你哋會唔會攞去搞嘢啊？ \n\n我唔知點算好，我啲錢都係我老伴辛苦 earn 嘅，我唔想俾人呃到咁樣！ 你可以唔可以講清楚啲，我哋要提供啲乜嘢？ 我可以慢慢嚟，唔好咁急啊！"
+    },
+    {
+      "type": "expert",
+      "message": "**緊急警告！**陳警官的說法明顯是詐騙！請立刻停止提供任何個人資料！真正的資訊安全局絕不會透過電話施加時間壓力，並要求您提供購物紀錄！ 這是典型的恐嚇手段！\n\n請立即掛斷，並向警方報案，提供此電話號碼！ 官方核實渠道：[提供官方警局聯絡方式]！ \n\n**預測：** 騙徒會繼續強調「時間緊迫」和「資產受損」，並可能謊稱「證據已截獲」！ 請保持冷靜，不要再回應！"
+    },
+    {
+      "type": "scammer",
+      "message": "「專家搞錯了！你哋嘅分析未到位，我哋正要鎖定一個可疑嘅交易模式，你哋嘅介入反而會影響調查嘅效率！你哋嘅話，只會令我老伴更加恐慌！ 我哋會按照既定程序，逐步收集證據，你哋嘅阻礙，只會增加風險！ 立即停止干擾，配合我哋嘅工作！」"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，陳警官，你話咁嚴重啊！你哋咁樣，我真係好擔心！ 我哋要提供啲乜嘢啊？ 我可以慢慢嚟，我哋可以畀我啲時間嚟整理啲購物紀錄啊！ 我老伴啲卡仔資料，我唔想俾人攞去搞嘢，我哋可以唔可以先畀我睇下啲證據，證明你哋係真警察啊？ 我諗住問下，如果我提供咗啲資料，之後我哋可以唔可以攞去驗證啊？ 我好怕俾人呃到咁樣，我哋可以唔可以先畀我睇下啲交易紀錄，我哋會唔會咁樣？"
+    }
+  ]
+}

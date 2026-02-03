@@ -1,0 +1,94 @@
+{
+  "maps": [
+    {
+      "id": 1,
+      "name": "Park",
+      "file": "Park.json"
+    },
+    {
+      "id": 2,
+      "name": "Forest Town",
+      "file": "Forest_Town.json"
+    },
+    {
+      "id": 3,
+      "name": "Weapon Shop",
+      "file": "Weapon_Shop.json"
+    },
+    {
+      "id": 4,
+      "name": "Start house",
+      "file": "Start_house.json"
+    },
+    {
+      "id": 5,
+      "name": "House 1",
+      "file": "House_1.json"
+    },
+    {
+      "id": 6,
+      "name": "Armor Shop",
+      "file": "Armor_Shop.json"
+    },
+    {
+      "id": 7,
+      "name": "Inn 1F",
+      "file": "Inn_1F.json"
+    },
+    {
+      "id": 8,
+      "name": "Inn 2F",
+      "file": "Inn_2F.json"
+    },
+    {
+      "id": 9,
+      "name": "NPC House 1",
+      "file": "NPC_House_1.json"
+    },
+    {
+      "id": 10,
+      "name": "NPC House 2",
+      "file": "NPC_House_2.json"
+    },
+    {
+      "id": 11,
+      "name": "NPC House 3",
+      "file": "NPC_House_3.json"
+    },
+    {
+      "id": 12,
+      "name": "Item Shop",
+      "file": "Item_Shop.json"
+    },
+    {
+      "id": 13,
+      "name": "Restaurant",
+      "file": "Restaurant.json"
+    },
+    {
+      "id": 14,
+      "name": "Shop District",
+      "file": "Shop_District.json"
+    },
+    {
+      "id": 15,
+      "name": "Item Shop",
+      "file": "Item_Shop.json"
+    },
+    {
+      "id": 16,
+      "name": "NPC House 1",
+      "file": "NPC_House_1.json"
+    },
+    {
+      "id": 17,
+      "name": "NPC House 2",
+      "file": "NPC_House_2.json"
+    },
+    {
+      "id": 18,
+      "name": "Casino",
+      "file": "Casino.json"
+    }
+  ]
+}

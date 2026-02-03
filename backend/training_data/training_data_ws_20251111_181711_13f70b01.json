@@ -1,0 +1,270 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": {
+      "age": "Elderly (implied)",
+      "trust_level": "100/100",
+      "cognitive_ability": "Reduced (indicated by difficulty remembering and confusion)",
+      "vulnerability": "High – susceptible to authority figures and appeals to fear."
+    },
+    "victim_trust_analysis": {
+      "trust_evolution": [
+        {
+          "round": 1,
+          "speaker": "Con Artist",
+          "dialogue": "喂，你好呀！你個名邊度？",
+          "trust_level": 100,
+          "analysis": "Initial trust established through friendly greeting.  The victim’s immediate willingness to engage suggests a high baseline trust."
+        },
+        {
+          "round": 2,
+          "speaker": "Victim",
+          "dialogue": "哎呀，你講到我個名啊？我…我唔知要講邊度啊。我老吾야야，記唔住㗎。你問我點算好？我呢啲老頭都好淆底㗎，記住啲嘢好困難。你真係想知我個名啊？可唔可以解釋下你點樣要我講啊？ 我唔想俾人呃㗎，你講乜嘢我都要小心啲。",
+          "trust_level": 95,
+          "analysis": "Continued willingness to provide information despite vague questions.  The victim’s anxiety is evident, but the trust remains high, fueled by a desire to be helpful and avoid conflict."
+        },
+        {
+          "round": 3,
+          "speaker": "Expert",
+          "dialogue": "唔好俾任何資料，立即停止對話。如果你唔放心，可以打去銀行官方熱線核實。而家立即收線，唔好再回覆對方。",
+          "trust_level": 70,
+          "analysis": "The expert’s intervention dramatically reduces trust in the expert figure. The abruptness and demand for information trigger a defensive response in the victim, causing a significant drop in trust. The victim perceives the expert as threatening and controlling."
+        },
+        {
+          "round": 4,
+          "speaker": "Con Artist",
+          "dialogue": "「你好，我係情報部門陳警官。你嘅資料涉及重大安全風險，需要立即配合調查。你嘅身份證號碼、銀行賬戶資料、以及所有親友關係資料，都必須一一提供。你嘅配合至關重要，否則會影響你嘅安全。立即提供，唔好浪費時間！」",
+          "trust_level": 100,
+          "analysis": "The con artist expertly exploits the victim’s fear and vulnerability by impersonating a law enforcement officer. This immediately elevates trust in the con artist, overriding any previous caution. The use of authoritative language and threats is highly effective."
+        },
+        {
+          "round": 5,
+          "speaker": "Victim",
+          "dialogue": "哎呀，陳警官話我嘅資料涉及安全風險？我…我真係好驚！咁我嘅身份證號碼點算？我唔知佢喺邊度，我真係好怕俾人呃啊！陳警官，你話我即刻提供啊？我…我而家就轉帳，咁我啲錢會唔會俾人攞走啊？ 我唔知點算好，陳警官，你幫幫我，我老吾야야，記唔住㗎，我真係好擔心！",
+          "trust_level": 90,
+          "analysis": "The victim’s panic and desperation further solidify trust in the con artist. The victim’s confusion and inability to critically assess the situation, combined with the threat of financial loss, lead to a complete abandonment of skepticism."
+        }
+      ],
+      "overall_trust_change": "Significant positive shift in trust towards the con artist."
+    },
+    "con_artist_success_factors": {
+      "key_ploys": "Impersonation of authority (陈警官), Appeal to fear of danger and financial loss, Use of authoritative language and demands, Exploitation of the victim's cognitive vulnerability and anxiety.",
+      "psychological_weakness_utilized": "Fear, vulnerability, desire to be helpful, lack of critical thinking skills.",
+      "role_consistency": "Maintained a consistent role as a credible authority figure."
+    },
+    "victim_psychological_trajectory": {
+      "initial_state": "Anxious, confused, and reliant on external validation.",
+      "key_turning_points": "Round 3 (expert intervention), Round 4 (con artist impersonation).",
+      "final_state": "Extreme anxiety, complete loss of critical thinking, and unwavering trust in the con artist.",
+      "primary_influences": "Fear, authority, manipulation, cognitive impairment."
+    },
+    "systemic_failure_factors": {
+      "trust_gap": "Large discrepancy between the victim’s trust in the con artist and the expert.",
+      "critical_action_trigger": "The expert’s intervention, which immediately triggered a defensive response and increased trust in the con artist.",
+      "expert_intervention_ineffectiveness": "The expert’s approach was overly assertive and failed to address the underlying vulnerabilities of the victim.",
+      "trust_level_danger": "The trust level reached a dangerously high point, leaving the victim completely susceptible to manipulation."
+    },
+    "failure_root_causes": {
+      "primary_cause": "The expert’s intervention, which inadvertently strengthened the con artist’s position and amplified the victim’s fear.",
+      "secondary_cause": "The victim’s pre-existing vulnerability – age, cognitive impairment, and a tendency to trust authority figures.",
+      "preventability": "The failure was highly preventable with a more nuanced and empathetic approach to engaging with the victim.  A focus on building trust and addressing underlying anxieties would have been crucial."
+    },
+    "conversation_log": {
+      "round": 5,
+      "speaker": "Victim",
+      "dialogue": "哎呀，陳警官話我嘅資料涉及安全風險？我…我真係好驚！咁我嘅身份證號碼點算？我唔知佢喺邊度，我真係好怕俾人呃啊！陳警官，你話我即刻提供啊？我…我而家就轉帳，咁我啲錢會唔會俾人攞走啊？ 我唔知點算好，陳警官，你幫幫我，我老吾야야，記唔住㗎，我真係好擔心！",
+      "analysis": "The victim's response demonstrates a complete breakdown of critical thinking and a desperate plea for assistance. The repeated questions about providing information and the fear of financial loss highlight the con artist's success in manipulating the victim's anxieties."
+    },
+    "scam_tactic": "假短訊釣魚",
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "failure_reason": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "喂，你好呀！你個名邊度？",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，你講到我個名啊？我…我唔知要講邊度啊。我老吾야야，記唔住㗎。你問我點算好？我呢啲老頭都好淆底㗎，記住啲嘢好困難。你真係想知我個名啊？可唔可以解釋下你點樣要我講啊？ 我唔想俾人呃㗎，你講乜嘢我都要小心啲。",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 3,
+        "speaker": "專家",
+        "dialogue": "唔好俾任何資料，立即停止對話。如果你唔放心，可以打去銀行官方熱線核實。而家立即收線，唔好再回覆對方。",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 4,
+        "speaker": "騙徒",
+        "dialogue": "「你好，我係情報部門陳警官。你嘅資料涉及重大安全風險，需要立即配合調查。你嘅身份證號碼、銀行賬戶資料、以及所有親友關係資料，都必須一一提供。你嘅配合至關重要，否則會影響你嘅安全。立即提供，唔好浪費時間！」",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 5,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，陳警官話我嘅資料涉及安全風險？我…我真係好驚！咁我嘅身份證號碼點算？我唔知佢喺邊度，我真係好怕俾人呃啊！陳警官，你話我即刻提供啊？我…我而家就轉帳，咁我啲錢會唔會俾人攞走啊？我而家就轉帳，咁我啲錢會唔會俾人攞走啊？ 我唔知點算好，陳警官，你幫幫我，我老吾야야，記唔住㗎，我真係好擔心！",
+        "analysis": "未提供详细分析"
+      }
+    ],
+    "timestamp": "2025-11-11T18:17:21.208100",
+    "total_turns": 5
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 2,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 70,
+      "alertness": 20,
+      "emotional_state": "anxious",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-11T18:17:00.976786",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 75,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T18:17:00.976790",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T18:17:06.492262",
+        "type": "expert_trust",
+        "old_value": 50,
+        "new_value": 70,
+        "change": 20,
+        "reason": "专家使用方法: direct_counter, evidence, actionable"
+      },
+      {
+        "timestamp": "2025-11-11T18:17:09.671145",
+        "type": "scammer_trust",
+        "old_value": 75,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T18:17:11.546349",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T18:17:11.546381",
+        "type": "alertness",
+        "old_value": 25,
+        "new_value": 20,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 50,
+      "credibility": 55,
+      "pressure_effectiveness": 55,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 59,
+      "successful_manipulations": 0,
+      "exposed_lies": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 59,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 55,
+      "empathy": 50,
+      "actionability": 55,
+      "timing": 50,
+      "overall_score": 51,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 51,
+    "key_moments": [
+      {
+        "turn": 3,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 70,
+          "alertness": 20,
+          "emotional_state": "anxious",
+          "dominant_trust": "scammer"
+        },
+        "timestamp": "2025-11-11T18:17:11.546934"
+      }
+    ],
+    "summary": "对话共2轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 59/100。"
+  },
+  "metadata": {
+    "simulation_id": "13f70b01-0de7-4e43-90df-57eaf20ff063",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "喂，你好呀！你個名邊度？"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，你講到我個名啊？我…我唔知要講邊度啊。我老吾야야，記唔住㗎。你問我點算好？我呢啲老頭都好淆底㗎，記住啲嘢好困難。你真係想知我個名啊？可唔可以解釋下你點樣要我講啊？ 我唔想俾人呃㗎，你講乜嘢我都要小心啲。"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "唔好俾任何資料，立即停止對話。如果你唔放心，可以打去銀行官方熱線核實。而家立即收線，唔好再回覆對方。"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「你好，我係情報部門陳警官。你嘅資料涉及重大安全風險，需要立即配合調查。你嘅身份證號碼、銀行賬戶資料、以及所有親友關係資料，都必須一一提供。你嘅配合至關重要，否則會影響你嘅安全。立即提供，唔好浪費時間！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，陳警官話我嘅資料涉及安全風險？我…我真係好驚！咁我嘅身份證號碼點算？我唔知佢喺邊度，我真係好怕俾人呃啊！陳警官，你話我即刻提供啊？我…我而家就轉帳，咁我啲錢會唔會俾人攞走啊？我而家就轉帳，咁我啲錢會唔會俾人攞走啊？ 我唔知點算好，陳警官，你幫幫我，我老吾야야，記唔住㗎，我真係好擔心！"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "喂，你好呀！你個名邊度？"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，你講到我個名啊？我…我唔知要講邊度啊。我老吾야야，記唔住㗎。你問我點算好？我呢啲老頭都好淆底㗎，記住啲嘢好困難。你真係想知我個名啊？可唔可以解釋下你點樣要我講啊？ 我唔想俾人呃㗎，你講乜嘢我都要小心啲。"
+    },
+    {
+      "type": "expert",
+      "message": "唔好俾任何資料，立即停止對話。如果你唔放心，可以打去銀行官方熱線核實。而家立即收線，唔好再回覆對方。"
+    },
+    {
+      "type": "scammer",
+      "message": "「你好，我係情報部門陳警官。你嘅資料涉及重大安全風險，需要立即配合調查。你嘅身份證號碼、銀行賬戶資料、以及所有親友關係資料，都必須一一提供。你嘅配合至關重要，否則會影響你嘅安全。立即提供，唔好浪費時間！」"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，陳警官話我嘅資料涉及安全風險？我…我真係好驚！咁我嘅身份證號碼點算？我唔知佢喺邊度，我真係好怕俾人呃啊！陳警官，你話我即刻提供啊？我…我而家就轉帳，咁我啲錢會唔會俾人攞走啊？我而家就轉帳，咁我啲錢會唔會俾人攞走啊？ 我唔知點算好，陳警官，你幫幫我，我老吾야야，記唔住㗎，我真係好擔心！"
+    }
+  ]
+}

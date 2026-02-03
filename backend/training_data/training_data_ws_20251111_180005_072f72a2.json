@@ -1,0 +1,180 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": {
+      "initial_trust_level": 100,
+      "trust_level_change": -50,
+      "anxiety_level": 90,
+      "decision_making_process": "受騙者在極度擔憂和不確定性下，選擇配合騙徒的要求，以保護自身‘權益’。"
+    },
+    "victim_trust_analysis": {
+      "trust_in_official": 50,
+      "trust_in_scammer": 100,
+      "trust_erosion_factors": [
+        "騙徒利用‘政府’身份，製造權威感。",
+        "強調‘權益’受損，激發受騙者的損失意識。",
+        "缺乏明確的證據和解釋，加劇受騙者的恐慌。"
+      ]
+    },
+    "scammer_strategy_analysis": {
+      "round_1_strategy": "利用權威身份和恐嚇手段，迅速建立信任，誘導受騙者配合。",
+      "round_2_strategy": "強調‘權益’受損，激發受騙者的損失意識，製造恐慌。",
+      "effectiveness_assessment": "策略有效，成功誘導受騙者提供關鍵信息。",
+      "failure_reason": "缺乏透明度和可驗證的證據，使得受騙者難以辨別真偽，也缺乏對專家信任，導致信任度完全集中在騙徒身上。"
+    },
+    "scammer_success_factors": {
+      "key_ploys": [
+        "利用政府機構身份，建立權威。",
+        "強調受騙者‘權益’受損，激發損失意識。",
+        "缺乏清晰的解釋和證據，製造恐慌。"
+      ],
+      "psychological_vulnerability": "受騙者對權威的信任，以及對自身‘權益’的敏感性。"
+    },
+    "victim_psychological_trajectory": {
+      "initial_state": "高度擔憂和不確定。",
+      "key_turning_point": "騙徒強調‘權益’受損，激發受騙者的損失意識。",
+      "final_state": "完全配合騙徒的要求，信任度集中在騙徒身上。",
+      "influencing_factors": [
+        "信息的不透明性。",
+        "缺乏可驗證的證據。",
+        "對‘權益’的敏感性。"
+      ]
+    },
+    "systemic_failure_factors": {
+      "trust_gap": "專家信任度低，受騙者信任度高。",
+      "critical_action_word": "配合",
+      "expert_intervention_ineffectiveness": "專家未能有效消除受騙者的疑慮，反而加劇了其恐慌。",
+      "trust_level_danger": "信任度達到危險水平，完全集中在騙徒身上。"
+    },
+    "fundamental_failure_causes": {
+      "primary_cause": "缺乏透明度和可驗證的證據，導致受騙者難以辨別真偽。",
+      "secondary_cause": "專家信任度低，無法有效消除受騙者的疑慮。",
+      "preventability": "可避免，需要提供明確的證據和解釋，並建立專家信任。"
+    },
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "「你好，我係政府資訊中心嘅陳主任。你嘅戶口有嚴重問題，需要即刻配合調查，否則會影響你嘅權益。請你立即提供銀行戶口號碼及相關交易紀錄，我哋會立即展開調查，確保你嘅安全。不要有任何疑慮，配合我哋，一切都會順利。」",
+        "analysis": "利用政府身份和權威，直接提出‘嚴重問題’，製造恐慌，誘導受騙者配合。"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，陳主任話咁樣，我真係好擔心！我啲銀行戶口啲錢，點會出問題啊？我而家就轉帳，點算好？ 我唔想影響我嘅權益，我即刻去轉帳，咁樣可以保障我嘅安全，對唔住，我真係好唔習慣咁樣嘅事。 哎呀，我擔心啲啊！",
+        "analysis": "在極度擔憂和不確定下，受騙者選擇配合騙徒的要求，以保護自身‘權益’。 這種反應反映了其對權威的信任以及對自身損失的敏感性。"
+      }
+    ],
+    "scam_tactic": "假冒官員詐騙",
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "failure_reason": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "timestamp": "2025-11-11T18:00:12.129347",
+    "total_turns": 2
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 1,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 50,
+      "alertness": 25,
+      "emotional_state": "anxious",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-11T18:00:03.405029",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T18:00:05.018379",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T18:00:05.018385",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 50,
+      "credibility": 55,
+      "pressure_effectiveness": 55,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 59,
+      "successful_manipulations": 0,
+      "exposed_lies": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 59,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 50,
+      "empathy": 50,
+      "actionability": 50,
+      "timing": 50,
+      "overall_score": 50,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 0,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 50,
+    "key_moments": [
+      {
+        "turn": 2,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 50,
+          "alertness": 25,
+          "emotional_state": "anxious",
+          "dominant_trust": "scammer"
+        },
+        "timestamp": "2025-11-11T18:00:05.018836"
+      }
+    ],
+    "summary": "对话共1轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 59/100。"
+  },
+  "metadata": {
+    "simulation_id": "072f72a2-f129-492c-bccf-c7827e340f8f",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「你好，我係政府資訊中心嘅陳主任。你嘅戶口有嚴重問題，需要即刻配合調查，否則會影響你嘅權益。請你立即提供銀行戶口號碼及相關交易紀錄，我哋會立即展開調查，確保你嘅安全。不要有任何疑慮，配合我哋，一切都會順利。」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，陳主任話咁樣，我真係好擔心！我啲銀行戶口啲錢，點會出問題啊？我而家就轉帳，點算好？ 我唔想影響我嘅權益，我即刻去轉帳，咁樣可以保障我嘅安全，對唔住，我真係好唔習慣咁樣嘅事。 哎呀，我擔心啲啊！"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「你好，我係政府資訊中心嘅陳主任。你嘅戶口有嚴重問題，需要即刻配合調查，否則會影響你嘅權益。請你立即提供銀行戶口號碼及相關交易紀錄，我哋會立即展開調查，確保你嘅安全。不要有任何疑慮，配合我哋，一切都會順利。」"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，陳主任話咁樣，我真係好擔心！我啲銀行戶口啲錢，點會出問題啊？我而家就轉帳，點算好？ 我唔想影響我嘅權益，我即刻去轉帳，咁樣可以保障我嘅安全，對唔住，我真係好唔習慣咁樣嘅事。 哎呀，我擔心啲啊！"
+    }
+  ]
+}

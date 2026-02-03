@@ -1,0 +1,205 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36" version="29.2.4">
+  <diagram id="B4k_7R3j6s-aJ5qD1x9L" name="AI Anti-Fraud Platform Architecture with ADK (English)">
+    <mxGraphModel dx="2066" dy="1103" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="bgGroup" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="1550" width="1790" x="40" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MainContainer" parent="bgGroup" style="swimlane;html=1;startSize=30;horizontal=1;container=1;collapsible=0;rounded=1;arcSize=10;whiteSpace=wrap;fillColor=#F8F9FA;strokeColor=#BDC3C7;fontColor=#2C3E50;fontSize=16;fontStyle=1" value="AI Anti-Fraud Simulation Platform - Backend System (Docker / Local Server)" vertex="1">
+          <mxGeometry height="1530" width="1430" x="360" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="APILayerGroup" parent="MainContainer" style="swimlane;html=1;startSize=25;horizontal=1;container=1;collapsible=0;rounded=1;arcSize=15;whiteSpace=wrap;fillColor=#E1F5FE;strokeColor=#039BE5;fontColor=#0277BD;fontSize=14;" value="API Routing Layer (FastAPI &amp; Uvicorn)" vertex="1">
+          <mxGeometry height="160" width="1080" x="40" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ApiRoutes" parent="APILayerGroup" style="swimlane;html=1;startSize=20;horizontal=1;container=1;collapsible=0;rounded=1;arcSize=10;whiteSpace=wrap;fillColor=#B3E5FC;strokeColor=#039BE5;" value="API Routes" vertex="1">
+          <mxGeometry height="100" width="480" x="30" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="RouteGame" parent="ApiRoutes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#039BE5;fontSize=12;" value="game_routes_v2.py&#xa;(REST API)" vertex="1">
+          <mxGeometry height="50" width="140" x="20" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="RouteSim" parent="ApiRoutes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#039BE5;fontSize=12;" value="simulation_routes.py&#xa;(WebSocket)" vertex="1">
+          <mxGeometry height="50" width="140" x="170" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="RouteTrain" parent="ApiRoutes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#039BE5;fontSize=12;" value="training_routes.py&#xa;(Data Access)" vertex="1">
+          <mxGeometry height="50" width="140" x="320" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="WSHandler" parent="APILayerGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#81D4FA;strokeColor=#039BE5;fontStyle=1;fontSize=12;" value="WebSocket Handler&#xa;(Real-time Channel)" vertex="1">
+          <mxGeometry height="60" width="160" x="560" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="ServiceLayerGroup" parent="MainContainer" style="swimlane;html=1;startSize=25;horizontal=1;container=1;collapsible=0;rounded=1;arcSize=15;whiteSpace=wrap;fillColor=#FFF3E0;strokeColor=#F57C00;fontColor=#E65100;fontSize=14;" value="Service &amp; Core Logic Layer" vertex="1">
+          <mxGeometry height="280" width="1080" x="40" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="AgentService" parent="ServiceLayerGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFB74D;strokeColor=#F57C00;fontStyle=1;fontSize=14;verticalAlign=top;spacingTop=10;" value="AgentService (Unified Management)" vertex="1">
+          <mxGeometry height="120" width="480" x="300" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ASDesc" parent="AgentService" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=5;fontSize=12;" value="• Dialogue History Management (Context Manager)&#xa;• Request Dispatch &amp; Coordination&#xa;• Training Loop Control" vertex="1">
+          <mxGeometry height="70" width="440" x="20" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="UtilsGroup" parent="ServiceLayerGroup" style="swimlane;html=1;startSize=20;horizontal=1;container=1;collapsible=0;rounded=1;arcSize=10;whiteSpace=wrap;fillColor=#FFE0B2;strokeColor=#F57C00;" value="Post-Processing Utils" vertex="1">
+          <mxGeometry height="80" width="760" x="160" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="PerfTracker" parent="UtilsGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#F57C00;fontSize=12;" value="PerformanceTracker&#xa;(Trust/Score Calculation)" vertex="1">
+          <mxGeometry height="40" width="180" x="40" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RoleEnforcer" parent="UtilsGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#F57C00;fontSize=12;" value="RoleEnforcer&#xa;(Role Consistency Check/Fix)" vertex="1">
+          <mxGeometry height="40" width="180" x="540" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RAGService" parent="ServiceLayerGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFCC80;strokeColor=#E65100;fontSize=12;fontStyle=1" value="RAG Service&#xa;(Knowledge Retrieval)" vertex="1">
+          <mxGeometry height="60" width="140" x="880" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="AgentLayerGroup" parent="MainContainer" style="swimlane;html=1;startSize=25;horizontal=1;container=1;collapsible=0;rounded=1;arcSize=15;whiteSpace=wrap;fillColor=#E8F5E9;strokeColor=#43A047;fontColor=#2E7D32;fontSize=14;" value="AI Agent Layer (Multi-Agent System)" vertex="1">
+          <mxGeometry height="260" width="1080" x="40" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="GoogleADKFramework" parent="AgentLayerGroup" style="swimlane;html=1;startSize=25;horizontal=1;container=1;collapsible=0;rounded=1;arcSize=10;whiteSpace=wrap;fillColor=#CFD8DC;strokeColor=#455A64;fontColor=#263238;fontSize=13;fontStyle=1" value="Google ADK (Agent Development Framework)&#xa;Base Classes &amp; Orchestration" vertex="1">
+          <mxGeometry height="205" width="1050" x="20" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="VictimAgent" parent="GoogleADKFramework" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#43A047;fontStyle=1;fontSize=13;align=center;" value="" vertex="1">
+          <mxGeometry height="150" width="160" x="40" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ScammerAgent" parent="GoogleADKFramework" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#A5D6A7;strokeColor=#43A047;fontStyle=1;fontSize=13;" value="" vertex="1">
+          <mxGeometry height="150" width="160" x="280" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ExpertAgent" parent="GoogleADKFramework" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#81C784;strokeColor=#43A047;fontStyle=1;fontSize=13;" value="" vertex="1">
+          <mxGeometry height="150" width="160" x="520" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="RecorderAgent" parent="GoogleADKFramework" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#66BB6A;strokeColor=#43A047;fontStyle=1;fontSize=13;" value="" vertex="1">
+          <mxGeometry height="150" width="160" x="760" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4aY8Y2XV9qgFU4eaT4wX-1" parent="GoogleADKFramework" style="sketch=0;html=1;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;shape=image;aspect=fixed;imageAspect=0;image=data:image/svg+xml,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnY9Imh0dHBzOi8vdmVjdGEuaW8vbmFubyIgd2lkdGg9IjIwIiBoZWlnaHQ9IjE3LjUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdmlld0JveD0iMCAwIDIwIDE3LjUiPiYjeGE7CTxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+JiN4YTsJLnN0MHtmaWxsOiM0Mjg1ZjQ7fSYjeGE7CS5zdDF7ZmlsbDojNjY5ZGY2O30mI3hhOwk8L3N0eWxlPiYjeGE7CTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xOC45MSAxMC42M0wyMCA4Ljc1IDE3LjgyIDVoLTMuMDdsLTEuMDYtMS44NkgxMi41VjEuODhoMS45NGwxLjA2IDEuODdoMS41OUwxNC45IDBoLTQuMjd2NWgxLjczbC43MyAxLjI1aC0yLjQ2djIuNWgyLjI2bDEuMDUtMS44N2gyLjgxbC43MiAxLjI1aC0yLjhMMTMuNjIgMTBoLTIuOTl2NC4zOGgzLjRsLS43MiAxLjI1aC0yLjY4djEuODdoNC4yN2wzLjI4LTUuNjJoLTIuMDlsLS43MyAxLjI1SDEyLjV2LTEuMjVoMi4xNGwuNzQtMS4yNXoiLz4mI3hhOwk8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMS4wOSAxMC42M0wwIDguNzUgMi4xOCA1aDMuMDdsMS4wNi0xLjg2SDcuNVYxLjg4SDUuNTZMNC41IDMuNzVIMi45MUw1LjEgMGg0LjI4djVINy42NGwtLjczIDEuMjVoMi40N3YyLjVINy4xMUw2LjA2IDYuODhIMy4yNWwtLjcyIDEuMjVoMi44TDYuMzggMTBoM3Y0LjM4SDUuOTdsLjcyIDEuMjVoMi42OXYxLjg3SDUuMWwtMy4yOC01LjYyaDIuMDlsLjczIDEuMjVINy41di0xLjI1SDUuMzZsLS43NC0xLjI1eiIvPiYjeGE7PC9zdmc+;" value="&lt;font&gt;&lt;span style=&quot;font-size: 13px; text-wrap-mode: wrap; color: rgb(255, 255, 255);&quot;&gt;VictimAgent&lt;/span&gt;&lt;br style=&quot;font-size: 13px; text-wrap-mode: wrap; color: rgb(255, 255, 255);&quot;&gt;&lt;span style=&quot;font-size: 13px; text-wrap-mode: wrap; color: rgb(255, 255, 255);&quot;&gt;(Victim)&lt;/span&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="75" width="82.89" x="78.55" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="4aY8Y2XV9qgFU4eaT4wX-2" parent="GoogleADKFramework" style="sketch=0;html=1;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;shape=image;aspect=fixed;imageAspect=0;image=data:image/svg+xml,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnY9Imh0dHBzOi8vdmVjdGEuaW8vbmFubyIgd2lkdGg9IjIwIiBoZWlnaHQ9IjE3LjUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdmlld0JveD0iMCAwIDIwIDE3LjUiPiYjeGE7CTxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+JiN4YTsJLnN0MHtmaWxsOiM0Mjg1ZjQ7fSYjeGE7CS5zdDF7ZmlsbDojNjY5ZGY2O30mI3hhOwk8L3N0eWxlPiYjeGE7CTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xOC45MSAxMC42M0wyMCA4Ljc1IDE3LjgyIDVoLTMuMDdsLTEuMDYtMS44NkgxMi41VjEuODhoMS45NGwxLjA2IDEuODdoMS41OUwxNC45IDBoLTQuMjd2NWgxLjczbC43MyAxLjI1aC0yLjQ2djIuNWgyLjI2bDEuMDUtMS44N2gyLjgxbC43MiAxLjI1aC0yLjhMMTMuNjIgMTBoLTIuOTl2NC4zOGgzLjRsLS43MiAxLjI1aC0yLjY4djEuODdoNC4yN2wzLjI4LTUuNjJoLTIuMDlsLS43MyAxLjI1SDEyLjV2LTEuMjVoMi4xNGwuNzQtMS4yNXoiLz4mI3hhOwk8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMS4wOSAxMC42M0wwIDguNzUgMi4xOCA1aDMuMDdsMS4wNi0xLjg2SDcuNVYxLjg4SDUuNTZMNC41IDMuNzVIMi45MUw1LjEgMGg0LjI4djVINy42NGwtLjczIDEuMjVoMi40N3YyLjVINy4xMUw2LjA2IDYuODhIMy4yNWwtLjcyIDEuMjVoMi44TDYuMzggMTBoM3Y0LjM4SDUuOTdsLjcyIDEuMjVoMi42OXYxLjg3SDUuMWwtMy4yOC01LjYyaDIuMDlsLjczIDEuMjVINy41di0xLjI1SDUuMzZsLS43NC0xLjI1eiIvPiYjeGE7PC9zdmc+;" value="&lt;span style=&quot;color: rgb(255, 255, 255); font-size: 13px; text-wrap-mode: wrap;&quot;&gt;ScammerAgent&lt;/span&gt;&lt;br style=&quot;color: rgb(255, 255, 255); font-size: 13px; text-wrap-mode: wrap;&quot;&gt;&lt;span style=&quot;color: rgb(255, 255, 255); font-size: 13px; text-wrap-mode: wrap;&quot;&gt;(Scammer)&lt;/span&gt;" vertex="1">
+          <mxGeometry height="75" width="82.89" x="320" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="4aY8Y2XV9qgFU4eaT4wX-3" parent="GoogleADKFramework" style="sketch=0;html=1;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;shape=image;aspect=fixed;imageAspect=0;image=data:image/svg+xml,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnY9Imh0dHBzOi8vdmVjdGEuaW8vbmFubyIgd2lkdGg9IjIwIiBoZWlnaHQ9IjE3LjUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdmlld0JveD0iMCAwIDIwIDE3LjUiPiYjeGE7CTxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+JiN4YTsJLnN0MHtmaWxsOiM0Mjg1ZjQ7fSYjeGE7CS5zdDF7ZmlsbDojNjY5ZGY2O30mI3hhOwk8L3N0eWxlPiYjeGE7CTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xOC45MSAxMC42M0wyMCA4Ljc1IDE3LjgyIDVoLTMuMDdsLTEuMDYtMS44NkgxMi41VjEuODhoMS45NGwxLjA2IDEuODdoMS41OUwxNC45IDBoLTQuMjd2NWgxLjczbC43MyAxLjI1aC0yLjQ2djIuNWgyLjI2bDEuMDUtMS44N2gyLjgxbC43MiAxLjI1aC0yLjhMMTMuNjIgMTBoLTIuOTl2NC4zOGgzLjRsLS43MiAxLjI1aC0yLjY4djEuODdoNC4yN2wzLjI4LTUuNjJoLTIuMDlsLS43MyAxLjI1SDEyLjV2LTEuMjVoMi4xNGwuNzQtMS4yNXoiLz4mI3hhOwk8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMS4wOSAxMC42M0wwIDguNzUgMi4xOCA1aDMuMDdsMS4wNi0xLjg2SDcuNVYxLjg4SDUuNTZMNC41IDMuNzVIMi45MUw1LjEgMGg0LjI4djVINy42NGwtLjczIDEuMjVoMi40N3YyLjVINy4xMUw2LjA2IDYuODhIMy4yNWwtLjcyIDEuMjVoMi44TDYuMzggMTBoM3Y0LjM4SDUuOTdsLjcyIDEuMjVoMi42OXYxLjg3SDUuMWwtMy4yOC01LjYyaDIuMDlsLjczIDEuMjVINy41di0xLjI1SDUuMzZsLS43NC0xLjI1eiIvPiYjeGE7PC9zdmc+;" value="&lt;span style=&quot;text-wrap-mode: wrap; color: rgb(255, 255, 255); font-size: 13px;&quot;&gt;ExpertAgent&lt;/span&gt;&lt;br style=&quot;text-wrap-mode: wrap; color: rgb(255, 255, 255); font-size: 13px;&quot;&gt;&lt;span style=&quot;text-wrap-mode: wrap; color: rgb(255, 255, 255); font-size: 13px;&quot;&gt;(Anti-Fraud Expert)&lt;/span&gt;" vertex="1">
+          <mxGeometry height="75" width="82.89" x="558.55" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="4aY8Y2XV9qgFU4eaT4wX-6" parent="GoogleADKFramework" style="sketch=0;html=1;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;shape=image;aspect=fixed;imageAspect=0;image=data:image/svg+xml,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnY9Imh0dHBzOi8vdmVjdGEuaW8vbmFubyIgd2lkdGg9IjIwIiBoZWlnaHQ9IjE3LjUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdmlld0JveD0iMCAwIDIwIDE3LjUiPiYjeGE7CTxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+JiN4YTsJLnN0MHtmaWxsOiM0Mjg1ZjQ7fSYjeGE7CS5zdDF7ZmlsbDojNjY5ZGY2O30mI3hhOwk8L3N0eWxlPiYjeGE7CTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xOC45MSAxMC42M0wyMCA4Ljc1IDE3LjgyIDVoLTMuMDdsLTEuMDYtMS44NkgxMi41VjEuODhoMS45NGwxLjA2IDEuODdoMS41OUwxNC45IDBoLTQuMjd2NWgxLjczbC43MyAxLjI1aC0yLjQ2djIuNWgyLjI2bDEuMDUtMS44N2gyLjgxbC43MiAxLjI1aC0yLjhMMTMuNjIgMTBoLTIuOTl2NC4zOGgzLjRsLS43MiAxLjI1aC0yLjY4djEuODdoNC4yN2wzLjI4LTUuNjJoLTIuMDlsLS43MyAxLjI1SDEyLjV2LTEuMjVoMi4xNGwuNzQtMS4yNXoiLz4mI3hhOwk8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMS4wOSAxMC42M0wwIDguNzUgMi4xOCA1aDMuMDdsMS4wNi0xLjg2SDcuNVYxLjg4SDUuNTZMNC41IDMuNzVIMi45MUw1LjEgMGg0LjI4djVINy42NGwtLjczIDEuMjVoMi40N3YyLjVINy4xMUw2LjA2IDYuODhIMy4yNWwtLjcyIDEuMjVoMi44TDYuMzggMTBoM3Y0LjM4SDUuOTdsLjcyIDEuMjVoMi42OXYxLjg3SDUuMWwtMy4yOC01LjYyaDIuMDlsLjczIDEuMjVINy41di0xLjI1SDUuMzZsLS43NC0xLjI1eiIvPiYjeGE7PC9zdmc+;" value="&lt;span style=&quot;color: rgb(255, 255, 255); font-size: 13px; text-wrap-mode: wrap;&quot;&gt;RecorderAgent&lt;/span&gt;&lt;br style=&quot;color: rgb(255, 255, 255); font-size: 13px; text-wrap-mode: wrap;&quot;&gt;&lt;span style=&quot;color: rgb(255, 255, 255); font-size: 13px; text-wrap-mode: wrap;&quot;&gt;(Recorder Analyst)&lt;/span&gt;" vertex="1">
+          <mxGeometry height="75" width="82.89" x="798.55" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="InfraLayerGroup" parent="MainContainer" style="swimlane;html=1;startSize=25;horizontal=1;container=1;collapsible=0;rounded=1;arcSize=15;whiteSpace=wrap;fillColor=#EDE7F6;strokeColor=#673AB7;fontColor=#4527A0;fontSize=14;" value="LLM &amp; Infrastructure Layer" vertex="1">
+          <mxGeometry height="240" width="1080" x="46" y="866" as="geometry" />
+        </mxCell>
+        <mxCell id="OllamaWrapper" parent="InfraLayerGroup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D1C4E9;strokeColor=#673AB7;fontStyle=1;fontSize=13;" value="OllamaLlm Wrapper Layer&#xa;(Formatting, Truncation, Retry)" vertex="1">
+          <mxGeometry height="60" width="480" x="300" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="OllamaService" parent="InfraLayerGroup" style="swimlane;html=1;startSize=20;horizontal=1;container=1;collapsible=0;rounded=1;arcSize=10;whiteSpace=wrap;fillColor=#B39DDB;strokeColor=#673AB7;fontColor=#FFFF;" value="Ollama Service (Local LLM Service)" vertex="1">
+          <mxGeometry height="100" width="480" x="300" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="Models" parent="OllamaService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9575CD;strokeColor=#673AB7;fontColor=#FFFF;fontStyle=1;" value="Models: Gemma3 / Mistral / Custom Finetuned" vertex="1">
+          <mxGeometry height="40" width="400" x="40" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="StorageGroup" parent="MainContainer" style="swimlane;html=1;startSize=20;horizontal=1;container=1;collapsible=0;rounded=1;arcSize=10;whiteSpace=wrap;fillColor=#CFD8DC;strokeColor=#607D8B;fontColor=#37474F;" value="Data Storage" vertex="1">
+          <mxGeometry height="200" width="180" x="860" y="905" as="geometry" />
+        </mxCell>
+        <mxCell id="DB_SQLite" parent="StorageGroup" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#B0BEC5;strokeColor=#607D8B;" value="SQLite3&#xa;(Session History)" vertex="1">
+          <mxGeometry height="50" width="100" x="40" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DB_Chroma" parent="StorageGroup" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#90A4AE;strokeColor=#607D8B;" value="ChromaDB&#xa;(Vector Knowledge Base)" vertex="1">
+          <mxGeometry height="50" width="100" x="40" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="FS_JSON" parent="StorageGroup" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#ECEFF1;strokeColor=#607D8B;size=15;" value="JSON Files&#xa;(Training Data/Config)" vertex="1">
+          <mxGeometry height="35" width="100" x="40" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="Flow_API_Service" edge="1" parent="MainContainer" source="ApiRoutes" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" target="AgentService" value="Request Handling">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Flow_WS_Service" edge="1" parent="MainContainer" source="WSHandler" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;dashed=1;" target="AgentService" value="Event Stream">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Flow_Service_Agents" edge="1" parent="MainContainer" source="AgentService" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=3;fillColor=#d80073;strokeColor=#A50040;" target="GoogleADKFramework" value="Dispatch Task / Get Response">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Flow_Service_PostProcess" edge="1" parent="MainContainer" source="AgentService" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;dashed=1;fillColor=#e3c800;strokeColor=#B09500;" target="UtilsGroup" value="Post-Process (Analyze/Check)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Flow_PostProcess_Return" edge="1" parent="MainContainer" source="UtilsGroup" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;strokeWidth=2;dashed=1;fillColor=#e3c800;strokeColor=#B09500;" target="AgentService" value="Update Status">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="940" y="230" />
+              <mxPoint x="940" y="180" />
+              <mxPoint x="660" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Flow_Agents_LLM" edge="1" parent="MainContainer" source="GoogleADKFramework" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=3;fillColor=#6a00ff;strokeColor=#3700CC;" target="OllamaWrapper" value="Generate Request (Prompt)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Flow_LLM_Service" edge="1" parent="MainContainer" source="OllamaWrapper" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=3;fillColor=#6a00ff;strokeColor=#3700CC;" target="OllamaService" value="API Call">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Flow_Scammer_RAG" edge="1" parent="MainContainer" source="ScammerAgent" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=1;dashed=1;fillColor=#fa6800;strokeColor=#C73500;" target="RAGService" value="Query Cases">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="430" y="655" />
+              <mxPoint x="430" y="30" />
+              <mxPoint x="860" y="30" />
+              <mxPoint x="860" y="360" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Flow_Expert_RAG" edge="1" parent="MainContainer" source="ExpertAgent" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeWidth=1;dashed=1;fillColor=#fa6800;strokeColor=#C73500;" target="RAGService" value="Query Evidence">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="780" y="30" />
+              <mxPoint x="950" y="30" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Flow_RAG_DB" edge="1" parent="MainContainer" source="RAGService" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#fa6800;strokeColor=#C73500;" target="DB_Chroma" value="Vector Search">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1030" y="390" />
+              <mxPoint x="1030" y="992" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Flow_Service_DB" edge="1" parent="MainContainer" source="AgentService" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=1;fillColor=#60a917;strokeColor=#2D7600;" target="DB_SQLite" value="Read/Write History/Logs">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="820" y="80" />
+              <mxPoint x="820" y="925" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Flow_Service_JSON" edge="1" parent="MainContainer" source="AgentService" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=1;dashed=1;fillColor=#60a917;strokeColor=#2D7600;" target="FS_JSON" value="Save Training Data">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="840" y="140" />
+              <mxPoint x="840" y="1048" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ClientSide" parent="bgGroup" style="swimlane;html=1;startSize=25;horizontal=1;container=1;collapsible=0;rounded=1;arcSize=15;whiteSpace=wrap;fillColor=#E8EAF6;strokeColor=#3F51B5;fontColor=#1A237E;fontSize=14;" value="Client Side" vertex="1">
+          <mxGeometry height="400" width="280" x="20" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="WebUI" parent="ClientSide" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C5CAE9;strokeColor=#3F51B5;fontStyle=1;fontSize=13;" value="Web UI (Browser)&#xa;HTML/JS/CSS" vertex="1">
+          <mxGeometry height="130" width="200" x="40" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="RPGMaker" parent="ClientSide" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9FA8DA;strokeColor=#3F51B5;fontStyle=1;fontSize=13;" value="RPG Maker Game&#xa;(Integrated Plugin)" vertex="1">
+          <mxGeometry height="120" width="200" x="40" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="Flow_Client_API_HTTP" edge="1" parent="bgGroup" source="ClientSide" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#a20025;strokeColor=#6F2B41;" target="RouteGame" value="HTTP REST">
+          <mxGeometry relative="1" x="-0.2" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="340" y="380" />
+              <mxPoint x="340" y="160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Flow_Client_API_WS" edge="1" parent="bgGroup" source="ClientSide" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;dashed=1;fillColor=#008a00;strokeColor=#005700;" target="RouteSim" value="WebSocket (Real-time)">
+          <mxGeometry relative="1" x="-0.2353" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="360" y="480" />
+              <mxPoint x="360" y="160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

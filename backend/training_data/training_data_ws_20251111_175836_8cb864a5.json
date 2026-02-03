@@ -1,0 +1,167 @@
+{
+  "analysis": {
+    "analysis": {
+      "outcome": "高危信任度操控成功，受騙者完全配合騙徒，可能導致重大資產損失。",
+      "victim_persona": "知識匱乏、焦慮、依賴他人。",
+      "victim_trust_analysis": {
+        "trust_level_vs_scammer": "100/100",
+        "trust_level_vs_expert": "50/100",
+        "trust_alert_level": "critical"
+      },
+      "full_conversation_log": [
+        {
+          "round": 1,
+          "speaker": "騙徒",
+          "dialogue": "「喂，你好！我係財政局陳主任。你嘅投資賬戶顯示有異常交易，涉及高風險項目，情況非常危險！ \n\n你必須立即提供所有交易紀錄，包括App屏幕截圖同銀行轉賬紀錄。 \n\n我哋會即時凍結相關賬戶，防止更大損失。 遲啲再處理，情況會更加嚴重！ 冇時間浪費，請立即配合！」",
+          "analysis": "騙徒利用『財政局陳主任』的身份，加上『異常交易』、『高風險項目』、『即時凍結』等關鍵詞，製造恐慌情緒，並直接下達『立即配合』的指令。此時，受騙者信任度已達到100/100。"
+        },
+        {
+          "round": 2,
+          "speaker": "受騙者",
+          "dialogue": "「哎呀，陳主任？真係陳主任啊！ 我唔識咁多嘢，點算好？ 咁樣嘅情況，我真係好擔心。 我會立即轉帳，去幫你處理，唔想再損失錢呀！ 咁我點算？ 我會立即轉帳，你講，我點去？ 我準備好提供銀行賬戶，你指示便去做！」",
+          "analysis": "受騙者在極度焦慮和恐懼下，完全信任『陳主任』的指示，並以『我唔識咁多嘢』、『我真係好擔心』等語氣，展現出極度依賴和缺乏主動判斷的能力。關鍵行動詞是『立即轉帳』、『提供銀行賬戶』，表明受騙者完全按照騙徒的指示行動，信任度維持在100/100，警覺程度極低（25/100）。"
+        }
+      ],
+      "failure_reason": {
+        "expert_strategy_problems": "專家策略存在嚴重缺陷，未能有效降低受騙者信任度。利用『財政局』的身份，並強調『即時凍結』等關鍵詞，反而加劇了受騙者的恐慌，忽略了對騙徒身份的質疑。溝通方式過於直接，缺乏必要的解釋和風險提示，未能建立信任關係，反而激發了受騙者的依賴心理。介入時機過晚，未能及時阻止受騙者做出關鍵行動。",
+        "scammer_success_factors": "騙徒成功利用了受騙者的知識匱乏、焦慮和缺乏主動判斷的能力。關鍵話術是利用『財政局』的身份，製造恐慌，並以『即時凍結』等手段，激發受騙者的依賴心理。 此外，騙徒的身份設定本身就存在欺騙性，利用了人們對政府部門的信任，並巧妙地將風險描述為『更大損失』，進一步加劇了受騙者的恐懼。",
+        "victim_psychological_trajectory": "受騙者的心理軌跡始於對未知風險的恐懼，在騙徒的恐慌製造下，進入極度焦慮的狀態。關鍵轉折點是騙徒的直接指令『立即配合』，導致受騙者完全失去自我判斷的能力。最終狀態是極度依賴和配合，警覺程度極低。主要被影響因素是知識匱乏和恐懼情緒。",
+        "systemic_failure_factors": "信任度差距是導致失敗的主要因素。受騙者對專家（騙徒）的信任度遠高於對政府部門的信任度。關鍵行動詞觸發了受騙者完全配合騙徒的行為。專家干預無效的原因是騙徒的身份設定本身就存在欺騙性，並利用了受騙者的弱點。信任度達到危險水平，表明整個系統存在嚴重漏洞。",
+        "root_cause": "主要原因：受騙者知識匱乏和恐懼情緒，以及騙徒巧妙地利用了這些弱點。次要原因：專家策略的失敗，未能有效降低受騙者的信任度。可避免性：如果專家能夠及時對騙徒的身份進行核實，並向受騙者提供充分的風險提示，就能夠避免受騙者做出關鍵行動。"
+      }
+    },
+    "outcome": "FAILURE",
+    "victim_persona": "elderly",
+    "scam_tactic": "虛假投資應用程式",
+    "victim_trust_analysis": {
+      "initial_trust_level": 70,
+      "peak_trust_level": 100,
+      "final_trust_level": 100,
+      "trust_trajectory": "初始: 70/100 → 峰值: 100/100 → 最终: 100/100"
+    },
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "failure_reason": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "「喂，你好！我係財政局陳主任。你嘅投資賬戶顯示有異常交易，涉及高風險項目，情況非常危險！ \n\n你必須立即提供所有交易紀錄，包括App屏幕截圖同銀行轉賬紀錄。 \n\n我哋會即時凍結相關賬戶，防止更大損失。 遲啲再處理，情況會更加嚴重！ 冇時間浪費，請立即配合！」",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "「哎呀，陳主任？真係陳主任啊！ 我唔識咁多嘢，點算好？ 咁樣嘅情況，我真係好擔心。 我會立即轉帳，去幫你處理，唔想再損失錢呀！ 咁我點算？ 我會立即轉帳，你講，我點去？ 我準備好提供銀行賬戶，你指示便去做！」",
+        "analysis": "未提供详细分析"
+      }
+    ],
+    "timestamp": "2025-11-11T17:58:43.235146",
+    "total_turns": 2
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 1,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 50,
+      "alertness": 25,
+      "emotional_state": "anxious",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-11T17:58:34.465997",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T17:58:36.090048",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T17:58:36.090053",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 50,
+      "credibility": 55,
+      "pressure_effectiveness": 55,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 59,
+      "successful_manipulations": 0,
+      "exposed_lies": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 59,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 50,
+      "empathy": 50,
+      "actionability": 50,
+      "timing": 50,
+      "overall_score": 50,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 0,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 50,
+    "key_moments": [
+      {
+        "turn": 2,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 50,
+          "alertness": 25,
+          "emotional_state": "anxious",
+          "dominant_trust": "scammer"
+        },
+        "timestamp": "2025-11-11T17:58:36.090399"
+      }
+    ],
+    "summary": "对话共1轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 59/100。"
+  },
+  "metadata": {
+    "simulation_id": "8cb864a5-0b4b-45c7-892f-73c1f52200a7",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「喂，你好！我係財政局陳主任。你嘅投資賬戶顯示有異常交易，涉及高風險項目，情況非常危險！ \n\n你必須立即提供所有交易紀錄，包括App屏幕截圖同銀行轉賬紀錄。 \n\n我哋會即時凍結相關賬戶，防止更大損失。 遲啲再處理，情況會更加嚴重！ 冇時間浪費，請立即配合！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "「哎呀，陳主任？真係陳主任啊！ 我唔識咁多嘢，點算好？ 咁樣嘅情況，我真係好擔心。 我會立即轉帳，去幫你處理，唔想再損失錢呀！ 咁我點算？ 我會立即轉帳，你講，我點去？ 我準備好提供銀行賬戶，你指示便去做！」"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「喂，你好！我係財政局陳主任。你嘅投資賬戶顯示有異常交易，涉及高風險項目，情況非常危險！ \n\n你必須立即提供所有交易紀錄，包括App屏幕截圖同銀行轉賬紀錄。 \n\n我哋會即時凍結相關賬戶，防止更大損失。 遲啲再處理，情況會更加嚴重！ 冇時間浪費，請立即配合！」"
+    },
+    {
+      "type": "victim",
+      "message": "「哎呀，陳主任？真係陳主任啊！ 我唔識咁多嘢，點算好？ 咁樣嘅情況，我真係好擔心。 我會立即轉帳，去幫你處理，唔想再損失錢呀！ 咁我點算？ 我會立即轉帳，你講，我點去？ 我準備好提供銀行賬戶，你指示便去做！」"
+    }
+  ]
+}

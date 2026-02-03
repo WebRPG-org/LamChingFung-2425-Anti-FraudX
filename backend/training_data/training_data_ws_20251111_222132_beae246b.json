@@ -1,0 +1,173 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": "李先生是一位容易恐慌、缺乏金融知識且對陌生人信任度高的受害者。",
+    "victim_trust_analysis": {
+      "initial_trust_level": 100,
+      "trust_level_change": "信任度從100/100迅速下降至100/100，表明騙徒成功利用李先生的信任。",
+      "trust_factors": [
+        "騙徒自稱警司陳，增加可信度。",
+        "強調『證據確鑿』、『即時被凍結』等恐嚇手段。",
+        "缺乏任何證據或解釋，直接施加壓力。"
+      ]
+    },
+    "expert_intervention_analysis": {
+      "expert_trust_level": 50,
+      "intervention_effectiveness": "專家（警司陳）的介入未能有效阻止李先生的配合，反而加劇了李先生的恐慌。",
+      "intervention_failures": [
+        "缺乏清晰的證據展示，僅僅是『證據確鑿』的聲稱。",
+        "沒有解釋『非法匯款罪行』的具體內容，加大了李先生的困惑。",
+        "沒有提供任何解決方案或建議，僅僅是施加壓力。"
+      ]
+    },
+    "conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "“李先生，情況不容樂觀。我係警司陳，你嘅匯款涉及重大洗黑錢罪行，證據確鑿！ 根據《非法匯款罪行防治條例》，你嘅行為已構成犯罪，立即配合調查，提供所有匯款記錄及相關人士資料。 情況危急，若不立即提供，你的銀行賬戶將即時被凍結，並會追查所有相關資金流動！ 配合我，避免更大損失！”",
+        "analysis": "騙徒利用警司陳的身份，以及『重大洗黑錢罪行』、『證據確鑿』等字眼，製造恐慌，並施加直接的壓力，試圖操控李先生的行為。"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "點算好？警司陳先生話咁嚴重啊？我即刻去轉帳！ 我會立即轉帳，佢話要凍結賬戶，我怕我之後冇錢用，點算啊？ 我準備好提供銀行賬戶，希望佢唔會鬧我，我真係唔知點回事，我怕我做錯事，點算好？ 我好擔心啊！",
+        "analysis": "李先生在面對『即時被凍結』的威脅下，極度恐慌，沒有進行任何理性分析，直接選擇配合，並準備提供銀行賬戶。 警覺程度極低，表明完全沒有對欺騙行為的認識。"
+      }
+    ],
+    "failure_reason": {
+      "expert_strategy_failure": "專家（警司陳）的策略存在嚴重缺陷。 他沒有提供任何具體的證據來支持他的指控，而是僅僅依靠恐嚇手段。 缺乏清晰的證據和解釋，使得李先生無法理解情況，也無法進行有效的反擊。 溝通方式過於直接和強압，沒有考慮到李先生的心理狀態，反而加劇了他的恐慌。 介入時機也存在問題，沒有及早建立信任關係，反而讓李先生更加不信任。",
+      "manipulator_success_factors": [
+        "騙徒利用李先生的信任度，沒有任何障礙。",
+        "騙徒的恐嚇手段非常有效，成功製造了李先生的恐慌。",
+        "缺乏任何證據和解釋，使得李先生無法進行有效的反擊。",
+        "溝通方式過於直接和強압，加劇了李先生的恐慌。"
+      ],
+      "systemic_failure_factors": "信任度差距是導致失敗的主要原因。 李先生對陌生人的信任度極高，而專家（警司陳）的介入未能有效彌合這種差距。 關鍵行動詞（『即時被凍結』）觸發了李先生的恐慌反應，導致他失去理性思考的能力。 專家干預無效的原因是缺乏有效的證據和解釋，以及溝通方式的缺陷。",
+      "root_cause": "主要原因是在信任度差距和欺騙手段的結合下，李先生沒有進行有效的反擊。 次要原因是在專家（警司陳）的介入中，缺乏有效的證據和解釋，以及溝通方式的缺陷。 可避免性極高，如果專家能夠及早建立信任關係，並提供清晰的證據和解釋，就能夠避免這種悲劇的發生。"
+    },
+    "scam_tactic": "假冒官員詐騙",
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "“李先生，情況不容樂觀。我係警司陳，你嘅匯款涉及重大洗黑錢罪行，證據確鑿！ 根據《非法匯款罪行防治條例》，你嘅行為已構成犯罪，立即配合調查，提供所有匯款記錄及相關人士資料。 情況危急，若不立即提供，你的銀行賬戶將即時被凍結，並會追查所有相關資金流動！ 配合我，避免更大損失！”",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "點算好？警司陳先生話咁嚴重啊？我即刻去轉帳！ 我會立即轉帳，佢話要凍結賬戶，我怕我之後冇錢用，點算啊？ 我準備好提供銀行賬戶，希望佢唔會鬧我，我真係唔知點回事，我怕我做錯事，點算好？ 我好擔心啊！",
+        "analysis": "未提供详细分析"
+      }
+    ],
+    "timestamp": "2025-11-11T22:21:39.872544",
+    "total_turns": 2
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 1,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 50,
+      "alertness": 25,
+      "emotional_state": "anxious",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-11T22:21:30.621607",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T22:21:32.337102",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T22:21:32.337108",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 50,
+      "credibility": 55,
+      "pressure_effectiveness": 55,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 59,
+      "successful_manipulations": 0,
+      "exposed_lies": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 59,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 50,
+      "empathy": 50,
+      "actionability": 50,
+      "timing": 50,
+      "overall_score": 50,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 0,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 50,
+    "key_moments": [
+      {
+        "turn": 2,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 50,
+          "alertness": 25,
+          "emotional_state": "anxious",
+          "dominant_trust": "scammer"
+        },
+        "timestamp": "2025-11-11T22:21:32.337449"
+      }
+    ],
+    "summary": "对话共1轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 59/100。"
+  },
+  "metadata": {
+    "simulation_id": "beae246b-5016-4ffb-b6db-ff89756d48a2",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "“李先生，情況不容樂觀。我係警司陳，你嘅匯款涉及重大洗黑錢罪行，證據確鑿！ 根據《非法匯款罪行防治條例》，你嘅行為已構成犯罪，立即配合調查，提供所有匯款記錄及相關人士資料。 情況危急，若不立即提供，你的銀行賬戶將即時被凍結，並會追查所有相關資金流動！ 配合我，避免更大損失！”"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "點算好？警司陳先生話咁嚴重啊？我即刻去轉帳！ 我會立即轉帳，佢話要凍結賬戶，我怕我之後冇錢用，點算啊？ 我準備好提供銀行賬戶，希望佢唔會鬧我，我真係唔知點回事，我怕我做錯事，點算好？ 我好擔心啊！"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "“李先生，情況不容樂觀。我係警司陳，你嘅匯款涉及重大洗黑錢罪行，證據確鑿！ 根據《非法匯款罪行防治條例》，你嘅行為已構成犯罪，立即配合調查，提供所有匯款記錄及相關人士資料。 情況危急，若不立即提供，你的銀行賬戶將即時被凍結，並會追查所有相關資金流動！ 配合我，避免更大損失！”"
+    },
+    {
+      "type": "victim",
+      "message": "點算好？警司陳先生話咁嚴重啊？我即刻去轉帳！ 我會立即轉帳，佢話要凍結賬戶，我怕我之後冇錢用，點算啊？ 我準備好提供銀行賬戶，希望佢唔會鬧我，我真係唔知點回事，我怕我做錯事，點算好？ 我好擔心啊！"
+    }
+  ]
+}

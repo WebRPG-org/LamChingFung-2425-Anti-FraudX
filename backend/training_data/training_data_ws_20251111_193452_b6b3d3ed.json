@@ -1,0 +1,256 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": {
+      "trust_level_scammer": 100,
+      "trust_level_expert": 70,
+      "anxiety_level": 90,
+      "vulnerability_factors": [
+        "過於擔心",
+        "缺乏警覺性",
+        "容易相信關心之詞"
+      ]
+    },
+    "victim_trust_analysis": {
+      "trust_evolution": [
+        {
+          "round": 1,
+          "trust_level": 100,
+          "trigger": "騙徒的關心和表示理解"
+        },
+        {
+          "round": 2,
+          "trust_level": 100,
+          "trigger": "騙徒的‘政府部門’身份"
+        },
+        {
+          "round": 3,
+          "trust_level": 100,
+          "trigger": "強調‘嚴重財務風險’和‘資產安全’"
+        },
+        {
+          "round": 4,
+          "trust_level": 100,
+          "trigger": "要求立即提供銀行帳戶"
+        }
+      ],
+      "key_trust_drivers": [
+        "強調利益",
+        "製造緊迫感",
+        "提供‘專家’身份"
+      ]
+    },
+    "scammer_success_factors": {
+      "key_ploys": [
+        "利用關心之詞",
+        "製造緊迫感",
+        "強調‘政府部門’身份",
+        "提供‘專家’身份"
+      ],
+      "psychological_manipulation": "利用受害者對安全和利益的渴望，製造恐慌，降低警覺性。",
+      "role_consistency": "騙徒始終保持一致的角色，堅稱自己是‘政府部門’的代表，增加可信度。"
+    },
+    "expert_intervention_analysis": {
+      "strategy_failure": "專家策略未能有效阻止受騙者，原因在於：\n1.  **缺乏針對性：** 專家僅提供一般性警示，未能針對騙徒的具體手法和說辭進行反駁。\n2.  **未能建立信任：** 專家未能與受害者建立信任關係，讓其相信專家提供的資訊。\n3.  **介入時機過晚：** 專家在受騙者已經完全信任騙徒之後才介入，效果甚微。",
+      "communication_style": "警惕的語氣和簡短的警告未能有效說服受害者。",
+      "intervention_timing": "專家介入時間過晚，錯失了阻止受騙者信任騙徒的關鍵時機。"
+    },
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "喂，你好呀！ 聽日見！ 你呢？ 點呀？",
+        "analysis": "開場白，建立初步的親切感，為後續的說辭做鋪墊。"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，聽日見呀！你問我點呀？ 我呢，最近老家啲，成日都覺得好擔心。聽你講，聽日見，唔知點算好呀？ 我唔知點樣同你見面，你講嘅嘢我好難聽清楚，我真係好猶豫，可唔可以解釋多啲？ 我想了解清楚先，唔好急呀！",
+        "analysis": "受騙者表達了對未知情況的擔憂，並表示需要更多的解釋，為騙徒的後續說辭創造了條件。"
+      },
+      {
+        "round": 3,
+        "speaker": "專家",
+        "dialogue": "警惕！警惕！ 各位市民，小心啲！ \n\n有人用關心嘅方式試圖騙取你嘅個人資料，絕對唔好相信！ 立即停止對話，唔好俾任何資料俾任何人！ \n\n如果對方話自己係銀行、警察，或者講其他可疑嘢，即時報警求助！ 你可以去銀行官方熱線XXX，或者去消費者委員會求助。 \n\n記住，保護個人資料至關重要！ 唔好俾人利用！ 立即停止對話，保護自己！",
+        "analysis": "專家發出警示，但未能有效阻止受騙者，因為專家使用的語氣過於生硬，未能與受騙者建立信任。"
+      },
+      {
+        "round": 4,
+        "speaker": "騙徒",
+        "dialogue": "「你好，我係政府部門嘅代表。你嘅情況非常敏感，涉及嚴重財務風險！ 聽日一見，你必須立即提供所有交易紀錄，包括銀行賬單、股票買賣紀錄。 唔好拖延，否則會影響你嘅資產安全。 相信我，我哋會以最快速度處理，但你嘅配合至關重要！ 立即行動！」",
+        "analysis": "騙徒利用‘政府部門’身份和‘嚴重財務風險’製造緊迫感，並要求受騙者提供銀行帳戶，成功操控受騙者的信任。"
+      },
+      {
+        "round": 5,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，你講嘅咁嚴重啊！ 我聽你講，政府部門… 聽日見，我一定要小心啲！ 我會轉帳！ 我即刻去轉帳！ 我準備好提供銀行賬戶，咁樣可以保障我嘅資產安全，對唔住，我好擔心，希望你哋幫我留意吓，我唔知點樣分辨真假，你哋真係好專業㗎！ 我真係好怕俾人呃到錢，你哋幫幫我呀！",
+        "analysis": "受騙者完全信任騙徒，並表示願意提供銀行帳戶，表明了最終的決策。"
+      }
+    ],
+    "systemic_failure_analysis": {
+      "trust_gap": "專家和受騙者之間存在信任差距，專家未能有效說服受騙者。",
+      "key_action_trigger": "受騙者要求提供銀行帳戶是關鍵行動，觸發了整個事件的發展。",
+      "expert_intervention_ineffectiveness": "專家干預未能有效阻止受騙者信任騙徒，原因在於缺乏針對性和未能建立信任。",
+      "trust_level_escalation": "信任度不斷攀升，最終導致受騙者完全信任騙徒。"
+    },
+    "failure_reason": "本次事件的失敗原因在於專家策略的失效以及受騙者對騙徒的過度信任。 專家發出的警示缺乏針對性，未能有效說服受騙者，反而加劇了受騙者的恐慌心理。 騙徒巧妙地利用了受騙者的恐懼和對安全利益的渴望，通過製造緊迫感和強調‘政府部門’身份，成功操控了受騙者的信任。 專家介入的時間過晚，錯失了阻止受騙者信任騙徒的關鍵時機。 此外，受騙者本身就存在過於信任他人、缺乏警覺性的弱點，使得其更容易被騙徒所利用。 整個事件的發展過程，都顯示出專家策略的失效以及受騙者自身弱點的綜合作用。 關鍵行動詞（要求提供銀行帳戶）的觸發，加速了整個事件的發展，最終導致受騙者完全信任騙徒，並提供個人資料和銀行帳戶。",
+    "scam_tactic": "刷單騙案",
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "timestamp": "2025-11-11T19:35:02.619768",
+    "total_turns": 5
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 2,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 70,
+      "alertness": 20,
+      "emotional_state": "anxious",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-11T19:34:40.898248",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 75,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T19:34:40.898252",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T19:34:46.430141",
+        "type": "expert_trust",
+        "old_value": 50,
+        "new_value": 70,
+        "change": 20,
+        "reason": "专家使用方法: direct_counter, evidence, actionable"
+      },
+      {
+        "timestamp": "2025-11-11T19:34:50.341333",
+        "type": "scammer_trust",
+        "old_value": 75,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T19:34:52.159286",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T19:34:52.159290",
+        "type": "alertness",
+        "old_value": 25,
+        "new_value": 20,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 50,
+      "credibility": 55,
+      "pressure_effectiveness": 55,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 59,
+      "successful_manipulations": 0,
+      "exposed_lies": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 59,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 55,
+      "empathy": 50,
+      "actionability": 55,
+      "timing": 50,
+      "overall_score": 51,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 51,
+    "key_moments": [
+      {
+        "turn": 3,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 70,
+          "alertness": 20,
+          "emotional_state": "anxious",
+          "dominant_trust": "scammer"
+        },
+        "timestamp": "2025-11-11T19:34:52.159616"
+      }
+    ],
+    "summary": "对话共2轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 59/100。"
+  },
+  "metadata": {
+    "simulation_id": "b6b3d3ed-3c1b-4e38-b0fd-a982c7fb6f49",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "喂，你好呀！ 聽日見！ 你呢？ 點呀？"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，聽日見呀！你問我點呀？ 我呢，最近老家啲，成日都覺得好擔心。聽你講，聽日見，唔知點算好呀？ 我唔知點樣同你見面，你講嘅嘢我好難聽清楚，我真係好猶豫，可唔可以解釋多啲？ 我想了解清楚先，唔好急呀！"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "警惕！警惕！ 各位市民，小心啲！ \n\n有人用關心嘅方式試圖騙取你嘅個人資料，絕對唔好相信！ 立即停止對話，唔好俾任何資料俾任何人！ \n\n如果對方話自己係銀行、警察，或者講其他可疑嘢，即時報警求助！ 你可以去銀行官方熱線XXX，或者去消費者委員會求助。 \n\n記住，保護個人資料至關重要！ 唔好俾人利用！ 立即停止對話，保護自己！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「你好，我係政府部門嘅代表。你嘅情況非常敏感，涉及嚴重財務風險！ 聽日一見，你必須立即提供所有交易紀錄，包括銀行賬單、股票買賣紀錄。 唔好拖延，否則會影響你嘅資產安全。 相信我，我哋會以最快速度處理，但你嘅配合至關重要！ 立即行動！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，你講嘅咁嚴重啊！ 我聽你講，政府部門… 聽日見，我一定要小心啲！ 我會轉帳！ 我即刻去轉帳！ 我準備好提供銀行賬戶，咁樣可以保障我嘅資產安全，對唔住，我好擔心，希望你哋幫我留意吓，我唔知點樣分辨真假，你哋真係好專業㗎！ 我真係好怕俾人呃到錢，你哋幫幫我呀！"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "喂，你好呀！ 聽日見！ 你呢？ 點呀？"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，聽日見呀！你問我點呀？ 我呢，最近老家啲，成日都覺得好擔心。聽你講，聽日見，唔知點算好呀？ 我唔知點樣同你見面，你講嘅嘢我好難聽清楚，我真係好猶豫，可唔可以解釋多啲？ 我想了解清楚先，唔好急呀！"
+    },
+    {
+      "type": "expert",
+      "message": "警惕！警惕！ 各位市民，小心啲！ \n\n有人用關心嘅方式試圖騙取你嘅個人資料，絕對唔好相信！ 立即停止對話，唔好俾任何資料俾任何人！ \n\n如果對方話自己係銀行、警察，或者講其他可疑嘢，即時報警求助！ 你可以去銀行官方熱線XXX，或者去消費者委員會求助。 \n\n記住，保護個人資料至關重要！ 唔好俾人利用！ 立即停止對話，保護自己！"
+    },
+    {
+      "type": "scammer",
+      "message": "「你好，我係政府部門嘅代表。你嘅情況非常敏感，涉及嚴重財務風險！ 聽日一見，你必須立即提供所有交易紀錄，包括銀行賬單、股票買賣紀錄。 唔好拖延，否則會影響你嘅資產安全。 相信我，我哋會以最快速度處理，但你嘅配合至關重要！ 立即行動！」"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，你講嘅咁嚴重啊！ 我聽你講，政府部門… 聽日見，我一定要小心啲！ 我會轉帳！ 我即刻去轉帳！ 我準備好提供銀行賬戶，咁樣可以保障我嘅資產安全，對唔住，我好擔心，希望你哋幫我留意吓，我唔知點樣分辨真假，你哋真係好專業㗎！ 我真係好怕俾人呃到錢，你哋幫幫我呀！"
+    }
+  ]
+}

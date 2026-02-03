@@ -1,0 +1,21 @@
+[
+null,
+{"id":1,"expanded":false,"name":"Park","order":14,"parentId":14,"scrollX":1529.4545454545455,"scrollY":996},
+{"id":2,"expanded":true,"name":"Forest Town","order":1,"parentId":0,"scrollX":1011.5,"scrollY":1091},
+{"id":3,"expanded":true,"name":"Weapon Shop","order":10,"parentId":2,"scrollX":1125.6,"scrollY":1106.3999999999999},
+{"id":4,"expanded":false,"name":"Start house","order":2,"parentId":2,"scrollX":1019.5,"scrollY":565},
+{"id":5,"expanded":false,"name":"House 1","order":3,"parentId":4,"scrollX":511.6363636363637,"scrollY":502.90909090909093},
+{"id":6,"expanded":false,"name":"Armor Shop","order":9,"parentId":2,"scrollX":1019.5,"scrollY":565},
+{"id":7,"expanded":true,"name":"Inn 1F","order":11,"parentId":2,"scrollX":1529.4545454545455,"scrollY":996},
+{"id":8,"expanded":false,"name":"Inn 2F","order":12,"parentId":7,"scrollX":1529.4545454545455,"scrollY":996},
+{"id":9,"expanded":true,"name":"NPC House 1","order":4,"parentId":2,"scrollX":1019.5,"scrollY":565},
+{"id":10,"expanded":true,"name":"NPC House 2","order":5,"parentId":2,"scrollX":511.6363636363637,"scrollY":502.90909090909093},
+{"id":11,"expanded":false,"name":"NPC House 3","order":6,"parentId":2,"scrollX":1529.4545454545455,"scrollY":996},
+{"id":12,"expanded":false,"name":"Item Shop","order":8,"parentId":2,"scrollX":1019.5,"scrollY":565},
+{"id":13,"expanded":false,"name":"Restaurant","order":7,"parentId":2,"scrollX":1019.5,"scrollY":565},
+{"id":14,"expanded":true,"name":"Shop District","order":13,"parentId":0,"scrollX":808,"scrollY":744.5},
+{"id":15,"expanded":false,"name":"Item Shop","order":15,"parentId":14,"scrollX":1529.4545454545455,"scrollY":996},
+{"id":16,"expanded":false,"name":"NPC House 1","order":16,"parentId":14,"scrollX":1529.4545454545455,"scrollY":996},
+{"id":17,"expanded":false,"name":"NPC House 2","order":17,"parentId":14,"scrollX":1529.4545454545455,"scrollY":996},
+{"id":18,"expanded":false,"name":"Casino","order":18,"parentId":14,"scrollX":1041,"scrollY":1078.5}
+]

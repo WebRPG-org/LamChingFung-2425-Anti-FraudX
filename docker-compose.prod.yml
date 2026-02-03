@@ -1,0 +1,90 @@
+# 生产环境配置
+version: '3.8'
+
+services:
+  ollama:
+    # 生产环境总是重启
+    restart: always
+    
+    # 资源限制
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 8G
+        reservations:
+          cpus: '2'
+          memory: 4G
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    
+    # 生产环境日志
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+        compress: "true"
+
+  ai-antiscam-backend:
+    # 生产环境总是重启
+    restart: always
+    
+    # 生产环境变量
+    environment:
+      - APP_ENV=production
+      - LOG_LEVEL=info  # 必须小写
+      - WORKERS=${WORKERS:-4}
+      - FORCE_GPU=${FORCE_GPU:-1}  # 生产环境强制GPU
+    
+    # 生产环境：不挂载代码，使用镜像内代码
+    volumes:
+      # 只挂载数据卷
+      - training_data:/app/backend/training_data
+      - models_data:/app/backend/models
+      - db_data:/app/backend/db
+      - arms_race_data:/app/backend/arms_race_data
+      - agent_versions:/app/backend/agent_versions
+      - ab_test_results:/app/backend/ab_test_results
+    
+    # 生产环境使用多worker启动
+    command: >
+      sh -c "
+      cd /app/backend &&
+      uvicorn main:app 
+        --host 0.0.0.0 
+        --port 8000 
+        --workers ${WORKERS:-4}
+        --log-level info
+        --access-log
+        --proxy-headers
+      "
+    
+    # 资源限制
+    deploy:
+      resources:
+        limits:
+          cpus: '6'
+          memory: 12G
+        reservations:
+          cpus: '3'
+          memory: 6G
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    
+    # 生产环境日志
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+        compress: "true"
+    
+    # 只暴露Web端口
+    ports:
+      - "8000:8000"
+

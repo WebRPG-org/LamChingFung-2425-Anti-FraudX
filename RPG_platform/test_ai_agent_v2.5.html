@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Agent v2.5 系統測試</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            padding: 30px;
+        }
+        
+        .control-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .dialogue-panel {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            height: 600px;
+            overflow-y: auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #495057;
+        }
+        
+        select, input[type="text"], button {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: #adb5bd;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-stop {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            margin-top: 10px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .status-idle {
+            background: #e9ecef;
+            color: #495057;
+        }
+        
+        .status-running {
+            background: #d4edda;
+            color: #155724;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-completed {
+            background: #cce5ff;
+            color: #004085;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .msg-scammer {
+            background: #ffe6e6;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .msg-victim {
+            background: #e6f3ff;
+            border-left: 4px solid #007bff;
+        }
+        
+        .msg-expert {
+            background: #e6ffe6;
+            border-left: 4px solid #28a745;
+        }
+        
+        .msg-recorder {
+            background: #f0f0f0;
+            border-left: 4px solid #6c757d;
+        }
+        
+        .msg-system {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            text-align: center;
+        }
+        
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .speaker-scammer { color: #dc3545; }
+        .speaker-victim { color: #007bff; }
+        .speaker-expert { color: #28a745; }
+        .speaker-recorder { color: #6c757d; }
+        
+        .result-panel {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .result-success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+        }
+        
+        .result-failure {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .stat-item {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎭 AI-Agent v2.5 系統測試</h1>
+            <p class="subtitle">防詐騙 AI 模擬系統 - 詐騙者 vs 受害者 + 專家</p>
+        </header>
+        
+        <div class="main-content">
+            <!-- 控制面板 -->
+            <div class="control-panel">
+                <div class="status-badge status-idle" id="statusBadge">閒置中</div>
+                
+                <div class="form-group">
+                    <label>👴 受害者類型</label>
+                    <select id="victimPersona">
+                        <option value="elderly">長者（陳婆婆）- 容易被騙</option>
+                        <option value="average">一般市民 - 中等警覺</option>
+                        <option value="overconfident">過度自信者 - 容易輕敵</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>🎯 詐騙手法</label>
+                    <select id="scamTactic">
+                        <option value="WhatsApp 對話詐騙">WhatsApp 對話詐騙</option>
+                        <option value="假冒銀行職員">假冒銀行職員</option>
+                        <option value="假冒政府官員">假冒政府官員</option>
+                        <option value="投資詐騙">投資詐騙</option>
+                        <option value="網購詐騙">網購詐騙</option>
+                        <option value="假冒親友">假冒親友</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>⚡ 模式</label>
+                    <select id="mode">
+                        <option value="fast">快速（2秒/輪）</option>
+                        <option value="demo">演示（5秒/輪）</option>
+                    </select>
+                </div>
+                
+                <button id="startBtn" onclick="startSimulation()">🚀 開始模擬</button>
+                <button class="btn-stop" id="stopBtn" onclick="stopSimulation()" disabled>⏹️ 停止模擬</button>
+                
+                <div class="stats" style="margin-top: 20px;">
+                    <div class="stat-item">
+                        <div class="stat-value" id="messageCount">0</div>
+                        <div class="stat-label">對話數</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="duration">0s</div>
+                        <div class="stat-label">持續時間</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 對話面板 -->
+            <div class="dialogue-panel" id="dialoguePanel">
+                <div class="msg-system">
+                    <p>👋 歡迎使用 AI-Agent v2.5 系統測試工具</p>
+                    <p>選擇參數後點擊「開始模擬」即可開始</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 結果面板 -->
+        <div id="resultPanel" style="display: none; padding: 30px;">
+            <h2>📊 模擬結果分析</h2>
+            <div id="resultContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:8000'
+            : 'https://crispy-space-goggles-r4rjqj6vpvr5fggq-8000.app.github.dev';
+        
+        let currentSimulationId = null;
+        let activeWebSocket = null;
+        let messageCount = 0;
+        let startTime = null;
+        let durationInterval = null;
+        
+        function updateStatus(status, text) {
+            const badge = document.getElementById('statusBadge');
+            badge.className = `status-badge status-${status}`;
+            badge.textContent = text;
+        }
+        
+        function addMessage(speaker, role, message, type = 'system') {
+            const panel = document.getElementById('dialoguePanel');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message msg-${type}`;
+            
+            if (type !== 'system') {
+                msgDiv.innerHTML = `
+                    <div class="speaker speaker-${type}">${speaker} (${role})</div>
+                    <div class="content">${message}</div>
+                `;
+                messageCount++;
+                document.getElementById('messageCount').textContent = messageCount;
+            } else {
+                msgDiv.innerHTML = `<p>${message}</p>`;
+            }
+            
+            panel.appendChild(msgDiv);
+            panel.scrollTop = panel.scrollHeight;
+        }
+        
+        function updateDuration() {
+            if (!startTime) return;
+            const seconds = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('duration').textContent = seconds + 's';
+        }
+        
+        async function startSimulation() {
+            const victimPersona = document.getElementById('victimPersona').value;
+            const scamTactic = document.getElementById('scamTactic').value;
+            const mode = document.getElementById('mode').value;
+            
+            // 清空對話
+            document.getElementById('dialoguePanel').innerHTML = '';
+            document.getElementById('resultPanel').style.display = 'none';
+            messageCount = 0;
+            document.getElementById('messageCount').textContent = '0';
+            
+            // 開始計時
+            startTime = Date.now();
+            durationInterval = setInterval(updateDuration, 1000);
+            
+            updateStatus('running', '模擬進行中...');
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('stopBtn').disabled = false;
+            
+            addMessage('', '', '🚀 正在啟動 AI 模擬...', 'system');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/simulation/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        victim_persona: victimPersona,
+                        scam_tactic: scamTactic,
+                        mode: mode,
+                        auto_train: true
+                    })
+                });
+                
+                const data = await response.json();
+                currentSimulationId = data.simulation_id;
+                
+                addMessage('', '', `✅ 模擬已啟動 (ID: ${currentSimulationId.substring(0, 8)})`, 'system');
+                
+                // 連接 WebSocket
+                connectWebSocket(currentSimulationId);
+                
+            } catch (error) {
+                console.error('啟動失敗:', error);
+                addMessage('', '', '❌ 啟動失敗：' + error.message, 'system');
+                resetUI();
+            }
+        }
+        
+        function connectWebSocket(simulationId) {
+            const wsUrl = API_BASE_URL.replace('https://', 'wss://').replace('http://', 'ws://');
+            const ws = new WebSocket(`${wsUrl}/ws/simulation/${simulationId}`);
+            
+            ws.onopen = () => {
+                console.log('WebSocket 已連接');
+                addMessage('', '', '🔌 WebSocket 已連接', 'system');
+            };
+            
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                handleWebSocketMessage(data);
+            };
+            
+            ws.onerror = (error) => {
+                console.error('WebSocket 錯誤:', error);
+                addMessage('', '', '❌ WebSocket 連接錯誤', 'system');
+            };
+            
+            ws.onclose = () => {
+                console.log('WebSocket 已關閉');
+                activeWebSocket = null;
+            };
+            
+            activeWebSocket = ws;
+        }
+        
+        function handleWebSocketMessage(data) {
+            const eventType = data.event;
+            
+            switch(eventType) {
+                case 'dialogue':
+                    const speaker = data.data.speaker;
+                    const role = data.data.role || speaker;
+                    const message = data.data.message;
+                    
+                    // 判斷類型
+                    let type = 'system';
+                    if (role.includes('騙') || speaker.includes('林志強')) {
+                        type = 'scammer';
+                    } else if (role.includes('受害') || role.includes('被騙') || speaker.includes('陳婆婆')) {
+                        type = 'victim';
+                    } else if (role.includes('專家') || role.includes('防詐')) {
+                        type = 'expert';
+                    } else if (role.includes('記錄') || role.includes('分析')) {
+                        type = 'recorder';
+                    }
+                    
+                    addMessage(speaker, role, message, type);
+                    break;
+                    
+                case 'status':
+                    addMessage('', '', '📢 ' + data.data.message, 'system');
+                    break;
+                    
+                case 'completed':
+                    handleSimulationCompleted(data.data);
+                    break;
+                    
+                case 'error':
+                    addMessage('', '', '❌ 錯誤：' + data.data.message, 'system');
+                    break;
+                    
+                case 'heartbeat':
+                    // 心跳，不顯示
+                    break;
+            }
+        }
+        
+        function handleSimulationCompleted(data) {
+            clearInterval(durationInterval);
+            updateStatus('completed', '模擬已完成');
+            
+            addMessage('', '', '✅ 模擬已完成！', 'system');
+            
+            if (activeWebSocket) {
+                activeWebSocket.close();
+            }
+            
+            // 顯示結果
+            showResult(data);
+            
+            resetUI();
+        }
+        
+        function showResult(data) {
+            const resultPanel = document.getElementById('resultPanel');
+            const resultContent = document.getElementById('resultContent');
+            
+            const outcome = data.outcome || 'UNKNOWN';
+            const analysis = data.analysis || '無分析數據';
+            
+            const isSuccess = outcome === 'SUCCESS';
+            
+            resultContent.innerHTML = `
+                <div class="result-panel ${isSuccess ? 'result-success' : 'result-failure'}">
+                    <h3>${isSuccess ? '✅ 成功防詐' : '❌ 詐騙得逞'}</h3>
+                    <p style="margin-top: 10px; font-size: 1.1em;">${analysis}</p>
+                    
+                    ${data.victim_trust_score !== undefined ? `
+                        <div class="stats" style="margin-top: 20px;">
+                            <div class="stat-item">
+                                <div class="stat-value">${data.victim_trust_score}</div>
+                                <div class="stat-label">最終信任度</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">${data.expert_effectiveness || 'N/A'}</div>
+                                <div class="stat-label">專家有效性</div>
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${data.training_saved ? `
+                        <p style="margin-top: 15px; color: #28a745; font-weight: bold;">
+                            🎓 訓練數據已保存，AI 將會學習並進化
+                        </p>
+                    ` : ''}
+                </div>
+            `;
+            
+            resultPanel.style.display = 'block';
+        }
+        
+        async function stopSimulation() {
+            if (!currentSimulationId) return;
+            
+            try {
+                await fetch(`${API_BASE_URL}/simulation/stop/${currentSimulationId}`, {
+                    method: 'POST'
+                });
+                
+                addMessage('', '', '⏹️ 模擬已手動停止', 'system');
+                
+                if (activeWebSocket) {
+                    activeWebSocket.close();
+                }
+                
+                resetUI();
+                
+            } catch (error) {
+                console.error('停止失敗:', error);
+            }
+        }
+        
+        function resetUI() {
+            clearInterval(durationInterval);
+            updateStatus('idle', '閒置中');
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+        }
+        
+        // 頁面載入時測試連接
+        window.onload = async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/`);
+                if (response.ok) {
+                    addMessage('', '', '✅ 後端連接正常！', 'system');
+                }
+            } catch (error) {
+                addMessage('', '', '⚠️ 無法連接到後端服務器，請確認後端正在運行', 'system');
+            }
+        };
+    </script>
+</body>
+</html>

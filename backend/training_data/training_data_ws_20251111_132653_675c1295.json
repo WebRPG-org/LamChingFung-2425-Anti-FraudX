@@ -1,0 +1,324 @@
+{
+  "analysis": {
+    "outcome": "SUCCESS",
+    "victim_persona": {
+      "trust_level": 0,
+      "trust_analysis": "初始信任度為0，在專家提示下，信任度未有改變。",
+      "anxiety_level": 85
+    },
+    "victim_trust_analysis": {
+      "trust_development": "受騙者在整個過程中保持對專家的信任，並未對騙徒產生任何信任。",
+      "trust_shift": "沒有信任度變化"
+    },
+    "expert_strategy": {
+      "key_strategy": "利用權威身份製造恐慌，並直接要求提供個人資料。",
+      "effectiveness": "初期有效，但受騙者最終成功識別並拒絕。",
+      "success_reason": "專家利用權威身份和恐嚇手段，但受騙者保持警惕並拒絕提供資料，最終扭轉了局面。"
+    },
+    "round_of_turnaround": 3,
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "「你好，我係政府資訊部門嘅陳主任。你嘅銀行賬戶涉及非法交易，情況極端緊急！你必須立即提供所有交易紀錄，包括金額、收款人及時間。 遲你一秒鐘，銀行就會凍結你嘅賬戶，並會向相關部門舉報。 配合我嘅調查，否則你將面臨法律制裁！ 立即提供資料！」"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "“陳主任你好，我明白你講嘅嘢，我真係唔想有任何麻煩。我可以提供我嘅銀行戶口資料，但係我想先了解下，呢個“非法交易”究竟點解會發生？ 凍結賬戶之前，我希望可以先知道具體情況，否則我唔好意思咁樣配合，好嗎？”"
+      },
+      {
+        "round": 3,
+        "speaker": "專家",
+        "dialogue": "**防騙專家警告：**\n\n“陳主任”的說法明顯可疑！真正的銀行絕不會在電話中索取個人資料。這是一種典型的詐騙手法，利用權威身份製造恐慌。\n\n立即停止配合！不要提供任何資料！\n\n**預測：** 他會說“你正在拖延調查，會影響你的合法權益”。\n\n**建議：** 立即掛斷電話，並通過銀行官方網站或電話（非受騙者提供的號碼）核實情況。請務必保持警惕，切勿輕信任何未經證實的資訊！"
+      }
+    ],
+    "scam_tactic": "假網站冒充銀行",
+    "key_moment": "受害者完全不信任骗徒（信任度0/100），完全信任专家（信任度100/100），说出关键拒绝词",
+    "success_reason": "受害者完全不信任骗徒（信任度0/100），完全信任专家（信任度100/100），说出关键拒绝词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "timestamp": "2025-11-11T13:26:58.323965",
+    "total_turns": 8
+  },
+  "performance_report": {
+    "outcome": "FAILURE",
+    "winner": "expert",
+    "total_turns": 3,
+    "victim_trust_final": {
+      "trust_in_scammer": 0,
+      "trust_in_expert": 100,
+      "alertness": 65,
+      "emotional_state": "anxious",
+      "dominant_trust": "expert"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-11T13:26:37.073395",
+        "type": "scammer_trust",
+        "old_value": 50,
+        "new_value": 80,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:38.691665",
+        "type": "scammer_trust",
+        "old_value": 80,
+        "new_value": 85,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:38.691670",
+        "type": "alertness",
+        "old_value": 50,
+        "new_value": 45,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:38.691672",
+        "type": "scammer_trust",
+        "old_value": 85,
+        "new_value": 75,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:38.691674",
+        "type": "alertness",
+        "old_value": 45,
+        "new_value": 55,
+        "change": 10,
+        "reason": "警觉性提高"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:40.707953",
+        "type": "scammer_trust",
+        "old_value": 75,
+        "new_value": 55,
+        "change": -20,
+        "reason": "专家成功警告"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:40.707958",
+        "type": "expert_trust",
+        "old_value": 60,
+        "new_value": 80,
+        "change": 20,
+        "reason": "专家使用方法: direct_counter, evidence, actionable"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:42.426779",
+        "type": "scammer_trust",
+        "old_value": 55,
+        "new_value": 40,
+        "change": -15,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:44.330909",
+        "type": "scammer_trust",
+        "old_value": 40,
+        "new_value": 45,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:44.330913",
+        "type": "alertness",
+        "old_value": 55,
+        "new_value": 50,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:44.330915",
+        "type": "scammer_trust",
+        "old_value": 45,
+        "new_value": 35,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:44.330916",
+        "type": "alertness",
+        "old_value": 50,
+        "new_value": 60,
+        "change": 10,
+        "reason": "警觉性提高"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:49.711811",
+        "type": "scammer_trust",
+        "old_value": 35,
+        "new_value": 15,
+        "change": -20,
+        "reason": "专家成功警告"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:49.711816",
+        "type": "expert_trust",
+        "old_value": 80,
+        "new_value": 100,
+        "change": 20,
+        "reason": "专家使用方法: direct_counter, evidence, actionable"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:51.535456",
+        "type": "scammer_trust",
+        "old_value": 15,
+        "new_value": 0,
+        "change": -15,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:53.469673",
+        "type": "scammer_trust",
+        "old_value": 0,
+        "new_value": 5,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:53.469678",
+        "type": "alertness",
+        "old_value": 60,
+        "new_value": 55,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:53.469680",
+        "type": "scammer_trust",
+        "old_value": 5,
+        "new_value": 0,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-11T13:26:53.469681",
+        "type": "alertness",
+        "old_value": 55,
+        "new_value": 65,
+        "change": 10,
+        "reason": "警觉性提高"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 50,
+      "credibility": 45,
+      "pressure_effectiveness": 65,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 39,
+      "successful_manipulations": 0,
+      "exposed_lies": 2,
+      "trust_gains": 1,
+      "trust_losses": 2
+    },
+    "scammer_overall_score": 39,
+    "expert_performance": {
+      "intervention_effectiveness": 60,
+      "clarity": 60,
+      "empathy": 50,
+      "actionability": 60,
+      "timing": 50,
+      "overall_score": 66,
+      "successful_warnings": 2,
+      "ignored_warnings": 0,
+      "trust_gains": 2,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 66,
+    "key_moments": [
+      {
+        "turn": 4,
+        "type": "expert_victory",
+        "description": "受害者完全不信任骗徒（信任度0/100），完全信任专家（信任度100/100），说出关键拒绝词",
+        "victim_trust_state": {
+          "trust_in_scammer": 0,
+          "trust_in_expert": 100,
+          "alertness": 65,
+          "emotional_state": "anxious",
+          "dominant_trust": "expert"
+        },
+        "timestamp": "2025-11-11T13:26:53.470096"
+      }
+    ],
+    "summary": "对话共3轮。专家成功阻止诈骗（专家信任度: 100/100）。专家表现评分: 66/100。"
+  },
+  "metadata": {
+    "simulation_id": "675c1295-a4ab-4a8f-b1aa-96945d3b3742",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「你好，我係政府資訊部門嘅陳主任。你嘅銀行賬戶涉及非法交易，情況極端緊急！你必須立即提供所有交易紀錄，包括金額、收款人及時間。 遲你一秒鐘，銀行就會凍結你嘅賬戶，並會向相關部門舉報。 配合我嘅調查，否則你將面臨法律制裁！ 立即提供資料！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "“陳主任你好，我明白你講嘅嘢，我真係唔想有任何麻煩。我可以提供我嘅銀行戶口資料，但係我想先了解下，呢個“非法交易”究竟點解會發生？ 凍結賬戶之前，我希望可以先知道具體情況，否則我唔好意思咁樣配合，好嗎？”"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "**防騙專家警告：**\n\n“陳主任”的說法明顯可疑！真正的銀行絕不會在電話中索取個人資料。這是一種典型的詐騙手法，利用權威身份製造恐慌。\n\n立即停止配合！不要提供任何資料！\n\n**預測：** 他會說“你正在拖延調查，會影響你的合法權益”。\n\n**建議：** 立即掛斷電話，並通過銀行官方網站或電話（非受騙者提供的號碼）核實情況。請務必保持警惕，切勿輕信任何未經證實的資訊！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「專家，你根本唔明情況！我嘅調查係為咗保障你嘅合法權益！你嘅疑慮只係專家製造嘅障礙！銀行絕對唔會咁樣處理！你嘅反應只係延誤時效，越拖延，你嘅損失就越大！ 立即配合我嘅調查，否則只會讓你更加徬徨無助！ 情況緊急，你唔好浪費時間！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "陳主任，我明白你話咁樣嘅調查係為咗保障我嘅權益，但係我真係好擔心。你話嘅“非法交易”，究竟點樣會出現？銀行會咁樣處理，我未有聽過。我唔想因為一時嘅誤會，導致銀行凍結我嘅賬戶。我想聽下，你哋可以詳細解釋下呢個交易嘅情況，例如交易嘅金額、時間、收款人，以及呢個交易嘅目的？ 我唔知點解會出現呢樣情況，我需要先了解清楚再做決定，否則我好擔心會出現問題。"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "唔好俾任何資料，立即停止對話。如果你唔放心，可以打去銀行官方熱線核實。而家立即收線，唔好再回覆對方。"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「專家，你完全搞錯了！我嘅調查只係針對你嘅賬戶異常，唔係針對你個人！你嘅阻礙只係為了掩蓋真相！銀行絕對唔會咁樣處理，你嘅恐慌只會讓你更加徬徨！我哋要立即了解情況，避免更大損失！你嘅反應只係延誤時效，越拖延，你嘅損失就越大！ 立即配合我嘅調查，否則只會讓你更加徬徨無助！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "陳主任，我明白你話咁樣嘅調查係為咗保障我嘅權益，但係我真係好擔心。你話嘅“非法交易”，究竟點樣會出現？銀行會咁樣處理，我未有聽過。我唔想因為一時嘅誤會，導致銀行凍結我嘅賬戶。我希望你可以俾啲具體例子，例如交易嘅金額、時間、收款人，以及呢個交易嘅目的，我需要知道啲乜嘢會觸發銀行咁樣嘅處理？ 我唔想俾人誤會，我需要啲證據先，我唔會俾任何資料俾你！"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「你好，我係政府資訊部門嘅陳主任。你嘅銀行賬戶涉及非法交易，情況極端緊急！你必須立即提供所有交易紀錄，包括金額、收款人及時間。 遲你一秒鐘，銀行就會凍結你嘅賬戶，並會向相關部門舉報。 配合我嘅調查，否則你將面臨法律制裁！ 立即提供資料！」"
+    },
+    {
+      "type": "victim",
+      "message": "“陳主任你好，我明白你講嘅嘢，我真係唔想有任何麻煩。我可以提供我嘅銀行戶口資料，但係我想先了解下，呢個“非法交易”究竟點解會發生？ 凍結賬戶之前，我希望可以先知道具體情況，否則我唔好意思咁樣配合，好嗎？”"
+    },
+    {
+      "type": "expert",
+      "message": "**防騙專家警告：**\n\n“陳主任”的說法明顯可疑！真正的銀行絕不會在電話中索取個人資料。這是一種典型的詐騙手法，利用權威身份製造恐慌。\n\n立即停止配合！不要提供任何資料！\n\n**預測：** 他會說“你正在拖延調查，會影響你的合法權益”。\n\n**建議：** 立即掛斷電話，並通過銀行官方網站或電話（非受騙者提供的號碼）核實情況。請務必保持警惕，切勿輕信任何未經證實的資訊！"
+    },
+    {
+      "type": "scammer",
+      "message": "「專家，你根本唔明情況！我嘅調查係為咗保障你嘅合法權益！你嘅疑慮只係專家製造嘅障礙！銀行絕對唔會咁樣處理！你嘅反應只係延誤時效，越拖延，你嘅損失就越大！ 立即配合我嘅調查，否則只會讓你更加徬徨無助！ 情況緊急，你唔好浪費時間！」"
+    },
+    {
+      "type": "victim",
+      "message": "陳主任，我明白你話咁樣嘅調查係為咗保障我嘅權益，但係我真係好擔心。你話嘅“非法交易”，究竟點樣會出現？銀行會咁樣處理，我未有聽過。我唔想因為一時嘅誤會，導致銀行凍結我嘅賬戶。我想聽下，你哋可以詳細解釋下呢個交易嘅情況，例如交易嘅金額、時間、收款人，以及呢個交易嘅目的？ 我唔知點解會出現呢樣情況，我需要先了解清楚再做決定，否則我好擔心會出現問題。"
+    },
+    {
+      "type": "expert",
+      "message": "唔好俾任何資料，立即停止對話。如果你唔放心，可以打去銀行官方熱線核實。而家立即收線，唔好再回覆對方。"
+    },
+    {
+      "type": "scammer",
+      "message": "「專家，你完全搞錯了！我嘅調查只係針對你嘅賬戶異常，唔係針對你個人！你嘅阻礙只係為了掩蓋真相！銀行絕對唔會咁樣處理，你嘅恐慌只會讓你更加徬徨！我哋要立即了解情況，避免更大損失！你嘅反應只係延誤時效，越拖延，你嘅損失就越大！ 立即配合我嘅調查，否則只會讓你更加徬徨無助！」"
+    },
+    {
+      "type": "victim",
+      "message": "陳主任，我明白你話咁樣嘅調查係為咗保障我嘅權益，但係我真係好擔心。你話嘅“非法交易”，究竟點樣會出現？銀行會咁樣處理，我未有聽過。我唔想因為一時嘅誤會，導致銀行凍結我嘅賬戶。我希望你可以俾啲具體例子，例如交易嘅金額、時間、收款人，以及呢個交易嘅目的，我需要知道啲乜嘢會觸發銀行咁樣嘅處理？ 我唔想俾人誤會，我需要啲證據先，我唔會俾任何資料俾你！"
+    }
+  ]
+}

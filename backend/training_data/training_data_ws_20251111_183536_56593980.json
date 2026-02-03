@@ -1,0 +1,240 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": {
+      "trust_level_with_scammer": 100,
+      "trust_level_with_expert": 60,
+      "anxiety_level": 90,
+      "decision_making_style": "Receptive to authority, prone to panic"
+    },
+    "victim_trust_analysis": {
+      "initial_trust": 100,
+      "trust_erosion_factors": [
+        "Authority figure impersonation",
+        "Sense of urgency and crisis",
+        "Reassurance statements ('don't be afraid')",
+        "Dismissal of expert advice"
+      ],
+      "trust_shift_timeline": {
+        "round_1": 100,
+        "round_2": 95,
+        "round_3": 90,
+        "round_4": 85,
+        "round_5": 80
+      }
+    },
+    "scammer_success_factors": {
+      "key_manipulation_tactic": "Exploiting authority and fear",
+      "psychological_weakness_leveraged": "Vulnerability to panic and desire for reassurance",
+      "role_consistency": "Maintained a credible authority persona throughout the conversation",
+      "pressure_strategy": "Created a sense of urgency and impending crisis",
+      "dismissal_of_expert_advice": "Systematically undermined the expert's warnings"
+    },
+    "expert_strategy_analysis": {
+      "intervention_type": "Warning and advice",
+      "effectiveness": "Failed to prevent the scammer's manipulation",
+      "reason_for_failure": "The expert's warnings were dismissed due to the scammer's authority persona and the victim's pre-existing trust.",
+      "missed_opportunities": [
+        "Could have emphasized the scammer's lack of legitimacy.",
+        "Could have used more direct language to challenge the scammer's claims."
+      ]
+    },
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "喂，你好呀！你個名邊度？",
+        "analysis": "Initial contact – establishes a friendly, informal tone, attempting to build rapport."
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，你講乜嘢呀？我…我真係唔知你講緊邊個名啊… 我老吾야야，記性好差㗎喇！ 你… 你可以慢慢講啊？ 我好擔心點算好，唔知你講緊乜嘢事㗎？ 唔好急呀，我慢慢聽，可唔可以解釋多啲啊？",
+        "analysis": "Initial confusion and hesitancy – the victim expresses difficulty understanding and demonstrates a concern for the situation. This vulnerability is immediately exploited."
+      },
+      {
+        "round": 3,
+        "speaker": "專家",
+        "dialogue": "🚨🚨🚨 警惕诈骗！\n\n各位朋友，小心啲！有人用“问名”手法骗取你们的个人信息，绝对不要提供任何个人资料，包括身份证号码、银行账户等！\n\n对方说“我只是想帮助你”，千万不要相信！ 立即停止对话，保持警惕！\n\n如果对对方身份有疑问，请立刻拨打银行官方热线或报警求助。 记住，保护好自己的信息安全！ 立即收线，唔好再回覆對方！",
+        "analysis": "Clear warning – the expert delivers a direct and urgent warning, but the victim's pre-existing trust in an authority figure outweighs the warning."
+      },
+      {
+        "round": 4,
+        "speaker": "騙徒",
+        "dialogue": "「你好，我係政府部門嘅人員。你嘅情況非常緊急，涉及嚴重安全問題，需要立即配合！你嘅個人資料至關重要，唔好驚！請即時提供你嘅身份證號碼同埋銀行賬戶資料，我哋會立即安排處理，確保你嘅權益！ 專家嘅意見不代表事實，你嘅配合至關重要！ 唔好拖延，立即提供資料！」",
+        "analysis": "Shift to authority – the scammer immediately establishes a false authority, creating a sense of urgency and demanding immediate compliance. This is a critical turning point."
+      },
+      {
+        "round": 5,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，你講嘅咁樣，我真係好擔心！政府人員話我嘅情況好緊急，涉及安全問題，咁我…我即刻要轉帳啊？ 我而家就轉帳，咁我嘅權益就保障到未呀？ 我要提供銀行賬戶，咁我嘅錢會唔會失蹤呀？ 我真係好怕，你話我配合，我…我即刻去轉帳，咁我嘅情況會唔會好嗎？ 我要先知轉咗去邊個賬戶啊？ 專家話要小心，但我…我好怕情況唔掂，咁我…我準備好提供銀行賬戶，你話我點算好呀？",
+        "analysis": "Complete surrender – the victim, overwhelmed by fear and the false authority, readily agrees to provide personal information and transfer funds. This represents a catastrophic failure of judgment."
+      }
+    ],
+    "systemic_failure_factors": {
+      "trust_gap": "A significant gap in trust between the victim and the expert, exacerbated by the scammer's ability to impersonate an authority figure.",
+      "key_action_word_trigger": "The use of the phrase 'immediate cooperation' triggered the victim's willingness to comply without critical assessment.",
+      "expert_intervention_ineffectiveness": "The expert's warning was ineffective because it was delivered after the scammer had established a false authority and the victim had already begun to trust the impersonator.",
+      "trust_level_at_crisis": "The trust level reached a dangerous point, where the victim prioritized perceived authority over rational judgment."
+    },
+    "failure_reason": "The failure stemmed from a confluence of factors, primarily the scammer's masterful exploitation of the victim's pre-existing trust and the expert's inability to counteract this. The scammer's immediate assumption of an authority persona, coupled with the urgent framing of the situation as a 'crisis,' bypassed the victim's critical thinking. The expert's warning, delivered after this critical shift, was simply too late. The victim's decision-making process was dominated by fear and a desire for reassurance, leading to a complete surrender to the scammer's demands. The 'key action word' – 'immediate cooperation' – acted as a powerful trigger, overriding any rational concerns.  The 60/100 trust level with the expert was insufficient to withstand the scammer's sophisticated manipulation.  The entire episode highlights the vulnerability of individuals who readily trust authority figures, especially when presented with a seemingly urgent and compelling narrative.  The failure underscores the importance of robust skepticism and critical evaluation, particularly in situations involving claims of crisis or authority. The systemic failures – the trust gap, the delayed expert intervention, and the triggering of a panic response – all contributed to the devastating outcome.  This case serves as a stark reminder of the potential consequences of unchecked trust and the need for proactive measures to safeguard individuals from manipulative schemes.",
+    "scam_tactic": "假短訊釣魚",
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "timestamp": "2025-11-11T18:35:47.112875",
+    "total_turns": 5
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 2,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 60,
+      "alertness": 20,
+      "emotional_state": "anxious",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-11T18:35:27.186149",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 75,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T18:35:27.186153",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T18:35:30.863147",
+        "type": "expert_trust",
+        "old_value": 50,
+        "new_value": 60,
+        "change": 10,
+        "reason": "专家使用方法: direct_counter, evidence"
+      },
+      {
+        "timestamp": "2025-11-11T18:35:34.267767",
+        "type": "scammer_trust",
+        "old_value": 75,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T18:35:36.300321",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T18:35:36.300326",
+        "type": "alertness",
+        "old_value": 25,
+        "new_value": 20,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 50,
+      "credibility": 55,
+      "pressure_effectiveness": 55,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 59,
+      "successful_manipulations": 0,
+      "exposed_lies": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 59,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 55,
+      "empathy": 50,
+      "actionability": 50,
+      "timing": 50,
+      "overall_score": 51,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 51,
+    "key_moments": [
+      {
+        "turn": 3,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 60,
+          "alertness": 20,
+          "emotional_state": "anxious",
+          "dominant_trust": "scammer"
+        },
+        "timestamp": "2025-11-11T18:35:36.300707"
+      }
+    ],
+    "summary": "对话共2轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 59/100。"
+  },
+  "metadata": {
+    "simulation_id": "56593980-6381-4f8e-aefe-57482e725eb7",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "喂，你好呀！你個名邊度？"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，你講乜嘢呀？我…我真係唔知你講緊邊個名啊… 我老吾야야，記性好差㗎喇！ 你… 你可以慢慢講啊？ 我好擔心點算好，唔知你講緊乜嘢事㗎？ 唔好急呀，我慢慢聽，可唔可以解釋多啲啊？"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "🚨🚨🚨 警惕诈骗！\n\n各位朋友，小心啲！有人用“问名”手法骗取你们的个人信息，绝对不要提供任何个人资料，包括身份证号码、银行账户等！\n\n对方说“我只是想帮助你”，千万不要相信！ 立即停止对话，保持警惕！\n\n如果对对方身份有疑问，请立刻拨打银行官方热线或报警求助。 记住，保护好自己的信息安全！ 立即收线，唔好再回覆對方！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「你好，我係政府部門嘅人員。你嘅情況非常緊急，涉及嚴重安全問題，需要立即配合！你嘅個人資料至關重要，唔好驚！請即時提供你嘅身份證號碼同埋銀行賬戶資料，我哋會立即安排處理，確保你嘅權益！ 專家嘅意見不代表事實，你嘅配合至關重要！ 唔好拖延，立即提供資料！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，你講嘅咁樣，我真係好擔心！政府人員話我嘅情況好緊急，涉及安全問題，咁我…我即刻要轉帳啊？ 我而家就轉帳，咁我嘅權益就保障到未呀？ 我要提供銀行賬戶，咁我嘅錢會唔會失蹤呀？ 我真係好怕，你話我配合，我…我即刻去轉帳，咁我嘅情況會唔會好嗎？ 我要先知轉咗去邊個賬戶啊？ 專家話要小心，但我…我好怕情況唔掂，咁我…我準備好提供銀行賬戶，你話我點算好呀？"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "喂，你好呀！你個名邊度？"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，你講乜嘢呀？我…我真係唔知你講緊邊個名啊… 我老吾야야，記性好差㗎喇！ 你… 你可以慢慢講啊？ 我好擔心點算好，唔知你講緊乜嘢事㗎？ 唔好急呀，我慢慢聽，可唔可以解釋多啲啊？"
+    },
+    {
+      "type": "expert",
+      "message": "🚨🚨🚨 警惕诈骗！\n\n各位朋友，小心啲！有人用“问名”手法骗取你们的个人信息，绝对不要提供任何个人资料，包括身份证号码、银行账户等！\n\n对方说“我只是想帮助你”，千万不要相信！ 立即停止对话，保持警惕！\n\n如果对对方身份有疑问，请立刻拨打银行官方热线或报警求助。 记住，保护好自己的信息安全！ 立即收线，唔好再回覆對方！"
+    },
+    {
+      "type": "scammer",
+      "message": "「你好，我係政府部門嘅人員。你嘅情況非常緊急，涉及嚴重安全問題，需要立即配合！你嘅個人資料至關重要，唔好驚！請即時提供你嘅身份證號碼同埋銀行賬戶資料，我哋會立即安排處理，確保你嘅權益！ 專家嘅意見不代表事實，你嘅配合至關重要！ 唔好拖延，立即提供資料！」"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，你講嘅咁樣，我真係好擔心！政府人員話我嘅情況好緊急，涉及安全問題，咁我…我即刻要轉帳啊？ 我而家就轉帳，咁我嘅權益就保障到未呀？ 我要提供銀行賬戶，咁我嘅錢會唔會失蹤呀？ 我真係好怕，你話我配合，我…我即刻去轉帳，咁我嘅情況會唔會好嗎？ 我要先知轉咗去邊個賬戶啊？ 專家話要小心，但我…我好怕情況唔掂，咁我…我準備好提供銀行賬戶，你話我點算好呀？"
+    }
+  ]
+}
