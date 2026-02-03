@@ -1,0 +1,58 @@
+---
+# Nginx role - Web server configuration
+
+- name: Install Nginx
+  package:
+    name: nginx
+    state: present
+
+- name: Remove default Nginx site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Create Nginx configuration for frontend
+  template:
+    src: frontend-nginx.conf.j2
+    dest: /etc/nginx/sites-available/{{ app_name }}-frontend
+    mode: '0644'
+  notify: reload nginx
+
+- name: Create Nginx configuration for backend
+  template:
+    src: backend-nginx.conf.j2
+    dest: /etc/nginx/sites-available/{{ app_name }}-backend
+    mode: '0644'
+  notify: reload nginx
+
+- name: Enable frontend site
+  file:
+    src: /etc/nginx/sites-available/{{ app_name }}-frontend
+    dest: /etc/nginx/sites-enabled/{{ app_name }}-frontend
+    state: link
+  notify: reload nginx
+
+- name: Enable backend site
+  file:
+    src: /etc/nginx/sites-available/{{ app_name }}-backend
+    dest: /etc/nginx/sites-enabled/{{ app_name }}-backend
+    state: link
+  notify: reload nginx
+
+- name: Test Nginx configuration
+  command: nginx -t
+  register: nginx_test
+  changed_when: false
+
+- name: Enable and start Nginx
+  systemd:
+    name: nginx
+    enabled: yes
+    state: started
+
+- name: Display Nginx information
+  debug:
+    msg: |
+      Nginx configured successfully!
+      Frontend: http://{{ frontend_domain }}
+      Backend: http://{{ backend_domain }}

@@ -1,0 +1,20 @@
+module.exports = {
+  apps: [{
+    name: '{{ app_name }}-frontend',
+    script: 'npm',
+    args: '{% if dev_mode %}run dev{% else %}run preview{% endif %}',
+    cwd: '{{ frontend_build_dir }}',
+    instances: {{ pm2_instances }},
+    exec_mode: 'cluster',
+    watch: {{ hot_reload | lower }},
+    max_memory_restart: '500M',
+    env: {
+      NODE_ENV: '{{ env_vars.NODE_ENV | default("production") }}',
+      PORT: {{ frontend_port }}
+    },
+    error_file: '{{ log_dir }}/frontend-error.log',
+    out_file: '{{ log_dir }}/frontend-out.log',
+    log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+    merge_logs: true
+  }]
+};

@@ -1,0 +1,104 @@
+---
+# Global variables for all hosts
+
+# Application settings
+app_name: hk-antiscam-rpg
+app_user: rpgadmin
+app_group: rpgadmin
+install_dir: /opt/{{ app_name }}
+log_dir: /var/log/{{ app_name }}
+
+# Git repository
+git_repo: https://github.com/yourusername/hk-antiscam-rpg.git
+git_branch: main
+
+# Node.js settings
+nodejs_version: "20.x"
+npm_registry: https://registry.npmjs.org/
+
+# Python settings
+python_version: "3.11"
+pip_mirror: https://pypi.org/simple
+
+# Frontend settings
+frontend_port: 3000
+frontend_domain: rpg.example.com
+frontend_build_dir: "{{ install_dir }}/rpg-platform-v2"
+frontend_dist_dir: "{{ frontend_build_dir }}/dist"
+
+# Backend settings
+backend_port: 5000
+backend_domain: api.rpg.example.com
+backend_dir: "{{ install_dir }}/backend"
+backend_api_key: "{{ vault_backend_api_key | default('change-me-in-production') }}"
+
+# Database settings (if needed)
+db_type: sqlite  # or postgresql, mysql
+db_name: antiscam_rpg
+db_user: rpguser
+db_password: "{{ vault_db_password | default('change-me') }}"
+db_host: localhost
+db_port: 5432
+
+# Nginx settings
+nginx_worker_processes: auto
+nginx_worker_connections: 1024
+nginx_client_max_body_size: 10M
+
+# SSL/TLS settings
+enable_ssl: false
+ssl_cert_path: /etc/ssl/certs/{{ frontend_domain }}.crt
+ssl_key_path: /etc/ssl/private/{{ frontend_domain }}.key
+
+# Firewall settings
+enable_firewall: true
+allowed_ports:
+  - 22    # SSH
+  - 80    # HTTP
+  - 443   # HTTPS
+  - "{{ frontend_port }}"
+  - "{{ backend_port }}"
+
+# System settings
+timezone: Asia/Hong_Kong
+locale: zh_HK.UTF-8
+
+# Monitoring (optional)
+enable_monitoring: false
+monitoring_port: 9090
+
+# Backup settings
+enable_backup: true
+backup_dir: /backup/{{ app_name }}
+backup_retention_days: 7
+
+# Development mode
+dev_mode: false
+hot_reload: true
+
+# Performance tuning
+pm2_instances: 2  # Number of Node.js instances
+gunicorn_workers: 4  # Number of Python workers
+
+# Dependencies versions
+dependencies:
+  node_packages:
+    - name: vite
+      version: latest
+    - name: typescript
+      version: latest
+  
+  python_packages:
+    - name: flask
+      version: ">=2.0.0"
+    - name: openai
+      version: latest
+    - name: python-dotenv
+      version: latest
+
+# Environment variables
+env_vars:
+  NODE_ENV: production
+  VITE_API_URL: "http://{{ backend_domain }}:{{ backend_port }}"
+  FLASK_ENV: production
+  OPENAI_API_KEY: "{{ vault_openai_api_key | default('') }}"

@@ -1,0 +1,82 @@
+---
+# Backend role - AI API deployment
+
+- name: Copy backend files
+  synchronize:
+    src: "{{ playbook_dir }}/../../backend/"
+    dest: "{{ backend_dir }}/"
+    delete: yes
+    rsync_opts:
+      - "--exclude=venv"
+      - "--exclude=__pycache__"
+      - "--exclude=*.pyc"
+      - "--exclude=.env"
+  become_user: "{{ app_user }}"
+
+- name: Create Python virtual environment
+  pip:
+    name: pip
+    virtualenv: "{{ backend_dir }}/venv"
+    virtualenv_command: python{{ python_version }} -m venv
+  become_user: "{{ app_user }}"
+
+- name: Install backend dependencies
+  pip:
+    requirements: "{{ backend_dir }}/requirements.txt"
+    virtualenv: "{{ backend_dir }}/venv"
+  become_user: "{{ app_user }}"
+
+- name: Create backend .env file
+  template:
+    src: backend.env.j2
+    dest: "{{ backend_dir }}/.env"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0600'
+
+- name: Create Gunicorn configuration
+  template:
+    src: gunicorn.conf.py.j2
+    dest: "{{ backend_dir }}/gunicorn.conf.py"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0644'
+
+- name: Create systemd service for backend
+  template:
+    src: backend.service.j2
+    dest: /etc/systemd/system/{{ app_name }}-backend.service
+    mode: '0644'
+  notify: reload systemd
+
+- name: Enable and start backend service
+  systemd:
+    name: "{{ app_name }}-backend"
+    enabled: yes
+    state: started
+    daemon_reload: yes
+
+- name: Wait for backend to be ready
+  wait_for:
+    port: "{{ backend_port }}"
+    delay: 5
+    timeout: 60
+
+- name: Test backend health endpoint
+  uri:
+    url: "http://localhost:{{ backend_port }}/health"
+    status_code: 200
+  register: health_check
+  retries: 3
+  delay: 5
+  until: health_check.status == 200
+  ignore_errors: yes
+
+- name: Display backend information
+  debug:
+    msg: |
+      Backend deployed successfully!
+      API URL: http://{{ ansible_host }}:{{ backend_port }}
+      Backend dir: {{ backend_dir }}
+      Logs: {{ log_dir }}/backend.log
+      Health check: {{ health_check.status | default('N/A') }}
