@@ -2,13 +2,19 @@
 function openMode(mode) {
     const routes = {
         'rpg': '/RPG_Project/rpg_game.html',
+        'rpgv2': 'http://localhost:3000',
         'simulation': '/app',
         'chat': '/personal_chat.html',
         'test': '/test'
     };
     
     if (routes[mode]) {
-        window.location.href = routes[mode];
+        // RPGv2 在新標籤頁打開
+        if (mode === 'rpgv2') {
+            window.open(routes[mode], '_blank');
+        } else {
+            window.location.href = routes[mode];
+        }
     }
 }
 

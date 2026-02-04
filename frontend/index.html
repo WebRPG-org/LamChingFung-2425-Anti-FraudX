@@ -32,7 +32,7 @@
 
     <div class="modes-container">
         <!-- RPG 遊戲模式 -->
-        <div class="mode-card" data-color="coral" onclick="openMode('rpg')">
+        <div class="mode-card" data-color="coral">
             <div class="card-glow"></div>
             <div class="mode-content">
                 <div class="icon-wrapper">
@@ -50,12 +50,20 @@
                     <li><span class="feature-icon">✓</span>遊戲化學習體驗</li>
                     <li><span class="feature-icon">✓</span>實時 AI 對話</li>
                 </ul>
-                <button class="mode-button" onclick="event.stopPropagation(); openMode('rpg')">
-                    <span>開始遊戲</span>
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="mode-button" onclick="openMode('rpg')" style="flex: 1;">
+                        <span>開始遊戲 v1</span>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="mode-button" onclick="openMode('rpgv2')" style="flex: 1; background: linear-gradient(135deg, #FA8BFF 0%, #2BD2FF 100%);">
+                        <span>體驗 v2 🎯</span>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
 

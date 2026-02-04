@@ -1,343 +1,347 @@
 """
-對話上下文管理器
-用於優化 Agent 的上下文理解、身份一致性和對話品質
+上下文管理器 - 智能摘要長對話歷史
+解決對話歷史無限增長導致推理速度變慢的問題
 """
 
 from typing import List, Dict, Optional
+from datetime import datetime
+import re
 
 
 class ContextManager:
-    """管理 Agent 的對話上下文，確保身份一致性和對話品質"""
+    """
+    智能上下文管理器
     
-    def __init__(self, agent_name: str, max_history_turns: int = 50):
+    功能：
+    1. 監控對話歷史長度
+    2. 當超過閾值時，自動摘要舊對話
+    3. 保留最近 N 輪完整對話
+    4. 為不同 Agent 提供定制化上下文
+    """
+    
+    def __init__(self, max_tokens: int = 2000, keep_recent_turns: int = 5):
         """
         初始化上下文管理器
         
         Args:
-            agent_name: Agent 的名稱（如 "騙徒", "專家", "受騙者"）
-            max_history_turns: 保留的最大歷史輪次
+            max_tokens: 最大 Token 數量（超過則觸發摘要）
+            keep_recent_turns: 保留最近 N 輪完整對話
         """
-        self.agent_name = agent_name
-        self.max_history_turns = max_history_turns
-        self.identity_reminder = None
-        
-    def set_identity_reminder(self, reminder: str):
-        """設置身份提醒（會在每次對話中注入）"""
-        self.identity_reminder = reminder
-        
-    def format_history_for_agent(
-        self, 
-        conversation_history: List[Dict],
-        current_prompt: str,
-        include_identity: bool = True
-    ) -> str:
+        self.max_tokens = max_tokens
+        self.keep_recent_turns = keep_recent_turns
+        self.history: List[Dict] = []
+        self.summary: Optional[str] = None
+        self.summary_generated_at: Optional[datetime] = None
+    
+    def add_turn(self, speaker: str, text: str, metadata: Optional[Dict] = None):
         """
-        為 Agent 格式化對話歷史，增強上下文理解
+        添加新的對話輪次
         
         Args:
-            conversation_history: 對話歷史列表
-            current_prompt: 當前的提示詞
-            include_identity: 是否包含身份提醒
-            
-        Returns:
-            格式化後的完整 prompt
+            speaker: 說話者（騙徒/受騙者/防騙專家）
+            text: 對話內容
+            metadata: 可選的元數據（如信任度、情緒等）
         """
-        parts = []
-        
-        # 1. 身份提醒（可選）
-        if include_identity and self.identity_reminder:
-            parts.append(f"【🎭 身份提醒】\n{self.identity_reminder}\n")
-        
-        # 2. 對話歷史
-        if conversation_history:
-            recent_history = conversation_history[-self.max_history_turns:]
-            
-            if recent_history:
-                parts.append("【📜 對話歷史】")
-                
-                for i, msg in enumerate(recent_history, 1):
-                    speaker = msg.get("speaker", "")
-                    dialogue = msg.get("dialogue", "")
-                    
-                    # 標記是否為 Agent 自己說的話
-                    if speaker == self.agent_name:
-                        parts.append(f"第{i}輪 - 你（{speaker}）: {dialogue}")
-                    else:
-                        parts.append(f"第{i}輪 - {speaker}: {dialogue}")
-                
-                parts.append("")  # 空行分隔
-        
-        # 3. 當前提示
-        parts.append("【💬 當前情況】")
-        parts.append(current_prompt)
-        
-        # 4. 行為提醒
-        parts.append("\n【⚠️ 重要提醒】")
-        parts.append(f"- 你是 {self.agent_name}，保持角色一致性")
-        parts.append("- 根據上述對話歷史，給出自然、連貫的回應")
-        parts.append("- 不要重複之前說過的話，要有新的內容")
-        
-        return "\n".join(parts)
-    
-    def extract_agent_responses(
-        self, 
-        conversation_history: List[Dict]
-    ) -> List[str]:
-        """提取 Agent 自己之前說過的話，用於避免重複"""
-        return [
-            msg.get("dialogue", "")
-            for msg in conversation_history
-            if msg.get("speaker") == self.agent_name
-        ]
-    
-    def get_last_opponent_message(
-        self, 
-        conversation_history: List[Dict],
-        opponent_name: str
-    ) -> Optional[str]:
-        """獲取指定對手的最後一條消息"""
-        for msg in reversed(conversation_history):
-            if msg.get("speaker") == opponent_name:
-                return msg.get("dialogue")
-        return None
-    
-    def summarize_early_history(
-        self, 
-        conversation_history: List[Dict],
-        keep_recent: int = 5
-    ) -> str:
-        """
-        摘要早期對話歷史，保留最近的完整輪次
-        
-        Args:
-            conversation_history: 完整對話歷史
-            keep_recent: 保留最近多少輪的完整內容
-            
-        Returns:
-            摘要文字
-        """
-        if len(conversation_history) <= keep_recent:
-            return ""
-        
-        early_history = conversation_history[:-keep_recent]
-        
-        # 統計早期對話的關鍵信息
-        speakers = set()
-        key_points = []
-        
-        for msg in early_history:
-            speaker = msg.get("speaker", "")
-            dialogue = msg.get("dialogue", "")
-            speakers.add(speaker)
-            
-            # 提取關鍵短語（簡化版）
-            if len(dialogue) > 50:
-                key_points.append(f"{speaker}: {dialogue[:50]}...")
-            else:
-                key_points.append(f"{speaker}: {dialogue}")
-        
-        summary_parts = [
-            f"【早期對話摘要】（前 {len(early_history)} 輪）",
-            f"參與者: {', '.join(speakers)}",
-            "關鍵內容:"
-        ]
-        summary_parts.extend(f"  - {kp}" for kp in key_points[:5])  # 最多5個要點
-        
-        if len(key_points) > 5:
-            summary_parts.append(f"  ... 還有 {len(key_points) - 5} 輪對話")
-        
-        return "\n".join(summary_parts)
-
-
-class ScammerContextManager(ContextManager):
-    """騙徒專用的上下文管理器"""
-    
-    def __init__(self):
-        super().__init__(agent_name="騙徒", max_history_turns=8)
-        self.set_identity_reminder(
-            "你是專業騙徒，正在假冒權威身份行騙。\n"
-            "記住：\n"
-            "- 保持你第一輪建立的身份（銀行/政府/投資顧問等）\n"
-            "- 保持策略一致性（authority/urgency/benefits等）\n"
-            "- 不要重複同樣的威脅或話術\n"
-            "- 根據受害者的反應調整策略"
-        )
-    
-    def format_history_for_agent(
-        self, 
-        conversation_history: List[Dict],
-        current_prompt: str,
-        include_identity: bool = True
-    ) -> str:
-        """騙徒專用的歷史格式化，增加策略提醒"""
-        base_prompt = super().format_history_for_agent(
-            conversation_history, 
-            current_prompt,
-            include_identity
-        )
-        
-        # 檢查是否有專家介入
-        has_expert = any(
-            msg.get("speaker") == "專家" 
-            for msg in conversation_history
-        )
-        
-        if has_expert:
-            expert_warning = (
-                "\n【🚨 專家已介入】\n"
-                "- 你必須反擊專家的建議\n"
-                "- 不要承認任何騙局的可能性\n"
-                "- 加強你的權威性和緊迫性"
-            )
-            return base_prompt + expert_warning
-        
-        return base_prompt
-
-
-class ExpertContextManager(ContextManager):
-    """專家專用的上下文管理器"""
-    
-    def __init__(self):
-        super().__init__(agent_name="專家", max_history_turns=10)
-        self.set_identity_reminder(
-            "你是黃sir（防騙專家），正在幫助受害者識破騙局。\n"
-            "記住：\n"
-            "- 先安撫情緒，再提供建議\n"
-            "- 針對騙徒的具體話術進行反駁\n"
-            "- 提供可執行的具體步驟\n"
-            "- 預測騙徒可能的反擊並提前告知受害者"
-        )
-    
-    def format_history_for_agent(
-        self, 
-        conversation_history: List[Dict],
-        current_prompt: str,
-        include_identity: bool = True
-    ) -> str:
-        """專家專用的歷史格式化，分析騙徒策略"""
-        base_prompt = super().format_history_for_agent(
-            conversation_history, 
-            current_prompt,
-            include_identity
-        )
-        
-        # 識別騙徒使用的策略
-        scammer_tactics = self._analyze_scammer_tactics(conversation_history)
-        
-        if scammer_tactics:
-            tactics_info = (
-                f"\n【🎯 騙徒策略分析】\n"
-                f"騙徒正在使用：{', '.join(scammer_tactics)}\n"
-                f"你應該針對這些策略進行反駁"
-            )
-            return base_prompt + tactics_info
-        
-        return base_prompt
-    
-    def _analyze_scammer_tactics(self, conversation_history: List[Dict]) -> List[str]:
-        """簡單分析騙徒使用的策略"""
-        tactics = []
-        
-        for msg in conversation_history:
-            if msg.get("speaker") != "騙徒":
-                continue
-            
-            dialogue = msg.get("dialogue", "").lower()
-            
-            # 檢測策略關鍵詞
-            if any(word in dialogue for word in ["銀行", "政府", "警察", "官方"]):
-                if "authority" not in tactics:
-                    tactics.append("authority（權威身份）")
-            
-            if any(word in dialogue for word in ["立即", "馬上", "緊急", "嚴重"]):
-                if "urgency" not in tactics:
-                    tactics.append("urgency（製造緊迫）")
-            
-            if any(word in dialogue for word in ["補貼", "福利", "回贈", "優惠"]):
-                if "benefits" not in tactics:
-                    tactics.append("benefits（利益誘惑）")
-        
-        return tactics
-
-
-class VictimContextManager(ContextManager):
-    """受害者專用的上下文管理器"""
-    
-    def __init__(self, persona_type: str = "average"):
-        super().__init__(agent_name="受騙者", max_history_turns=10)
-        self.persona_type = persona_type
-        
-        # 根據類型設置提醒
-        persona_reminders = {
-            "elderly": (
-                "你是陳婆婆（elderly型），72歲退休清潔工。\n"
-                "記住：\n"
-                "- 你容易相信權威（銀行、政府、警察）\n"
-                "- 你對科技和複雜術語感到困惑\n"
-                "- 你需要簡單、直接的建議\n"
-                "- 你會因為專家的安撫而感到安心"
-            ),
-            "average": (
-                "你是張文軒（average型），35歲會計文員。\n"
-                "記住：\n"
-                "- 你會問細節問題\n"
-                "- 你需要具體證據才會相信\n"
-                "- 你在壓力下可能做出衝動決定\n"
-                "- 你對專業包裝較容易信任"
-            ),
-            "overconfident": (
-                "你是Jason（overconfident型），28歲IT工程師。\n"
-                "記住：\n"
-                "- 你自信且對技術熟悉\n"
-                "- 你可能低估社會工程學的風險\n"
-                "- 你需要技術性的分析才會信服\n"
-                "- 你不喜歡被說教"
-            )
+        turn = {
+            "speaker": speaker,
+            "text": text,
+            "timestamp": datetime.now(),
+            "metadata": metadata or {}
         }
         
-        self.set_identity_reminder(
-            persona_reminders.get(persona_type, persona_reminders["average"])
-        )
-
-
-def get_context_manager(agent_name: str, **kwargs) -> ContextManager:
-    """工廠方法：根據 Agent 名稱獲取對應的上下文管理器"""
-    if "騙徒" in agent_name or "scammer" in agent_name.lower():
-        return ScammerContextManager()
-    elif "專家" in agent_name or "expert" in agent_name.lower():
-        return ExpertContextManager()
-    elif "受騙者" in agent_name or "victim" in agent_name.lower():
-        persona_type = kwargs.get("persona_type", "average")
-        return VictimContextManager(persona_type=persona_type)
-    else:
-        return ContextManager(agent_name=agent_name)
-
-
-if __name__ == "__main__":
-    # 測試代碼
-    manager = ScammerContextManager()
+        self.history.append(turn)
+        
+        # 檢查是否需要摘要
+        if self._estimate_tokens() > self.max_tokens:
+            self._summarize_old_turns()
     
-    history = [
-        {"speaker": "騙徒", "dialogue": "你好，我係XX銀行嘅客戶經理..."},
-        {"speaker": "受騙者", "dialogue": "咩事？"},
-        {"speaker": "騙徒", "dialogue": "你嘅戶口有可疑交易..."},
-        {"speaker": "受騙者", "dialogue": "真係？"},
-        {"speaker": "專家", "dialogue": "唔好信！呢個係騙案..."}
-    ]
+    def get_context_for_agent(self, agent_type: str, include_summary: bool = True) -> str:
+        """
+        為不同 Agent 提供定制化上下文
+        
+        Args:
+            agent_type: Agent 類型（scammer/expert/victim）
+            include_summary: 是否包含摘要
+            
+        Returns:
+            格式化的上下文字符串
+        """
+        if agent_type == "scammer":
+            return self._format_for_scammer(include_summary)
+        elif agent_type == "expert":
+            return self._format_for_expert(include_summary)
+        elif agent_type == "victim":
+            return self._format_for_victim(include_summary)
+        else:
+            return self._format_default(include_summary)
     
-    formatted = manager.format_history_for_agent(
-        history,
-        "受害者開始懷疑了，你需要加強說服力"
-    )
+    def get_full_history(self) -> List[Dict]:
+        """獲取完整的對話歷史"""
+        return self.history.copy()
     
-    print(formatted)
-    print("\n" + "="*80 + "\n")
+    def get_recent_turns(self, n: int = None) -> List[Dict]:
+        """
+        獲取最近 N 輪對話
+        
+        Args:
+            n: 輪數（默認使用 keep_recent_turns）
+            
+        Returns:
+            最近 N 輪對話列表
+        """
+        n = n or self.keep_recent_turns
+        return self.history[-n:] if len(self.history) >= n else self.history
     
-    # 測試專家
-    expert_manager = ExpertContextManager()
-    expert_formatted = expert_manager.format_history_for_agent(
-        history,
-        "騙徒正在製造恐慌，你需要安撫受害者"
-    )
-    print(expert_formatted)
-
+    def clear(self):
+        """清空對話歷史"""
+        self.history = []
+        self.summary = None
+        self.summary_generated_at = None
+    
+    # ==================== 私有方法 ====================
+    
+    def _estimate_tokens(self) -> int:
+        """
+        估算當前對話歷史的 Token 數量
+        
+        粗略估算：中文 1 字 ≈ 1.5 tokens，英文 1 詞 ≈ 1 token
+        """
+        total_chars = sum(len(turn["text"]) for turn in self.history)
+        
+        # 加上摘要的長度
+        if self.summary:
+            total_chars += len(self.summary)
+        
+        # 粗略估算：平均 1.5 tokens/字
+        return int(total_chars * 1.5)
+    
+    def _summarize_old_turns(self):
+        """
+        摘要舊對話，保留最近 N 輪完整對話
+        """
+        if len(self.history) <= self.keep_recent_turns:
+            return  # 對話太短，不需要摘要
+        
+        # 分割：舊對話 vs 最近對話
+        recent = self.history[-self.keep_recent_turns:]
+        old = self.history[:-self.keep_recent_turns]
+        
+        # 生成摘要
+        summary_data = {
+            "scam_tactic": self._extract_scam_tactic(old),
+            "victim_attitude": self._extract_victim_attitude(old),
+            "expert_warnings": self._extract_expert_warnings(old),
+            "trust_trend": self._extract_trust_trend(old),
+            "key_moments": self._extract_key_moments(old)
+        }
+        
+        # 格式化摘要
+        summary_text = self._format_summary(summary_data, len(old))
+        
+        # 更新歷史：摘要 + 最近對話
+        self.summary = summary_text
+        self.summary_generated_at = datetime.now()
+        self.history = recent
+        
+        print(f"[ContextManager] 摘要完成：{len(old)} 輪 → 摘要，保留最近 {len(recent)} 輪")
+    
+    def _extract_scam_tactic(self, turns: List[Dict]) -> str:
+        """提取騙徒使用的主要手法"""
+        scammer_turns = [t for t in turns if t["speaker"] == "騙徒"]
+        
+        if not scammer_turns:
+            return "未知手法"
+        
+        # 分析關鍵詞
+        keywords = {
+            "銀行": "假冒銀行",
+            "警察": "假冒警察",
+            "政府": "假冒政府",
+            "投資": "虛假投資",
+            "刷單": "刷單詐騙",
+            "中獎": "中獎詐騙"
+        }
+        
+        text = " ".join(t["text"] for t in scammer_turns)
+        
+        for keyword, tactic in keywords.items():
+            if keyword in text:
+                return tactic
+        
+        return "混合手法"
+    
+    def _extract_victim_attitude(self, turns: List[Dict]) -> str:
+        """提取受害者的態度變化"""
+        victim_turns = [t for t in turns if t["speaker"] == "受騙者"]
+        
+        if not victim_turns:
+            return "未知"
+        
+        # 分析情緒關鍵詞
+        first_half = victim_turns[:len(victim_turns)//2]
+        second_half = victim_turns[len(victim_turns)//2:]
+        
+        def analyze_emotion(turns):
+            text = " ".join(t["text"] for t in turns)
+            if any(word in text for word in ["驚", "怕", "點算"]):
+                return "恐慌"
+            elif any(word in text for word in ["唔信", "懷疑", "奇怪"]):
+                return "懷疑"
+            elif any(word in text for word in ["好", "明白", "係"]):
+                return "相信"
+            return "中立"
+        
+        start_emotion = analyze_emotion(first_half) if first_half else "中立"
+        end_emotion = analyze_emotion(second_half) if second_half else "中立"
+        
+        if start_emotion == end_emotion:
+            return f"持續{start_emotion}"
+        else:
+            return f"從{start_emotion}轉為{end_emotion}"
+    
+    def _extract_expert_warnings(self, turns: List[Dict]) -> str:
+        """提取專家的主要警告"""
+        expert_turns = [t for t in turns if t["speaker"] == "防騙專家"]
+        
+        if not expert_turns:
+            return "未介入"
+        
+        # 提取關鍵警告
+        warnings = []
+        for turn in expert_turns:
+            text = turn["text"]
+            if "詐騙" in text or "騙案" in text:
+                warnings.append("識別為詐騙")
+            if "唔好" in text or "停止" in text:
+                warnings.append("建議停止")
+            if "報警" in text or "熱線" in text:
+                warnings.append("建議求助")
+        
+        if warnings:
+            return "、".join(set(warnings))
+        return "提供建議"
+    
+    def _extract_trust_trend(self, turns: List[Dict]) -> str:
+        """提取信任度趨勢"""
+        # 從 metadata 中提取信任度（如果有）
+        trust_values = []
+        for turn in turns:
+            if "trust_in_scammer" in turn.get("metadata", {}):
+                trust_values.append(turn["metadata"]["trust_in_scammer"])
+        
+        if len(trust_values) < 2:
+            return "未知"
+        
+        start_trust = trust_values[0]
+        end_trust = trust_values[-1]
+        
+        if end_trust > start_trust + 20:
+            return "大幅上升"
+        elif end_trust > start_trust + 10:
+            return "上升"
+        elif end_trust < start_trust - 20:
+            return "大幅下降"
+        elif end_trust < start_trust - 10:
+            return "下降"
+        else:
+            return "穩定"
+    
+    def _extract_key_moments(self, turns: List[Dict]) -> List[str]:
+        """提取關鍵時刻"""
+        key_moments = []
+        
+        for i, turn in enumerate(turns):
+            text = turn["text"]
+            speaker = turn["speaker"]
+            
+            # 騙徒的關鍵話術
+            if speaker == "騙徒":
+                if any(word in text for word in ["立即", "馬上", "緊急"]):
+                    key_moments.append(f"第{i+1}輪：騙徒製造緊迫感")
+                elif any(word in text for word in ["凍結", "損失", "法律"]):
+                    key_moments.append(f"第{i+1}輪：騙徒威脅恐嚇")
+            
+            # 受害者的關鍵反應
+            elif speaker == "受騙者":
+                if any(word in text for word in ["好", "明白", "係"]):
+                    key_moments.append(f"第{i+1}輪：受害者表示相信")
+                elif any(word in text for word in ["唔信", "懷疑"]):
+                    key_moments.append(f"第{i+1}輪：受害者開始懷疑")
+        
+        return key_moments[:3]  # 只保留前 3 個關鍵時刻
+    
+    def _format_summary(self, data: Dict, num_turns: int) -> str:
+        """格式化摘要文本"""
+        summary = f"[前情摘要 - 共 {num_turns} 輪對話]\n\n"
+        summary += f"騙徒手法：{data['scam_tactic']}\n"
+        summary += f"受害者態度：{data['victim_attitude']}\n"
+        summary += f"專家警告：{data['expert_warnings']}\n"
+        summary += f"信任度趨勢：{data['trust_trend']}\n"
+        
+        if data['key_moments']:
+            summary += f"\n關鍵時刻：\n"
+            for moment in data['key_moments']:
+                summary += f"  • {moment}\n"
+        
+        return summary
+    
+    def _format_for_scammer(self, include_summary: bool) -> str:
+        """為騙徒格式化上下文（只需要受害者的最新反應）"""
+        context = ""
+        
+        if include_summary and self.summary:
+            context += self.summary + "\n\n"
+        
+        context += "[最近對話]\n"
+        recent = self.get_recent_turns(3)  # 騙徒只需要最近 3 輪
+        
+        for turn in recent:
+            if turn["speaker"] in ["受騙者", "騙徒"]:  # 騙徒不需要看專家的話
+                context += f"{turn['speaker']}：{turn['text']}\n"
+        
+        return context
+    
+    def _format_for_expert(self, include_summary: bool) -> str:
+        """為專家格式化上下文（需要完整信息）"""
+        context = ""
+        
+        if include_summary and self.summary:
+            context += self.summary + "\n\n"
+        
+        context += "[最近對話]\n"
+        recent = self.get_recent_turns()  # 專家需要完整的最近對話
+        
+        for turn in recent:
+            context += f"{turn['speaker']}：{turn['text']}\n"
+        
+        return context
+    
+    def _format_for_victim(self, include_summary: bool) -> str:
+        """為受害者格式化上下文（只看到騙徒和專家的話）"""
+        context = ""
+        
+        if include_summary and self.summary:
+            # 受害者不需要看摘要，只需要最近對話
+            pass
+        
+        context += "[對話記錄]\n"
+        recent = self.get_recent_turns(3)  # 受害者只需要最近 3 輪
+        
+        for turn in recent:
+            if turn["speaker"] in ["騙徒", "防騙專家"]:  # 受害者不需要看自己說過的話
+                context += f"{turn['speaker']}：{turn['text']}\n"
+        
+        return context
+    
+    def _format_default(self, include_summary: bool) -> str:
+        """默認格式化（完整歷史）"""
+        context = ""
+        
+        if include_summary and self.summary:
+            context += self.summary + "\n\n"
+        
+        context += "[對話歷史]\n"
+        for turn in self.history:
+            context += f"{turn['speaker']}：{turn['text']}\n"
+        
+        return context

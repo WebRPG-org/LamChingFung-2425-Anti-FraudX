@@ -4,6 +4,7 @@ import { MainMenuScene } from './scenes/MainMenuScene';
 import { WorldMapScene } from './scenes/WorldMapScene';
 import { BattleScene } from './scenes/BattleScene';
 import { AutoModeScene } from './scenes/AutoModeScene';
+import { ResultScene } from './scenes/ResultScene';
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -27,6 +28,7 @@ const config: Phaser.Types.Core.GameConfig = {
     MainMenuScene,
     WorldMapScene,
     BattleScene,
+    ResultScene,
     AutoModeScene
   ]
 };

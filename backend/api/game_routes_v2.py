@@ -1,6 +1,7 @@
 """
 防詐騙遊戲 API 路由 v2
 使用完整的 Agent 服務層（AgentService）
+支持騙案類型系統
 """
 
 from fastapi import APIRouter, HTTPException, Request
@@ -20,13 +21,32 @@ router = APIRouter(prefix="/api/game/v2", tags=["Game V2"])
 # 配置
 DATABASE_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'anti_fraud_game.db')
 
+# 騙案類型定義（與前端 ScamTypes.ts 保持一致）
+SCAM_TYPES = {
+    "investment": {"name_zh": "虛假投資詐騙", "icon": "💰", "danger_level": 5, "tactic": "investment"},
+    "phishing": {"name_zh": "釣魚短訊詐騙", "icon": "📱", "danger_level": 4, "tactic": "phishing"},
+    "romance": {"name_zh": "愛情詐騙", "icon": "💕", "danger_level": 5, "tactic": "romance"},
+    "impersonation": {"name_zh": "假冒官員詐騙", "icon": "👮", "danger_level": 5, "tactic": "impersonation"},
+    "shopping": {"name_zh": "虛假購物詐騙", "icon": "🛒", "danger_level": 3, "tactic": "shopping"},
+    "job": {"name_zh": "求職詐騙", "icon": "💼", "danger_level": 3, "tactic": "job"},
+    "prize": {"name_zh": "中獎詐騙", "icon": "🎁", "danger_level": 3, "tactic": "prize"},
+    "whatsapp": {"name_zh": "WhatsApp 詐騙", "icon": "💬", "danger_level": 4, "tactic": "whatsapp"},
+    "banking": {"name_zh": "假冒銀行詐騙", "icon": "🏦", "danger_level": 5, "tactic": "banking"},
+    "crypto": {"name_zh": "加密貨幣詐騙", "icon": "₿", "danger_level": 5, "tactic": "crypto"},
+    "rental": {"name_zh": "租屋詐騙", "icon": "🏠", "danger_level": 3, "tactic": "rental"},
+    "tech_support": {"name_zh": "技術支援詐騙", "icon": "💻", "danger_level": 4, "tactic": "tech_support"},
+    "charity": {"name_zh": "虛假慈善詐騙", "icon": "❤️", "danger_level": 2, "tactic": "charity"}
+}
+
 # 數據模型
 class GameStartRequest(BaseModel):
     persona_type: str
+    scam_type: Optional[str] = None  # 新增：指定騙案類型
 
 class GameStartResponse(BaseModel):
     session_id: str
     persona: Dict[str, Any]
+    scam_type: Optional[Dict[str, Any]] = None  # 新增：返回騙案類型資訊
     success: bool = True
 
 class GameMessageRequest(BaseModel):
@@ -37,6 +57,7 @@ class GameMessageRequest(BaseModel):
     target_ai: str = "AI-D"
     persona_type: str = "A"
     role: Optional[str] = None
+    scam_type: Optional[str] = None  # 新增：騙案類型
     
     @field_validator('session_id', mode='before')
     @classmethod
@@ -46,8 +67,8 @@ class GameMessageRequest(BaseModel):
 # 緩存 AgentService 實例
 _agent_services = {}
 
-def get_agent_service(persona_type: str):
-    """獲取或創建 AgentService"""
+def get_agent_service(persona_type: str, scam_tactic: Optional[str] = None):
+    """獲取或創建 AgentService，支持指定騙案類型"""
     # 映射 RPG Maker 的 persona_type 到 backend 的 persona_type
     persona_mapping = {
         "A": "elderly",       # 陳老伯（長者）
@@ -57,14 +78,23 @@ def get_agent_service(persona_type: str):
     }
     backend_persona = persona_mapping.get(persona_type, "average")
     
-    if backend_persona not in _agent_services:
-        from services.agent_service import AgentService
-        _agent_services[backend_persona] = AgentService(
-            persona_type=backend_persona,
-            enable_tracking=True  # 啟用性能追踪
-        )
+    # 如果指定了騙案類型，創建專門的 AgentService
+    cache_key = f"{backend_persona}_{scam_tactic}" if scam_tactic else backend_persona
     
-    return _agent_services[backend_persona]
+    if cache_key not in _agent_services:
+        from services.agent_service import AgentService
+        
+        # 創建 AgentService，如果有騙案類型則傳遞給 ScammerAgent
+        service_kwargs = {
+            "persona_type": backend_persona,
+            "enable_tracking": True  # 啟用性能追踪
+        }
+        
+        # 注意：AgentService 目前不直接支持 scam_tactic 參數
+        # 需要在 ScammerAgent 層面處理，這裡先創建基礎服務
+        _agent_services[cache_key] = AgentService(**service_kwargs)
+    
+    return _agent_services[cache_key]
 
 # Persona 定義（保持與 v1 相同）
 PERSONAS = {
@@ -408,7 +438,50 @@ async def health_check():
             "PerformanceTracking",
             "RoleConsistencyCheck",
             "TrustSystem",
-            "RecorderAnalysis"  # 新增
+            "RecorderAnalysis",
+            "ScamTypeSupport"  # 新增
         ]
     }
 
+@router.get("/scam-types")
+async def get_scam_types():
+    """
+    獲取所有騙案類型列表
+    
+    返回前端可用的所有騙案類型資訊
+    """
+    scam_types_list = []
+    for scam_id, scam_info in SCAM_TYPES.items():
+        scam_types_list.append({
+            "id": scam_id,
+            "name_zh": scam_info["name_zh"],
+            "icon": scam_info["icon"],
+            "danger_level": scam_info["danger_level"],
+            "tactic": scam_info["tactic"]
+        })
+    
+    return {
+        "success": True,
+        "scam_types": scam_types_list,
+        "total": len(scam_types_list)
+    }
+
+@router.get("/scam-types/{scam_id}")
+async def get_scam_type_detail(scam_id: str):
+    """
+    獲取特定騙案類型的詳細資訊
+    """
+    if scam_id not in SCAM_TYPES:
+        raise HTTPException(status_code=404, detail=f"騙案類型不存在: {scam_id}")
+    
+    scam_info = SCAM_TYPES[scam_id]
+    return {
+        "success": True,
+        "scam_type": {
+            "id": scam_id,
+            "name_zh": scam_info["name_zh"],
+            "icon": scam_info["icon"],
+            "danger_level": scam_info["danger_level"],
+            "tactic": scam_info["tactic"]
+        }
+    }

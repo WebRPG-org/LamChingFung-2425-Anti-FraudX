@@ -12,6 +12,8 @@ from api.game_routes import router as game_router
 from api.game_routes_v2 import router as game_router_v2
 from api.chat_routes import router as chat_router
 from api.personal_chat_routes import router as personal_chat_router
+from api.rpgv2_battle_routes import router as rpgv2_battle_router
+from api.prompt_version_routes import router as prompt_version_router
 from fastapi.middleware.cors import CORSMiddleware
 
 # Load environment variables from .env file
@@ -53,6 +55,17 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# 初始化 Prompt 版本管理器並註冊初始版本
+try:
+    from services.prompt_helper import register_initial_prompts
+    from utils.prompt_version_manager import PromptVersionManager
+    
+    version_manager = PromptVersionManager()
+    register_initial_prompts(version_manager)
+    log.info("✅ Prompt 版本管理器初始化完成")
+except Exception as e:
+    log.error(f"❌ Prompt 版本管理器初始化失敗: {e}")
+
 # 添加 CORS 支援 (for RPG Maker)
 app.add_middleware(
     CORSMiddleware,
@@ -70,6 +83,8 @@ app.include_router(game_router)      # v1 - 保留向後兼容
 app.include_router(game_router_v2)   # v2 - 使用完整 Agent 系統
 app.include_router(chat_router)
 app.include_router(personal_chat_router)  # 個人對話模式
+app.include_router(rpgv2_battle_router)   # RPGv2 三方對話
+app.include_router(prompt_version_router)  # Prompt 版本管理
 
 # 掛載RPG項目的靜態文件（HTML, JS, CSS等）
 rpg_project_path = os.path.join(os.path.dirname(__file__), '..', 'RPG_platform', 'RPG_Project')
@@ -79,6 +94,15 @@ if os.path.exists(rpg_project_path):
     log.info(f"✅ 已掛載RPG項目靜態文件: {rpg_project_path}")
 else:
     log.warning(f"⚠️ RPG項目路徑不存在: {rpg_project_path}")
+
+# 掛載 RPGv2 項目的靜態文件
+rpgv2_path = os.path.join(os.path.dirname(__file__), '..', 'rpg-platform-v2')
+if os.path.exists(rpgv2_path):
+    # 掛載整個 rpg-platform-v2 目錄（包含 src, public 等）
+    app.mount("/rpgv2-static", StaticFiles(directory=rpgv2_path, html=True), name="rpgv2_static")
+    log.info(f"✅ 已掛載 RPGv2 項目靜態文件: {rpgv2_path}")
+else:
+    log.warning(f"⚠️ RPGv2 項目路徑不存在: {rpgv2_path}")
 
 # --- API routes ---
 
@@ -112,6 +136,27 @@ def rpg_game():
         return HTMLResponse(content=html_content)
     else:
         return {"error": "rpg_game.html not found", "path": rpg_game_path}
+
+@app.get("/rpgv2")
+def rpgv2_game():
+    """RPG v2 遊戲路由 - 返回新版 2D RPG 遊戲頁面"""
+    log.info("RPG v2 game endpoint was called.")
+    rpgv2_index_path = os.path.join(os.path.dirname(__file__), '..', 'rpg-platform-v2', 'index.html')
+    
+    if os.path.exists(rpgv2_index_path):
+        # 讀取 HTML 內容
+        with open(rpgv2_index_path, 'r', encoding='utf-8') as f:
+            html_content = f.read()
+        
+        # 將相對路徑替換為絕對路徑
+        html_content = html_content.replace('href="/src/', 'href="/rpgv2-static/src/')
+        html_content = html_content.replace('src="/src/', 'src="/rpgv2-static/src/')
+        html_content = html_content.replace('from "/src/', 'from "/rpgv2-static/src/')
+        
+        from fastapi.responses import HTMLResponse
+        return HTMLResponse(content=html_content)
+    else:
+        return {"error": "RPGv2 index.html not found", "path": rpgv2_index_path}
 
 @app.get("/health")
 def health_check():

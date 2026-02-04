@@ -1,8 +1,9 @@
 import Phaser from 'phaser';
 import { Player } from '../entities/Player';
-import { NPC, NPCType } from '../entities/NPC';
+import { NPC } from '../entities/NPC';
 import { RoleManager } from '../systems/RoleManager';
 import { CollisionSystem } from '../systems/CollisionSystem';
+import { getAllScamTypes } from '../types/ScamTypes';
 
 export class WorldMapScene extends Phaser.Scene {
   private player!: Player;
@@ -188,32 +189,46 @@ export class WorldMapScene extends Phaser.Scene {
     particles.setDepth(0);
   }
 
+  /**
+   * 創建 NPC - 每個 NPC 代表一種騙案類型
+   * 
+   * 重要改變：不再使用人名（陳婆婆、王小明等），
+   * 而是使用騙案類型（投資詐騙、釣魚短訊等）
+   */
   private createNPCs(mapWidth: number, mapHeight: number): void {
     const centerX = mapWidth / 2;
     const centerY = mapHeight / 2;
 
-    // Place NPCs in structured positions (RPG Maker style)
-    const npcData: Array<{ x: number; y: number; type: NPCType }> = [
-      // Town center NPCs
-      { x: centerX + 200, y: centerY, type: 'elderly' },
-      { x: centerX - 200, y: centerY + 150, type: 'student' },
-      { x: centerX + 300, y: centerY - 200, type: 'average' },
-      { x: centerX - 300, y: centerY - 100, type: 'overconfident' },
+    // 定義 NPC 位置和對應的騙案類型
+    const npcData: Array<{ x: number; y: number; scamId: string }> = [
+      // 市中心區域 - 高危險騙案
+      { x: centerX + 200, y: centerY, scamId: 'investment' },           // 💰 投資詐騙
+      { x: centerX - 200, y: centerY + 150, scamId: 'phishing' },       // 📱 釣魚短訊
+      { x: centerX + 300, y: centerY - 200, scamId: 'romance' },        // 💕 愛情詐騙
+      { x: centerX - 300, y: centerY - 100, scamId: 'impersonation' },  // 👮 假冒官員
       
-      // Outer area NPCs
-      { x: centerX, y: centerY + 400, type: 'scammer' },
-      { x: centerX + 500, y: centerY + 300, type: 'expert' },
+      // 外圍區域 - 中等危險騙案
+      { x: centerX, y: centerY + 400, scamId: 'banking' },              // 🏦 假冒銀行
+      { x: centerX + 500, y: centerY + 300, scamId: 'crypto' },         // ₿ 加密貨幣
       
-      // Additional NPCs in corners
-      { x: 300, y: 300, type: 'elderly' },
-      { x: mapWidth - 300, y: 300, type: 'student' },
-      { x: 300, y: mapHeight - 300, type: 'average' },
-      { x: mapWidth - 300, y: mapHeight - 300, type: 'overconfident' }
+      // 四個角落 - 各種騙案類型
+      { x: 300, y: 300, scamId: 'whatsapp' },                           // 💬 WhatsApp 詐騙
+      { x: mapWidth - 300, y: 300, scamId: 'shopping' },                // 🛒 購物詐騙
+      { x: 300, y: mapHeight - 300, scamId: 'job' },                    // 💼 求職詐騙
+      { x: mapWidth - 300, y: mapHeight - 300, scamId: 'prize' },       // 🎁 中獎詐騙
+      
+      // 額外騙案類型
+      { x: centerX + 400, y: centerY + 200, scamId: 'rental' },         // 🏠 租屋詐騙
+      { x: centerX - 400, y: centerY - 300, scamId: 'tech_support' },   // 💻 技術支援
+      { x: centerX + 100, y: centerY - 400, scamId: 'charity' }         // ❤️ 慈善詐騙
     ];
 
+    console.log(`[WorldMapScene] 創建 ${npcData.length} 個騙案類型 NPC`);
+
     npcData.forEach(data => {
-      const npc = new NPC(this, data.x, data.y, data.type);
+      const npc = new NPC(this, data.x, data.y, data.scamId);
       this.npcs.push(npc);
+      console.log(`[WorldMapScene] 創建 NPC: ${npc.getDisplayName()} at (${data.x}, ${data.y})`);
     });
   }
 
@@ -247,77 +262,220 @@ export class WorldMapScene extends Phaser.Scene {
     this.hud.setScrollFactor(0);
     this.hud.setDepth(100);
 
-    // Role display
-    const roleBox = this.add.rectangle(150, 30, 280, 50, 0x000000, 0.7);
-    this.roleText = this.add.text(150, 30, '', {
-      fontSize: '18px',
-      color: '#ffffff',
+    // Modern role display with glass morphism
+    const roleContainer = this.add.container(20, 20);
+    
+    // Glass background
+    const roleBox = this.add.rectangle(0, 0, 300, 70, 0x16213E, 0.85);
+    roleBox.setOrigin(0, 0);
+    roleBox.setStrokeStyle(2, 0x08D9D6, 0.5);
+    
+    // Role icon background
+    const iconBg = this.add.circle(45, 35, 25, 0x08D9D6, 0.2);
+    iconBg.setStrokeStyle(2, 0x08D9D6, 0.6);
+    
+    // Role text
+    this.roleText = this.add.text(85, 35, '', {
+      fontFamily: 'Rajdhani, sans-serif',
+      fontSize: '22px',
+      color: '#FFFFFF',
       fontStyle: 'bold'
     });
-    this.roleText.setOrigin(0.5);
+    this.roleText.setOrigin(0, 0.5);
+    
+    // Role label
+    const roleLabel = this.add.text(85, 15, '當前角色', {
+      fontFamily: 'Noto Sans TC, sans-serif',
+      fontSize: '11px',
+      color: '#B8C5D6',
+      alpha: 0.8
+    });
+    roleLabel.setOrigin(0, 0.5);
 
-    this.hud.add([roleBox, this.roleText]);
+    roleContainer.add([roleBox, iconBg, this.roleText, roleLabel]);
+    this.hud.add(roleContainer);
 
     // Update role display
     this.updateRoleDisplay();
     this.roleManager.onRoleChange(() => this.updateRoleDisplay());
 
-    // Instructions
-    const instructionsBox = this.add.rectangle(150, 80, 280, 40, 0x000000, 0.7);
-    const instructionsText = this.add.text(150, 80, '按 E 互動 | 按 H 顯示說明', {
-      fontSize: '12px',
-      color: '#A0AEC0'
+    // Modern instructions panel
+    const instructionsContainer = this.add.container(20, 100);
+    
+    const instructionsBox = this.add.rectangle(0, 0, 300, 90, 0x16213E, 0.85);
+    instructionsBox.setOrigin(0, 0);
+    instructionsBox.setStrokeStyle(2, 0xFF2E63, 0.5);
+    
+    const instructionsTitle = this.add.text(15, 12, '⌨️ 操作提示', {
+      fontFamily: 'Rajdhani, sans-serif',
+      fontSize: '14px',
+      color: '#FFD93D',
+      fontStyle: 'bold'
     });
-    instructionsText.setOrigin(0.5);
+    
+    const instructionsText = this.add.text(15, 35, 
+      '方向鍵/WASD - 移動\n' +
+      'E - 互動 | H - 說明 | 1/2/3 - 切換角色', {
+      fontFamily: 'Noto Sans TC, sans-serif',
+      fontSize: '11px',
+      color: '#B8C5D6',
+      lineSpacing: 4
+    });
+    
+    instructionsContainer.add([instructionsBox, instructionsTitle, instructionsText]);
+    this.hud.add(instructionsContainer);
 
-    this.hud.add([instructionsBox, instructionsText]);
+    // Entrance animation
+    roleContainer.setAlpha(0);
+    roleContainer.setX(0);
+    this.tweens.add({
+      targets: roleContainer,
+      alpha: 1,
+      x: 20,
+      duration: 600,
+      ease: 'Back.easeOut'
+    });
+
+    instructionsContainer.setAlpha(0);
+    instructionsContainer.setX(0);
+    this.tweens.add({
+      targets: instructionsContainer,
+      alpha: 1,
+      x: 20,
+      duration: 600,
+      delay: 200,
+      ease: 'Back.easeOut'
+    });
   }
 
   private createHomeButton(): void {
     const width = this.cameras.main.width;
+    const buttonX = width - 90;
+    const buttonY = 50;
     
-    // Position at top right corner
-    this.homeButton = this.add.container(width - 70, 30);
-    this.homeButton.setScrollFactor(0);
-    this.homeButton.setDepth(100);
+    // Glass morphism background - this will be the interactive element
+    const bg = this.add.rectangle(buttonX, buttonY, 140, 60, 0x16213E, 0.85);
+    bg.setOrigin(0.5, 0.5);
+    bg.setStrokeStyle(2, 0xFF2E63, 0.6);
+    bg.setScrollFactor(0);
+    bg.setDepth(100);
     
-    const bg = this.add.rectangle(0, 0, 120, 40, 0xFF6B6B, 0.9);
-    bg.setStrokeStyle(2, 0xffffff, 0.8);
+    // Icon
+    const icon = this.add.text(buttonX - 35, buttonY, '🏠', {
+      fontSize: '24px'
+    });
+    icon.setOrigin(0.5, 0.5);
+    icon.setScrollFactor(0);
+    icon.setDepth(101);
     
-    const text = this.add.text(0, 0, '🏠 主頁', {
-      fontSize: '16px',
-      color: '#ffffff',
+    // Text
+    const text = this.add.text(buttonX + 15, buttonY, '返回主頁', {
+      fontFamily: 'Rajdhani, sans-serif',
+      fontSize: '18px',
+      color: '#FFFFFF',
       fontStyle: 'bold'
     });
-    text.setOrigin(0.5);
+    text.setOrigin(0.4 , 0.5);
+    text.setScrollFactor(0);
+    text.setDepth(101);
     
-    this.homeButton.add([bg, text]);
+    // Store references for animation
+    this.homeButton = this.add.container(0, 0);
+    this.homeButton.add([bg, icon, text]);
     
-    // Make the entire container interactive with correct hit area
-    this.homeButton.setInteractive(
-      new Phaser.Geom.Rectangle(-60, -20, 120, 40),
-      Phaser.Geom.Rectangle.Contains
-    );
+    // Make background interactive
+    bg.setInteractive({ useHandCursor: true });
     
-    // Enable input on the container
-    this.homeButton.input!.cursor = 'pointer';
-    
-    this.homeButton.on('pointerover', () => {
-      this.homeButton.setScale(1.05);
-      bg.setFillStyle(0xFF7B7B, 0.9);
+    bg.on('pointerover', () => {
+      this.tweens.add({
+        targets: [bg, icon, text],
+        scale: 1.05,
+        duration: 200,
+        ease: 'Back.easeOut'
+      });
+      bg.setStrokeStyle(3, 0xFF2E63, 1);
+      bg.setFillStyle(0xFF2E63, 0.3);
     });
     
-    this.homeButton.on('pointerout', () => {
-      this.homeButton.setScale(1);
-      bg.setFillStyle(0xFF6B6B, 0.9);
+    bg.on('pointerout', () => {
+      this.tweens.add({
+        targets: [bg, icon, text],
+        scale: 1,
+        duration: 200
+      });
+      bg.setStrokeStyle(2, 0xFF2E63, 0.6);
+      bg.setFillStyle(0x16213E, 0.85);
     });
     
-    this.homeButton.on('pointerdown', () => {
-      this.homeButton.setScale(0.95);
-      bg.setFillStyle(0xFF5B5B, 0.9);
-      
-      // Return to main menu immediately
-      this.scene.start('MainMenuScene');
+    bg.on('pointerdown', () => {
+      this.tweens.add({
+        targets: [bg, icon, text],
+        scale: 0.95,
+        duration: 100,
+        yoyo: true,
+        onComplete: () => {
+          // Fade transition
+          const overlay = this.add.rectangle(
+            this.cameras.main.centerX,
+            this.cameras.main.centerY,
+            this.cameras.main.width * 2,
+            this.cameras.main.height * 2,
+            0x0A0E27,
+            0
+          );
+          overlay.setScrollFactor(0);
+          overlay.setDepth(200);
+          
+          this.tweens.add({
+            targets: overlay,
+            alpha: 1,
+            duration: 400,
+            onComplete: () => {
+              this.scene.start('MainMenuScene');
+            }
+          });
+        }
+      });
+    });
+
+    // Entrance animation
+    bg.setAlpha(0);
+    icon.setAlpha(0);
+    text.setAlpha(0);
+    bg.setX(buttonX + 20);
+    icon.setX(buttonX - 15);
+    text.setX(buttonX + 35);
+    
+    this.tweens.add({
+      targets: [bg, icon, text],
+      alpha: 1,
+      duration: 600,
+      delay: 400,
+      ease: 'Back.easeOut'
+    });
+    
+    this.tweens.add({
+      targets: bg,
+      x: buttonX,
+      duration: 600,
+      delay: 400,
+      ease: 'Back.easeOut'
+    });
+    
+    this.tweens.add({
+      targets: icon,
+      x: buttonX - 35,
+      duration: 600,
+      delay: 400,
+      ease: 'Back.easeOut'
+    });
+    
+    this.tweens.add({
+      targets: text,
+      x: buttonX + 15,
+      duration: 600,
+      delay: 400,
+      ease: 'Back.easeOut'
     });
   }
 
@@ -348,11 +506,11 @@ export class WorldMapScene extends Phaser.Scene {
   }
 
   private startBattle(npc: NPC): void {
-    console.log(`[WorldMapScene] Starting battle with ${npc.name}`);
+    console.log(`[WorldMapScene] Starting battle with ${npc.getDisplayName()}`);
     this.scene.start('BattleScene', {
       npc: npc,
-      npcType: npc.type,
-      npcName: npc.name,
+      scamType: npc.scamId,           // 傳遞騙案類型 ID
+      scamTypeInfo: npc.scamType,     // 傳遞完整騙案類型資訊
       playerRole: this.roleManager.getCurrentRole()
     });
   }
@@ -376,94 +534,231 @@ export class WorldMapScene extends Phaser.Scene {
     this.instructionsContainer.setScrollFactor(0);
     this.instructionsContainer.setDepth(200);
 
-    const bg = this.add.rectangle(0, 0, 600, 460, 0x000000, 0.95);
-    bg.setStrokeStyle(3, 0x6C5CE7);
+    // Modern glass background with blur effect
+    const bg = this.add.rectangle(0, 0, 700, 550, 0x0A0E27, 0.95);
+    bg.setStrokeStyle(3, 0x08D9D6, 0.8);
     
-    const title = this.add.text(0, -180, '🎮 香港反詐騙 RPG 訓練', {
-      fontSize: '30px',
-      color: '#FFD700',
-      fontStyle: 'bold'
+    // Add background first (bottom layer)
+    this.instructionsContainer.add(bg);
+    
+    // Decorative corner elements
+    const cornerSize = 20;
+    const corners = [
+      { x: -350, y: -275 }, { x: 350, y: -275 },
+      { x: -350, y: 275 }, { x: 350, y: 275 }
+    ];
+    
+    corners.forEach(corner => {
+      const cornerGraphics = this.add.graphics();
+      cornerGraphics.lineStyle(3, 0xFF2E63, 1);
+      cornerGraphics.strokeRect(corner.x, corner.y, cornerSize, cornerSize);
+      this.instructionsContainer!.add(cornerGraphics);
+    });
+    
+    // Title with glow
+    const title = this.add.text(0, -220, '🎮 遊戲指南', {
+      fontFamily: 'Orbitron, sans-serif',
+      fontSize: '38px',
+      color: '#08D9D6',
+      fontStyle: 'bold',
+      stroke: '#08D9D6',
+      strokeThickness: 1
     });
     title.setOrigin(0.5);
+    this.instructionsContainer.add(title);
 
-    const text = this.add.text(0, -30, 
-      '🎯 遊戲目標\n' +
-      '與 NPC 互動，學習識別和防範詐騙\n\n' +
-      '🕹️ 操作說明\n' +
-      '• 方向鍵 或 WASD - 移動角色\n' +
-      '• E 鍵 - 與 NPC 互動\n' +
-      '• H 鍵 - 顯示/隱藏說明\n' +
-      '• 1/2/3 - 切換角色（受害者/騙徒/專家）\n' +
-      '• 右上角按鈕 - 返回主頁\n\n' +
-      '💡 提示：靠近 NPC 會顯示互動提示',
-      {
-        fontSize: '14px',
-        color: '#E0E0E0',
-        align: 'center',
-        lineSpacing: 8
-      }
-    );
-    text.setOrigin(0.5);
-    
-    const closeBtn = this.add.text(0, 170, '關閉 (H)', {
+    // Subtitle
+    const subtitle = this.add.text(0, -175, '香港反詐騙 AI 模擬對話系統', {
+      fontFamily: 'Rajdhani, sans-serif',
       fontSize: '18px',
-      color: '#ffffff',
-      backgroundColor: '#6C5CE7',
-      padding: { x: 20, y: 10 }
+      color: '#FFD93D',
+      letterSpacing: 2
     });
-    closeBtn.setOrigin(0.5);
-    
-    // Make button interactive
-    closeBtn.setInteractive({ useHandCursor: true });
-    
-    // Immediate visual feedback on hover
-    closeBtn.on('pointerover', () => {
-      closeBtn.setScale(1.1);
-      closeBtn.setStyle({ backgroundColor: '#7C6CF7' });
-    });
-    
-    closeBtn.on('pointerout', () => {
-      closeBtn.setScale(1);
-      closeBtn.setStyle({ backgroundColor: '#6C5CE7' });
-    });
-    
-    // Instant close on click
-    closeBtn.on('pointerdown', () => {
-      closeBtn.setScale(0.95);
-      closeBtn.setStyle({ backgroundColor: '#5C4CD7' });
-      
-      // Destroy instructions
-      if (this.instructionsContainer) {
-        this.instructionsContainer.destroy();
-        this.instructionsContainer = null;
+    subtitle.setOrigin(0.5);
+    this.instructionsContainer.add(subtitle);
+
+    // Content sections with modern styling
+    const sections = [
+      {
+        icon: '🎯',
+        title: '遊戲目標',
+        content: '與 NPC 互動，學習識別和防範各種詐騙手法'
+      },
+      {
+        icon: '🕹️',
+        title: '操作說明',
+        content: '方向鍵 或 WASD - 移動角色\nE 鍵 - 與 NPC 互動\nH 鍵 - 顯示/隱藏說明\n1/2/3 - 切換角色（受害者/騙徒/專家）'
+      },
+      {
+        icon: '💡',
+        title: '遊戲提示',
+        content: '靠近 NPC 會顯示互動提示\n不同角色有不同的對話選項\n完成對話可獲得訓練數據'
       }
+    ];
+
+    let yOffset = -110;
+    sections.forEach((section, index) => {
+      // Section container with better visibility
+      const sectionBg = this.add.rectangle(0, yOffset, 620, 110, 0x1a2332, 0.9);
+      sectionBg.setStrokeStyle(2, 0x08D9D6, 0.6);
+      
+      // Icon
+      const icon = this.add.text(-280, yOffset, section.icon, {
+        fontSize: '32px'
+      });
+      icon.setOrigin(0.5);
+      
+      // Title
+      const sectionTitle = this.add.text(-240, yOffset - 30, section.title, {
+        fontFamily: 'Rajdhani, sans-serif',
+        fontSize: '20px',
+        color: '#FFD93D',
+        fontStyle: 'bold'
+      });
+      sectionTitle.setOrigin(0, 0.5);
+      
+      // Content
+      const content = this.add.text(-240, yOffset + 10, section.content, {
+        fontFamily: 'Noto Sans TC, sans-serif',
+        fontSize: '13px',
+        color: '#FFFFFF',
+        lineSpacing: 6,
+        wordWrap: { width: 500 }
+      });
+      content.setOrigin(0, 0.5);
+      
+      this.instructionsContainer!.add([sectionBg, icon, sectionTitle, content]);
+      
+      yOffset += 130;
+    });
+    
+    // Close button with modern design
+    const closeBg = this.add.rectangle(0, 220, 200, 50, 0xFF2E63, 0.9);
+    closeBg.setOrigin(0.5, 0.5);
+    closeBg.setStrokeStyle(2, 0xFF6B9D, 0.8);
+    
+    const closeText = this.add.text(0, 220, '開始遊戲 (H)', {
+      fontFamily: 'Rajdhani, sans-serif',
+      fontSize: '20px',
+      color: '#FFFFFF',
+      fontStyle: 'bold'
+    });
+    closeText.setOrigin(0.5, 0.5);
+    
+    // Make button interactive with proper hit area
+    closeBg.setInteractive({ 
+      useHandCursor: true,
+      hitArea: new Phaser.Geom.Rectangle(80, 360, 200, 50),
+      hitAreaCallback: Phaser.Geom.Rectangle.Contains
+    });
+    
+    // Hover effect
+    closeBg.on('pointerover', () => {
+      this.tweens.add({
+        targets: [closeBg, closeText],
+        scale: 1.08,
+        duration: 200,
+        ease: 'Back.easeOut'
+      });
+      closeBg.setFillStyle(0xFF2E63, 1);
+      closeBg.setStrokeStyle(3, 0xFF6B9D, 1);
+    });
+    
+    // Hover out effect
+    closeBg.on('pointerout', () => {
+      this.tweens.add({
+        targets: [closeBg, closeText],
+        scale: 1,
+        duration: 200
+      });
+      closeBg.setFillStyle(0xFF2E63, 0.9);
+      closeBg.setStrokeStyle(2, 0xFF6B9D, 0.8);
+    });
+    
+    // Click effect
+    closeBg.on('pointerdown', () => {
+      this.tweens.add({
+        targets: [closeBg, closeText],
+        scale: 0.95,
+        duration: 100,
+        yoyo: true,
+        onComplete: () => {
+          // Fade out animation
+          this.tweens.add({
+            targets: this.instructionsContainer,
+            alpha: 0,
+            scale: 0.95,
+            duration: 300,
+            onComplete: () => {
+              if (this.instructionsContainer) {
+                this.instructionsContainer.destroy();
+                this.instructionsContainer = null;
+              }
+            }
+          });
+        }
+      });
     });
 
-    this.instructionsContainer.add([bg, title, text, closeBtn]);
+    // Add button last (on top)
+    this.instructionsContainer.add([closeBg, closeText]);
+
+    // Entrance animation
+    this.instructionsContainer.setAlpha(0);
+    this.instructionsContainer.setScale(0.9);
+    this.tweens.add({
+      targets: this.instructionsContainer,
+      alpha: 1,
+      scale: 1,
+      duration: 400,
+      ease: 'Back.easeOut'
+    });
   }
 
   private showMessage(message: string): void {
     const width = this.cameras.main.width;
     
-    const messageBox = this.add.container(width / 2, 100);
+    const messageBox = this.add.container(width / 2, 120);
     messageBox.setScrollFactor(0);
     messageBox.setDepth(150);
 
-    const bg = this.add.rectangle(0, 0, 300, 50, 0xFF6B6B, 0.9);
-    const text = this.add.text(0, 0, message, {
-      fontSize: '14px',
-      color: '#ffffff'
+    // Modern message design
+    const bg = this.add.rectangle(0, 0, 350, 60, 0x16213E, 0.95);
+    bg.setStrokeStyle(2, 0xFF2E63, 0.8);
+    
+    const icon = this.add.text(-150, 0, '⚠️', {
+      fontSize: '24px'
     });
-    text.setOrigin(0.5);
+    icon.setOrigin(0.5);
+    
+    const text = this.add.text(-120, 0, message, {
+      fontFamily: 'Noto Sans TC, sans-serif',
+      fontSize: '16px',
+      color: '#FFFFFF'
+    });
+    text.setOrigin(0, 0.5);
 
-    messageBox.add([bg, text]);
+    messageBox.add([bg, icon, text]);
+
+    // Entrance animation
+    messageBox.setAlpha(0);
+    messageBox.setY(100);
+    this.tweens.add({
+      targets: messageBox,
+      alpha: 1,
+      y: 120,
+      duration: 300,
+      ease: 'Back.easeOut'
+    });
 
     // Fade out and destroy
     this.tweens.add({
       targets: messageBox,
       alpha: 0,
-      duration: 2000,
-      delay: 1000,
+      y: 100,
+      duration: 300,
+      delay: 2000,
+      ease: 'Back.easeIn',
       onComplete: () => messageBox.destroy()
     });
   }

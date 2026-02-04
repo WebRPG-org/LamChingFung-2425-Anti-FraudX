@@ -1,10 +1,13 @@
 import Phaser from 'phaser';
 import { Role } from '../systems/RoleManager';
+import { ScamType } from '../types/ScamTypes';
+import { BackendClient } from '../services/BackendClient';
+import { TrustSystem } from '../systems/TrustSystem';
 
 interface BattleSceneData {
-  npcType: string;
-  npcName: string;
-  playerRole: Role;
+  scamType: string;           // 騙案類型 ID
+  scamTypeInfo: ScamType;     // 完整騙案類型資訊
+  playerRole: Role;           // 玩家角色
 }
 
 export class BattleScene extends Phaser.Scene {
@@ -12,135 +15,625 @@ export class BattleScene extends Phaser.Scene {
   private messages: Array<{ speaker: string; text: string; color: string }> = [];
   private messageContainer!: Phaser.GameObjects.Container;
   private inputField!: HTMLInputElement;
+  private inputContainer!: Phaser.GameObjects.Container;
+  
+  // Backend 整合
+  private backendClient!: BackendClient;
+  private trustSystem!: TrustSystem;
+  private isWaitingForAI: boolean = false;
+  private roundCount: number = 0;
+  
+  // 信任度 UI
+  private trustMeters!: Phaser.GameObjects.Container;
+  private scammerTrustBar!: Phaser.GameObjects.Rectangle;
+  private expertTrustBar!: Phaser.GameObjects.Rectangle;
+  private alertnessBar!: Phaser.GameObjects.Rectangle;
+  private scammerTrustText!: Phaser.GameObjects.Text;
+  private expertTrustText!: Phaser.GameObjects.Text;
+  private alertnessText!: Phaser.GameObjects.Text;
+  
+  // 滾動條相關
+  private scrollBar!: Phaser.GameObjects.Rectangle;
+  private scrollThumb!: Phaser.GameObjects.Rectangle;
+  private messageAreaHeight!: number;
+  private scrollOffset: number = 0;
+  private maxScrollOffset: number = 0;
+  private isDraggingScroll: boolean = false;
+  private messageAreaMask!: Phaser.GameObjects.Graphics;
 
   constructor() {
     super({ key: 'BattleScene' });
   }
 
-  init(data: BattleSceneData): void {
+  async init(data: BattleSceneData): Promise<void> {
     this.data = data;
     this.messages = [];
+    this.roundCount = 0;
+    this.isWaitingForAI = false;
+    this.scrollOffset = 0;
+    this.maxScrollOffset = 0;
+    this.isDraggingScroll = false;
+    
+    // 初始化 Backend 客戶端
+    this.backendClient = new BackendClient();
+    this.trustSystem = new TrustSystem();
+    
+    console.log('[BattleScene] 初始化對話場景:', this.data.scamTypeInfo.nameZh);
   }
 
-  create(): void {
+  async create(): Promise<void> {
     const width = this.cameras.main.width;
     const height = this.cameras.main.height;
 
-    // Background
-    this.add.rectangle(0, 0, width, height, 0x1A1F2E).setOrigin(0, 0);
+    // Modern gradient background
+    this.createModernBackground();
 
-    // Header
-    this.createHeader();
+    // Header with glass morphism
+    this.createModernHeader();
 
-    // Message area
-    this.createMessageArea();
+    // 創建信任度計量表
+    this.createTrustMeters();
 
-    // Input area
-    this.createInputArea();
+    // Message area with modern design
+    this.createModernMessageArea();
 
-    // Initial message
-    this.addSystemMessage(`對話開始：${this.data.npcName}`);
-    this.addSystemMessage(`你的角色：${this.data.playerRole.nameZh}`);
-    this.addSystemMessage('輸入訊息開始對話...');
+    // Input area with modern styling
+    this.createModernInputArea();
+
+    // 初始化 Backend 會話
+    await this.initializeBackendSession();
+
+    // Initial messages with animation
+    this.addSystemMessage(`🎯 遭遇：${this.data.scamTypeInfo.nameZh}`);
+    this.addSystemMessage(`📋 描述：${this.data.scamTypeInfo.description}`);
+    this.addSystemMessage(`⚠️ 危險等級：${'⭐'.repeat(this.data.scamTypeInfo.dangerLevel)}`);
+    this.addSystemMessage(`👤 你的角色：${this.data.playerRole.nameZh}`);
+    
+    // 騙徒開場白
+    await this.scammerOpeningMessage();
   }
 
-  private createHeader(): void {
+  /**
+   * 初始化 Backend 會話（三方對話模式）
+   */
+  private async initializeBackendSession(): Promise<void> {
+    try {
+      this.addSystemMessage('🔄 正在連接 AI 系統...');
+      
+      // 檢查連接
+      const isConnected = await this.backendClient.checkConnection();
+      if (!isConnected) {
+        this.addSystemMessage('⚠️ 無法連接到 AI 系統，將使用模擬模式');
+        return;
+      }
+      
+      // 開始三方對話會話
+      const result = await this.backendClient.startThreeWaySession({
+        scamType: this.data.scamType,
+        playerRole: 'victim',  // 玩家扮演受害者
+        victimPersona: 'average'
+      });
+      
+      this.addSystemMessage('✅ AI 系統已就緒');
+      console.log('[BattleScene] 三方對話會話已初始化');
+      
+      // 返回開場白，讓調用者處理
+      return result.openingMessage;
+    } catch (error) {
+      console.error('[BattleScene] 初始化 Backend 失敗:', error);
+      this.addSystemMessage('❌ AI 系統初始化失敗，將使用模擬模式');
+      return undefined;
+    }
+  }
+
+  /**
+   * 騙徒開場白
+   */
+  private async scammerOpeningMessage(): Promise<void> {
+    try {
+      this.addSystemMessage('💬 騙徒開始對話...');
+      
+      // 從初始化會話中獲取開場白
+      const openingMessage = await this.initializeBackendSession();
+      
+      if (openingMessage) {
+        this.addMessage('🎭 騙徒', openingMessage, '#FF2E63');
+      } else {
+        // 回退到默認開場白
+        this.addMessage('🎭 騙徒', '你好，我有一個很好的機會想跟你分享...', '#FF2E63');
+      }
+    } catch (error) {
+      console.error('[BattleScene] 騙徒開場白失敗:', error);
+      this.addMessage('🎭 騙徒', '你好，我有一個很好的機會想跟你分享...', '#FF2E63');
+    }
+  }
+
+  private createModernBackground(): void {
+    const width = this.cameras.main.width;
+    const height = this.cameras.main.height;
+
+    // Base gradient
+    const bg = this.add.rectangle(0, 0, width, height, 0x0A0E27).setOrigin(0, 0);
+
+    // Animated gradient overlay
+    const graphics = this.add.graphics();
+    graphics.fillGradientStyle(0xFF2E63, 0xFF2E63, 0x08D9D6, 0x08D9D6, 0.03, 0.03, 0.08, 0.08);
+    graphics.fillRect(0, 0, width, height);
+
+    // Decorative circles
+    const circle1 = this.add.circle(width * 0.15, height * 0.2, 150, 0xFF2E63, 0.08);
+    const circle2 = this.add.circle(width * 0.85, height * 0.8, 200, 0x08D9D6, 0.08);
+
+    this.tweens.add({
+      targets: [circle1, circle2],
+      scale: { from: 1, to: 1.2 },
+      alpha: { from: 0.08, to: 0.04 },
+      duration: 4000,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut'
+    });
+  }
+
+  private createModernHeader(): void {
     const width = this.cameras.main.width;
 
     const header = this.add.container(0, 0);
     
-    const bg = this.add.rectangle(0, 0, width, 80, 0x2D3748).setOrigin(0, 0);
+    // Glass background
+    const bg = this.add.rectangle(0, 0, width, 90, 0x16213E, 0.9).setOrigin(0, 0);
+    bg.setStrokeStyle(2, 0x08D9D6, 0.3);
     
-    const backButton = this.add.text(20, 25, '← 返回', {
-      fontSize: '18px',
-      color: '#ffffff',
-      backgroundColor: '#6C5CE7',
-      padding: { x: 15, y: 8 }
-    });
-    backButton.setInteractive({ useHandCursor: true });
-    backButton.on('pointerdown', () => this.returnToWorld());
-    backButton.on('pointerover', () => backButton.setScale(1.05));
-    backButton.on('pointerout', () => backButton.setScale(1));
-
-    const title = this.add.text(width / 2, 40, `對話：${this.data.npcName}`, {
-      fontSize: '24px',
-      color: '#ffffff',
+    // Back button with modern design - FIXED: Use centered origin
+    const backButton = this.add.container(90, 45);
+    const backBg = this.add.rectangle(0, 0, 140, 50, 0xFF2E63, 0.9);
+    backBg.setOrigin(0.5);
+    backBg.setStrokeStyle(2, 0xFF6B9D, 0.8);
+    const backText = this.add.text(0, 0, '← 返回', {
+      fontFamily: 'Rajdhani, sans-serif',
+      fontSize: '20px',
+      color: '#FFFFFF',
       fontStyle: 'bold'
+    });
+    backText.setOrigin(0.5);
+    backButton.add([backBg, backText]);
+    
+    // FIXED: Make backBg interactive (simpler and more reliable)
+    backBg.setInteractive({ useHandCursor: true });
+    
+    backBg.on('pointerdown', () => this.returnToWorld());
+    backBg.on('pointerover', () => {
+      this.tweens.add({
+        targets: backButton,
+        scale: 1.05,
+        duration: 200,
+        ease: 'Back.easeOut'
+      });
+      backBg.setFillStyle(0xFF2E63, 1);
+    });
+    backBg.on('pointerout', () => {
+      this.tweens.add({
+        targets: backButton,
+        scale: 1,
+        duration: 200
+      });
+      backBg.setFillStyle(0xFF2E63, 0.9);
+    });
+
+    // Title with glow - 顯示騙案類型而非人名
+    const title = this.add.text(width / 2, 45, `${this.data.scamTypeInfo.icon} ${this.data.scamTypeInfo.nameZh}`, {
+      fontFamily: 'Orbitron, sans-serif',
+      fontSize: '28px',
+      color: '#08D9D6',
+      fontStyle: 'bold',
+      stroke: '#08D9D6',
+      strokeThickness: 1
     });
     title.setOrigin(0.5);
 
-    const roleText = this.add.text(width - 20, 40, 
+    // Role badge - FIXED: Adjusted position to stay in bounds
+    const roleBadge = this.add.container(width - 110, 45);
+    const roleBg = this.add.rectangle(0, 0, 180, 50, 0x16213E, 0.8);
+    roleBg.setOrigin(1, 0.5);
+    roleBg.setStrokeStyle(2, this.data.playerRole.colorHex, 0.8);
+    
+    const roleText = this.add.text(-15, 0, 
       `${this.data.playerRole.icon} ${this.data.playerRole.nameZh}`, {
-      fontSize: '16px',
+      fontFamily: 'Noto Sans TC, sans-serif',
+      fontSize: '18px',
       color: this.data.playerRole.color,
-      backgroundColor: '#000000',
-      padding: { x: 10, y: 5 }
+      fontStyle: 'bold'
     });
     roleText.setOrigin(1, 0.5);
+    
+    roleBadge.add([roleBg, roleText]);
 
-    header.add([bg, backButton, title, roleText]);
+    header.add([bg, backButton, title, roleBadge]);
+
+    // Entrance animation
+    header.setAlpha(0);
+    header.setY(-20);
+    this.tweens.add({
+      targets: header,
+      alpha: 1,
+      y: 0,
+      duration: 500,
+      ease: 'Back.easeOut'
+    });
   }
 
-  private createMessageArea(): void {
+  /**
+   * 創建信任度計量表
+   */
+  private createTrustMeters(): void {
+    const width = this.cameras.main.width;
+    
+    this.trustMeters = this.add.container(width - 280, 110);
+    this.trustMeters.setDepth(50);
+
+    // 背景面板
+    const panelBg = this.add.rectangle(0, 0, 260, 200, 0x16213E, 0.9);
+    panelBg.setOrigin(0, 0);
+    panelBg.setStrokeStyle(2, 0x08D9D6, 0.5);
+    this.trustMeters.add(panelBg);
+
+    // 標題
+    const title = this.add.text(130, 15, '📊 信任度分析', {
+      fontFamily: 'Noto Sans TC, sans-serif',
+      fontSize: '16px',
+      color: '#08D9D6',
+      fontStyle: 'bold'
+    });
+    title.setOrigin(0.5, 0);
+    this.trustMeters.add(title);
+
+    // 騙徒信任度
+    this.createTrustBar(20, 50, '🎭 騙徒', '#FF2E63', 'scammer');
+    
+    // 專家信任度
+    this.createTrustBar(20, 100, '🛡️ 專家', '#08D9D6', 'expert');
+    
+    // 警覺性
+    this.createTrustBar(20, 150, '⚠️ 警覺', '#FFD700', 'alertness');
+
+    // 入場動畫
+    this.trustMeters.setAlpha(0);
+    this.trustMeters.setX(width - 260);
+    this.tweens.add({
+      targets: this.trustMeters,
+      alpha: 1,
+      x: width - 280,
+      duration: 500,
+      delay: 200,
+      ease: 'Back.easeOut'
+    });
+  }
+
+  /**
+   * 創建單個信任度條
+   */
+  private createTrustBar(x: number, y: number, label: string, color: string, type: 'scammer' | 'expert' | 'alertness'): void {
+    // 標籤
+    const labelText = this.add.text(x, y, label, {
+      fontFamily: 'Noto Sans TC, sans-serif',
+      fontSize: '14px',
+      color: '#FFFFFF'
+    });
+    this.trustMeters.add(labelText);
+
+    // 背景條
+    const bgBar = this.add.rectangle(x + 70, y + 7, 150, 16, 0x333333);
+    bgBar.setOrigin(0, 0.5);
+    this.trustMeters.add(bgBar);
+
+    // 進度條
+    const colorHex = parseInt(color.replace('#', '0x'));
+    const bar = this.add.rectangle(x + 70, y + 7, 0, 16, colorHex);
+    bar.setOrigin(0, 0.5);
+    this.trustMeters.add(bar);
+
+    // 數值文字
+    const valueText = this.add.text(x + 230, y + 7, '50%', {
+      fontFamily: 'Rajdhani, sans-serif',
+      fontSize: '14px',
+      color: '#FFFFFF',
+      fontStyle: 'bold'
+    });
+    valueText.setOrigin(1, 0.5);
+    this.trustMeters.add(valueText);
+
+    // 保存引用
+    if (type === 'scammer') {
+      this.scammerTrustBar = bar;
+      this.scammerTrustText = valueText;
+    } else if (type === 'expert') {
+      this.expertTrustBar = bar;
+      this.expertTrustText = valueText;
+    } else if (type === 'alertness') {
+      this.alertnessBar = bar;
+      this.alertnessText = valueText;
+    }
+  }
+
+  /**
+   * 更新信任度計量表
+   */
+  private updateTrustMeters(): void {
+    const trustData = this.trustSystem.getAllTrustData();
+
+    // 更新騙徒信任度
+    this.tweens.add({
+      targets: this.scammerTrustBar,
+      width: (trustData.trustInScammer / 100) * 150,
+      duration: 500,
+      ease: 'Power2'
+    });
+    this.scammerTrustText.setText(`${Math.round(trustData.trustInScammer)}%`);
+
+    // 更新專家信任度
+    this.tweens.add({
+      targets: this.expertTrustBar,
+      width: (trustData.trustInExpert / 100) * 150,
+      duration: 500,
+      ease: 'Power2'
+    });
+    this.expertTrustText.setText(`${Math.round(trustData.trustInExpert)}%`);
+
+    // 更新警覺性
+    this.tweens.add({
+      targets: this.alertnessBar,
+      width: (trustData.alertness / 100) * 150,
+      duration: 500,
+      ease: 'Power2'
+    });
+    this.alertnessText.setText(`${Math.round(trustData.alertness)}%`);
+
+    // 顯示風險等級
+    const riskLevel = this.trustSystem.getRiskLevel();
+    console.log(`[BattleScene] 風險等級: ${riskLevel}`, trustData);
+  }
+
+  private createModernMessageArea(): void {
     const width = this.cameras.main.width;
     const height = this.cameras.main.height;
 
-    // Message container background
+    // 計算消息區域尺寸
+    const messageAreaX = 40;
+    const messageAreaY = 110;
+    const messageAreaWidth = width - 380; // 留出右側信任度面板的空間 (280寬度 + 60邊距 + 40左邊距)
+    this.messageAreaHeight = height - 280;
+
+    // Message container background with glass effect
     const messageBg = this.add.rectangle(
-      width / 2, 
-      height / 2 - 20, 
-      width - 40, 
-      height - 240, 
-      0x2D3748
+      messageAreaX + messageAreaWidth / 2, 
+      messageAreaY + this.messageAreaHeight / 2, 
+      messageAreaWidth, 
+      this.messageAreaHeight, 
+      0x16213E,
+      0.5
     );
+    messageBg.setStrokeStyle(2, 0x08D9D6, 0.3);
+
+    // 創建遮罩以裁剪消息區域
+    this.messageAreaMask = this.make.graphics({});
+    this.messageAreaMask.fillStyle(0xffffff);
+    this.messageAreaMask.fillRect(messageAreaX, messageAreaY, messageAreaWidth - 30, this.messageAreaHeight);
 
     // Scrollable message container
-    this.messageContainer = this.add.container(20, 100);
+    this.messageContainer = this.add.container(messageAreaX, messageAreaY);
+    this.messageContainer.setMask(this.messageAreaMask.createGeometryMask());
+
+    // 創建滾動條
+    this.createScrollBar(messageAreaX + messageAreaWidth - 20, messageAreaY);
+
+    // 添加滾輪事件
+    this.input.on('wheel', (pointer: Phaser.Input.Pointer, gameObjects: any[], deltaX: number, deltaY: number) => {
+      this.handleScroll(deltaY);
+    });
   }
 
-  private createInputArea(): void {
+  /**
+   * 創建滾動條
+   */
+  private createScrollBar(x: number, y: number): void {
+    // 滾動條背景
+    this.scrollBar = this.add.rectangle(x, y, 12, this.messageAreaHeight, 0x16213E, 0.6);
+    this.scrollBar.setOrigin(0, 0);
+    this.scrollBar.setStrokeStyle(1, 0x08D9D6, 0.3);
+    this.scrollBar.setDepth(100);
+
+    // 滾動條滑塊
+    this.scrollThumb = this.add.rectangle(x + 1, y + 1, 10, 50, 0x08D9D6, 0.8);
+    this.scrollThumb.setOrigin(0, 0);
+    this.scrollThumb.setDepth(101);
+    this.scrollThumb.setInteractive({ useHandCursor: true, draggable: true });
+
+    // 滑塊拖動事件
+    this.scrollThumb.on('drag', (pointer: Phaser.Input.Pointer, dragX: number, dragY: number) => {
+      this.isDraggingScroll = true;
+      const minY = y + 1;
+      const maxY = y + this.messageAreaHeight - this.scrollThumb.height - 1;
+      const newY = Phaser.Math.Clamp(dragY, minY, maxY);
+      
+      this.scrollThumb.y = newY;
+      
+      // 根據滑塊位置更新滾動偏移
+      const scrollRatio = (newY - minY) / (maxY - minY);
+      this.scrollOffset = scrollRatio * this.maxScrollOffset;
+      this.updateMessagePositions();
+    });
+
+    this.scrollThumb.on('dragend', () => {
+      this.isDraggingScroll = false;
+    });
+
+    // 滑塊懸停效果
+    this.scrollThumb.on('pointerover', () => {
+      this.scrollThumb.setFillStyle(0x08D9D6, 1);
+    });
+
+    this.scrollThumb.on('pointerout', () => {
+      this.scrollThumb.setFillStyle(0x08D9D6, 0.8);
+    });
+
+    // 點擊滾動條背景跳轉
+    this.scrollBar.setInteractive();
+    this.scrollBar.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      const localY = pointer.y - y;
+      const scrollRatio = localY / this.messageAreaHeight;
+      this.scrollOffset = Phaser.Math.Clamp(scrollRatio * this.maxScrollOffset, 0, this.maxScrollOffset);
+      this.updateScrollThumb();
+      this.updateMessagePositions();
+    });
+  }
+
+  /**
+   * 處理滾輪滾動
+   */
+  private handleScroll(deltaY: number): void {
+    const scrollSpeed = 30;
+    this.scrollOffset += deltaY * scrollSpeed / 100;
+    this.scrollOffset = Phaser.Math.Clamp(this.scrollOffset, 0, this.maxScrollOffset);
+    
+    this.updateScrollThumb();
+    this.updateMessagePositions();
+  }
+
+  /**
+   * 更新滾動條滑塊位置
+   */
+  private updateScrollThumb(): void {
+    if (this.isDraggingScroll || this.maxScrollOffset === 0) return;
+
+    const scrollBarY = this.scrollBar.y;
+    const scrollRatio = this.scrollOffset / this.maxScrollOffset;
+    const maxThumbY = this.messageAreaHeight - this.scrollThumb.height - 2;
+    
+    this.scrollThumb.y = scrollBarY + 1 + scrollRatio * maxThumbY;
+  }
+
+  /**
+   * 更新消息位置（應用滾動偏移）
+   */
+  private updateMessagePositions(): void {
+    this.messageContainer.y = 110 - this.scrollOffset;
+  }
+
+  private createModernInputArea(): void {
     const width = this.cameras.main.width;
     const height = this.cameras.main.height;
 
+    this.inputContainer = this.add.container(0, height - 100);
+
+    // Glass background
     const inputBg = this.add.rectangle(
       width / 2,
-      height - 60,
-      width - 40,
-      80,
-      0x2D3748
+      50,
+      width - 60,
+      90,
+      0x16213E,
+      0.9
     );
+    inputBg.setStrokeStyle(2, 0xFF2E63, 0.5);
 
-    // Create HTML input field
+    this.inputContainer.add(inputBg);
+
+    // FIXED: Create input field with proper positioning that updates on resize
+    const inputFieldWidth = width - 220;
+    const inputFieldLeft = 50;
+
     this.inputField = document.createElement('input');
     this.inputField.type = 'text';
     this.inputField.placeholder = '輸入你的回應...';
-    this.inputField.style.position = 'absolute';
-    this.inputField.style.left = '40px';
-    this.inputField.style.bottom = '40px';
-    this.inputField.style.width = `${width - 180}px`;
-    this.inputField.style.height = '40px';
-    this.inputField.style.fontSize = '16px';
-    this.inputField.style.padding = '10px';
-    this.inputField.style.backgroundColor = '#1A1F2E';
-    this.inputField.style.color = '#ffffff';
-    this.inputField.style.border = '2px solid #6C5CE7';
-    this.inputField.style.borderRadius = '8px';
-    this.inputField.style.outline = 'none';
+    
+    // Function to update input position
+    const updateInputPosition = () => {
+      const canvas = this.game.canvas;
+      const rect = canvas.getBoundingClientRect();
+      const scale = this.cameras.main.zoom;
+      
+      // Calculate position relative to canvas
+      const canvasInputY = height - 100 + 50; // container Y + offset
+      const screenY = rect.top + (canvasInputY * rect.height / height);
+      
+      this.inputField.style.cssText = `
+        position: fixed;
+        left: ${rect.left + (inputFieldLeft * rect.width / width)}px;
+        top: ${screenY - 25}px;
+        width: ${inputFieldWidth * rect.width / width}px;
+        height: 50px;
+        font-family: 'Noto Sans TC', sans-serif;
+        font-size: 16px;
+        padding: 0 20px;
+        background: rgba(22, 33, 62, 0.8);
+        color: #FFFFFF;
+        border: 2px solid rgba(8, 217, 214, 0.5);
+        border-radius: 8px;
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        z-index: 1000;
+        box-sizing: border-box;
+      `;
+    };
+
+    updateInputPosition();
+
+    // Store the update function for cleanup
+    const resizeHandler = () => updateInputPosition();
+    window.addEventListener('resize', resizeHandler);
+    
+    // Store handler for cleanup
+    (this.inputField as any)._resizeHandler = resizeHandler;
+
+    // Focus effects
+    this.inputField.addEventListener('focus', () => {
+      this.inputField.style.borderColor = 'rgba(8, 217, 214, 1)';
+      this.inputField.style.boxShadow = '0 0 20px rgba(8, 217, 214, 0.3)';
+    });
+
+    this.inputField.addEventListener('blur', () => {
+      this.inputField.style.borderColor = 'rgba(8, 217, 214, 0.5)';
+      this.inputField.style.boxShadow = 'none';
+    });
 
     document.body.appendChild(this.inputField);
 
-    // Send button
-    const sendButton = this.add.text(width - 80, height - 60, '發送', {
-      fontSize: '16px',
-      color: '#ffffff',
-      backgroundColor: '#6C5CE7',
-      padding: { x: 20, y: 10 }
+    // Modern send button - FIXED: Use centered origin
+    const sendButton = this.add.container(width - 100, 50);
+    const sendBg = this.add.rectangle(0, 0, 100, 50, 0x08D9D6, 0.9);
+    sendBg.setOrigin(0.5);
+    sendBg.setStrokeStyle(2, 0x0BC9BF, 0.8);
+    const sendText = this.add.text(0, 0, '發送', {
+      fontFamily: 'Rajdhani, sans-serif',
+      fontSize: '20px',
+      color: '#0A0E27',
+      fontStyle: 'bold'
     });
-    sendButton.setOrigin(0.5);
-    sendButton.setInteractive({ useHandCursor: true });
-    sendButton.on('pointerdown', () => this.sendMessage());
-    sendButton.on('pointerover', () => sendButton.setScale(1.05));
-    sendButton.on('pointerout', () => sendButton.setScale(1));
+    sendText.setOrigin(0.5);
+    sendButton.add([sendBg, sendText]);
+
+    // FIXED: Make sendBg interactive (simpler and more reliable)
+    sendBg.setInteractive({ useHandCursor: true });
+    sendBg.on('pointerdown', () => this.sendMessage());
+    sendBg.on('pointerover', () => {
+      this.tweens.add({
+        targets: sendButton,
+        scale: 1.05,
+        duration: 200,
+        ease: 'Back.easeOut'
+      });
+      sendBg.setFillStyle(0x08D9D6, 1);
+    });
+    sendBg.on('pointerout', () => {
+      this.tweens.add({
+        targets: sendButton,
+        scale: 1,
+        duration: 200
+      });
+      sendBg.setFillStyle(0x08D9D6, 0.9);
+    });
+
+    this.inputContainer.add(sendButton);
 
     // Enter key to send
     this.inputField.addEventListener('keypress', (e) => {
@@ -150,24 +643,174 @@ export class BattleScene extends Phaser.Scene {
     });
 
     this.inputField.focus();
+
+    // Entrance animation
+    this.inputContainer.setAlpha(0);
+    this.inputContainer.setY(height - 80);
+    this.tweens.add({
+      targets: this.inputContainer,
+      alpha: 1,
+      y: height - 100,
+      duration: 500,
+      delay: 300,
+      ease: 'Back.easeOut'
+    });
   }
 
-  private sendMessage(): void {
+  private async sendMessage(): Promise<void> {
     const message = this.inputField.value.trim();
     
-    if (message) {
+    if (message && !this.isWaitingForAI) {
+      this.isWaitingForAI = true;
+      this.roundCount++;
+      
+      // 顯示玩家消息
       this.addMessage(
-        this.data.playerRole.nameZh,
+        `👤 ${this.data.playerRole.nameZh}`,
         message,
         this.data.playerRole.color
       );
       
       this.inputField.value = '';
+      this.inputField.disabled = true;
       
-      // Simulate AI response (placeholder)
-      this.time.delayedCall(1000, () => {
-        this.addAIResponse();
+      try {
+        // 使用三方對話 API - 一次獲取騙徒和專家的回應
+        this.addSystemMessage('🤖 AI 正在思考...');
+        
+        const response = await this.backendClient.sendThreeWayMessage(message);
+        
+        if (response.success && response.replies) {
+          // 按順序顯示回應
+          for (const reply of response.replies) {
+            // 短暫延遲，讓對話更自然
+            await this.delay(800);
+            
+            if (reply.speaker === 'scammer') {
+              this.addMessage('🎭 騙徒', reply.message, '#FF2E63');
+            } else if (reply.speaker === 'expert') {
+              this.addMessage('🛡️ 防詐專家', reply.message, '#08D9D6');
+            }
+          }
+          
+          // 更新信任度
+          if (response.trust_data) {
+            this.trustSystem.updateTrustDirect(
+              response.trust_data.trust_in_scammer,
+              response.trust_data.trust_in_expert,
+              response.trust_data.alertness
+            );
+            this.updateTrustMeters();
+          }
+        } else {
+          // 回退到舊的 API（向後兼容）
+          this.addSystemMessage('🎭 騙徒正在回應...');
+          const scammerResponse = await this.backendClient.sendMessage(message, 'scammer');
+          
+          if (scammerResponse.success) {
+            this.addMessage('🎭 騙徒', scammerResponse.reply, '#FF2E63');
+            
+            if (scammerResponse.trust_in_scammer !== undefined || scammerResponse.trust_in_expert !== undefined) {
+              this.trustSystem.updateTrust(scammerResponse);
+              this.updateTrustMeters();
+            }
+          }
+          
+          await this.delay(1000);
+          
+          this.addSystemMessage('🛡️ 防詐專家正在分析...');
+          const expertResponse = await this.backendClient.sendMessage(message, 'expert');
+          
+          if (expertResponse.success) {
+            this.addMessage('🛡️ 防詐專家', expertResponse.reply, '#08D9D6');
+            
+            if (expertResponse.trust_in_scammer !== undefined || expertResponse.trust_in_expert !== undefined) {
+              this.trustSystem.updateTrust(expertResponse);
+              this.updateTrustMeters();
+            }
+          }
+        }
+        
+        // 檢查遊戲結果
+        const outcome = this.trustSystem.checkOutcome();
+        if (outcome !== 'ongoing') {
+          await this.endBattle(outcome);
+          return;
+        }
+        
+        // 檢查回合數限制
+        if (this.roundCount >= 15) {
+          this.addSystemMessage('⏰ 對話已達到最大回合數');
+          await this.endBattle('ongoing');
+          return;
+        }
+        
+      } catch (error) {
+        console.error('[BattleScene] 發送消息失敗:', error);
+        this.addSystemMessage('❌ 發送失敗，請重試');
+      } finally {
+        this.isWaitingForAI = false;
+        this.inputField.disabled = false;
+        this.inputField.focus();
+      }
+    }
+  }
+
+  /**
+   * 延遲函數
+   */
+  private delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  /**
+   * 結束對話並顯示結果
+   */
+  private async endBattle(outcome: string): Promise<void> {
+    this.inputField.disabled = true;
+    
+    // 顯示結果消息
+    if (outcome === 'scammer_win') {
+      this.addSystemMessage('💀 你被騙了！騙徒成功獲取了你的信任。');
+    } else if (outcome === 'expert_win') {
+      this.addSystemMessage('✅ 成功識破騙局！你保護了自己。');
+    } else {
+      this.addSystemMessage('⏸️ 對話結束。讓我們看看分析結果...');
+    }
+    
+    await this.delay(2000);
+    
+    try {
+      // 獲取最終分析（優先使用三方對話 API）
+      this.addSystemMessage('📊 正在生成分析報告...');
+      
+      let analysis;
+      try {
+        // 嘗試使用三方對話分析 API
+        const threeWayAnalysis = await this.backendClient.getThreeWayAnalysis();
+        analysis = threeWayAnalysis.analysis;
+        outcome = threeWayAnalysis.outcome || outcome;
+      } catch (error) {
+        console.log('[BattleScene] 三方對話分析不可用，使用舊版 API');
+        // 回退到舊版 API
+        const oldAnalysis = await this.backendClient.getAnalysis();
+        analysis = oldAnalysis.analysis;
+      }
+      
+      // 跳轉到結果場景
+      this.scene.start('ResultScene', {
+        outcome: outcome,
+        analysis: analysis,
+        scamType: this.data.scamTypeInfo,
+        trustData: this.trustSystem.getAllTrustData(),
+        roundCount: this.roundCount
       });
+    } catch (error) {
+      console.error('[BattleScene] 獲取分析失敗:', error);
+      this.addSystemMessage('❌ 無法生成分析報告');
+      
+      await this.delay(2000);
+      this.returnToWorld();
     }
   }
 
@@ -177,65 +820,184 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private addSystemMessage(text: string): void {
-    this.addMessage('系統', text, '#FDCB6E');
-  }
-
-  private addAIResponse(): void {
-    // Placeholder AI responses
-    const responses = [
-      '我明白你的意思...',
-      '這聽起來很有趣',
-      '讓我想想...',
-      '你說得對',
-      '我需要更多資訊'
-    ];
-    
-    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-    this.addMessage(this.data.npcName, randomResponse, '#00B894');
+    this.addMessage('💡 系統', text, '#FFD93D');
   }
 
   private renderMessages(): void {
     this.messageContainer.removeAll(true);
 
     const startY = 0;
-    const messageSpacing = 80;
-    const maxMessages = 6;
+    let currentY = 0;  // 動態計算 Y 位置
     
-    // Show only last N messages
-    const visibleMessages = this.messages.slice(-maxMessages);
-
-    visibleMessages.forEach((msg, index) => {
-      const y = startY + index * messageSpacing;
-      
-      const speakerText = this.add.text(0, y, msg.speaker, {
+    // 顯示所有消息（不再限制數量）
+    const allMessages = this.messages;
+    
+    // 計算每個消息的實際高度
+    const messageHeights: number[] = [];
+    // 限制每行約50個中文字（14px字體，每個中文字約14px寬，50字 = 700px）
+    const maxWidth = Math.min(500, this.cameras.main.width - 430);
+    
+    allMessages.forEach((msg) => {
+      // 創建臨時文字對象來測量高度
+      const tempText = this.add.text(0, 0, msg.text, {
+        fontFamily: 'Noto Sans TC, sans-serif',
         fontSize: '14px',
+        color: '#FFFFFF',
+        wordWrap: { width: maxWidth },
+        lineSpacing: -2
+      });
+      
+      const textHeight = tempText.height;
+      tempText.destroy();
+      
+      // 消息高度 = 頂部間距(10) + 標題(18) + 間距(6) + 文字高度 + 底部間距(10)
+      const bubbleHeight = Math.max(60, 10 + 18 + 6 + textHeight + 10);
+      messageHeights.push(bubbleHeight);
+    });
+    
+    // 計算總內容高度
+    const totalContentHeight = messageHeights.reduce((sum, h) => sum + h + 6, 0);
+    this.maxScrollOffset = Math.max(0, totalContentHeight - this.messageAreaHeight + 50);
+    
+    // 更新滾動條滑塊大小
+    if (this.scrollThumb) {
+      const thumbHeight = Math.max(30, (this.messageAreaHeight / totalContentHeight) * this.messageAreaHeight);
+      this.scrollThumb.height = thumbHeight;
+      
+      // 如果內容不需要滾動，隱藏滾動條
+      if (this.maxScrollOffset <= 0) {
+        this.scrollBar.setAlpha(0);
+        this.scrollThumb.setAlpha(0);
+        this.scrollOffset = 0;
+      } else {
+        this.scrollBar.setAlpha(0.6);
+        this.scrollThumb.setAlpha(0.8);
+      }
+    }
+
+    allMessages.forEach((msg, index) => {
+      const y = currentY;
+      const bubbleHeight = messageHeights[index];
+      const isPlayer = msg.speaker.includes(this.data.playerRole.nameZh);
+      const isSystem = msg.speaker.includes('系統');
+      
+      // Message bubble container
+      const messageBubble = this.add.container(0, y);
+      
+      // 根據角色選擇背景顏色
+      let bgColor = 0x16213E;
+      let bgAlpha = 0.6;
+      
+      if (isPlayer) {
+        bgColor = 0x08D9D6;
+        bgAlpha = 0.15;
+      } else if (isSystem) {
+        bgColor = 0x2A2F4F;
+        bgAlpha = 0.5;
+      }
+      
+      // Bubble background - 使用動態高度，確保不會被右側面板遮擋
+      const bubbleBg = this.add.rectangle(
+        0, 0, 
+        this.cameras.main.width - 400, // 增加右側邊距
+        bubbleHeight, 
+        bgColor, 
+        bgAlpha
+      );
+      bubbleBg.setOrigin(0, 0);
+      bubbleBg.setStrokeStyle(2, parseInt(msg.color.replace('#', '0x')), 0.5);
+      
+      // Speaker name
+      const speakerText = this.add.text(12, 10, msg.speaker, {
+        fontFamily: 'Rajdhani, sans-serif',
+        fontSize: '15px',
         color: msg.color,
         fontStyle: 'bold'
       });
 
-      const messageText = this.add.text(0, y + 20, msg.text, {
-        fontSize: '16px',
-        color: '#ffffff',
-        wordWrap: { width: this.cameras.main.width - 80 }
+      // Message text - 縮小字體和行距
+      const messageText = this.add.text(12, 32, msg.text, {
+        fontFamily: 'Noto Sans TC, sans-serif',
+        fontSize: '14px',
+        color: '#FFFFFF',
+        wordWrap: { width: maxWidth },
+        lineSpacing: -2  // 負值行距讓文字更緊湊
       });
 
-      this.messageContainer.add([speakerText, messageText]);
+      messageBubble.add([bubbleBg, speakerText, messageText]);
+      this.messageContainer.add(messageBubble);
+
+      // Entrance animation (only for new messages)
+      if (index === allMessages.length - 1) {
+        messageBubble.setAlpha(0);
+        messageBubble.setX(-20);
+        this.tweens.add({
+          targets: messageBubble,
+          alpha: 1,
+          x: 0,
+          duration: 300,
+          ease: 'Back.easeOut'
+        });
+        
+        // 自動滾動到底部（顯示最新消息）
+        this.time.delayedCall(100, () => {
+          this.scrollOffset = this.maxScrollOffset;
+          this.updateScrollThumb();
+          this.updateMessagePositions();
+        });
+      }
+      
+      // 更新下一個消息的 Y 位置
+      currentY += bubbleHeight + 6;  // 6px 間距，更緊湊
     });
   }
 
-  private returnToWorld(): void {
+  private async returnToWorld(): Promise<void> {
+    // 結束 Backend 會話
+    try {
+      await this.backendClient.endSession();
+    } catch (error) {
+      console.error('[BattleScene] 結束會話失敗:', error);
+    }
+    
     // Clean up HTML input
     if (this.inputField && this.inputField.parentNode) {
       this.inputField.parentNode.removeChild(this.inputField);
     }
     
-    this.scene.start('WorldMapScene');
+    // Fade transition
+    const overlay = this.add.rectangle(
+      this.cameras.main.width / 2,
+      this.cameras.main.height / 2,
+      this.cameras.main.width,
+      this.cameras.main.height,
+      0x0A0E27,
+      0
+    );
+    overlay.setDepth(200);
+    
+    this.tweens.add({
+      targets: overlay,
+      alpha: 1,
+      duration: 400,
+      onComplete: () => {
+        this.scene.start('WorldMapScene');
+      }
+    });
   }
 
   shutdown(): void {
-    // Clean up HTML input when scene shuts down
+    // Clean up resize handler
+    if (this.inputField && (this.inputField as any)._resizeHandler) {
+      window.removeEventListener('resize', (this.inputField as any)._resizeHandler);
+    }
+    
+    // Clean up input field
     if (this.inputField && this.inputField.parentNode) {
       this.inputField.parentNode.removeChild(this.inputField);
     }
+    
+    // Clean up scroll events
+    this.input.off('wheel');
   }
 }

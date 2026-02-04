@@ -3,61 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI 防詐騙訓練系統 - 互動式 2D RPG 遊戲平台">
+    <meta name="theme-color" content="#0A0E27">
     <title>AI 防詐騙訓練系統 - 2D RPG</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #0F1419 0%, #1A1F2E 100%);
-            overflow: hidden;
-        }
-        
-        #game-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100vw;
-            height: 100vh;
-        }
-        
-        #loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: white;
-            font-size: 24px;
-            z-index: 1000;
-        }
-        
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top: 4px solid #6C5CE7;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
+    
+    <!-- Google Fonts - 獨特字體組合 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="/src/styles/main.css">
 </head>
 <body>
+    <!-- Enhanced Loading Screen -->
     <div id="loading">
-        <div class="spinner"></div>
-        <p>載入中...</p>
+        <div class="loading-content">
+            <div class="loading-logo">
+                🛡️ 防詐騙 RPG
+            </div>
+            
+            <div class="spinner-container">
+                <div class="spinner"></div>
+                <div class="spinner-inner"></div>
+            </div>
+            
+            <div class="loading-text">
+                LOADING SYSTEM...
+            </div>
+            
+            <div class="loading-progress">
+                <div class="loading-progress-bar" id="progress-bar" style="width: 0%"></div>
+            </div>
+        </div>
     </div>
+    
+    <!-- Game Container -->
     <div id="game-container"></div>
+    
+    <!-- Loading Progress Script -->
+    <script>
+        // Simulate loading progress
+        let progress = 0;
+        const progressBar = document.getElementById('progress-bar');
+        const loadingDiv = document.getElementById('loading');
+        
+        const progressInterval = setInterval(() => {
+            progress += Math.random() * 15;
+            if (progress > 100) progress = 100;
+            
+            if (progressBar) {
+                progressBar.style.width = progress + '%';
+            }
+            
+            if (progress >= 100) {
+                clearInterval(progressInterval);
+            }
+        }, 200);
+        
+        // Enhanced fade out when game loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                if (loadingDiv) {
+                    loadingDiv.classList.add('fade-out');
+                    setTimeout(() => {
+                        loadingDiv.style.display = 'none';
+                    }, 500);
+                }
+            }, 1000);
+        });
+    </script>
+    
+    <!-- Main Game Script -->
     <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

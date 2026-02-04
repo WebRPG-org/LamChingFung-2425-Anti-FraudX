@@ -1,24 +1,47 @@
 import Phaser from 'phaser';
+import { ScamType, getScamTypeById } from '../types/ScamTypes';
 
-export type NPCType = 'elderly' | 'student' | 'average' | 'overconfident' | 'scammer' | 'expert';
-
+/**
+ * NPC 類別 - 代表不同的騙案類型
+ * 
+ * 重要：NPC 不再使用人名，而是代表具體的詐騙類型
+ * 例如：投資詐騙、釣魚短訊、愛情詐騙等
+ */
 export class NPC {
   public sprite: Phaser.Physics.Arcade.Sprite;
-  public type: NPCType;
-  public name: string;
+  public scamType: ScamType;  // 騙案類型資訊
+  public scamId: string;       // 騙案類型 ID
   private scene: Phaser.Scene;
   private interactionIndicator: Phaser.GameObjects.Container;
   private currentDirection: 'down' | 'left' | 'right' | 'up' = 'down';
   private wanderTimer: Phaser.Time.TimerEvent | null = null;
   private isWandering = false;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, type: NPCType) {
+  /**
+   * 創建 NPC
+   * @param scene Phaser 場景
+   * @param x X 座標
+   * @param y Y 座標
+   * @param scamId 騙案類型 ID（例如：'investment', 'phishing', 'romance'）
+   */
+  constructor(scene: Phaser.Scene, x: number, y: number, scamId: string) {
     this.scene = scene;
-    this.type = type;
-    this.name = this.getNameByType(type);
+    this.scamId = scamId;
     
-    // Create sprite based on type with professional RPG Maker MV asset
-    const spriteKey = `npc-${type}`;
+    // 獲取騙案類型資訊
+    const scamType = getScamTypeById(scamId);
+    if (!scamType) {
+      console.error(`[NPC] 未知的騙案類型: ${scamId}`);
+      // 使用預設類型
+      this.scamType = getScamTypeById('investment')!;
+      this.scamId = 'investment';
+    } else {
+      this.scamType = scamType;
+    }
+    
+    // Create sprite based on scam type
+    // 暫時使用舊的 sprite key，之後會替換為騙案類型專用的圖片
+    const spriteKey = this.getSpriteKeyForScamType(scamId);
     this.sprite = scene.physics.add.sprite(x, y, spriteKey);
     this.sprite.setImmovable(true);
     this.sprite.setDepth(5);
@@ -34,11 +57,14 @@ export class NPC {
     this.interactionIndicator = scene.add.container(x, y - 50);
     this.interactionIndicator.setDepth(20);
     
-    const bg = scene.add.rectangle(0, 0, 60, 20, 0x6C5CE7, 0.9);
+    // 使用騙案類型的顏色
+    const bgColor = parseInt(this.scamType.color.replace('#', '0x'));
+    const bg = scene.add.rectangle(0, 0, 100, 24, bgColor, 0.9);
     bg.setStrokeStyle(2, 0xffffff, 0.8);
     
-    const text = scene.add.text(0, 0, '💬 [E]', {
-      fontSize: '12px',
+    // 顯示騙案類型圖標和提示
+    const text = scene.add.text(0, 0, `${this.scamType.icon} [E]`, {
+      fontSize: '14px',
       color: '#ffffff',
       fontStyle: 'bold'
     });
@@ -61,16 +87,49 @@ export class NPC {
     this.startWandering();
   }
 
-  private getNameByType(type: NPCType): string {
-    const names: Record<NPCType, string> = {
-      'elderly': '陳婆婆',
-      'student': '王小明',
-      'average': '張文軒',
-      'overconfident': '李俊傑',
-      'scammer': '神秘人',
-      'expert': '黃警官'
+  /**
+   * 根據騙案類型獲取對應的 sprite key
+   * 暫時映射到現有的 sprite，之後會替換為專用圖片
+   */
+  private getSpriteKeyForScamType(scamId: string): string {
+    const spriteMapping: Record<string, string> = {
+      'investment': 'npc-overconfident',    // 西裝男（投資詐騙）
+      'phishing': 'npc-average',            // 一般人（釣魚短訊）
+      'romance': 'npc-student',             // 年輕人（愛情詐騙）
+      'impersonation': 'npc-expert',        // 制服人物（假冒官員）
+      'shopping': 'npc-student',            // 年輕人（購物詐騙）
+      'job': 'npc-average',                 // 一般人（求職詐騙）
+      'prize': 'npc-elderly',               // 長者（中獎詐騙）
+      'whatsapp': 'npc-average',            // 一般人（WhatsApp）
+      'banking': 'npc-expert',              // 制服人物（銀行詐騙）
+      'crypto': 'npc-overconfident',        // 西裝男（加密貨幣）
+      'rental': 'npc-average',              // 一般人（租屋詐騙）
+      'tech_support': 'npc-average',        // 一般人（技術支援）
+      'charity': 'npc-elderly'              // 長者（慈善詐騙）
     };
-    return names[type];
+    
+    return spriteMapping[scamId] || 'npc-average';
+  }
+
+  /**
+   * 獲取騙案類型的顯示名稱
+   */
+  public getDisplayName(): string {
+    return `${this.scamType.icon} ${this.scamType.nameZh}`;
+  }
+
+  /**
+   * 獲取騙案類型的簡短描述
+   */
+  public getDescription(): string {
+    return this.scamType.description;
+  }
+
+  /**
+   * 獲取危險等級
+   */
+  public getDangerLevel(): number {
+    return this.scamType.dangerLevel;
   }
 
   private startWandering(): void {
@@ -94,7 +153,7 @@ export class NPC {
     this.currentDirection = Phaser.Utils.Array.GetRandom(directions);
     
     // Play walk animation
-    const spriteKey = `npc-${this.type}`;
+    const spriteKey = this.getSpriteKeyForScamType(this.scamId);
     this.sprite.play(`${spriteKey}-walk-${this.currentDirection}`);
     
     // Move in that direction
@@ -155,7 +214,7 @@ export class NPC {
     }
     this.isWandering = false;
     this.scene.tweens.killTweensOf(this.sprite);
-    const spriteKey = `npc-${this.type}`;
+    const spriteKey = this.getSpriteKeyForScamType(this.scamId);
     this.sprite.play(`${spriteKey}-idle-${this.currentDirection}`);
   }
 
