@@ -138,12 +138,13 @@ class OllamaLlm(BaseLlm):
         except Exception:
             top_k = None
         try:
-            num_predict_env = os.getenv("OLLAMA_NUM_PREDICT")
+            # 🔥 優先檢查特定 Agent 的生成長度設置（例如騙徒專用）
+            num_predict_env = os.getenv("OLLAMA_NUM_PREDICT_SCAMMER") or os.getenv("OLLAMA_NUM_PREDICT")
             # 🔥 設置默認最大生成長度：2000 tokens (約 1500-2000 字)
             # 對於對話場景，這個長度足夠，避免生成過長響應
             num_predict = int(num_predict_env) if num_predict_env else 2000
         except Exception:
-            num_predict = 4000  # 默認值
+            num_predict = 2000  # 默認值
 
         options: dict = {
             "temperature": temperature,

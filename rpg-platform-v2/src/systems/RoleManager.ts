@@ -17,6 +17,7 @@ export class RoleManager {
   private currentRole: Role;
   private listeners: Set<(role: Role) => void> = new Set();
   
+  // 角色順序：1=受害人, 2=騙徒, 3=專家
   private roles: Map<RoleType, Role> = new Map([
     ['victim', {
       id: 'victim',

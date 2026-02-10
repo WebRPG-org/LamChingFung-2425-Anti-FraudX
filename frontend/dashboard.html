@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>評分系統監控儀表板</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151932;
+            --bg-card: #1a1f3a;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #7b2cbf;
+            --accent-success: #06ffa5;
+            --accent-warning: #ffb800;
+            --accent-danger: #ff006e;
+            --text-primary: #e8f1f5;
+            --text-secondary: #8892b0;
+            --border-color: #2d3561;
+            --shadow: 0 8px 32px rgba(0, 217, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #1a1f3a 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 背景動畫效果 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: backgroundMove 20s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes backgroundMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 頭部 */
+        .header {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header .subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(6, 255, 165, 0.1);
+            border: 1px solid var(--accent-success);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--accent-success);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-success);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* 統計卡片網格 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 48px rgba(0, 217, 255, 0.2);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-card .label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .stat-card .change {
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .change.positive { color: var(--accent-success); }
+        .change.negative { color: var(--accent-danger); }
+        .change.neutral { color: var(--text-secondary); }
+
+        /* 圖表容器 */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .chart-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            border: 1px dashed var(--border-color);
+        }
+
+        /* 最近評估表格 */
+        .recent-evaluations {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .recent-evaluations h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--bg-secondary);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.875rem;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: var(--bg-secondary);
+        }
+
+        .method-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .method-badge.rule {
+            background: rgba(0, 217, 255, 0.1);
+            color: var(--accent-primary);
+            border: 1px solid var(--accent-primary);
+        }
+
+        .method-badge.agent {
+            background: rgba(123, 44, 191, 0.1);
+            color: var(--accent-secondary);
+            border: 1px solid var(--accent-secondary);
+        }
+
+        .method-badge.hybrid {
+            background: rgba(6, 255, 165, 0.1);
+            color: var(--accent-success);
+            border: 1px solid var(--accent-success);
+        }
+
+        /* 控制按鈕 */
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 217, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card);
+            border-color: var(--accent-primary);
+        }
+
+        /* 載入動畫 */
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--text-secondary);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card .value {
+                font-size: 2rem;
+            }
+        }
+
+        /* 進度條 */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-success));
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 頭部 -->
+        <div class="header">
+            <h1>評分系統監控儀表板</h1>
+            <div class="subtitle">
+                <span>Scoring System v2.0</span>
+                <span class="status-badge">
+                    <span class="status-dot"></span>
+                    系統運行中
+                </span>
+                <span id="lastUpdate">最後更新: --</span>
+            </div>
+        </div>
+
+        <!-- 控制按鈕 -->
+        <div class="controls">
+            <button class="btn btn-primary" onclick="refreshData()">
+                <span id="refreshIcon">🔄</span>
+                刷新數據
+            </button>
+            <button class="btn btn-secondary" onclick="clearCache()">
+                🗑️ 清除緩存
+            </button>
+            <button class="btn btn-secondary" onclick="resetStats()">
+                ↺ 重置統計
+            </button>
+            <button class="btn btn-secondary" onclick="exportData()">
+                📥 導出數據
+            </button>
+        </div>
+
+        <!-- 統計卡片 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="label">總評估數</div>
+                <div class="value" id="totalEvaluations">0</div>
+                <div class="change neutral">
+                    <span>運行時間: <span id="uptime">--</span></span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="label">成功率</div>
+                <div class="value" id="successRate">0%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="successRateBar" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="label">平均延遲</div>
+                <div class="value" id="avgLatency">0ms</div>
+                <div class="change positive">
+                    <span>目標: &lt;500ms</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="label">平均信心度</div>
+                <div class="value" id="avgConfidence">0%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="confidenceBar" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 圖表 -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>評估方法分布</h3>
+                <canvas id="methodChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>人設分布</h3>
+                <canvas id="personaChart"></canvas>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>評估延遲趨勢</h3>
+                <canvas id="latencyChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>成功率趨勢</h3>
+                <canvas id="successChart"></canvas>
+            </div>
+        </div>
+
+        <!-- 最近評估 -->
+        <div class="recent-evaluations">
+            <h3>最近評估記錄</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>時間</th>
+                            <th>人設</th>
+                            <th>信任度變化</th>
+                            <th>信心度</th>
+                            <th>方法</th>
+                            <th>延遲</th>
+                            <th>狀態</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentEvaluationsTable">
+                        <tr>
+                            <td colspan="7" style="text-align: center; color: var(--text-secondary);">
+                                載入中...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        // API配置
+        const API_BASE = 'http://localhost:8000/api/v2';
+        let charts = {};
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+            refreshData();
+            // 每30秒自動刷新
+            setInterval(refreshData, 30000);
+        });
+
+        // 初始化圖表
+        function initCharts() {
+            const chartConfig = {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#8892b0',
+                            font: { size: 12 }
+                        }
+                    }
+                }
+            };
+
+            // 方法分布圖
+            charts.method = new Chart(document.getElementById('methodChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['規則評分', 'Agent評分', '混合評分'],
+                    datasets: [{
+                        data: [0, 0, 0],
+                        backgroundColor: ['#00d9ff', '#7b2cbf', '#06ffa5'],
+                        borderWidth: 0
+                    }]
+                },
+                options: chartConfig
+            });
+
+            // 人設分布圖
+            charts.persona = new Chart(document.getElementById('personaChart'), {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '評估次數',
+                        data: [],
+                        backgroundColor: '#00d9ff',
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    ...chartConfig,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#8892b0' },
+                            grid: { color: '#2d3561' }
+                        },
+                        x: {
+                            ticks: { color: '#8892b0' },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // 延遲趨勢圖
+            charts.latency = new Chart(document.getElementById('latencyChart'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '平均延遲 (ms)',
+                        data: [],
+                        borderColor: '#00d9ff',
+                        backgroundColor: 'rgba(0, 217, 255, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    ...chartConfig,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#8892b0' },
+                            grid: { color: '#2d3561' }
+                        },
+                        x: {
+                            ticks: { color: '#8892b0' },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // 成功率趨勢圖
+            charts.success = new Chart(document.getElementById('successChart'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '成功率 (%)',
+                        data: [],
+                        borderColor: '#06ffa5',
+                        backgroundColor: 'rgba(6, 255, 165, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    ...chartConfig,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { color: '#8892b0' },
+                            grid: { color: '#2d3561' }
+                        },
+                        x: {
+                            ticks: { color: '#8892b0' },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 刷新數據
+        async function refreshData() {
+            const refreshIcon = document.getElementById('refreshIcon');
+            refreshIcon.innerHTML = '<span class="loading"></span>';
+
+            try {
+                // 獲取儀表板數據
+                const response = await fetch(`${API_BASE}/monitoring/dashboard`);
+                const data = await response.json();
+
+                if (data.success) {
+                    updateStats(data.dashboard.overview);
+                    updateMethodChart(data.dashboard.method_distribution);
+                    updatePersonaChart(data.dashboard.persona_distribution);
+                    updateTimeSeriesCharts(data.dashboard.time_series);
+                    updateRecentEvaluations(data.dashboard.recent_metrics);
+                    
+                    document.getElementById('lastUpdate').textContent = 
+                        `最後更新: ${new Date().toLocaleTimeString('zh-TW')}`;
+                }
+            } catch (error) {
+                console.error('刷新數據失敗:', error);
+                alert('無法連接到API服務，請確認服務已啟動');
+            } finally {
+                refreshIcon.textContent = '🔄';
+            }
+        }
+
+        // 更新統計卡片
+        function updateStats(overview) {
+            document.getElementById('totalEvaluations').textContent = 
+                overview.total_evaluations.toLocaleString();
+            document.getElementById('successRate').textContent = 
+                `${overview.success_rate.toFixed(1)}%`;
+            document.getElementById('avgLatency').textContent = 
+                `${overview.avg_latency_ms.toFixed(0)}ms`;
+            document.getElementById('avgConfidence').textContent = 
+                `${overview.avg_confidence.toFixed(1)}%`;
+            document.getElementById('uptime').textContent = overview.uptime;
+
+            // 更新進度條
+            document.getElementById('successRateBar').style.width = 
+                `${overview.success_rate}%`;
+            document.getElementById('confidenceBar').style.width = 
+                `${overview.avg_confidence}%`;
+        }
+
+        // 更新方法分布圖
+        function updateMethodChart(distribution) {
+            charts.method.data.datasets[0].data = [
+                distribution.rule || 0,
+                distribution.agent || 0,
+                distribution.hybrid || 0
+            ];
+            charts.method.update();
+        }
+
+        // 更新人設分布圖
+        function updatePersonaChart(distribution) {
+            const labels = Object.keys(distribution);
+            const data = Object.values(distribution);
+            
+            charts.persona.data.labels = labels;
+            charts.persona.data.datasets[0].data = data;
+            charts.persona.update();
+        }
+
+        // 更新時間序列圖表
+        function updateTimeSeriesCharts(timeSeries) {
+            if (!timeSeries || timeSeries.length === 0) return;
+
+            const labels = timeSeries.map(d => d.timestamp.split(' ')[1]);
+            const latencyData = timeSeries.map(d => d.avg_latency_ms);
+            const successData = timeSeries.map(d => d.success_rate);
+
+            charts.latency.data.labels = labels;
+            charts.latency.data.datasets[0].data = latencyData;
+            charts.latency.update();
+
+            charts.success.data.labels = labels;
+            charts.success.data.datasets[0].data = successData;
+            charts.success.update();
+        }
+
+        // 更新最近評估表格
+        function updateRecentEvaluations(metrics) {
+            const tbody = document.getElementById('recentEvaluationsTable');
+            
+            if (!metrics || metrics.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: var(--text-secondary);">
+                            暫無評估記錄
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = metrics.map(m => `
+                <tr>
+                    <td>${new Date(m.timestamp).toLocaleTimeString('zh-TW')}</td>
+                    <td>${m.persona_type}</td>
+                    <td style="color: ${m.trust_change > 0 ? 'var(--accent-success)' : 'var(--accent-danger)'}">
+                        ${m.trust_change > 0 ? '+' : ''}${m.trust_change.toFixed(2)}
+                    </td>
+                    <td>${m.confidence.toFixed(1)}%</td>
+                    <td><span class="method-badge ${m.method}">${m.method}</span></td>
+                    <td>${m.latency_ms.toFixed(0)}ms</td>
+                    <td>${m.success ? '✅' : '❌'}</td>
+                </tr>
+            `).join('');
+        }
+
+        // 清除緩存
+        async function clearCache() {
+            if (!confirm('確定要清除評估器緩存嗎？')) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/scoring/clear-cache`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(data.message);
+                    refreshData();
+                }
+            } catch (error) {
+                console.error('清除緩存失敗:', error);
+                alert('操作失敗');
+            }
+        }
+
+        // 重置統計
+        async function resetStats() {
+            if (!confirm('確定要重置所有統計數據嗎？此操作不可恢復！')) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/monitoring/reset`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(data.message);
+                    refreshData();
+                }
+            } catch (error) {
+                console.error('重置統計失敗:', error);
+                alert('操作失敗');
+            }
+        }
+
+        // 導出數據
+        async function exportData() {
+            try {
+                const response = await fetch(`${API_BASE}/monitoring/stats`);
+                const data = await response.json();
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], {
+                    type: 'application/json'
+                });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `monitoring_data_${Date.now()}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('導出數據失敗:', error);
+                alert('操作失敗');
+            }
+        }
+    </script>
+</body>
+</html>

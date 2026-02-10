@@ -1,0 +1,46 @@
+{
+  "session_id": "3e01cbf5-6819-495b-b7fb-38f2f1b2f485",
+  "mode": "expert",
+  "scam_type": "investment",
+  "victim_persona": "average",
+  "start_time": "2026-02-11T05:12:26.216428",
+  "end_time": "2026-02-11T05:13:04.080976",
+  "game_over": true,
+  "winner": "player",
+  "final_scores": {
+    "player": 130,
+    "ai": 10
+  },
+  "final_trust": {
+    "trust_in_scammer": 0,
+    "trust_in_expert": 100,
+    "alertness": 100
+  },
+  "total_rounds": 1,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "（語氣沉穩、略帶急切，帶著一點官方感）\n\n“您好，我是警方的反詐騙專線，代號“風暴”。我現在跟您聯繫，是因為我們掌握到您的銀行賬戶存在異常交易，涉及涉嫌洗黑錢。"
+    },
+    {
+      "role": "victim",
+      "content": "“您好，我需要確認一下您的身份信息，以確保您的賬戶安全。請您提供您的姓名、出生日期、銀行賬戶號碼以及身份证号码。這些信息將用於核實您的身份，並對異常交易進行進一步調查。"
+    },
+    {
+      "role": "expert",
+      "content": "這是詐騙",
+      "timestamp": "2026-02-11T05:13:04.080967"
+    },
+    {
+      "role": "victim",
+      "content": "專家建議：這是詐騙\n\n**我的回應：**\n\n“非常感謝您的提醒。我現在感到有些恐慌，但聽您說，我需要立刻保持冷靜。",
+      "timestamp": "2026-02-11T05:13:04.080971"
+    },
+    {
+      "role": "scammer",
+      "content": "Okay, let’s play this out. Here’s my response, continuing the role of the “Windstorm” scammer,...",
+      "timestamp": "2026-02-11T05:13:04.080972"
+    }
+  ],
+  "round_logs": []
+}

@@ -6,8 +6,8 @@
 
 export interface SimulationConfig {
   scamType: string;                    // 騙案類型 ID
-  playerRole: 'victim' | 'expert';     // 玩家角色
-  victimPersona?: string;              // 受害者人格（如果玩家是專家）
+  playerRole: 'victim' | 'expert' | 'scammer';     // 玩家角色
+  victimPersona?: string;              // 受害者人格
 }
 
 export interface MessageResponse {
@@ -26,7 +26,7 @@ export interface MessageResponse {
 export interface ThreeWayMessageResponse {
   session_id: string;
   replies: Array<{
-    speaker: 'scammer' | 'expert';
+    speaker: 'scammer' | 'expert' | 'victim';
     message: string;
   }>;
   trust_data?: {
@@ -34,6 +34,21 @@ export interface ThreeWayMessageResponse {
     trust_in_expert: number;
     alertness: number;
     round_count: number;
+  };
+  game_status?: {
+    game_over: boolean;
+    winner?: string;
+    reason?: string;
+    instant_win?: boolean;
+    final_scores?: {
+      player: number;
+      ai: number;
+    };
+    final_trust?: {
+      trust_in_scammer: number;
+      trust_in_expert: number;
+      alertness: number;
+    };
   };
   success: boolean;
 }
@@ -94,20 +109,23 @@ export class BackendClient {
   }
 
   /**
-   * 開始新會話（三方對話模式）
+   * 開始新會話（RPGv2 遊戲模式）
    * @param config 模擬配置
-   * @returns 會話 ID 和騙徒開場白
+   * @returns 會話 ID 和開場消息數組
    */
-  async startThreeWaySession(config: SimulationConfig): Promise<{ sessionId: string; openingMessage: string }> {
+  async startThreeWaySession(config: SimulationConfig): Promise<{ 
+    sessionId: string; 
+    openingMessages: Array<{role: string, content: string}> 
+  }> {
     try {
-      console.log('[BackendClient] 開始三方對話會話:', config);
+      console.log('[BackendClient] 開始 RPGv2 遊戲會話:', config);
       
-      const response = await fetch(`${this.baseURL}/api/rpgv2/battle/start`, {
+      const response = await fetch(`${this.baseURL}/api/rpgv2/game/start`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          mode: config.playerRole,  // victim, expert, scammer
           scam_type: config.scamType,
-          player_role: config.playerRole,
           victim_persona: config.victimPersona || 'average'
         })
       });
@@ -119,22 +137,25 @@ export class BackendClient {
       const data = await response.json();
       this.sessionId = data.session_id;
       
-      console.log('[BackendClient] 三方對話會話創建成功:', this.sessionId);
+      console.log('[BackendClient] RPGv2 會話創建成功:', this.sessionId);
+      console.log('[BackendClient] 開場消息:', data.opening_messages);
+      
+      // 返回開場消息數組
       return {
         sessionId: this.sessionId,
-        openingMessage: data.opening_message
+        openingMessages: data.opening_messages || []
       };
     } catch (error) {
-      console.error('[BackendClient] 開始三方對話會話失敗:', error);
+      console.error('[BackendClient] 開始 RPGv2 會話失敗:', error);
       throw error;
     }
   }
 
   /**
-   * 發送消息（三方對話模式）
-   * 玩家發送消息後，騙徒和專家都會回應
+   * 發送消息（RPGv2 遊戲模式）
+   * 玩家發送消息後，AI 角色會回應
    * @param message 玩家消息
-   * @returns 騙徒和專家的回應
+   * @returns AI 回應和遊戲狀態
    */
   async sendThreeWayMessage(message: string): Promise<ThreeWayMessageResponse> {
     if (!this.sessionId) {
@@ -142,15 +163,14 @@ export class BackendClient {
     }
 
     try {
-      console.log('[BackendClient] 發送三方對話消息:', message);
+      console.log('[BackendClient] 發送 RPGv2 消息:', message);
 
-      const response = await fetch(`${this.baseURL}/api/rpgv2/battle/message`, {
+      const response = await fetch(`${this.baseURL}/api/rpgv2/game/action`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           session_id: this.sessionId,
-          message: message,
-          speaker: 'player'
+          message: message
         })
       });
 
@@ -159,17 +179,27 @@ export class BackendClient {
       }
 
       const data = await response.json();
-      console.log('[BackendClient] 收到三方對話回應:', data);
+      console.log('[BackendClient] 收到 RPGv2 回應:', data);
 
-      return data;
+      // 轉換格式以匹配前端期望
+      return {
+        session_id: data.session_id,
+        replies: data.ai_responses.map((resp: any) => ({
+          speaker: resp.role,
+          message: resp.content
+        })),
+        trust_data: data.game_state,
+        game_status: data.game_status,  // 🔥 添加遊戲狀態
+        success: data.success
+      };
     } catch (error) {
-      console.error('[BackendClient] 發送三方對話消息失敗:', error);
+      console.error('[BackendClient] 發送 RPGv2 消息失敗:', error);
       throw error;
     }
   }
 
   /**
-   * 獲取三方對話的最終分析
+   * 獲取 RPGv2 遊戲的最終分析
    */
   async getThreeWayAnalysis(): Promise<any> {
     if (!this.sessionId) {
@@ -177,14 +207,11 @@ export class BackendClient {
     }
 
     try {
-      console.log('[BackendClient] 請求三方對話分析...');
+      console.log('[BackendClient] 請求 RPGv2 遊戲狀態...');
 
-      const response = await fetch(`${this.baseURL}/api/rpgv2/battle/analysis`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          session_id: this.sessionId
-        })
+      const response = await fetch(`${this.baseURL}/api/rpgv2/game/state/${this.sessionId}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
       });
 
       if (!response.ok) {
@@ -192,11 +219,11 @@ export class BackendClient {
       }
 
       const data = await response.json();
-      console.log('[BackendClient] 收到三方對話分析報告:', data);
+      console.log('[BackendClient] 收到 RPGv2 遊戲狀態:', data);
 
       return data;
     } catch (error) {
-      console.error('[BackendClient] 獲取三方對話分析失敗:', error);
+      console.error('[BackendClient] 獲取 RPGv2 遊戲狀態失敗:', error);
       throw error;
     }
   }
@@ -339,17 +366,56 @@ export class BackendClient {
     try {
       console.log('[BackendClient] 結束會話:', this.sessionId);
 
-      await fetch(`${this.baseURL}/api/game/v2/end`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          session_id: this.sessionId
-        })
+      await fetch(`${this.baseURL}/api/rpgv2/game/session/${this.sessionId}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
       });
 
       this.sessionId = null;
     } catch (error) {
       console.error('[BackendClient] 結束會話失敗:', error);
+    }
+  }
+
+  /**
+   * 切換角色模式
+   * @param newMode 新的角色模式 ('victim' | 'expert' | 'scammer')
+   * @returns 切換結果
+   */
+  async switchRole(newMode: 'victim' | 'expert' | 'scammer'): Promise<{
+    success: boolean;
+    old_mode: string;
+    new_mode: string;
+    mode_info: any;
+    message: string;
+  }> {
+    if (!this.sessionId) {
+      throw new Error('未初始化會話，請先調用 startThreeWaySession()');
+    }
+
+    try {
+      console.log('[BackendClient] 切換角色模式:', newMode);
+
+      const response = await fetch(`${this.baseURL}/api/rpgv2/game/switch-role`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          session_id: this.sessionId,
+          new_mode: newMode
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('[BackendClient] 角色切換成功:', data);
+
+      return data;
+    } catch (error) {
+      console.error('[BackendClient] 角色切換失敗:', error);
+      throw error;
     }
   }
 

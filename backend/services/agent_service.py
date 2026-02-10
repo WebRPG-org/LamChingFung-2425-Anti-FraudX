@@ -166,6 +166,9 @@ class AgentService:
             
             log.info(f"✅ {agent_type.upper()} 生成完成 (長度: {len(response_text)})")
             
+            # 3.5. 後處理過濾（清理不必要的內容）
+            response_text = self._post_process_response(agent_type, response_text)
+            
             # 4. 角色一致性檢查（如果啟用）
             checked = False
             if self.enable_tracking and check_consistency:
@@ -303,6 +306,108 @@ class AgentService:
         except Exception as e:
             log.error(f"運行 Agent 失敗: {e}", exc_info=True)
             raise
+    
+    def _post_process_response(self, agent_type: str, response: str) -> str:
+        """後處理過濾，清理不必要的內容
+        
+        Args:
+            agent_type: Agent 類型
+            response: 原始回應
+            
+        Returns:
+            清理後的回應
+        """
+        import re
+        
+        original_length = len(response)
+        
+        # 1. 移除角色前綴（所有 Agent 類型都需要）
+        # 移除 "scammer:", "expert:", "victim:", "騙徒:", "專家:", "受害者:" 等前綴
+        role_prefixes = [
+            r'^scammer:\s*',
+            r'^expert:\s*',
+            r'^victim:\s*',
+            r'^騙徒:\s*',
+            r'^騙徒：\s*',
+            r'^專家:\s*',
+            r'^專家：\s*',
+            r'^受害者:\s*',
+            r'^受害者：\s*',
+            r'^\(.*?\)\s*',  # 移除 (語氣沉穩、帶著一點急切) 等括號內容
+        ]
+        
+        for prefix_pattern in role_prefixes:
+            response = re.sub(prefix_pattern, '', response, flags=re.IGNORECASE | re.MULTILINE)
+        
+        # 2. 騙徒特定的清理
+        if agent_type == "scammer":
+            # 移除策略分析標題和內容
+            patterns_to_remove = [
+                r'\*\*接下來的行動：\*\*.*?(?=\n\n|\Z)',  # 移除 **接下來的行動：** 及其內容
+                r'\*\*核心目標：\*\*.*?(?=\n\n|\Z)',      # 移除 **核心目標：** 及其內容
+                r'\*\*心理分析：\*\*.*?(?=\n\n|\Z)',      # 移除 **心理分析：** 及其內容
+                r'\*\*策略：\*\*.*?(?=\n\n|\Z)',          # 移除 **策略：** 及其內容
+                r'\* \*\*.*?：\*\*.*?(?=\n|\Z)',          # 移除 * **xxx：** 格式的列點
+                r'^\*.*?(?=\n|\Z)',                       # 移除以 * 開頭的列點
+            ]
+            
+            for pattern in patterns_to_remove:
+                response = re.sub(pattern, '', response, flags=re.DOTALL | re.MULTILINE)
+        
+        # 3. 專家特定的清理
+        elif agent_type == "expert":
+            # 移除專家的內部分析
+            patterns_to_remove = [
+                r'\*\*分析：\*\*.*?(?=\n\n|\Z)',
+                r'\*\*建議：\*\*.*?(?=\n\n|\Z)',
+                r'\(停頓一下，.*?\)',  # 移除 (停頓一下，用溫和的語氣) 等
+            ]
+            
+            for pattern in patterns_to_remove:
+                response = re.sub(pattern, '', response, flags=re.DOTALL | re.MULTILINE)
+        
+        # 4. 移除多餘的空行和空白
+        response = re.sub(r'\n{3,}', '\n\n', response)
+        response = response.strip()
+        
+        # 5. 🔥 字數限制：如果超過 100 字，自動整理成 100 字內
+        if len(response) > 100:
+            log.warning(f"⚠️ {agent_type.upper()} 回應超過 100 字 ({len(response)} 字)，正在整理...")
+            
+            # 策略：保留前 100 字，並確保在句子結束處截斷
+            truncated = response[:100]
+            
+            # 找到最後一個句號、問號或感嘆號
+            last_punctuation = max(
+                truncated.rfind('。'),
+                truncated.rfind('？'),
+                truncated.rfind('！'),
+                truncated.rfind('.'),
+                truncated.rfind('?'),
+                truncated.rfind('!')
+            )
+            
+            if last_punctuation > 50:  # 如果在合理位置找到標點
+                response = truncated[:last_punctuation + 1]
+            else:
+                # 如果沒有找到標點，在最後一個逗號或空格處截斷
+                last_comma = max(truncated.rfind('，'), truncated.rfind(','), truncated.rfind(' '))
+                if last_comma > 50:
+                    response = truncated[:last_comma] + '...'
+                else:
+                    response = truncated + '...'
+            
+            log.info(f"✂️ {agent_type.upper()} 回應已截斷至 {len(response)} 字")
+        
+        # 6. 記錄清理結果
+        if len(response) != original_length:
+            log.info(f"🧹 {agent_type.upper()} 回應已清理 (原長度: {original_length} -> 清理後: {len(response)})")
+        
+        # 7. 如果清理後太短或為空，記錄警告
+        if len(response) < 10:
+            log.warning(f"⚠️ {agent_type.upper()} 回應清理後過短: {response}")
+        
+        return response
     
     def _check_consistency(
         self,

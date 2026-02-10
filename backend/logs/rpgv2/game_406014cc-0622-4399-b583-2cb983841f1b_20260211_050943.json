@@ -1,0 +1,46 @@
+{
+  "session_id": "406014cc-0622-4399-b583-2cb983841f1b",
+  "mode": "victim",
+  "scam_type": "investment",
+  "victim_persona": "average",
+  "start_time": "2026-02-11T05:09:31.276761",
+  "end_time": "2026-02-11T05:09:43.148532",
+  "game_over": true,
+  "winner": "player",
+  "final_scores": {
+    "player": 145,
+    "ai": 10
+  },
+  "final_trust": {
+    "trust_in_scammer": 0,
+    "trust_in_expert": 100,
+    "alertness": 100
+  },
+  "total_rounds": 1,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "（語氣沉穩，帶著一絲急切）\n\n您好，我是李明，來自金融風險控制部，專門處理涉及非法資金盤踞的案件。我打擾您，是因為我們掌握了一些關於您投資賬戶的異常信息。"
+    },
+    {
+      "role": "expert",
+      "content": "（語氣沉穩，帶著一絲急切）\n\n唔使驚，先生/女士！黃sir我聽到你講，聽落好似真係有啲嘢，但你聽番我講，小心啲先！"
+    },
+    {
+      "role": "victim",
+      "content": "我會報警",
+      "timestamp": "2026-02-11T05:09:43.148522"
+    },
+    {
+      "role": "scammer",
+      "content": "",
+      "timestamp": "2026-02-11T05:09:43.148525"
+    },
+    {
+      "role": "expert",
+      "content": "（語氣沉穩，帶著一絲急切）\n\n唔使驚，先生/女士！黃sir我聽到你講，聽落好似真係有啲嘢，但你聽番我講，小心啲先！ 我明白你擔心，但報警絕對係一個好方法，我幫你分析下。\n\n**第一步：唔好再跟佢傾啦！",
+      "timestamp": "2026-02-11T05:09:43.148527"
+    }
+  ],
+  "round_logs": []
+}

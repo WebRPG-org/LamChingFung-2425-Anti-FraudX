@@ -1,35 +1,66 @@
 @echo off
-chcp 65001 >nul
-echo ========================================
-echo   AI 反詐騙模擬訓練平台 - 快速啟動
-echo ========================================
-echo.
+chcp 65001 > nul
 
-REM 設置環境變量（禁用強制 GPU 模式）
-set FORCE_GPU=0
-set OLLAMA_BASE_URL=http://localhost:11434
-
-echo [✓] 環境變量已設置
-echo     FORCE_GPU=0 (允許使用 CPU)
-echo     OLLAMA_BASE_URL=%OLLAMA_BASE_URL%
-echo.
-
-REM 切換到項目根目錄
+REM Get script directory and move to project root (parent dir)
 cd /d "%~dp0\.."
 
-echo [✓] 當前目錄: %CD%
+echo ================================================================================
+echo Starting AI Anti-Scam Platform Services
+echo ================================================================================
 echo.
 
-REM 啟動服務器
-echo [→] 正在啟動服務器...
-echo     服務器地址: http://localhost:8000
-echo     API 文檔: http://localhost:8000/docs
-echo     測試端點: http://localhost:8000/test
-echo.
-echo [!] 按 Ctrl+C 停止服務器
-echo ========================================
+echo [1/3] Cleaning old processes...
+taskkill /F /FI "WINDOWTITLE eq Backend*" >nul 2>&1
+taskkill /F /FI "WINDOWTITLE eq RPGv2*" >nul 2>&1
+timeout /t 1 /nobreak >nul
+echo [OK] Done
 echo.
 
-python scripts\start_server.py
+echo [2/3] Starting Backend (port 8000)...
+cd backend
+start "Backend Server" /MIN cmd /c "py main.py"
+cd ..
+timeout /t 3 /nobreak >nul
+echo [OK] Backend started
+echo.
 
-pause
+echo [3/3] Starting RPGv2 (port 3000)...
+cd rpg-platform-v2
+start "RPGv2 Frontend" /MIN cmd /c "npm run dev"
+cd ..
+timeout /t 3 /nobreak >nul
+echo [OK] RPGv2 started
+echo.
+
+echo ================================================================================
+echo Services Started!
+echo ================================================================================
+echo.
+echo Backend API:  http://localhost:8000
+echo API Docs:     http://localhost:8000/docs
+echo RPGv2:        http://localhost:3000
+echo.
+echo Press any key to check status...
+pause >nul
+
+echo.
+echo Checking services...
+echo.
+
+netstat -ano | findstr ":8000.*LISTENING"
+if %errorlevel% equ 0 (
+    echo [OK] Backend is running on port 8000
+) else (
+    echo [!] Backend may not be running
+)
+
+netstat -ano | findstr ":3000.*LISTENING"
+if %errorlevel% equ 0 (
+    echo [OK] RPGv2 is running on port 3000
+) else (
+    echo [!] RPGv2 may not be running
+)
+
+echo.
+echo Press any key to exit...
+pause >nul

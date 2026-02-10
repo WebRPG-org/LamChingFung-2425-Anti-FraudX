@@ -1,0 +1,280 @@
+{
+  "session_id": "6bd2afee-025b-4a23-b0d2-e81f77c8b631",
+  "mode": "victim",
+  "scam_type": "investment",
+  "victim_persona": "average",
+  "start_time": "2026-02-11T05:01:57.820269",
+  "end_time": "2026-02-11T05:04:15.414296",
+  "game_over": false,
+  "winner": null,
+  "final_scores": {
+    "player": 0,
+    "ai": 40
+  },
+  "final_trust": {
+    "trust_in_scammer": 76.0,
+    "trust_in_expert": 50.0,
+    "alertness": 36.0
+  },
+  "total_rounds": 4,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "（語氣沉穩，帶著一點緊急感）\n\n“您好，我是李明，來自恆遠投資集團。我打擾您了，但情況非常緊急，需要您的協助。"
+    },
+    {
+      "role": "expert",
+      "content": "（語氣溫和，帶著關心） 唔使驚，先生/女士，我黃sir聽到你講，肯定你唔好受驚吓。 恆遠投資集團？聽落好專業，但你一定要小心啲！上個月就有類似案件，騙徒講過啲嘢，想呃你投資，話可以賺到好多錢。"
+    },
+    {
+      "role": "victim",
+      "content": "可以點幫你?",
+      "timestamp": "2026-02-11T05:02:27.628679"
+    },
+    {
+      "role": "scammer",
+      "content": "（語氣依然沉穩，但更顯得焦急，語速略快）\n\n“非常感謝您願意協助我。情況是這樣的，我們最近在一個新興市場進行了一項特別的投資項目，涉及一批高科技的生物科技產品。",
+      "timestamp": "2026-02-11T05:02:27.628684"
+    },
+    {
+      "role": "expert",
+      "content": "黃sir: 唔使驚，先生/女士，聽落好似好正嘅嘢，但你一定要小心啲！ 聽你講涉及生物科技產品，咁就更加要提提心仔細啦。",
+      "timestamp": "2026-02-11T05:02:27.628686"
+    },
+    {
+      "role": "victim",
+      "content": "聽落好似好勁",
+      "timestamp": "2026-02-11T05:03:01.387198"
+    },
+    {
+      "role": "scammer",
+      "content": "（語氣更加急促，帶著明顯的焦慮，語速加快）\n\n“您說的對，這確實是一個非常好的投資機會！這批生物科技產品，理論上可以帶來驚人的回報，甚至在未來幾年內改變整個行業格局。但現在，我們面臨一個嚴峻的挑戰。",
+      "timestamp": "2026-02-11T05:03:01.387202"
+    },
+    {
+      "role": "expert",
+      "content": "黃sir: 唔使驚，先生/女士！聽落好似好正嘅嘢，但你一定要小心啲！ 聽你講涉及生物科技產品，咁就更加要提提心仔細啦。",
+      "timestamp": "2026-02-11T05:03:01.387203"
+    },
+    {
+      "role": "victim",
+      "content": "我要投資,可以點做?",
+      "timestamp": "2026-02-11T05:03:31.292342"
+    },
+    {
+      "role": "scammer",
+      "content": "“您說的對，這確實是一個非常好的投資機會！這批生物科技產品，理論上可以帶來驚人的回報，甚至在未來幾年內改變整個行業格局。但現在，我們面臨一個嚴峻的挑戰。",
+      "timestamp": "2026-02-11T05:03:31.292346"
+    },
+    {
+      "role": "expert",
+      "content": "黃sir: 唔使驚，先生/女士！你咁想投資，就要特別小心啦！聽你講呢啲，聽落好似好正嘅嘢，但你一定要諗清楚！ 聽你講涉及生物科技產品，咁就更加要提提心仔細啦！\n\n**第一步：唔好急！",
+      "timestamp": "2026-02-11T05:03:31.292346"
+    },
+    {
+      "role": "victim",
+      "content": "我打18222問下先",
+      "timestamp": "2026-02-11T05:04:15.414284"
+    },
+    {
+      "role": "scammer",
+      "content": "（語氣急促，帶有明顯的恐慌和不耐煩，語速極快，帶著明顯的焦慮）\n\n“18222？等等！等等！你不能這樣做！你現在的行為會讓一切都變得更糟！你以為他們會相信你嗎？他們會認為你是在試圖掩蓋真相！",
+      "timestamp": "2026-02-11T05:04:15.414288"
+    },
+    {
+      "role": "expert",
+      "content": "黃sir: 哎呀，先生/女士！你打18222？ 唔好咁快！你打電話去，佢哋會問你啲問題，你答唔返，就會更加麻煩！",
+      "timestamp": "2026-02-11T05:04:15.414289"
+    }
+  ],
+  "round_logs": [
+    {
+      "round": 1,
+      "timestamp": "2026-02-11T05:02:27.628703",
+      "player_message": "可以點幫你?",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "（語氣依然沉穩，但更顯得焦急，語速略快）\n\n“非常感謝您願意協助我。情況是這樣的，我們最近在一個新興市場進行了一項特別的投資項目，涉及一批高科技的生物科技產品。"
+        },
+        {
+          "role": "expert",
+          "content": "黃sir: 唔使驚，先生/女士，聽落好似好正嘅嘢，但你一定要小心啲！ 聽你講涉及生物科技產品，咁就更加要提提心仔細啦。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 6,
+        "expert": -2,
+        "alertness": -2
+      },
+      "trust_state": {
+        "trust_in_scammer": 56.0,
+        "trust_in_expert": 48.0,
+        "alertness": 48.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 10
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 10
+        },
+        "final_trust": {
+          "trust_in_scammer": 56.0,
+          "trust_in_expert": 48.0,
+          "alertness": 48.0
+        }
+      }
+    },
+    {
+      "round": 2,
+      "timestamp": "2026-02-11T05:03:01.387220",
+      "player_message": "聽落好似好勁",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "（語氣更加急促，帶著明顯的焦慮，語速加快）\n\n“您說的對，這確實是一個非常好的投資機會！這批生物科技產品，理論上可以帶來驚人的回報，甚至在未來幾年內改變整個行業格局。但現在，我們面臨一個嚴峻的挑戰。"
+        },
+        {
+          "role": "expert",
+          "content": "黃sir: 唔使驚，先生/女士！聽落好似好正嘅嘢，但你一定要小心啲！ 聽你講涉及生物科技產品，咁就更加要提提心仔細啦。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 6,
+        "expert": -2,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 62.0,
+        "trust_in_expert": 46.0,
+        "alertness": 44.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 20
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 20
+        },
+        "final_trust": {
+          "trust_in_scammer": 62.0,
+          "trust_in_expert": 46.0,
+          "alertness": 44.0
+        }
+      }
+    },
+    {
+      "round": 3,
+      "timestamp": "2026-02-11T05:03:31.292359",
+      "player_message": "我要投資,可以點做?",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "“您說的對，這確實是一個非常好的投資機會！這批生物科技產品，理論上可以帶來驚人的回報，甚至在未來幾年內改變整個行業格局。但現在，我們面臨一個嚴峻的挑戰。"
+        },
+        {
+          "role": "expert",
+          "content": "黃sir: 唔使驚，先生/女士！你咁想投資，就要特別小心啦！聽你講呢啲，聽落好似好正嘅嘢，但你一定要諗清楚！ 聽你講涉及生物科技產品，咁就更加要提提心仔細啦！\n\n**第一步：唔好急！"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 6,
+        "expert": -2,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 68.0,
+        "trust_in_expert": 44.0,
+        "alertness": 40.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 30
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 30
+        },
+        "final_trust": {
+          "trust_in_scammer": 68.0,
+          "trust_in_expert": 44.0,
+          "alertness": 40.0
+        }
+      }
+    },
+    {
+      "round": 4,
+      "timestamp": "2026-02-11T05:04:15.414303",
+      "player_message": "我打18222問下先",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "（語氣急促，帶有明顯的恐慌和不耐煩，語速極快，帶著明顯的焦慮）\n\n“18222？等等！等等！你不能這樣做！你現在的行為會讓一切都變得更糟！你以為他們會相信你嗎？他們會認為你是在試圖掩蓋真相！"
+        },
+        {
+          "role": "expert",
+          "content": "黃sir: 哎呀，先生/女士！你打18222？ 唔好咁快！你打電話去，佢哋會問你啲問題，你答唔返，就會更加麻煩！"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 8,
+        "expert": 6,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 76.0,
+        "trust_in_expert": 50.0,
+        "alertness": 36.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 40
+      },
+      "game_status": {
+        "game_over": true,
+        "winner": "ai",
+        "reason": "被騙徒成功欺騙",
+        "final_scores": {
+          "player": 0,
+          "ai": 40
+        },
+        "final_trust": {
+          "trust_in_scammer": 76.0,
+          "trust_in_expert": 50.0,
+          "alertness": 36.0
+        }
+      }
+    }
+  ]
+}

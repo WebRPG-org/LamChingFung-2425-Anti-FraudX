@@ -1,0 +1,46 @@
+{
+  "session_id": "a660130e-b6c4-4979-bf4c-5e30a224332e",
+  "mode": "victim",
+  "scam_type": "investment",
+  "victim_persona": "average",
+  "start_time": "2026-02-11T05:10:41.250067",
+  "end_time": "2026-02-11T05:10:54.537556",
+  "game_over": true,
+  "winner": "ai",
+  "final_scores": {
+    "player": 0,
+    "ai": 110
+  },
+  "final_trust": {
+    "trust_in_scammer": 100,
+    "trust_in_expert": 0,
+    "alertness": 0
+  },
+  "total_rounds": 1,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "（語氣沉穩、略帶急切，帶著一點權威感）\n\n“您好，我是李明，來自金融安全監察局的資深督察。我現在正在調查一起涉及跨境非法匯款的案件，您的銀行賬戶信息被系統 flagged，因為有異常的交易記錄。"
+    },
+    {
+      "role": "expert",
+      "content": "（聲音放低，語氣溫和但堅定）\n\n“唔使驚，先生！我明白你一定好擔心，但你聽到的這話，絕對要小心！我黃sir，警務處反詐騙部，聽你講，你話你係金融安全監察局嘅李明？"
+    },
+    {
+      "role": "victim",
+      "content": "好我立即俾錢",
+      "timestamp": "2026-02-11T05:10:54.537547"
+    },
+    {
+      "role": "scammer",
+      "content": "（語氣依然沉穩、略帶急切，但加入了一絲緊迫感）\n\n“太好了，您這麼配合，這就證明您非常重視這件事情。您現在的賬戶確實存在一些可疑的交易，這涉及到跨國犯罪集團，他們利用虛假賬戶進行洗錢...",
+      "timestamp": "2026-02-11T05:10:54.537551"
+    },
+    {
+      "role": "expert",
+      "content": "（聲音放低，語氣溫和但堅定，語速放慢）\n\n“先生，等等！聽住我講！你話俾錢，已經非常重要了！你明白咩意思嗎？佢哋想你俾錢，就一定有佢哋嘅目的！聽住我分析下，你俾錢，就等於幫咗佢哋洗錢！",
+      "timestamp": "2026-02-11T05:10:54.537552"
+    }
+  ],
+  "round_logs": []
+}

@@ -243,16 +243,16 @@ export class WorldMapScene extends Phaser.Scene {
       this.toggleInstructions();
     });
 
-    // Role switching (1, 2, 3)
-    this.input.keyboard?.on('keydown-ONE', () => {
+    // Role switching (F1, F2, F3)
+    this.input.keyboard?.on('keydown-F1', () => {
       this.roleManager.switchRole('victim');
     });
 
-    this.input.keyboard?.on('keydown-TWO', () => {
+    this.input.keyboard?.on('keydown-F2', () => {
       this.roleManager.switchRole('scammer');
     });
 
-    this.input.keyboard?.on('keydown-THREE', () => {
+    this.input.keyboard?.on('keydown-F3', () => {
       this.roleManager.switchRole('expert');
     });
   }
@@ -315,7 +315,7 @@ export class WorldMapScene extends Phaser.Scene {
     
     const instructionsText = this.add.text(15, 35, 
       '方向鍵/WASD - 移動\n' +
-      'E - 互動 | H - 說明 | 1/2/3 - 切換角色', {
+      'E - 互動 | H - 說明 | F1/F2/F3 - 切換角色', {
       fontFamily: 'Noto Sans TC, sans-serif',
       fontSize: '11px',
       color: '#B8C5D6',
@@ -587,7 +587,7 @@ export class WorldMapScene extends Phaser.Scene {
       {
         icon: '🕹️',
         title: '操作說明',
-        content: '方向鍵 或 WASD - 移動角色\nE 鍵 - 與 NPC 互動\nH 鍵 - 顯示/隱藏說明\n1/2/3 - 切換角色（受害者/騙徒/專家）'
+        content: '方向鍵 或 WASD - 移動角色\nE 鍵 - 與 NPC 互動\nH 鍵 - 顯示/隱藏說明\nF1/F2/F3 - 切換角色（受害者/騙徒/專家）'
       },
       {
         icon: '💡',

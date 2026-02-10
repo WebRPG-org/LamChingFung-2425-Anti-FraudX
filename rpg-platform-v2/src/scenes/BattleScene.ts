@@ -80,6 +80,9 @@ export class BattleScene extends Phaser.Scene {
     // Input area with modern styling
     this.createModernInputArea();
 
+    // 設置鍵盤快捷鍵（1, 2, 3 切換角色）
+    this.setupKeyboardShortcuts();
+
     // 初始化 Backend 會話
     await this.initializeBackendSession();
 
@@ -88,15 +91,80 @@ export class BattleScene extends Phaser.Scene {
     this.addSystemMessage(`📋 描述：${this.data.scamTypeInfo.description}`);
     this.addSystemMessage(`⚠️ 危險等級：${'⭐'.repeat(this.data.scamTypeInfo.dangerLevel)}`);
     this.addSystemMessage(`👤 你的角色：${this.data.playerRole.nameZh}`);
+    this.addSystemMessage(`💡 提示：按 F1=受害人, F2=騙徒, F3=專家 切換角色`);
     
-    // 騙徒開場白
-    await this.scammerOpeningMessage();
+    // 顯示開場消息（根據角色決定）
+    await this.showOpeningMessages();
+  }
+
+  /**
+   * 設置鍵盤快捷鍵
+   */
+  private setupKeyboardShortcuts(): void {
+    // 按鍵 F1: 切換到受害人模式
+    this.input.keyboard?.on('keydown-F1', () => {
+      this.switchToRole('victim');
+    });
+
+    // 按鍵 F2: 切換到騙徒模式
+    this.input.keyboard?.on('keydown-F2', () => {
+      this.switchToRole('scammer');
+    });
+
+    // 按鍵 F3: 切換到專家模式
+    this.input.keyboard?.on('keydown-F3', () => {
+      this.switchToRole('expert');
+    });
+
+    console.log('[BattleScene] 鍵盤快捷鍵已設置 (F1=受害人, F2=騙徒, F3=專家)');
+  }
+
+  /**
+   * 切換角色
+   */
+  private async switchToRole(newRole: 'victim' | 'expert' | 'scammer'): Promise<void> {
+    try {
+      // 防止重複切換
+      if (this.isWaitingForAI) {
+        this.addSystemMessage('⚠️ 請等待 AI 回應完成後再切換角色');
+        return;
+      }
+
+      const roleNames = {
+        victim: '受害人',
+        expert: '專家',
+        scammer: '騙徒'
+      };
+
+      this.addSystemMessage(`🔄 正在切換到 ${roleNames[newRole]} 模式...`);
+
+      const result = await this.backendClient.switchRole(newRole);
+
+      if (result.success) {
+        this.data.playerRole = {
+          id: newRole,
+          nameZh: roleNames[newRole],
+          nameEn: newRole.charAt(0).toUpperCase() + newRole.slice(1),
+          description: result.mode_info.description
+        };
+
+        this.addSystemMessage(`✅ ${result.message}`);
+        this.addSystemMessage(`👤 你現在是：${roleNames[newRole]}`);
+        
+        console.log('[BattleScene] 角色切換成功:', result);
+      } else {
+        this.addSystemMessage('❌ 角色切換失敗');
+      }
+    } catch (error) {
+      console.error('[BattleScene] 角色切換失敗:', error);
+      this.addSystemMessage('❌ 角色切換失敗，請稍後再試');
+    }
   }
 
   /**
    * 初始化 Backend 會話（三方對話模式）
    */
-  private async initializeBackendSession(): Promise<void> {
+  private async initializeBackendSession(): Promise<Array<{role: string, content: string}>> {
     try {
       this.addSystemMessage('🔄 正在連接 AI 系統...');
       
@@ -104,47 +172,75 @@ export class BattleScene extends Phaser.Scene {
       const isConnected = await this.backendClient.checkConnection();
       if (!isConnected) {
         this.addSystemMessage('⚠️ 無法連接到 AI 系統，將使用模擬模式');
-        return;
+        return [];
       }
       
-      // 開始三方對話會話
+      // 🔥 修復：使用實際的玩家角色，而不是硬編碼
       const result = await this.backendClient.startThreeWaySession({
         scamType: this.data.scamType,
-        playerRole: 'victim',  // 玩家扮演受害者
+        playerRole: this.data.playerRole.id,  // 使用實際的玩家角色
         victimPersona: 'average'
       });
       
       this.addSystemMessage('✅ AI 系統已就緒');
-      console.log('[BattleScene] 三方對話會話已初始化');
+      console.log('[BattleScene] 三方對話會話已初始化，玩家角色:', this.data.playerRole.id);
       
-      // 返回開場白，讓調用者處理
-      return result.openingMessage;
+      // 返回開場消息數組（從後端獲取）
+      return result.openingMessages || [];
     } catch (error) {
       console.error('[BattleScene] 初始化 Backend 失敗:', error);
       this.addSystemMessage('❌ AI 系統初始化失敗，將使用模擬模式');
-      return undefined;
+      return [];
     }
   }
 
   /**
-   * 騙徒開場白
+   * 顯示開場消息（根據玩家角色決定）
    */
-  private async scammerOpeningMessage(): Promise<void> {
+  private async showOpeningMessages(): Promise<void> {
     try {
-      this.addSystemMessage('💬 騙徒開始對話...');
+      this.addSystemMessage('💬 正在生成開場對話...');
       
-      // 從初始化會話中獲取開場白
-      const openingMessage = await this.initializeBackendSession();
+      // 從初始化會話中獲取開場消息數組
+      const openingMessages = await this.initializeBackendSession();
       
-      if (openingMessage) {
-        this.addMessage('🎭 騙徒', openingMessage, '#FF2E63');
+      if (openingMessages && openingMessages.length > 0) {
+        // 清除 "正在生成開場對話..." 的系統消息
+        if (this.messages.length > 0 && this.messages[this.messages.length - 1].text === '💬 正在生成開場對話...') {
+          this.messages.pop();
+        }
+        
+        // 逐個顯示開場消息
+        for (const msg of openingMessages) {
+          if (msg.role === 'scammer') {
+            this.addMessage('🎭 騙徒', msg.content, '#FF2E63');
+          } else if (msg.role === 'expert') {
+            this.addMessage('🛡️ 防詐專家', msg.content, '#08D9D6');
+          } else if (msg.role === 'victim') {
+            this.addMessage('👤 受害者', msg.content, '#FFD93D');
+          }
+          
+          // 短暫延遲，讓對話更自然
+          await this.delay(500);
+        }
       } else {
-        // 回退到默認開場白
-        this.addMessage('🎭 騙徒', '你好，我有一個很好的機會想跟你分享...', '#FF2E63');
+        // 騙徒模式沒有開場消息，玩家先發起對話
+        if (this.data.playerRole.id === 'scammer') {
+          // 清除 "正在生成開場對話..." 的系統消息
+          if (this.messages.length > 0 && this.messages[this.messages.length - 1].text === '💬 正在生成開場對話...') {
+            this.messages.pop();
+          }
+          this.addSystemMessage('💡 你是騙徒，請開始你的詐騙對話...');
+        } else {
+          // 其他模式回退到默認開場白
+          this.addMessage('🎭 騙徒', '你好，我有一個很好的機會想跟你分享...', '#FF2E63');
+        }
       }
     } catch (error) {
-      console.error('[BattleScene] 騙徒開場白失敗:', error);
-      this.addMessage('🎭 騙徒', '你好，我有一個很好的機會想跟你分享...', '#FF2E63');
+      console.error('[BattleScene] 顯示開場消息失敗:', error);
+      if (this.data.playerRole.id !== 'scammer') {
+        this.addMessage('🎭 騙徒', '你好，我有一個很好的機會想跟你分享...', '#FF2E63');
+      }
     }
   }
 
@@ -680,17 +776,47 @@ export class BattleScene extends Phaser.Scene {
         
         const response = await this.backendClient.sendThreeWayMessage(message);
         
+        console.log('[BattleScene] 收到後端回應:', response);
+        console.log('[BattleScene] AI回應數量:', response.replies?.length);
+        
         if (response.success && response.replies) {
-          // 按順序顯示回應
-          for (const reply of response.replies) {
-            // 短暫延遲，讓對話更自然
-            await this.delay(800);
+          // 清除 "AI 正在思考..." 的系統消息
+          if (this.messages.length > 0 && this.messages[this.messages.length - 1].text === '🤖 AI 正在思考...') {
+            this.messages.pop();
+          }
+          
+          // 檢查回應格式
+          response.replies.forEach((reply, index) => {
+            console.log(`[BattleScene] 回應 ${index + 1}:`, {
+              speaker: reply.speaker,
+              messageLength: reply.message?.length,
+              messagePreview: reply.message?.substring(0, 50)
+            });
+          });
+          
+          // 按順序顯示回應，確保每個回應都是獨立的氣泡
+          for (let i = 0; i < response.replies.length; i++) {
+            const reply = response.replies[i];
             
+            // 短暫延遲，讓對話更自然
+            if (i > 0) {
+              await this.delay(800);
+            }
+            
+            // 根據 speaker 類型添加對應的消息
             if (reply.speaker === 'scammer') {
+              console.log('[BattleScene] 添加騙徒消息:', reply.message);
               this.addMessage('🎭 騙徒', reply.message, '#FF2E63');
             } else if (reply.speaker === 'expert') {
+              console.log('[BattleScene] 添加專家消息:', reply.message);
               this.addMessage('🛡️ 防詐專家', reply.message, '#08D9D6');
+            } else if (reply.speaker === 'victim') {
+              console.log('[BattleScene] 添加受害者消息:', reply.message);
+              this.addMessage('👤 受害者', reply.message, '#FFD93D');
             }
+            
+            // 強制重新渲染，確保每個消息都是獨立的氣泡
+            this.renderMessages();
           }
           
           // 更新信任度
@@ -701,6 +827,28 @@ export class BattleScene extends Phaser.Scene {
               response.trust_data.alertness
             );
             this.updateTrustMeters();
+          }
+          
+          // 🔥 檢查後端返回的遊戲結束狀態
+          if (response.game_status && response.game_status.game_over) {
+            console.log('[BattleScene] 遊戲結束:', response.game_status);
+            
+            // 顯示遊戲結束消息
+            if (response.game_status.winner === 'player') {
+              this.addSystemMessage(`🎉 ${response.game_status.reason || '你贏了！'}`);
+            } else if (response.game_status.winner === 'ai') {
+              this.addSystemMessage(`💀 ${response.game_status.reason || '你輸了！'}`);
+            } else {
+              this.addSystemMessage(`⏸️ ${response.game_status.reason || '遊戲結束'}`);
+            }
+            
+            // 禁用輸入並跳轉到結果場景
+            this.isWaitingForAI = false;
+            this.inputField.disabled = true;
+            
+            await this.delay(2000);
+            await this.endBattle(response.game_status.winner === 'player' ? 'expert_win' : 'scammer_win');
+            return;
           }
         } else {
           // 回退到舊的 API（向後兼容）
@@ -815,7 +963,14 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private addMessage(speaker: string, text: string, color: string): void {
-    this.messages.push({ speaker, text, color });
+    // 確保每個消息都是獨立的對象，防止引用問題
+    this.messages.push({ 
+      speaker: speaker, 
+      text: text, 
+      color: color 
+    });
+    
+    // 立即渲染以確保消息分離
     this.renderMessages();
   }
 
@@ -843,15 +998,15 @@ export class BattleScene extends Phaser.Scene {
         fontFamily: 'Noto Sans TC, sans-serif',
         fontSize: '14px',
         color: '#FFFFFF',
-        wordWrap: { width: maxWidth },
-        lineSpacing: -2
+        wordWrap: { width: maxWidth, useAdvancedWrap: true },
+        lineSpacing: 2
       });
       
       const textHeight = tempText.height;
       tempText.destroy();
       
-      // 消息高度 = 頂部間距(10) + 標題(18) + 間距(6) + 文字高度 + 底部間距(10)
-      const bubbleHeight = Math.max(60, 10 + 18 + 6 + textHeight + 10);
+      // 消息高度 = 頂部間距(12) + 標題(20) + 間距(8) + 文字高度 + 底部間距(12)
+      const bubbleHeight = Math.max(70, 12 + 20 + 8 + textHeight + 12);
       messageHeights.push(bubbleHeight);
     });
     
@@ -881,14 +1036,20 @@ export class BattleScene extends Phaser.Scene {
       const isPlayer = msg.speaker.includes(this.data.playerRole.nameZh);
       const isSystem = msg.speaker.includes('系統');
       
-      // Message bubble container
+      // Message bubble container - 每個消息都是獨立的容器
       const messageBubble = this.add.container(0, y);
       
-      // 根據角色選擇背景顏色
+      // 根據說話者選擇背景顏色（確保騙徒和專家有不同的顏色）
       let bgColor = 0x16213E;
       let bgAlpha = 0.6;
       
-      if (isPlayer) {
+      if (msg.speaker.includes('騙徒')) {
+        bgColor = 0x2A1A1F;  // 深紅色背景
+        bgAlpha = 0.7;
+      } else if (msg.speaker.includes('專家')) {
+        bgColor = 0x0A1F1F;  // 深青色背景
+        bgAlpha = 0.7;
+      } else if (isPlayer) {
         bgColor = 0x08D9D6;
         bgAlpha = 0.15;
       } else if (isSystem) {
@@ -907,21 +1068,21 @@ export class BattleScene extends Phaser.Scene {
       bubbleBg.setOrigin(0, 0);
       bubbleBg.setStrokeStyle(2, parseInt(msg.color.replace('#', '0x')), 0.5);
       
-      // Speaker name
-      const speakerText = this.add.text(12, 10, msg.speaker, {
+      // Speaker name - 確保顯示完整的說話者名稱
+      const speakerText = this.add.text(12, 12, msg.speaker, {
         fontFamily: 'Rajdhani, sans-serif',
-        fontSize: '15px',
+        fontSize: '16px',
         color: msg.color,
         fontStyle: 'bold'
       });
 
-      // Message text - 縮小字體和行距
-      const messageText = this.add.text(12, 32, msg.text, {
+      // Message text - 確保正確換行
+      const messageText = this.add.text(12, 40, msg.text, {
         fontFamily: 'Noto Sans TC, sans-serif',
         fontSize: '14px',
         color: '#FFFFFF',
-        wordWrap: { width: maxWidth },
-        lineSpacing: -2  // 負值行距讓文字更緊湊
+        wordWrap: { width: maxWidth, useAdvancedWrap: true },
+        lineSpacing: 2  // 正值行距讓文字更易讀
       });
 
       messageBubble.add([bubbleBg, speakerText, messageText]);
@@ -947,8 +1108,8 @@ export class BattleScene extends Phaser.Scene {
         });
       }
       
-      // 更新下一個消息的 Y 位置
-      currentY += bubbleHeight + 6;  // 6px 間距，更緊湊
+      // 更新下一個消息的 Y 位置 - 增加間距以確保氣泡分離
+      currentY += bubbleHeight + 8;  // 增加到 8px 間距，確保氣泡明顯分離
     });
   }
 

@@ -318,7 +318,7 @@ export class AutoModeScene extends Phaser.Scene {
     const backBg = this.add.rectangle(0, 0, 220, 60, 0xFF2E63, 0.9);
     backBg.setOrigin(0.5);
     backBg.setStrokeStyle(2, 0xFF6B9D, 0.8);
-    const backText = this.add.text(0, 0, '🏠返回主頁', {
+    const backText = this.add.text(0, 0, '🏠 返回主頁', {
       fontFamily: 'Rajdhani, sans-serif',
       fontSize: '22px',
       color: '#FFFFFF',

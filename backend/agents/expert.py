@@ -17,17 +17,22 @@ class ExpertAgent(Agent):
     class Config:
         extra = "allow"  # 允許額外字段
     
-    def __init__(self, learning_context: str = None, victim_persona: str = "average"):
+    def __init__(self, learning_context: str = None, victim_persona: str = "average", simple_mode: bool = False):
         local_model_name = os.getenv("AGENT_MODEL_EXPERT") or os.getenv("AGENT_MODEL", "gemma3:4b")
         base_url = os.getenv("OLLAMA_BASE_URL_EXPERT") or os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-        log.info(f"🎭 ExpertAgent 初始化 - 模型: {local_model_name}, URL: {base_url}, Persona: {victim_persona}")
+        
+        # 檢查是否使用簡化模式（環境變量或參數）
+        use_simple = simple_mode or os.getenv("USE_SIMPLE_PROMPTS", "false").lower() == "true"
+        
+        log.info(f"🎭 ExpertAgent 初始化 - 模型: {local_model_name}, URL: {base_url}, Persona: {victim_persona}, 簡化模式: {use_simple}")
         llm = OllamaLlm(model=local_model_name, base_url=base_url)
         
         # --- 使用 PromptBuilder 建構 Prompt ---
         base_instruction = PromptBuilder.build_expert_prompt(
             persona_type=victim_persona,
-            include_examples=True,
-            include_hotlines=True
+            include_examples=not use_simple,  # 簡化模式不包含示例
+            include_hotlines=not use_simple,  # 簡化模式不包含熱線
+            simple_mode=use_simple
         )
         
         # 記錄 Prompt 統計

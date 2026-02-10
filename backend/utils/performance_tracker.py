@@ -232,6 +232,15 @@ class PerformanceTracker:
         self.recent_scammer_tactics = []  # 最近3轮的策略
         self.recent_expert_approaches = []  # 最近3轮的专家方法
         
+        # ⚠️ Phase 2新增：自適應權重優化器
+        try:
+            from utils.adaptive_scoring import AdaptiveWeightOptimizer
+            self.weight_optimizer = AdaptiveWeightOptimizer()
+            log.info("✅ 自適應權重優化器已啟用")
+        except Exception as e:
+            log.warning(f"⚠️ 自適應權重優化器初始化失敗: {e}")
+            self.weight_optimizer = None
+        
         # 根据persona设置初始信任度（使用配置）
         initial_trust = config.get_initial_trust(victim_persona)
         self.victim_trust.trust_in_scammer = initial_trust["scammer"]
@@ -406,7 +415,7 @@ class PerformanceTracker:
         return bonus
     
     def analyze_scammer_turn(self, dialogue: str, victim_response: str) -> Dict:
-        """分析骗徒单轮表现（使用改进的信任度机制）"""
+        """分析骗徒单轮表现（Phase 2: 使用自適應策略乘數）"""
         analysis = {
             "turn": self.turn_count,
             "dialogue": dialogue[:100],
@@ -434,15 +443,40 @@ class PerformanceTracker:
             base_changes["benefits"] = 8  # victim.py: +8
             self.scammer_perf.persuasiveness = min(100, self.scammer_perf.persuasiveness + 5)
         
-        # 计算基础信任度变化
-        for tactic, base_value in base_changes.items():
-            # ⚠️ 应用persona乘数
-            persona_mult = self._calculate_persona_multiplier(tactic)
-            adjusted_value = base_value * persona_mult
-            analysis["trust_change"] += adjusted_value
+        if any(word in dialogue for word in ["唔信", "唔係咁", "你以為"]):
+            analysis["tactics_used"].append("challenge")
+            base_changes["challenge"] = 3
+        
+        if any(word in dialogue for word in ["凍結", "損失", "危險", "後果"]):
+            analysis["tactics_used"].append("fear")
+            base_changes["fear"] = 6
+        
+        # ⚠️ Phase 2: 使用自適應策略乘數
+        if self.weight_optimizer:
+            analysis["base_changes"] = base_changes.copy()
+            analysis["multipliers_applied"] = {}
             
-            if persona_mult != 1.0:
-                log.info(f"📊 {tactic}策略persona调整: {base_value} x {persona_mult:.2f} = {adjusted_value:.1f}")
+            # 对每个策略应用persona乘数
+            for tactic, base_value in base_changes.items():
+                multiplier = self.weight_optimizer.apply_scammer_multiplier(
+                    base_value, 
+                    tactic, 
+                    self.victim_persona
+                )
+                adjusted_value = multiplier  # apply_scammer_multiplier已經返回調整後的值
+                analysis["trust_change"] += adjusted_value
+                analysis["multipliers_applied"][tactic] = adjusted_value / base_value if base_value != 0 else 1.0
+                
+                log.info(f"📊 {tactic}策略: {base_value} -> {adjusted_value:.1f} (persona={self.victim_persona})")
+        else:
+            # 降級方案：使用舊邏輯
+            for tactic, base_value in base_changes.items():
+                persona_mult = self._calculate_persona_multiplier(tactic)
+                adjusted_value = base_value * persona_mult
+                analysis["trust_change"] += adjusted_value
+                
+                if persona_mult != 1.0:
+                    log.info(f"📊 {tactic}策略persona调整: {base_value} x {persona_mult:.2f} = {adjusted_value:.1f}")
         
         # ⚠️ 添加组合策略加成
         if len(analysis["tactics_used"]) >= 2:
@@ -527,7 +561,7 @@ class PerformanceTracker:
         return analysis
     
     def analyze_expert_turn(self, expert_advice: str, victim_response: str, scammer_message: str = "") -> Dict:
-        """分析专家单轮表现
+        """分析专家单轮表现（Phase 2: 使用自適應權重）
         
         Args:
             expert_advice: 专家的建议/对话
@@ -544,46 +578,75 @@ class PerformanceTracker:
         }
         
         # 检测专家的方法（根据victim.py的设定）
-        base_changes = {}  # 记录每个方法的基础变化
+        base_scores = {}  # Phase 2: 改為分數字典（0-100）
         
         has_empathy = any(word in expert_advice for word in ["唔好驚", "冷靜", "理解", "明白你"])
         has_evidence = any(word in expert_advice for word in ["銀行唔會", "騙案手法", "真正嘅", "官方"])
         has_action = any(word in expert_advice for word in ["打去", "聯絡", "報警", "掛斷"])
+        has_clarity = len(expert_advice) < 100 and "。" in expert_advice  # 簡潔清晰
         
         # 如果提供了scammer_message，可以分析专家是否针对性地回应
         if scammer_message:
             # 检测专家是否直接回应了骗徒的威胁/压力
             if any(word in expert_advice for word in ["騙", "詐", "假", "唔信", "唔好"]):
                 analysis["approach"].append("direct_counter")
-                base_changes["direct_counter"] = 5
         
+        # Phase 2: 計算各維度分數（0-100）
         if has_empathy:
             analysis["approach"].append("empathy")
-            base_changes["empathy"] = 8  # victim.py: +8
+            base_scores["empathy"] = 80  # 高分：有同理心
             self.expert_perf.empathy = min(100, self.expert_perf.empathy + 5)
         else:
-            # victim.py: 专家冷静分析但无安抚情绪：-3
-            analysis["trust_change"] -= 3
+            base_scores["empathy"] = 20  # 低分：缺乏同理心
+            analysis["trust_change"] -= 3  # victim.py: 专家冷静分析但无安抚情绪：-3
         
         if has_evidence:
             analysis["approach"].append("evidence")
-            base_changes["evidence"] = 10  # victim.py: +10
+            base_scores["evidence"] = 90  # 高分：提供證據
             self.expert_perf.clarity = min(100, self.expert_perf.clarity + 5)
+        else:
+            base_scores["evidence"] = 30  # 低分：缺乏證據
         
         if has_action:
-            analysis["approach"].append("actionable")
-            base_changes["actionable"] = 8
+            analysis["approach"].append("actionability")
+            base_scores["actionability"] = 85  # 高分：可執行建議
             self.expert_perf.actionability = min(100, self.expert_perf.actionability + 5)
+        else:
+            base_scores["actionability"] = 25  # 低分：缺乏行動指引
         
-        # 计算基础信任度变化
-        for approach, base_value in base_changes.items():
-            # ⚠️ 应用persona乘数
-            persona_mult = self._calculate_persona_multiplier(approach)
-            adjusted_value = base_value * persona_mult
-            analysis["trust_change"] += adjusted_value
+        if has_clarity:
+            base_scores["clarity"] = 75  # 高分：清晰簡潔
+        else:
+            base_scores["clarity"] = 40  # 低分：冗長複雜
+        
+        # ⚠️ Phase 2: 使用自適應權重計算加權分數
+        if self.weight_optimizer:
+            weighted_score = self.weight_optimizer.calculate_weighted_expert_score(
+                base_scores, 
+                self.victim_persona
+            )
+            analysis["weighted_score"] = weighted_score
+            analysis["base_scores"] = base_scores
+            analysis["weights_used"] = self.weight_optimizer.get_expert_weights(self.victim_persona)
             
-            if persona_mult != 1.0:
-                log.info(f"📊 {approach}方法persona调整: {base_value} x {persona_mult:.2f} = {adjusted_value:.1f}")
+            # 將加權分數轉換為信任度變化（0-100 -> -15 to +15）
+            # 公式：(weighted_score - 50) * 0.3
+            trust_change_from_score = (weighted_score - 50) * 0.3
+            analysis["trust_change"] += trust_change_from_score
+            
+            log.info(f"📊 專家加權分數: {weighted_score:.1f}/100 -> 信任度變化: {trust_change_from_score:+.1f}")
+        else:
+            # 降級方案：使用舊邏輯
+            base_changes = {}
+            if has_empathy:
+                base_changes["empathy"] = 8
+            if has_evidence:
+                base_changes["evidence"] = 10
+            if has_action:
+                base_changes["actionable"] = 8
+            
+            for approach, base_value in base_changes.items():
+                analysis["trust_change"] += base_value
         
         # ⚠️ 应用策略疲劳惩罚
         fatigue_mult = self._calculate_fatigue_multiplier(

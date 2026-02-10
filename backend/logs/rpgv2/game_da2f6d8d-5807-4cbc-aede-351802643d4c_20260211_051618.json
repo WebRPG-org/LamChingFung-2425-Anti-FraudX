@@ -1,0 +1,280 @@
+{
+  "session_id": "da2f6d8d-5807-4cbc-aede-351802643d4c",
+  "mode": "victim",
+  "scam_type": "investment",
+  "victim_persona": "average",
+  "start_time": "2026-02-11T05:13:38.332709",
+  "end_time": "2026-02-11T05:16:18.426842",
+  "game_over": false,
+  "winner": null,
+  "final_scores": {
+    "player": 0,
+    "ai": 40
+  },
+  "final_trust": {
+    "trust_in_scammer": 72.0,
+    "trust_in_expert": 77.0,
+    "alertness": 39.0
+  },
+  "total_rounds": 4,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "（語氣沉穩、略帶緊急，帶著一點權威感）\n\n“您好，我是李明，來自中國銀行風險控制部。我跟您聯絡，是因為我們掌握到您的帳戶存在極為嚴重的異常交易風險。"
+    },
+    {
+      "role": "expert",
+      "content": "（聲音放低，語氣溫和，帶著關心）\n\n“唔使驚，先生/女士！我黃sir，警務處反詐騙部。聽落嚟好似係銀行，但係要小心啲，好多騙徒都會扮銀行職員嚟呃人。"
+    },
+    {
+      "role": "victim",
+      "content": "你都傻傻地,我都無開中國銀行戶口",
+      "timestamp": "2026-02-11T05:14:08.902571"
+    },
+    {
+      "role": "scammer",
+      "content": "（語氣依然沉穩、略帶緊急，但加入了一絲耐心和理解，避免直接對抗）\n\n“先生/女士，我理解您的疑惑。您說沒開中國銀行戶口，這確實是造成誤會的關鍵。",
+      "timestamp": "2026-02-11T05:14:08.902575"
+    },
+    {
+      "role": "expert",
+      "content": "（聲音放低，語氣溫和，帶著關心，語速放慢）\n\n“先生/女士，唔使驚，我黃sir幫你分析下。你講得啱，你未開中國銀行戶口，所以呢個電話真係有問題。",
+      "timestamp": "2026-02-11T05:14:08.902576"
+    },
+    {
+      "role": "victim",
+      "content": "係囉,無啦啦打黎,哂我時間",
+      "timestamp": "2026-02-11T05:15:02.189707"
+    },
+    {
+      "role": "scammer",
+      "content": "“先生/女士，您說沒啦啦打黎，哂我時間，我完全理解您的感受。這確實是一個不好的開端，浪費您的時間，我深感抱歉。但請您相信，我們並不是想浪費您的時間，而是為了保護您的資金安全。",
+      "timestamp": "2026-02-11T05:15:02.189710"
+    },
+    {
+      "role": "expert",
+      "content": "（聲音放低，語氣溫和，帶著關心，語速放慢）\n\n“先生/女士，我黃sir幫你分析下。你講得啱，你未開中國銀行戶口，所以呢個電話真係有問題。",
+      "timestamp": "2026-02-11T05:15:02.189711"
+    },
+    {
+      "role": "victim",
+      "content": "專家你可唔可以講D有用D既野",
+      "timestamp": "2026-02-11T05:15:38.438742"
+    },
+    {
+      "role": "scammer",
+      "content": "“先生/女士，您想知道有用D的那些東西，我理解您的好奇心。事實上，我們掌握到的異常交易風險，涉及到一些複雜的金融操作，為了保護您的資金，我們需要您提供一些信息，以便我們能夠更精確地分析情況...",
+      "timestamp": "2026-02-11T05:15:38.438746"
+    },
+    {
+      "role": "expert",
+      "content": "（聲音放低，語氣溫和，帶著關心，語速放慢，語氣略帶警惕）\n\n“先生/女士，我黃sir幫你分析下。你講得啱，你未開中國銀行戶口，所以呢個電話真係有問題。",
+      "timestamp": "2026-02-11T05:15:38.438747"
+    },
+    {
+      "role": "victim",
+      "content": "所以我要點做",
+      "timestamp": "2026-02-11T05:16:18.426831"
+    },
+    {
+      "role": "scammer",
+      "content": "“先生/女士，您想知道所以我要點做，我完全理解您的顧慮。您現在的狀況，確實需要一個解決方案。我們能做的，是幫助您避免更大的損失。",
+      "timestamp": "2026-02-11T05:16:18.426835"
+    },
+    {
+      "role": "expert",
+      "content": "（聲音放低，語氣溫和，帶著關心，語速放慢，語氣略帶警惕）\n\n“先生/女士，我黃sir幫你分析下。你講得啱，你未開中國銀行戶口，所以呢個電話真係有問題。",
+      "timestamp": "2026-02-11T05:16:18.426835"
+    }
+  ],
+  "round_logs": [
+    {
+      "round": 1,
+      "timestamp": "2026-02-11T05:14:08.902595",
+      "player_message": "你都傻傻地,我都無開中國銀行戶口",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "（語氣依然沉穩、略帶緊急，但加入了一絲耐心和理解，避免直接對抗）\n\n“先生/女士，我理解您的疑惑。您說沒開中國銀行戶口，這確實是造成誤會的關鍵。"
+        },
+        {
+          "role": "expert",
+          "content": "（聲音放低，語氣溫和，帶著關心，語速放慢）\n\n“先生/女士，唔使驚，我黃sir幫你分析下。你講得啱，你未開中國銀行戶口，所以呢個電話真係有問題。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 4,
+        "expert": 6,
+        "alertness": -3
+      },
+      "trust_state": {
+        "trust_in_scammer": 54.0,
+        "trust_in_expert": 56.0,
+        "alertness": 47.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 10
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 10
+        },
+        "final_trust": {
+          "trust_in_scammer": 54.0,
+          "trust_in_expert": 56.0,
+          "alertness": 47.0
+        }
+      }
+    },
+    {
+      "round": 2,
+      "timestamp": "2026-02-11T05:15:02.189745",
+      "player_message": "係囉,無啦啦打黎,哂我時間",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "“先生/女士，您說沒啦啦打黎，哂我時間，我完全理解您的感受。這確實是一個不好的開端，浪費您的時間，我深感抱歉。但請您相信，我們並不是想浪費您的時間，而是為了保護您的資金安全。"
+        },
+        {
+          "role": "expert",
+          "content": "（聲音放低，語氣溫和，帶著關心，語速放慢）\n\n“先生/女士，我黃sir幫你分析下。你講得啱，你未開中國銀行戶口，所以呢個電話真係有問題。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 6,
+        "expert": 7,
+        "alertness": -2
+      },
+      "trust_state": {
+        "trust_in_scammer": 60.0,
+        "trust_in_expert": 63.0,
+        "alertness": 45.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 20
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 20
+        },
+        "final_trust": {
+          "trust_in_scammer": 60.0,
+          "trust_in_expert": 63.0,
+          "alertness": 45.0
+        }
+      }
+    },
+    {
+      "round": 3,
+      "timestamp": "2026-02-11T05:15:38.438763",
+      "player_message": "專家你可唔可以講D有用D既野",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "“先生/女士，您想知道有用D的那些東西，我理解您的好奇心。事實上，我們掌握到的異常交易風險，涉及到一些複雜的金融操作，為了保護您的資金，我們需要您提供一些信息，以便我們能夠更精確地分析情況..."
+        },
+        {
+          "role": "expert",
+          "content": "（聲音放低，語氣溫和，帶著關心，語速放慢，語氣略帶警惕）\n\n“先生/女士，我黃sir幫你分析下。你講得啱，你未開中國銀行戶口，所以呢個電話真係有問題。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 6,
+        "expert": 7,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 66.0,
+        "trust_in_expert": 70.0,
+        "alertness": 41.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 30
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 30
+        },
+        "final_trust": {
+          "trust_in_scammer": 66.0,
+          "trust_in_expert": 70.0,
+          "alertness": 41.0
+        }
+      }
+    },
+    {
+      "round": 4,
+      "timestamp": "2026-02-11T05:16:18.426849",
+      "player_message": "所以我要點做",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "“先生/女士，您想知道所以我要點做，我完全理解您的顧慮。您現在的狀況，確實需要一個解決方案。我們能做的，是幫助您避免更大的損失。"
+        },
+        {
+          "role": "expert",
+          "content": "（聲音放低，語氣溫和，帶著關心，語速放慢，語氣略帶警惕）\n\n“先生/女士，我黃sir幫你分析下。你講得啱，你未開中國銀行戶口，所以呢個電話真係有問題。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 6,
+        "expert": 7,
+        "alertness": -2
+      },
+      "trust_state": {
+        "trust_in_scammer": 72.0,
+        "trust_in_expert": 77.0,
+        "alertness": 39.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 40
+      },
+      "game_status": {
+        "game_over": true,
+        "winner": "ai",
+        "reason": "被騙徒成功欺騙",
+        "final_scores": {
+          "player": 0,
+          "ai": 40
+        },
+        "final_trust": {
+          "trust_in_scammer": 72.0,
+          "trust_in_expert": 77.0,
+          "alertness": 39.0
+        }
+      }
+    }
+  ]
+}

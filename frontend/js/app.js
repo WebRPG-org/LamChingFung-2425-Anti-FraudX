@@ -61,9 +61,10 @@ window.addEventListener('load', () => {
 // 添加鍵盤快捷鍵
 document.addEventListener('keydown', function(e) {
     if (e.key === '1') openMode('rpg');
-    if (e.key === '2') openMode('simulation');
-    if (e.key === '3') openMode('chat');
-    if (e.key === '4') openMode('test');
+    if (e.key === '2') openMode('rpgv2');
+    if (e.key === '3') openMode('simulation');
+    if (e.key === '4') openMode('chat');
+    if (e.key === '5') openMode('test');
     
     // ESC 鍵返回首頁（如果在子頁面）
     if (e.key === 'Escape') {
@@ -79,10 +80,11 @@ console.log(`
 ║   🛡️  AI 防詐騙訓練系統 v2.0          ║
 ╠════════════════════════════════════════╣
 ║  快捷鍵：                               ║
-║  1 - RPG 遊戲模式                      ║
-║  2 - 自動模擬模式                      ║
-║  3 - 個人對話模式 (新)                 ║
-║  4 - API 測試模式                      ║
+║  1 - RPG 遊戲模式 v1                   ║
+║  2 - RPG 遊戲模式 v2                   ║
+║  3 - 自動模擬模式                      ║
+║  4 - 個人對話模式                      ║
+║  5 - API 測試模式                      ║
 ║  ESC - 返回首頁                        ║
 ╚════════════════════════════════════════╝
 `);
