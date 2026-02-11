@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 防詐騙訓練系統 - 模式選擇</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="background-pattern"></div>
+    
+    <div class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="shield-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L4 6V11C4 16.55 7.84 21.74 13 23C18.16 21.74 22 16.55 22 11V6L14 2H12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="title-group">
+                    <h1>AI 防詐騙訓練系統</h1>
+                    <p class="subtitle">多模式智能防詐教育平台</p>
+                </div>
+            </div>
+            <div class="version-badge">v2.0</div>
+        </div>
+    </div>
+
+    <div class="modes-container">
+        <!-- RPG 遊戲模式 -->
+        <div class="mode-card" data-color="coral">
+            <div class="card-glow"></div>
+            <div class="mode-content">
+                <div class="icon-wrapper">
+                    <span class="mode-icon">🎮</span>
+                </div>
+                <div class="badge-container">
+                    <span class="mode-badge updated">已更新</span>
+                </div>
+                <h2 class="mode-title">RPG 遊戲模式</h2>
+                <p class="mode-description">
+                    互動式RPG遊戲，與NPC對話學習防詐技巧
+                </p>
+                <ul class="mode-features">
+                    <li><span class="feature-icon">✓</span>支持人設和騙局輪換</li>
+                    <li><span class="feature-icon">✓</span>遊戲化學習體驗</li>
+                    <li><span class="feature-icon">✓</span>實時 AI 對話</li>
+                </ul>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="mode-button" onclick="openMode('rpg')" style="flex: 1;">
+                        <span>開始遊戲 v1</span>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="mode-button" onclick="openMode('rpgv2')" style="flex: 1; background: linear-gradient(135deg, #FA8BFF 0%, #2BD2FF 100%);">
+                        <span>體驗 v2 🎯</span>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 自動模擬模式 -->
+        <div class="mode-card" data-color="violet" onclick="openMode('simulation')">
+            <div class="card-glow"></div>
+            <div class="mode-content">
+                <div class="icon-wrapper">
+                    <span class="mode-icon">🤖</span>
+                </div>
+                <h2 class="mode-title">自動模擬模式</h2>
+                <p class="mode-description">
+                    觀看AI三方對話：騙徒 vs 受害者 vs 防詐專家
+                </p>
+                <ul class="mode-features">
+                    <li><span class="feature-icon">✓</span>全自動演示詐騙過程</li>
+                    <li><span class="feature-icon">✓</span>多輪對話模擬</li>
+                    <li><span class="feature-icon">✓</span>訓練數據生成</li>
+                </ul>
+                <button class="mode-button" onclick="event.stopPropagation(); openMode('simulation')">
+                    <span>開始觀看</span>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 個人對話模式 -->
+        <div class="mode-card" data-color="emerald" onclick="openMode('chat')">
+            <div class="card-glow"></div>
+            <div class="mode-content">
+                <div class="icon-wrapper">
+                    <span class="mode-icon">💬</span>
+                </div>
+                <div class="badge-container">
+                    <span class="mode-badge new">全新</span>
+                </div>
+                <h2 class="mode-title">個人對話模式</h2>
+                <p class="mode-description">
+                    一對一 AI 對話，可切換助手或騙徒角色
+                </p>
+                <ul class="mode-features">
+                    <li><span class="feature-icon">✓</span>防詐助手：專業諮詢</li>
+                    <li><span class="feature-icon">✓</span>騙徒模擬：安全體驗</li>
+                    <li><span class="feature-icon">✓</span>10種騙局類型可選</li>
+                </ul>
+                <button class="mode-button" onclick="event.stopPropagation(); openMode('chat')">
+                    <span>開始對話</span>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- API 測試模式 -->
+        <div class="mode-card" data-color="azure" onclick="openMode('test')">
+            <div class="card-glow"></div>
+            <div class="mode-content">
+                <div class="icon-wrapper">
+                    <span class="mode-icon">🔧</span>
+                </div>
+                <h2 class="mode-title">API 測試模式</h2>
+                <p class="mode-description">
+                    測試插件功能，驗證 AI 團隊生成
+                </p>
+                <ul class="mode-features">
+                    <li><span class="feature-icon">✓</span>WebSocket 實時測試</li>
+                    <li><span class="feature-icon">✓</span>API 端點驗證</li>
+                    <li><span class="feature-icon">✓</span>系統健康檢查</li>
+                </ul>
+                <button class="mode-button" onclick="event.stopPropagation(); openMode('test')">
+                    <span>開始測試</span>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <p class="footer-title">AI 防詐騙訓練系統</p>
+                <p class="footer-tech">使用 Google ADK + Ollama 技術 | 本地部署，數據安全</p>
+            </div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">文檔</a>
+                <a href="#" class="footer-link">關於</a>
+                <a href="#" class="footer-link">支援</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

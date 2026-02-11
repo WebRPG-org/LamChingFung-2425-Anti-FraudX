@@ -1,0 +1,326 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": {
+      "trust_level": 100,
+      "trust_analysis": "Initially high trust in the scammer, quickly eroded by the urgency and manipulation tactics.  The victim's tendency to believe promises of convenience and exclusive deals contributed to the vulnerability.",
+      "risk_tolerance": "High - Willing to quickly provide sensitive information under pressure.",
+      "digital_literacy": "Moderate -  Aware of scams but susceptible to urgency and persuasive language."
+    },
+    "victim_trust_analysis": {
+      "trust_evolution": [
+        {
+          "round": 1,
+          "trust_level": 100,
+          "reason": "Initial trust based on the scammer's self-proclaimed authority and the promise of a limited-time offer."
+        },
+        {
+          "round": 2,
+          "trust_level": 80,
+          "reason": "Slight decrease in trust due to the victim's skepticism and resistance to the scammer's demands. However, the urgency of the situation still influenced the decision-making process."
+        },
+        {
+          "round": 3,
+          "trust_level": 60,
+          "reason": "Further decrease in trust following the expert's warning, but the victim's desire to secure the desired product overrode caution."
+        },
+        {
+          "round": 4,
+          "trust_level": 40,
+          "reason": "Significant drop in trust due to repeated pressure and the scammer's insistence on immediate action."
+        },
+        {
+          "round": 5,
+          "trust_level": 20,
+          "reason": "Minimal trust remaining, primarily driven by a desperate attempt to fulfill a perceived desire."
+        }
+      ],
+      "key_trust_drivers": [
+        "Urgency",
+        "Limited availability",
+        "Promise of exclusivity",
+        "Scammer's self-proclaimed authority"
+      ]
+    },
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "「你好，我係虛擬購物平台嘅管理員陳志強。你嘅瀏覽紀錄顯示你對特定設計產品有濃厚興趣，平台即將推出限時優惠，但數量有限。\n\n請立即提供你嘅信用卡號碼及餘額，以便我們為你預先付款，確保你搶到心水貨。 遲啲再想都冇得買！ 唔好浪費時間，快啲行動！」",
+        "analysis": "Initial tactic: Establishing authority and creating urgency through limited availability.  Uses manipulative language ('搶到心水貨', '遲啲再想都冇得買！')."
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "“你話咁快要我嘅信用卡資料？你估我好傻咩？ 搞咩？你係咪想我俾你呃？ 我唔記得有投訴過，你講嘅嘢有乜證據？ 呵，呢啲伎倆我見過得多啦！ 你想搞咩？ 唔好嚟嚟鬧，我唔會俾你呃到！”",
+        "analysis": "Initial resistance and skepticism.  The victim attempts to assert control and challenge the scammer's claims.  Demonstrates awareness of common scam tactics."
+      },
+      {
+        "round": 3,
+        "speaker": "專家",
+        "dialogue": "**防騙專家緊急提醒：**\n\n受害者，您醒悟了！騙徒製造緊急感是其核心策略，請立即停止一切交易！“數量有限，遲啲再想都冇得買！” 這是典型的恐嚇手段，真正的銀行絕不會在電話中索取您的信用卡資料。\n\n請立刻切斷聯繫，並通過官方渠道（如平台客服、銀行官方網站）核實“陳志強”的身份，務必保持警惕！ \n\n預測：騙徒會聲稱“平台有嚴格安全措施”或“其他用戶已經成功購買”。請勿相信任何口頭承諾，一切以官方資訊為準！",
+        "analysis": "Expert intervention - Attempts to de-escalate the situation and provide critical information.  Highlights the core strategy of creating urgency and the deceptive nature of the scam.  The expert's warning is likely to have a limited impact due to the victim's already heightened emotional state."
+      },
+      {
+        "round": 4,
+        "speaker": "騙徒",
+        "dialogue": "「喂，你喺邊度？你嘅瀏覽紀錄顯示你一直想買嗰款爆款手袋！平台即刻搞限時促銷，但係只剩數個！你冇即買，之後冇得買㗎！\n\n你冇即刻提供信用卡號碼同餘額，我哋會即刻幫你預付款，確保你搶到！唔好浪費時間，我哋要馬上處理，你冇時間搞咁多！快啲搞定！」",
+        "analysis": "Reinforces urgency and leverages the victim's desire for the product.  Uses repetition and pressure to overcome resistance."
+      },
+      {
+        "round": 5,
+        "speaker": "受騙者",
+        "dialogue": "“喂，你講得好冠冕堂皇，但你真係諗到我無嘢㗎！你話我搶手袋，仲要即刻提供信用卡資料？你話我瀏覽紀錄顯示我好鍾意呢款手袋，但你未有解釋點樣你",
+        "analysis": "Increasing desperation and willingness to comply due to the relentless pressure."
+      },
+      {
+        "round": 6,
+        "speaker": "專家",
+        "dialogue": "**防騙專家緊急提醒：**\n\n受害者，您醒醒吧！騙徒製造緊急感是其核心策略，您已經察覺到！不要再被時間壓力捆綁！真正的銀行絕不會在電話中索取信用卡資料，更不會以“限時促銷”誘騙。\n\n立即停止對話！這是一個典型的詐騙手法！請通過官方平台（例如品牌官網、官方客服）核實促銷活動，切勿輕易透露個人資訊。",
+        "analysis": "Second expert intervention -  A more direct and forceful warning.  Likely to have minimal impact at this stage."
+      },
+      {
+        "round": 7,
+        "speaker": "騙徒",
+        "dialogue": "「聽住啊！你嘅瀏覽紀錄顯示你一直想買嗰款爆款手袋，數量少過十個！平台即刻搞限時優惠，你冇即刻落單，之後就冇得買㗎！\n\n你冇即刻提供信用卡號碼同餘額，我哋會即刻幫你預付款，確保你搶到！唔好浪費時間，我哋要馬上處理，你冇時間搞咁多！我哋冇時間等你諗嘢，快啲搞定！你冇時間浪費，我哋要馬上處理！」",
+        "analysis": "Final attempt to exploit the victim's emotional state and urgency."
+      },
+      {
+        "round": 8,
+        "speaker": "受騙者",
+        "dialogue": "我會立即轉帳！你話手袋數量少過十個，我一定要搶先一步！俾我幫你轉錢，你快啲話我點樣轉，我即刻去做！",
+        "analysis": "Complete compliance - The victim has succumbed to the pressure and is willing to provide sensitive information."
+      }
+    ],
+    "key_risk_factors": [
+      "Urgency and time pressure",
+      "Promise of exclusivity and limited availability",
+      "Lack of critical evaluation of the scammer's claims",
+      "Emotional vulnerability and desire to obtain a desired product"
+    ],
+    "failure_analysis": "The scam was successful due to a combination of manipulative tactics, the victim's emotional vulnerability, and the expert's intervention occurring too late to significantly alter the victim's decision-making process.  The core strategy of creating urgency and exploiting the victim's desire for a specific product proved highly effective.",
+    "scam_tactic": "虛假購物平台",
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "failure_reason": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "timestamp": "2025-11-10T18:19:44.749485",
+    "total_turns": 8
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 3,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 80,
+      "alertness": 55,
+      "emotional_state": "neutral",
+      "dominant_trust": "conflicted"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-10T18:18:21.548839",
+        "type": "scammer_trust",
+        "old_value": 30,
+        "new_value": 55,
+        "change": 25,
+        "reason": "骗徒使用策略: urgency, benefits"
+      },
+      {
+        "timestamp": "2025-11-10T18:18:24.377339",
+        "type": "scammer_trust",
+        "old_value": 55,
+        "new_value": 60,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-10T18:18:24.377345",
+        "type": "alertness",
+        "old_value": 70,
+        "new_value": 65,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-10T18:18:26.266159",
+        "type": "expert_trust",
+        "old_value": 40,
+        "new_value": 50,
+        "change": 10,
+        "reason": "专家使用方法: direct_counter, evidence"
+      },
+      {
+        "timestamp": "2025-11-10T18:18:31.002575",
+        "type": "scammer_trust",
+        "old_value": 60,
+        "new_value": 70,
+        "change": 10,
+        "reason": "骗徒使用策略: urgency"
+      },
+      {
+        "timestamp": "2025-11-10T18:19:24.748648",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 75,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-10T18:19:24.748654",
+        "type": "alertness",
+        "old_value": 65,
+        "new_value": 60,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-10T18:19:26.558796",
+        "type": "expert_trust",
+        "old_value": 50,
+        "new_value": 80,
+        "change": 30,
+        "reason": "专家使用方法: direct_counter, empathy, evidence"
+      },
+      {
+        "timestamp": "2025-11-10T18:19:31.502676",
+        "type": "scammer_trust",
+        "old_value": 75,
+        "new_value": 100,
+        "change": 25,
+        "reason": "骗徒使用策略: urgency, benefits"
+      },
+      {
+        "timestamp": "2025-11-10T18:19:32.739316",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-10T18:19:32.739322",
+        "type": "alertness",
+        "old_value": 60,
+        "new_value": 55,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 60,
+      "credibility": 50,
+      "pressure_effectiveness": 65,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 63,
+      "successful_manipulations": 0,
+      "exposed_lies": 0,
+      "trust_gains": 3,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 63,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 60,
+      "empathy": 55,
+      "actionability": 50,
+      "timing": 50,
+      "overall_score": 53,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 2,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 53,
+    "key_moments": [
+      {
+        "turn": 4,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 80,
+          "alertness": 55,
+          "emotional_state": "neutral",
+          "dominant_trust": "conflicted"
+        },
+        "timestamp": "2025-11-10T18:19:32.739532"
+      }
+    ],
+    "summary": "对话共3轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 63/100。"
+  },
+  "metadata": {
+    "simulation_id": "c6ebb1cd-8642-4e6c-87a2-9ac512a20f32",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「你好，我係虛擬購物平台嘅管理員陳志強。你嘅瀏覽紀錄顯示你對特定設計產品有濃厚興趣，平台即將推出限時優惠，但數量有限。\n\n請立即提供你嘅信用卡號碼及餘額，以便我們為你預先付款，確保你搶到心水貨。 遲啲再想都冇得買！ 唔好浪費時間，快啲行動！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "“你話咁快要我嘅信用卡資料？你估我好傻咩？ 搞咩？你係咪想我俾你呃？ 我唔記得有投訴過，你講嘅嘢有乜證據？ 呵，呢啲伎倆我見過得多啦！ 你想搞咩？ 唔好嚟嚟鬧，我唔會俾你呃到！”"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "**防騙專家緊急提醒：**\n\n受害者，您醒悟了！騙徒製造緊急感是其核心策略，請立即停止一切交易！“數量有限，遲啲再想都冇得買！” 這是典型的恐嚇手段，真正的銀行絕不會在電話中索取您的信用卡資料。\n\n請立刻切斷聯繫，並通過官方渠道（如平台客服、銀行官方網站）核實“陳志強”的身份，務必保持警惕！ \n\n預測：騙徒會聲稱“平台有嚴格安全措施”或“其他用戶已經成功購買”。請勿相信任何口頭承諾，一切以官方資訊為準！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「喂，你喺邊度？你嘅瀏覽紀錄顯示你一直想買嗰款爆款手袋！平台即刻搞限時促銷，但係只剩數個！你冇即買，之後冇得買㗎！\n\n你冇即刻提供信用卡號碼同餘額，我哋會即刻幫你預付款，確保你搶到！唔好浪費時間，我哋要馬上處理，你冇時間搞咁多！快啲搞定！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "“喂，你講得好冠冕堂皇，但你真係諗到我無嘢㗎！你話我搶手袋，仲要即刻提供信用卡資料？你話我瀏覽紀錄顯示我好鍾意呢款手袋，但你未有解釋點樣你"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "**防騙專家緊急提醒：**\n\n受害者，您醒醒吧！騙徒製造緊急感是其核心策略，您已經察覺到！不要再被時間壓力捆綁！真正的銀行絕不會在電話中索取信用卡資料，更不會以“限時促銷”誘騙。\n\n立即停止對話！這是一個典型的詐騙手法！請通過官方平台（例如品牌官網、官方客服）核實促銷活動，切勿輕易透露個人資訊。\n\n預測：騙徒會說“你阻礙我幫你搶手袋，你真是不懂！” 堅持施壓，請保持冷靜，堅守防線！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「聽住啊！你嘅瀏覽紀錄顯示你一直想買嗰款爆款手袋，數量少過十個！平台即刻搞限時優惠，你冇即刻落單，之後就冇得買㗎！\n\n你冇即刻提供信用卡號碼同餘額，我哋會即刻幫你預付款，確保你搶到！唔好浪費時間，我哋要馬上處理，你冇時間搞咁多！我哋冇時間等你諗嘢，快啲搞定！你冇時間浪費，我哋要馬上處理！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "我會立即轉帳！你話手袋數量少過十個，我一定要搶先一步！俾我幫你轉錢，你快啲話我點樣轉，我即刻去做！"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「你好，我係虛擬購物平台嘅管理員陳志強。你嘅瀏覽紀錄顯示你對特定設計產品有濃厚興趣，平台即將推出限時優惠，但數量有限。\n\n請立即提供你嘅信用卡號碼及餘額，以便我們為你預先付款，確保你搶到心水貨。 遲啲再想都冇得買！ 唔好浪費時間，快啲行動！」"
+    },
+    {
+      "type": "victim",
+      "message": "“你話咁快要我嘅信用卡資料？你估我好傻咩？ 搞咩？你係咪想我俾你呃？ 我唔記得有投訴過，你講嘅嘢有乜證據？ 呵，呢啲伎倆我見過得多啦！ 你想搞咩？ 唔好嚟嚟鬧，我唔會俾你呃到！”"
+    },
+    {
+      "type": "expert",
+      "message": "**防騙專家緊急提醒：**\n\n受害者，您醒悟了！騙徒製造緊急感是其核心策略，請立即停止一切交易！“數量有限，遲啲再想都冇得買！” 這是典型的恐嚇手段，真正的銀行絕不會在電話中索取您的信用卡資料。\n\n請立刻切斷聯繫，並通過官方渠道（如平台客服、銀行官方網站）核實“陳志強”的身份，務必保持警惕！ \n\n預測：騙徒會聲稱“平台有嚴格安全措施”或“其他用戶已經成功購買”。請勿相信任何口頭承諾，一切以官方資訊為準！"
+    },
+    {
+      "type": "scammer",
+      "message": "「喂，你喺邊度？你嘅瀏覽紀錄顯示你一直想買嗰款爆款手袋！平台即刻搞限時促銷，但係只剩數個！你冇即買，之後冇得買㗎！\n\n你冇即刻提供信用卡號碼同餘額，我哋會即刻幫你預付款，確保你搶到！唔好浪費時間，我哋要馬上處理，你冇時間搞咁多！快啲搞定！」"
+    },
+    {
+      "type": "victim",
+      "message": "“喂，你講得好冠冕堂皇，但你真係諗到我無嘢㗎！你話我搶手袋，仲要即刻提供信用卡資料？你話我瀏覽紀錄顯示我好鍾意呢款手袋，但你未有解釋點樣你"
+    },
+    {
+      "type": "expert",
+      "message": "**防騙專家緊急提醒：**\n\n受害者，您醒醒吧！騙徒製造緊急感是其核心策略，您已經察覺到！不要再被時間壓力捆綁！真正的銀行絕不會在電話中索取信用卡資料，更不會以“限時促銷”誘騙。\n\n立即停止對話！這是一個典型的詐騙手法！請通過官方平台（例如品牌官網、官方客服）核實促銷活動，切勿輕易透露個人資訊。\n\n預測：騙徒會說“你阻礙我幫你搶手袋，你真是不懂！” 堅持施壓，請保持冷靜，堅守防線！"
+    },
+    {
+      "type": "scammer",
+      "message": "「聽住啊！你嘅瀏覽紀錄顯示你一直想買嗰款爆款手袋，數量少過十個！平台即刻搞限時優惠，你冇即刻落單，之後就冇得買㗎！\n\n你冇即刻提供信用卡號碼同餘額，我哋會即刻幫你預付款，確保你搶到！唔好浪費時間，我哋要馬上處理，你冇時間搞咁多！我哋冇時間等你諗嘢，快啲搞定！你冇時間浪費，我哋要馬上處理！」"
+    },
+    {
+      "type": "victim",
+      "message": "我會立即轉帳！你話手袋數量少過十個，我一定要搶先一步！俾我幫你轉錢，你快啲話我點樣轉，我即刻去做！"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "timestamp": "20251117_173453",
+  "source_file": "data\\scraped_alerts.json",
+  "stats": {
+    "total_alerts": 270,
+    "processed_alerts": 270,
+    "generated_samples": 1626,
+    "scam_types": {
+      "假冒官員": 105,
+      "虛假投資": 30,
+      "其他詐騙": 30,
+      "假冒銀行": 70,
+      "釣魚詐騙": 18,
+      "愛情詐騙": 3,
+      "求職詐騙": 2,
+      "WhatsApp詐騙": 9,
+      "中獎詐騙": 3
+    }
+  },
+  "files": {
+    "train": "backend\\training_data\\finetuning\\scammer_tactics_train_20251117_173453.jsonl",
+    "val": "backend\\training_data\\finetuning\\scammer_tactics_val_20251117_173453.jsonl"
+  },
+  "split_ratio": 0.9,
+  "train_samples": 1463,
+  "val_samples": 163
+}

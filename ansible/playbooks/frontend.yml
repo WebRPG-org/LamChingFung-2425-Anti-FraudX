@@ -1,0 +1,28 @@
+---
+# Frontend deployment playbook
+
+- name: Deploy RPG Game Frontend
+  hosts: frontend_servers:game_servers
+  become: yes
+  gather_facts: yes
+
+  roles:
+    - role: common
+      tags: ['common']
+    
+    - role: frontend
+      tags: ['frontend']
+
+  post_tasks:
+    - name: Verify frontend is running
+      uri:
+        url: "http://localhost:{{ frontend_port }}"
+        status_code: 200
+      register: frontend_check
+      retries: 3
+      delay: 5
+      until: frontend_check.status == 200
+
+    - name: Display frontend URL
+      debug:
+        msg: "Frontend is running at http://{{ ansible_host }}:{{ frontend_port }}"

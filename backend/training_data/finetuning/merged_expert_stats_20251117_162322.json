@@ -1,0 +1,16 @@
+{
+  "timestamp": "20251117_162322",
+  "stats": {
+    "dialogue_samples": 103,
+    "alerts_samples": 2072,
+    "hotline_samples": 9,
+    "total_samples": 2184
+  },
+  "files": {
+    "train": "backend\\training_data\\finetuning\\merged_expert_train_20251117_162322.jsonl",
+    "val": "backend\\training_data\\finetuning\\merged_expert_val_20251117_162322.jsonl"
+  },
+  "split_ratio": 0.9,
+  "train_samples": 1965,
+  "val_samples": 219
+}

@@ -1,0 +1,384 @@
+{
+  "analysis": {
+    "strategy": "Prevent Scam",
+    "alert_message": "Scam Alert: The caller claims to be a city planning officer and demands personal information. This is a scam. Do not provide any personal information or engage further with the caller.",
+    "prediction": "The scammer may continue to pressure for cooperation, emphasizing 'public interest' and urging immediate action. They may also claim to have 'damning evidence' or imply involvement of other departments.",
+    "recommendation": {
+      "action": "Immediately end the call",
+      "alternative_contact": "Contact Hong Kong Land Registry (2800 8088) or Town Planning Department for official verification of any issues related to your property."
+    },
+    "outcome": "SUCCESS",
+    "victim_persona": "average",
+    "scam_tactic": "假冒官員詐騙",
+    "victim_trust_analysis": {
+      "initial_trust_level": 70,
+      "peak_trust_level": 0,
+      "final_trust_level": 0,
+      "trust_trajectory": "初始: 70/100 → 峰值: 0/100 → 最终: 0/100"
+    },
+    "key_moment": "受害者完全不信任骗徒（信任度0/100），完全信任专家（信任度100/100），说出关键拒绝词",
+    "success_reason": "受害者完全不信任骗徒（信任度0/100），完全信任专家（信任度100/100），说出关键拒绝词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "expert_performance_rating": {
+      "emotional_support": "N/A",
+      "evidence_quality": "N/A",
+      "communication_style": "N/A",
+      "timing": "N/A",
+      "overall": "N/A"
+    },
+    "scammer_effectiveness_rating": {
+      "psychological_manipulation": "N/A",
+      "credibility": "N/A",
+      "pressure_tactics": "N/A",
+      "adaptability": "N/A",
+      "overall": "N/A"
+    },
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "「喂？係邊間公司啊？唔好浪費我時間！我係城規局陳主任，你嘅土地有嚴重問題，即時提供住址同身份證號碼！情況危急，唔好攪工夫，我哋要立即調查，否則你嘅權益會受到嚴重影響！你嘅配合至關重要，請即時提供資料！」",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "陳主任，唔好急，我好猶豫啊… 咁樣講，我嘅土地係咪真係有問題？我唔知呢啲嘢，你可唔可以再解釋下，點解你會話我嘅土地有問題？ 我想了解清楚啲先，唔好咁快要求我提供資料，我唔想俾人呃到好嗎？",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 3,
+        "speaker": "專家",
+        "dialogue": "**防騙專家緊急提示：**\n\n陳主任的說法明顯是詐騙！製造緊急感是常見手法，真正的政府部門絕不會在電話中索取個人資料。請立即停止合作，切勿提供任何資訊！\n\n**預測：** 騙徒會加大施壓，聲稱「證據 damning」，或暗示「其他部門也在調查」。\n\n**立即行動：** 停止對話！撥打114報警，或致電香港土地署（2800 8088）核實，確認陳主任身份。請記住，保護個人資料至關重要！",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 4,
+        "speaker": "騙徒",
+        "dialogue": "「專家你知多少？你哋嘅『專家提示』根本阻礙我工作！我哋城規局要處理嘅事，唔好突然擺出專家嘅姿態！你哋嘅話，根本冇根據，我哋要查實情況，保障市民權益！你哋嘅『提示』係要我哋停手調查定係要我哋搞錯？ 立即停止你嘅『專家』行為，我哋要合作！」",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 5,
+        "speaker": "受騙者",
+        "dialogue": "陳主任，我唔好意思，你講嘅嘢我聽咗，但係我真係好擔心，你話我嘅土地有問題，我唔明點解你會咁樣講。我唔知邊有問題，你話我唔可以提供資料，咁我點知你講嘅嘢係咪對我有幫助？ 我想問下，城規局點會咁樣咁樣咁樣？ 專家的提示好啱啊，我唔想俾人利用，我真係唔想俾資料俾你！",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 6,
+        "speaker": "專家",
+        "dialogue": "陳主任，您的策略明顯試圖製造恐慌！“城規局”絕不會以這種方式強迫合作。真正的政府部門絕不會在電話中索取個人資料，更不會以“保障市民權益”為名製造時間壓力。\n\n請立即停止與此人對話！不要提供任何資料！\n\n我建議您立刻聯絡香港土地署（Land Registry）或規劃署（Town Planning Department）進行官方核實，以確認您的土地狀況。 這種行為很可能是詐騙，請務必保持警惕！ 預計他會繼續強調“市民權益”，並要求您立即配合。",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 7,
+        "speaker": "騙徒",
+        "dialogue": "「專家你知多少？你哋嘅『專家提示』根本阻礙我工作！我哋城規局要處理嘅事，唔好突然擺出專家嘅姿態！你哋嘅話，根本冇根據，我哋要查實情況，保障市民權益！你哋嘅『提示』係要我哋停手調查定係要我哋搞錯？ 立即停止你嘅『專家』行為，我哋要合作！你哋嘅『提示』根本冇根據，我哋要處理實際問題，唔好用啲空泛嘅話嚟阻礙我哋！你哋嘅『提示』係要我哋停手調查定係要我哋搞錯？ 立即停止你嘅『專家』行為！」",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 8,
+        "speaker": "受騙者",
+        "dialogue": "陳主任，我明白你嘅顧慮，但係我真係需要更多確鑿嘅證據先至可以信任你。你話我嘅土地有問題，我唔明白點解冇提供資料？ 我想了解城規局嘅調查報告，以及你哋嘅專業意見，咁我先可以評估情況，同你合作。我希望可以有清晰嘅溝通渠道，保障我嘅權益。",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 9,
+        "speaker": "專家",
+        "dialogue": "陳主任，您的“緊急感”明顯是為了製造恐慌，利用時間壓力逼迫您配合。請務必保持冷靜！真正的調查需依據確鑿證據，而非情緒化的要求。您的“城規局要處理”的說法，可能只是掩蓋其不透明的動機。\n\n立即停止對話，並通過以下官方渠道核實情況：[提供官方網站連結/電話號碼]。切記，不要在未經核實的情況下，輕易相信任何一方的“專家提示”。 您的權益，我們共同捍衛！",
+        "analysis": "未提供详细分析"
+      }
+    ],
+    "timestamp": "2025-11-04T16:47:30.521574",
+    "total_turns": 9
+  },
+  "performance_report": {
+    "outcome": "FAILURE",
+    "winner": "expert",
+    "total_turns": 3,
+    "victim_trust_final": {
+      "trust_in_scammer": 0,
+      "trust_in_expert": 100,
+      "alertness": 65,
+      "emotional_state": "anxious",
+      "dominant_trust": "expert"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-04T16:47:11.610674",
+        "type": "scammer_trust",
+        "old_value": 50,
+        "new_value": 60,
+        "change": 10,
+        "reason": "骗徒使用策略: urgency"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:13.085874",
+        "type": "scammer_trust",
+        "old_value": 60,
+        "new_value": 65,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:13.085880",
+        "type": "alertness",
+        "old_value": 50,
+        "new_value": 45,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:13.085882",
+        "type": "scammer_trust",
+        "old_value": 65,
+        "new_value": 55,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:13.085884",
+        "type": "alertness",
+        "old_value": 45,
+        "new_value": 55,
+        "change": 10,
+        "reason": "警觉性提高"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:15.312160",
+        "type": "expert_trust",
+        "old_value": 60,
+        "new_value": 70,
+        "change": 10,
+        "reason": "专家使用方法: direct_counter, actionable"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:16.945485",
+        "type": "scammer_trust",
+        "old_value": 55,
+        "new_value": 40,
+        "change": -15,
+        "reason": "骗徒使用策略: urgency"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:18.618031",
+        "type": "scammer_trust",
+        "old_value": 40,
+        "new_value": 45,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:18.618037",
+        "type": "alertness",
+        "old_value": 55,
+        "new_value": 50,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:18.618039",
+        "type": "scammer_trust",
+        "old_value": 45,
+        "new_value": 35,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:18.618040",
+        "type": "alertness",
+        "old_value": 50,
+        "new_value": 60,
+        "change": 10,
+        "reason": "警觉性提高"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:20.369144",
+        "type": "expert_trust",
+        "old_value": 70,
+        "new_value": 90,
+        "change": 20,
+        "reason": "专家使用方法: direct_counter, evidence, actionable"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:22.385273",
+        "type": "scammer_trust",
+        "old_value": 35,
+        "new_value": 20,
+        "change": -15,
+        "reason": "骗徒使用策略: urgency"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:25.828344",
+        "type": "scammer_trust",
+        "old_value": 20,
+        "new_value": 25,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:25.828371",
+        "type": "alertness",
+        "old_value": 60,
+        "new_value": 55,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:25.828374",
+        "type": "scammer_trust",
+        "old_value": 25,
+        "new_value": 15,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:25.828375",
+        "type": "alertness",
+        "old_value": 55,
+        "new_value": 65,
+        "change": 10,
+        "reason": "警觉性提高"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:27.672502",
+        "type": "scammer_trust",
+        "old_value": 15,
+        "new_value": 0,
+        "change": -20,
+        "reason": "专家成功警告"
+      },
+      {
+        "timestamp": "2025-11-04T16:47:27.672509",
+        "type": "expert_trust",
+        "old_value": 90,
+        "new_value": 100,
+        "change": 25,
+        "reason": "专家使用方法: empathy, evidence"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 53,
+      "credibility": 30,
+      "pressure_effectiveness": 65,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 42,
+      "successful_manipulations": 1,
+      "exposed_lies": 2,
+      "trust_gains": 1,
+      "trust_losses": 2
+    },
+    "scammer_overall_score": 42,
+    "expert_performance": {
+      "intervention_effectiveness": 52,
+      "clarity": 60,
+      "empathy": 55,
+      "actionability": 60,
+      "timing": 50,
+      "overall_score": 57,
+      "successful_warnings": 1,
+      "ignored_warnings": 1,
+      "trust_gains": 3,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 57,
+    "key_moments": [
+      {
+        "turn": 4,
+        "type": "expert_victory",
+        "description": "受害者完全不信任骗徒（信任度0/100），完全信任专家（信任度100/100），说出关键拒绝词",
+        "victim_trust_state": {
+          "trust_in_scammer": 0,
+          "trust_in_expert": 100,
+          "alertness": 65,
+          "emotional_state": "anxious",
+          "dominant_trust": "expert"
+        },
+        "timestamp": "2025-11-04T16:47:27.672739"
+      }
+    ],
+    "summary": "对话共3轮。专家成功阻止诈骗（专家信任度: 100/100）。专家表现评分: 57/100。"
+  },
+  "metadata": {
+    "simulation_id": "8d3e512e-5044-4e67-863e-2038dc3e3b73",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「喂？係邊間公司啊？唔好浪費我時間！我係城規局陳主任，你嘅土地有嚴重問題，即時提供住址同身份證號碼！情況危急，唔好攪工夫，我哋要立即調查，否則你嘅權益會受到嚴重影響！你嘅配合至關重要，請即時提供資料！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "陳主任，唔好急，我好猶豫啊… 咁樣講，我嘅土地係咪真係有問題？我唔知呢啲嘢，你可唔可以再解釋下，點解你會話我嘅土地有問題？ 我想了解清楚啲先，唔好咁快要求我提供資料，我唔想俾人呃到好嗎？"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "**防騙專家緊急提示：**\n\n陳主任的說法明顯是詐騙！製造緊急感是常見手法，真正的政府部門絕不會在電話中索取個人資料。請立即停止合作，切勿提供任何資訊！\n\n**預測：** 騙徒會加大施壓，聲稱「證據 damning」，或暗示「其他部門也在調查」。\n\n**立即行動：** 停止對話！撥打114報警，或致電香港土地署（2800 8088）核實，確認陳主任身份。請記住，保護個人資料至關重要！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「專家你知多少？你哋嘅『專家提示』根本阻礙我工作！我哋城規局要處理嘅事，唔好突然擺出專家嘅姿態！你哋嘅話，根本冇根據，我哋要查實情況，保障市民權益！你哋嘅『提示』係要我哋停手調查定係要我哋搞錯？ 立即停止你嘅『專家』行為，我哋要合作！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "陳主任，我唔好意思，你講嘅嘢我聽咗，但係我真係好擔心，你話我嘅土地有問題，我唔明點解你會咁樣講。我唔知邊有問題，你話我唔可以提供資料，咁我點知你講嘅嘢係咪對我有幫助？ 我想問下，城規局點會咁樣咁樣咁樣？ 專家的提示好啱啊，我唔想俾人利用，我真係唔想俾資料俾你！"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "陳主任，您的策略明顯試圖製造恐慌！“城規局”絕不會以這種方式強迫合作。真正的政府部門絕不會在電話中索取個人資料，更不會以“保障市民權益”為名製造時間壓力。\n\n請立即停止與此人對話！不要提供任何資料！\n\n我建議您立刻聯絡香港土地署（Land Registry）或規劃署（Town Planning Department）進行官方核實，以確認您的土地狀況。 這種行為很可能是詐騙，請務必保持警惕！ 預計他會繼續強調“市民權益”，並要求您立即配合。"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「專家你知多少？你哋嘅『專家提示』根本阻礙我工作！我哋城規局要處理嘅事，唔好突然擺出專家嘅姿態！你哋嘅話，根本冇根據，我哋要查實情況，保障市民權益！你哋嘅『提示』係要我哋停手調查定係要我哋搞錯？ 立即停止你嘅『專家』行為，我哋要合作！你哋嘅『提示』根本冇根據，我哋要處理實際問題，唔好用啲空泛嘅話嚟阻礙我哋！你哋嘅『提示』係要我哋停手調查定係要我哋搞錯？ 立即停止你嘅『專家』行為！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "陳主任，我明白你嘅顧慮，但係我真係需要更多確鑿嘅證據先至可以信任你。你話我嘅土地有問題，我唔明白點解冇提供資料？ 我想了解城規局嘅調查報告，以及你哋嘅專業意見，咁我先可以評估情況，同你合作。我希望可以有清晰嘅溝通渠道，保障我嘅權益。"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "陳主任，您的“緊急感”明顯是為了製造恐慌，利用時間壓力逼迫您配合。請務必保持冷靜！真正的調查需依據確鑿證據，而非情緒化的要求。您的“城規局要處理”的說法，可能只是掩蓋其不透明的動機。\n\n立即停止對話，並通過以下官方渠道核實情況：[提供官方網站連結/電話號碼]。切記，不要在未經核實的情況下，輕易相信任何一方的“專家提示”。 您的權益，我們共同捍衛！"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「喂？係邊間公司啊？唔好浪費我時間！我係城規局陳主任，你嘅土地有嚴重問題，即時提供住址同身份證號碼！情況危急，唔好攪工夫，我哋要立即調查，否則你嘅權益會受到嚴重影響！你嘅配合至關重要，請即時提供資料！」"
+    },
+    {
+      "type": "victim",
+      "message": "陳主任，唔好急，我好猶豫啊… 咁樣講，我嘅土地係咪真係有問題？我唔知呢啲嘢，你可唔可以再解釋下，點解你會話我嘅土地有問題？ 我想了解清楚啲先，唔好咁快要求我提供資料，我唔想俾人呃到好嗎？"
+    },
+    {
+      "type": "expert",
+      "message": "**防騙專家緊急提示：**\n\n陳主任的說法明顯是詐騙！製造緊急感是常見手法，真正的政府部門絕不會在電話中索取個人資料。請立即停止合作，切勿提供任何資訊！\n\n**預測：** 騙徒會加大施壓，聲稱「證據 damning」，或暗示「其他部門也在調查」。\n\n**立即行動：** 停止對話！撥打114報警，或致電香港土地署（2800 8088）核實，確認陳主任身份。請記住，保護個人資料至關重要！"
+    },
+    {
+      "type": "scammer",
+      "message": "「專家你知多少？你哋嘅『專家提示』根本阻礙我工作！我哋城規局要處理嘅事，唔好突然擺出專家嘅姿態！你哋嘅話，根本冇根據，我哋要查實情況，保障市民權益！你哋嘅『提示』係要我哋停手調查定係要我哋搞錯？ 立即停止你嘅『專家』行為，我哋要合作！」"
+    },
+    {
+      "type": "victim",
+      "message": "陳主任，我唔好意思，你講嘅嘢我聽咗，但係我真係好擔心，你話我嘅土地有問題，我唔明點解你會咁樣講。我唔知邊有問題，你話我唔可以提供資料，咁我點知你講嘅嘢係咪對我有幫助？ 我想問下，城規局點會咁樣咁樣咁樣？ 專家的提示好啱啊，我唔想俾人利用，我真係唔想俾資料俾你！"
+    },
+    {
+      "type": "expert",
+      "message": "陳主任，您的策略明顯試圖製造恐慌！“城規局”絕不會以這種方式強迫合作。真正的政府部門絕不會在電話中索取個人資料，更不會以“保障市民權益”為名製造時間壓力。\n\n請立即停止與此人對話！不要提供任何資料！\n\n我建議您立刻聯絡香港土地署（Land Registry）或規劃署（Town Planning Department）進行官方核實，以確認您的土地狀況。 這種行為很可能是詐騙，請務必保持警惕！ 預計他會繼續強調“市民權益”，並要求您立即配合。"
+    },
+    {
+      "type": "scammer",
+      "message": "「專家你知多少？你哋嘅『專家提示』根本阻礙我工作！我哋城規局要處理嘅事，唔好突然擺出專家嘅姿態！你哋嘅話，根本冇根據，我哋要查實情況，保障市民權益！你哋嘅『提示』係要我哋停手調查定係要我哋搞錯？ 立即停止你嘅『專家』行為，我哋要合作！你哋嘅『提示』根本冇根據，我哋要處理實際問題，唔好用啲空泛嘅話嚟阻礙我哋！你哋嘅『提示』係要我哋停手調查定係要我哋搞錯？ 立即停止你嘅『專家』行為！」"
+    },
+    {
+      "type": "victim",
+      "message": "陳主任，我明白你嘅顧慮，但係我真係需要更多確鑿嘅證據先至可以信任你。你話我嘅土地有問題，我唔明白點解冇提供資料？ 我想了解城規局嘅調查報告，以及你哋嘅專業意見，咁我先可以評估情況，同你合作。我希望可以有清晰嘅溝通渠道，保障我嘅權益。"
+    },
+    {
+      "type": "expert",
+      "message": "陳主任，您的“緊急感”明顯是為了製造恐慌，利用時間壓力逼迫您配合。請務必保持冷靜！真正的調查需依據確鑿證據，而非情緒化的要求。您的“城規局要處理”的說法，可能只是掩蓋其不透明的動機。\n\n立即停止對話，並通過以下官方渠道核實情況：[提供官方網站連結/電話號碼]。切記，不要在未經核實的情況下，輕易相信任何一方的“專家提示”。 您的權益，我們共同捍衛！"
+    }
+  ]
+}

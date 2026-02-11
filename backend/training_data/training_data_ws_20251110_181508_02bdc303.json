@@ -1,0 +1,197 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": {
+      "trust_level": {
+        "towards_scammer": 90,
+        "towards_expert": 50,
+        "alarm_level": 35,
+        "emotion_state": "anxious"
+      }
+    },
+    "victim_trust_analysis": {
+      "initial_state": "high_trust",
+      "key_turning_point": "scammer impersonating a trusted authority figure (Li Chief)",
+      "final_state": "high_trust",
+      "main_influencing_factors": [
+        "urgency",
+        "threat to personal and national security"
+      ],
+      "decision_process": "quick response based on fear and trust"
+    },
+    "scammer_analysis": {
+      "successful_tactics": [
+        "impersonation",
+        "creating a sense of urgency",
+        "exploiting trust"
+      ],
+      "manipulation_techniques": [
+        "role consistency",
+        "threatening language",
+        "social engineering"
+      ],
+      "pressure_strategies": [
+        "demand for immediate action",
+        "withholding information"
+      ]
+    },
+    "expert_analysis": {
+      "strategy_issues": [
+        "lack of empathy and reassurance",
+        "insufficient evidence provision",
+        "ineffective communication style"
+      ],
+      "intervention_timing": "too late",
+      "dialogue_effectiveness": "low"
+    },
+    "systemic_failure_analysis": {
+      "trust_gap": "high trust in scammer due to impersonation and authority",
+      "key_triggered_action": "victim's immediate transfer of funds",
+      "ineffective_countermeasures": [
+        "expert's lack of quick response",
+        "lack of prior knowledge about the scam"
+      ]
+    },
+    "failure_reason": "The failure is primarily due to the scammer's successful impersonation of a trusted authority figure (Li Chief), which resulted in a high level of trust from the victim. This high trust allowed the scammer to exploit the victim's fear and anxiety, leading to an immediate transfer of funds. The expert's strategy issues, such as lack of empathy and reassurance, insufficient evidence provision, ineffective communication style, late intervention, and lack of prior knowledge about the scam contributed to the failure. The failure could have been avoided if the expert had responded quickly with a more empathetic and effective approach.",
+    "scam_tactic": "假冒官員詐騙",
+    "key_moment": "受害者完全信任骗徒（信任度90/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "「（電話鈴聲響起）\n\n“李主任講事啦！你嘅資料有嚴重漏洞，即時報告！檔案管理部門正進行高度敏感調查，你嘅個人資料可能涉及國家安全！請立刻提供你嘅身份證號碼、銀行賬戶資料，以及最近嘅交易紀錄！ 唔好浪費我時間，立刻配合！」",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "「哎呀，李主任？點解咁樣？我真係好驚，點算好？我啲資料有問題？咁我點算？我即刻去轉帳，俾佢哋攞去查查，萬一我真係有問題，我怕我俾人捉啦！ 我會立即轉帳，俾佢哋知我唔想有事！」",
+        "analysis": "未提供详细分析"
+      }
+    ],
+    "timestamp": "2025-11-10T18:15:13.883616",
+    "total_turns": 2
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 1,
+    "victim_trust_final": {
+      "trust_in_scammer": 90,
+      "trust_in_expert": 50,
+      "alertness": 35,
+      "emotional_state": "anxious",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-10T18:15:07.394574",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-10T18:15:08.788877",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-10T18:15:08.788882",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-10T18:15:08.788884",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 90,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-10T18:15:08.788886",
+        "type": "alertness",
+        "old_value": 25,
+        "new_value": 35,
+        "change": 10,
+        "reason": "警觉性提高"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 50,
+      "credibility": 55,
+      "pressure_effectiveness": 55,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 59,
+      "successful_manipulations": 0,
+      "exposed_lies": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 59,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 50,
+      "empathy": 50,
+      "actionability": 50,
+      "timing": 50,
+      "overall_score": 50,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 0,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 50,
+    "key_moments": [
+      {
+        "turn": 2,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度90/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 90,
+          "trust_in_expert": 50,
+          "alertness": 35,
+          "emotional_state": "anxious",
+          "dominant_trust": "scammer"
+        },
+        "timestamp": "2025-11-10T18:15:08.789073"
+      }
+    ],
+    "summary": "对话共1轮。骗徒成功建立信任（最终信任度: 90/100）。骗徒表现评分: 59/100。"
+  },
+  "metadata": {
+    "simulation_id": "02bdc303-a3bf-481c-a8a5-03564f1e1c02",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「（電話鈴聲響起）\n\n“李主任講事啦！你嘅資料有嚴重漏洞，即時報告！檔案管理部門正進行高度敏感調查，你嘅個人資料可能涉及國家安全！請立刻提供你嘅身份證號碼、銀行賬戶資料，以及最近嘅交易紀錄！ 唔好浪費我時間，立刻配合！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "「哎呀，李主任？點解咁樣？我真係好驚，點算好？我啲資料有問題？咁我點算？我即刻去轉帳，俾佢哋攞去查查，萬一我真係有問題，我怕我俾人捉啦！ 我會立即轉帳，俾佢哋知我唔想有事！」"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「（電話鈴聲響起）\n\n“李主任講事啦！你嘅資料有嚴重漏洞，即時報告！檔案管理部門正進行高度敏感調查，你嘅個人資料可能涉及國家安全！請立刻提供你嘅身份證號碼、銀行賬戶資料，以及最近嘅交易紀錄！ 唔好浪費我時間，立刻配合！」"
+    },
+    {
+      "type": "victim",
+      "message": "「哎呀，李主任？點解咁樣？我真係好驚，點算好？我啲資料有問題？咁我點算？我即刻去轉帳，俾佢哋攞去查查，萬一我真係有問題，我怕我俾人捉啦！ 我會立即轉帳，俾佢哋知我唔想有事！」"
+    }
+  ]
+}

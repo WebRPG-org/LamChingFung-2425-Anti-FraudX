@@ -1,0 +1,107 @@
+---
+# Common role - Base system setup
+
+- name: Update apt cache (Debian/Ubuntu)
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: ansible_os_family == "Debian"
+
+- name: Install base packages
+  package:
+    name:
+      - git
+      - curl
+      - wget
+      - vim
+      - htop
+      - unzip
+      - build-essential
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Set timezone
+  timezone:
+    name: "{{ timezone }}"
+
+- name: Create application user
+  user:
+    name: "{{ app_user }}"
+    group: "{{ app_group }}"
+    shell: /bin/bash
+    create_home: yes
+    state: present
+
+- name: Create application directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0755'
+  loop:
+    - "{{ install_dir }}"
+    - "{{ log_dir }}"
+    - "{{ backup_dir }}"
+
+- name: Install Node.js repository (Debian/Ubuntu)
+  shell: |
+    curl -fsSL https://deb.nodesource.com/setup_{{ nodejs_version }} | bash -
+  args:
+    creates: /etc/apt/sources.list.d/nodesource.list
+  when: ansible_os_family == "Debian"
+
+- name: Install Node.js
+  package:
+    name: nodejs
+    state: present
+
+- name: Install global npm packages
+  npm:
+    name: "{{ item }}"
+    global: yes
+    state: present
+  loop:
+    - pm2
+    - typescript
+
+- name: Install Python {{ python_version }}
+  package:
+    name:
+      - python{{ python_version }}
+      - python{{ python_version }}-pip
+      - python{{ python_version }}-venv
+      - python{{ python_version }}-dev
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install pip packages
+  pip:
+    name:
+      - virtualenv
+      - setuptools
+      - wheel
+    state: present
+    executable: pip3
+
+- name: Configure firewall (UFW)
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  loop: "{{ allowed_ports }}"
+  when: enable_firewall and ansible_os_family == "Debian"
+
+- name: Enable firewall
+  ufw:
+    state: enabled
+  when: enable_firewall and ansible_os_family == "Debian"
+
+- name: Display system information
+  debug:
+    msg: |
+      System setup completed:
+      - Node.js: {{ nodejs_version }}
+      - Python: {{ python_version }}
+      - App user: {{ app_user }}
+      - Install dir: {{ install_dir }}

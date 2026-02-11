@@ -1,0 +1,204 @@
+{
+  "timestamp": "2026-02-10T22:58:38.322932",
+  "total_conversations": 10,
+  "results": [
+    {
+      "mode": "純規則評分",
+      "config": {
+        "name": "純規則評分",
+        "rule_weight": 1.0,
+        "agent_weight": 0.0,
+        "enable_agent": false
+      },
+      "results": [
+        {
+          "conversation_id": 1,
+          "conversation_name": "高壓恐嚇案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 2,
+          "conversation_name": "溫和誘導案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 3,
+          "conversation_name": "情感操控案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 4,
+          "conversation_name": "受害人警覺案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 5,
+          "conversation_name": "複雜多策略案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 6,
+          "conversation_name": "技術支援詐騙",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 7,
+          "conversation_name": "浪漫詐騙案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 8,
+          "conversation_name": "投資詐騙（專業包裝）",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 9,
+          "conversation_name": "政府補助詐騙",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 10,
+          "conversation_name": "受害人完全識破",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        }
+      ],
+      "statistics": {
+        "avg_error": null,
+        "avg_confidence": null,
+        "success_rate": "0/10"
+      }
+    },
+    {
+      "mode": "純Agent評分",
+      "config": {
+        "name": "純Agent評分",
+        "rule_weight": 0.0,
+        "agent_weight": 1.0,
+        "enable_agent": true
+      },
+      "results": [
+        {
+          "conversation_id": 1,
+          "conversation_name": "高壓恐嚇案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 2,
+          "conversation_name": "溫和誘導案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 3,
+          "conversation_name": "情感操控案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 4,
+          "conversation_name": "受害人警覺案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 5,
+          "conversation_name": "複雜多策略案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 6,
+          "conversation_name": "技術支援詐騙",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 7,
+          "conversation_name": "浪漫詐騙案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 8,
+          "conversation_name": "投資詐騙（專業包裝）",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 9,
+          "conversation_name": "政府補助詐騙",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 10,
+          "conversation_name": "受害人完全識破",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        }
+      ],
+      "statistics": {
+        "avg_error": null,
+        "avg_confidence": null,
+        "success_rate": "0/10"
+      }
+    },
+    {
+      "mode": "混合評分(7:3)",
+      "config": {
+        "name": "混合評分(7:3)",
+        "rule_weight": 0.7,
+        "agent_weight": 0.3,
+        "enable_agent": true
+      },
+      "results": [
+        {
+          "conversation_id": 1,
+          "conversation_name": "高壓恐嚇案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 2,
+          "conversation_name": "溫和誘導案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 3,
+          "conversation_name": "情感操控案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 4,
+          "conversation_name": "受害人警覺案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 5,
+          "conversation_name": "複雜多策略案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 6,
+          "conversation_name": "技術支援詐騙",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 7,
+          "conversation_name": "浪漫詐騙案例",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 8,
+          "conversation_name": "投資詐騙（專業包裝）",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 9,
+          "conversation_name": "政府補助詐騙",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        },
+        {
+          "conversation_id": 10,
+          "conversation_name": "受害人完全識破",
+          "error": "'coroutine' object has no attribute 'trust_change'"
+        }
+      ],
+      "statistics": {
+        "avg_error": null,
+        "avg_confidence": null,
+        "success_rate": "0/10"
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+# Virtual Environment
+venv/
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# Database files
+*.sqlite3
+db/chroma.sqlite3
+
+# VSCode
+.vscode/
+
+# Development log (should not be committed)
+development.log
+
+./backend/training_data/

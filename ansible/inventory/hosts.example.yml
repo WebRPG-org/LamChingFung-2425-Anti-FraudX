@@ -1,0 +1,55 @@
+---
+# Example inventory configuration
+# Copy this file and customize for your environment
+
+all:
+  children:
+    # Production servers
+    production:
+      hosts:
+        prod-server-1:
+          ansible_host: 10.0.1.10
+          ansible_user: ubuntu
+          ansible_port: 22
+        
+        prod-server-2:
+          ansible_host: 10.0.1.11
+          ansible_user: ubuntu
+          ansible_port: 22
+      
+      vars:
+        env_vars:
+          NODE_ENV: production
+          FLASK_ENV: production
+        enable_ssl: true
+        enable_firewall: true
+    
+    # Staging servers
+    staging:
+      hosts:
+        staging-server:
+          ansible_host: 10.0.2.10
+          ansible_user: ubuntu
+      
+      vars:
+        frontend_port: 3001
+        backend_port: 5001
+        enable_ssl: false
+    
+    # Development machines
+    development:
+      hosts:
+        dev-local:
+          ansible_host: localhost
+          ansible_connection: local
+          ansible_user: developer
+      
+      vars:
+        dev_mode: true
+        hot_reload: true
+        enable_firewall: false
+
+  vars:
+    # Global SSH settings
+    ansible_ssh_private_key_file: ~/.ssh/id_rsa
+    ansible_python_interpreter: /usr/bin/python3

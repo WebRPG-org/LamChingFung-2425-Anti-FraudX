@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人對話模式 - AI 防詐騙訓練系統</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/personal_chat.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 頭部 -->
+        <div class="header">
+            <a href="/" class="back-home">🏠 返回主頁</a>
+            <h1>
+                <span>🛡️</span>
+                AI 防詐騙個人對話
+            </h1>
+            <div class="mode-indicator" id="modeIndicator" style="display: none;">
+                <span class="mode-icon" id="modeIcon">🛡️</span>
+                <span id="modeName">防詐助手</span>
+            </div>
+        </div>
+
+        <!-- 模式選擇面板 -->
+        <div class="mode-selection" id="modeSelection">
+            <h2>選擇對話模式</h2>
+            <div class="mode-buttons">
+                <div class="mode-button" data-mode="assistant">
+                    <div class="icon">🛡️</div>
+                    <h3>防詐助手</h3>
+                    <p>退休警察黃sir，專門處理詐騙案30年，提供專業防詐建議</p>
+                </div>
+                <div class="mode-button" data-mode="scammer">
+                    <div class="icon">🎭</div>
+                    <h3>騙徒模擬</h3>
+                    <p>職業騙徒林志強，體驗真實詐騙手法，學習如何識破騙局</p>
+                </div>
+            </div>
+
+            <div class="scam-type-selector" id="scamTypeSelector">
+                <label for="scamType">選擇騙局類型：</label>
+                <select id="scamType">
+                    <option value="WhatsApp 對話詐騙">WhatsApp 對話詐騙</option>
+                    <option value="假短訊釣魚">假短訊釣魚</option>
+                    <option value="虛假投資應用程式">虛假投資應用程式</option>
+                    <option value="假網站冒充銀行">假網站冒充銀行</option>
+                    <option value="刷單騙案">刷單騙案</option>
+                    <option value="中獎詐騙">中獎詐騙</option>
+                    <option value="假冒官員詐騙">假冒官員詐騙</option>
+                    <option value="假網站冒充政府">假網站冒充政府</option>
+                    <option value="虛假購物平台">虛假購物平台</option>
+                    <option value="愛情詐騙">愛情詐騙</option>
+                </select>
+            </div>
+
+            <button class="start-button" id="startButton" disabled>開始對話</button>
+        </div>
+
+        <!-- 聊天區域 -->
+        <div class="chat-container" id="chatContainer">
+            <!-- 語音設置面板 -->
+            <div class="voice-settings">
+                <label>
+                    <input type="checkbox" id="autoSpeakToggle" checked />
+                    <span class="voice-label">🔊 自動播放語音</span>
+                </label>
+                <span class="voice-info" id="voiceStatus">
+                    ✅ 語音播放正常 | ⚠️ 語音輸入需要網絡連接
+                </span>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="loading" id="loading">
+                    <div class="loading-dots">
+                        正在思考<span>.</span><span>.</span><span>.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="toolbar">
+                <button onclick="clearChat()">🗑️ 清除對話</button>
+                <button onclick="restartChat()">🔄 重新開始</button>
+                <button onclick="exportChat()">📥 匯出對話</button>
+            </div>
+            <!-- 圖片預覽區 -->
+            <div class="image-preview-container" id="imagePreviewContainer"></div>
+            
+            <div class="chat-input">
+                <button class="voice-button" id="voiceButton" onclick="toggleVoiceInput()" title="語音輸入">🎤</button>
+                <label class="image-button" title="上傳圖片">
+                    📷
+                    <input type="file" id="imageInput" accept="image/*" multiple onchange="handleImageSelect(event)" />
+                </label>
+                <input type="text" id="messageInput" placeholder="輸入訊息、上傳圖片或點擊麥克風..." />
+                <button class="send-button" id="sendButton" onclick="sendMessage()">發送</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 圖片燈箱 -->
+    <div class="image-lightbox" id="imageLightbox" onclick="closeLightbox()">
+        <button class="close-lightbox" onclick="closeLightbox()">×</button>
+        <img id="lightboxImage" src="" alt="" />
+    </div>
+
+    <script src="js/personal_chat.js"></script>
+</body>
+</html>

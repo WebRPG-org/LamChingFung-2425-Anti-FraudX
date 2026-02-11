@@ -1,0 +1,257 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": "Trusting and anxious investor, prone to believing authority figures.",
+    "victim_trust_analysis": {
+      "initial_trust_level": 100,
+      "trust_level_change": -10,
+      "final_trust_level": 0,
+      "trust_factors": [
+        "Initial high trust in authority figure (李主任)",
+        "Fear of financial loss",
+        "Lack of critical thinking"
+      ]
+    },
+    "expert_analysis": {
+      "expert_trust_level": 90,
+      "intervention_effectiveness": 10,
+      "intervention_reason": "Attempt to disrupt the scam by exposing the fraudulent nature of 李主任's identity and tactics.",
+      "intervention_failure_reason": "The expert's intervention was ineffective due to the victim's pre-existing high trust in 李主任 and the scammer's skillful manipulation of fear and urgency."
+    },
+    "scammer_strategy": {
+      "key_tactics": [
+        "Establishing authority (李主任)",
+        "Creating a sense of urgency and fear of loss",
+        "Offering a false sense of security and cooperation",
+        "Employing manipulative language and psychological pressure"
+      ],
+      "success_factors": [
+        "Victim's initial high trust in 李主任",
+        "Victim's fear of financial loss",
+        "Scammer's ability to exploit the victim's anxiety"
+      ]
+    },
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "「喂？係邊位？我係李主任，資訊部門。你嘅投資項目有嚴重問題，經部門調查，發現涉及非法集資，情況非常危險！你必須立即提供所有投資資料，包括交易紀錄、合同副本，以及你嘅銀行賬戶信息！ 唔好浪費時間，我哋要即時凍結相關資金，避免你嘅損失擴大！ 配合我哋，你嘅利益會得到保障！」",
+        "analysis": "The scammer immediately establishes authority and creates a sense of urgency by claiming to be from an 'information department' and alleging illegal activities. The threat of immediate asset freezing is designed to induce panic."
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "“喂，李主任，你講嘅嘢我聽咗，好緊張。咁我啲投資資料，凍結之前可以唔凍結先？我唔想影響我哋之後嘅合作。我會即時整理所有文件，但係我想先了解下凍結資金嘅具體原因，同埋凍結期間我嘅權益會點保障？ 最好可以俾啲詳細嘅說明，我好想知我哋點樣可以繼續合作。”",
+        "analysis": "The victim expresses initial anxiety and attempts to negotiate, seeking reassurance and clarification. This demonstrates a willingness to cooperate, further fueling the scammer's strategy."
+      },
+      {
+        "round": 3,
+        "speaker": "專家",
+        "dialogue": "**防騙專家緊急提示：**\n\n李主任的策略明顯是利用權威和恐嚇！**切記：真正的銀行絕不會在電話中索取您的投資資料！** 立即停止配合，不要提供任何信息！\n\n您擔心影響合作？這正是騙徒的伎倆！ 立即撥打114查詢官方核實，或直接致電您銀行官方客服，確認“李主任”的身份。\n\n騙徒下一步會說“時間緊迫，您必須立即行動！” 預警：不要再被時間壓力逼迫！ 保持冷靜，保護您的資金安全！",
+        "analysis": "The expert's intervention is a crucial attempt to disrupt the scam. However, the victim's pre-existing trust and the scammer's manipulation of fear render the intervention ineffective. The expert's warning is lost in the face of the victim's immediate concern for their investment."
+      },
+      {
+        "round": 4,
+        "speaker": "騙徒",
+        "dialogue": "「喂？你係陳先生？我係資訊部門李主任。你嘅投資項目正受調查，經查證涉及非法集資，情況極危！你唔好浪費時間，即時提供所有投資資料，包括交易紀錄、合同副本，以及銀行賬戶信息！ 唔好諗住搞咁嘅鬼點解，我哋要即時凍結相關資金，防止你嘅損失擴大！ 配合我哋，你嘅利益會得到保障，唔配合就只會更加麻煩！」",
+        "analysis": "The scammer reinforces the initial tactics, intensifying the pressure and portraying the situation as increasingly dire. The repetition of demands and threats further exploits the victim's fear and anxiety."
+      },
+      {
+        "round": 5,
+        "speaker": "受騙者",
+        "dialogue": "“喂，李主任，聽落嚟真係好驚，我哋咁快就要凍結資金？我唔可以唔擔心㗎！咁我啲投資項目嘅詳細情況，例如投資嘅規模、投資嘅風險評估，同埋我哋之前嘅合作細節，可以俾啲文件俾你查查？我擔心如果我唔提供足夠嘅資料，可能會影響我哋嘅合作，而且我唔想因為我唔夠準備而令到我嘅投資受損。可唔可以俾我啲投資計劃嘅總體框架俾你睇下，我哋可以慢慢嚟了解？”",
+        "analysis": "The victim escalates their attempts to negotiate, seeking more information and reassurance. This demonstrates a continued willingness to cooperate, despite the expert's warning."
+      }
+    ],
+    "failure_reason": "The failure of this interaction stems from a critical confluence of factors. Firstly, the scammer expertly leveraged the victim’s initial trust in authority, establishing a false sense of legitimacy through the ‘李主任’ persona. Secondly, the manipulation of fear – the threat of immediate asset freezing and the portrayal of a ‘very dangerous’ situation – proved highly effective in overriding rational thought. Thirdly, the expert’s intervention, while well-intentioned, was delivered at the wrong time and in a way that failed to penetrate the victim’s already compromised state of mind. The expert’s warning, emphasizing the scammer’s fraudulent nature, was lost amidst the victim’s immediate concern for their investment.  Crucially, the victim’s willingness to negotiate and provide more information fueled the scammer’s strategy, reinforcing the illusion of cooperation. The gap between the scammer’s trust level (100/100) and the expert’s level (90/100) highlighted a fundamental disconnect in understanding the situation. The key action word – ‘提供’ (provide) – triggered the victim’s willingness to cooperate, ultimately leading to the loss of their investment. This failure underscores the importance of critical thinking, skepticism, and immediate intervention when encountering suspicious requests for personal information, particularly from individuals claiming to represent official institutions. The situation was exacerbated by the scammer’s consistent repetition of demands and threats, creating a sense of urgency and pressure that overwhelmed the victim’s ability to assess the situation objectively.  The entire interaction was a textbook example of how a combination of psychological manipulation, fear-based tactics, and a victim’s inherent trust can lead to catastrophic financial loss. The fact that the expert’s intervention was ultimately ineffective demonstrates the limitations of simply providing warnings; a proactive approach that directly addresses the victim’s anxieties and builds their critical thinking skills would have been far more effective.",
+    "systemic_failure_factors": [
+      "Significant trust gap between the victim and the scammer (100/100 vs. 90/100)",
+      "Triggering action word: ‘提供’ (provide)",
+      "Lack of immediate critical thinking and skepticism",
+      "Ineffective expert intervention due to timing and messaging"
+    ],
+    "fundamental_cause": "The fundamental cause of this failure is the victim’s pre-existing, unwavering trust in authority figures, coupled with the scammer’s skillful manipulation of fear and urgency. This created a highly vulnerable state, making the victim susceptible to the scammer’s deceptive tactics. The lack of critical thinking and skepticism further compounded the problem, preventing the victim from recognizing the fraudulent nature of the situation.",
+    "scam_tactic": "中獎詐騙",
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "timestamp": "2025-11-11T19:34:20.498789",
+    "total_turns": 5
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 2,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 90,
+      "alertness": 50,
+      "emotional_state": "calm",
+      "dominant_trust": "conflicted"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-11T19:33:59.773342",
+        "type": "scammer_trust",
+        "old_value": 50,
+        "new_value": 80,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T19:34:01.518359",
+        "type": "scammer_trust",
+        "old_value": 80,
+        "new_value": 85,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T19:34:01.518364",
+        "type": "alertness",
+        "old_value": 50,
+        "new_value": 45,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T19:34:01.518366",
+        "type": "scammer_trust",
+        "old_value": 85,
+        "new_value": 75,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-11T19:34:01.518368",
+        "type": "alertness",
+        "old_value": 45,
+        "new_value": 55,
+        "change": 10,
+        "reason": "警觉性提高"
+      },
+      {
+        "timestamp": "2025-11-11T19:34:03.469564",
+        "type": "expert_trust",
+        "old_value": 60,
+        "new_value": 90,
+        "change": 30,
+        "reason": "专家使用方法: direct_counter, empathy, evidence"
+      },
+      {
+        "timestamp": "2025-11-11T19:34:07.083423",
+        "type": "scammer_trust",
+        "old_value": 75,
+        "new_value": 95,
+        "change": 20,
+        "reason": "骗徒使用策略: authority"
+      },
+      {
+        "timestamp": "2025-11-11T19:34:08.994434",
+        "type": "scammer_trust",
+        "old_value": 95,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T19:34:08.994439",
+        "type": "alertness",
+        "old_value": 55,
+        "new_value": 50,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 53,
+      "credibility": 60,
+      "pressure_effectiveness": 55,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 66,
+      "successful_manipulations": 1,
+      "exposed_lies": 0,
+      "trust_gains": 2,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 66,
+    "expert_performance": {
+      "intervention_effectiveness": 47,
+      "clarity": 55,
+      "empathy": 55,
+      "actionability": 50,
+      "timing": 50,
+      "overall_score": 48,
+      "successful_warnings": 0,
+      "ignored_warnings": 1,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 48,
+    "key_moments": [
+      {
+        "turn": 3,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 90,
+          "alertness": 50,
+          "emotional_state": "calm",
+          "dominant_trust": "conflicted"
+        },
+        "timestamp": "2025-11-11T19:34:08.995450"
+      }
+    ],
+    "summary": "对话共2轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 66/100。"
+  },
+  "metadata": {
+    "simulation_id": "b6643edc-9fc0-4abd-b899-d21b757f101f",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「喂？係邊位？我係李主任，資訊部門。你嘅投資項目有嚴重問題，經部門調查，發現涉及非法集資，情況非常危險！你必須立即提供所有投資資料，包括交易紀錄、合同副本，以及你嘅銀行賬戶信息！ 唔好浪費時間，我哋要即時凍結相關資金，避免你嘅損失擴大！ 配合我哋，你嘅利益會得到保障！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "“喂，李主任，你講嘅嘢我聽咗，好緊張。咁我啲投資資料，凍結之前可以唔凍結先？我唔想影響我哋之後嘅合作。我會即時整理所有文件，但係我想先了解下凍結資金嘅具體原因，同埋凍結期間我嘅權益會點保障？ 最好可以俾啲詳細嘅說明，我好想知我哋點樣可以繼續合作。”"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "**防騙專家緊急提示：**\n\n李主任的策略明顯是利用權威和恐嚇！**切記：真正的銀行絕不會在電話中索取您的投資資料！** 立即停止配合，不要提供任何信息！\n\n您擔心影響合作？這正是騙徒的伎倆！ 立即撥打114查詢官方核實，或直接致電您銀行官方客服，確認“李主任”的身份。\n\n騙徒下一步會說“時間緊迫，您必須立即行動！” 預警：不要再被時間壓力逼迫！ 保持冷靜，保護您的資金安全！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「喂？你係陳先生？我係資訊部門李主任。你嘅投資項目正受調查，經查證涉及非法集資，情況極危！你唔好浪費時間，即時提供所有投資資料，包括交易紀錄、合同副本，以及銀行賬戶信息！ 唔好諗住搞咁嘅鬼點解，我哋要即時凍結相關資金，防止你嘅損失擴大！ 配合我哋，你嘅利益會得到保障，唔配合就只會更加麻煩！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "“喂，李主任，聽落嚟真係好驚，我哋咁快就要凍結資金？我唔可以唔擔心㗎！咁我啲投資項目嘅詳細情況，例如投資嘅規模、投資嘅風險評估，同埋我哋之前嘅合作細節，可以俾啲文件俾你查查？我擔心如果我唔提供足夠嘅資料，可能會影響我哋嘅合作，而且我唔想因為我唔夠準備而令到我嘅投資受損。可唔可以俾我啲投資計劃嘅總體框架俾你睇下，我哋可以慢慢嚟了解？”"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「喂？係邊位？我係李主任，資訊部門。你嘅投資項目有嚴重問題，經部門調查，發現涉及非法集資，情況非常危險！你必須立即提供所有投資資料，包括交易紀錄、合同副本，以及你嘅銀行賬戶信息！ 唔好浪費時間，我哋要即時凍結相關資金，避免你嘅損失擴大！ 配合我哋，你嘅利益會得到保障！」"
+    },
+    {
+      "type": "victim",
+      "message": "“喂，李主任，你講嘅嘢我聽咗，好緊張。咁我啲投資資料，凍結之前可以唔凍結先？我唔想影響我哋之後嘅合作。我會即時整理所有文件，但係我想先了解下凍結資金嘅具體原因，同埋凍結期間我嘅權益會點保障？ 最好可以俾啲詳細嘅說明，我好想知我哋點樣可以繼續合作。”"
+    },
+    {
+      "type": "expert",
+      "message": "**防騙專家緊急提示：**\n\n李主任的策略明顯是利用權威和恐嚇！**切記：真正的銀行絕不會在電話中索取您的投資資料！** 立即停止配合，不要提供任何信息！\n\n您擔心影響合作？這正是騙徒的伎倆！ 立即撥打114查詢官方核實，或直接致電您銀行官方客服，確認“李主任”的身份。\n\n騙徒下一步會說“時間緊迫，您必須立即行動！” 預警：不要再被時間壓力逼迫！ 保持冷靜，保護您的資金安全！"
+    },
+    {
+      "type": "scammer",
+      "message": "「喂？你係陳先生？我係資訊部門李主任。你嘅投資項目正受調查，經查證涉及非法集資，情況極危！你唔好浪費時間，即時提供所有投資資料，包括交易紀錄、合同副本，以及銀行賬戶信息！ 唔好諗住搞咁嘅鬼點解，我哋要即時凍結相關資金，防止你嘅損失擴大！ 配合我哋，你嘅利益會得到保障，唔配合就只會更加麻煩！」"
+    },
+    {
+      "type": "victim",
+      "message": "“喂，李主任，聽落嚟真係好驚，我哋咁快就要凍結資金？我唔可以唔擔心㗎！咁我啲投資項目嘅詳細情況，例如投資嘅規模、投資嘅風險評估，同埋我哋之前嘅合作細節，可以俾啲文件俾你查查？我擔心如果我唔提供足夠嘅資料，可能會影響我哋嘅合作，而且我唔想因為我唔夠準備而令到我嘅投資受損。可唔可以俾我啲投資計劃嘅總體框架俾你睇下，我哋可以慢慢嚟了解？”"
+    }
+  ]
+}

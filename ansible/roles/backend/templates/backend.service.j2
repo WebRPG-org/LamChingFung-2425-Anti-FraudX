@@ -1,0 +1,20 @@
+[Unit]
+Description={{ app_name }} Backend API Service
+After=network.target
+
+[Service]
+Type=notify
+User={{ app_user }}
+Group={{ app_group }}
+WorkingDirectory={{ backend_dir }}
+Environment="PATH={{ backend_dir }}/venv/bin:/usr/local/bin:/usr/bin:/bin"
+ExecStart={{ backend_dir }}/venv/bin/gunicorn -c {{ backend_dir }}/gunicorn.conf.py app:app
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

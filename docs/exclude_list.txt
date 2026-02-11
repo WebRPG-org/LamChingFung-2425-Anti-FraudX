@@ -1,0 +1,81 @@
+# 部署包排除列表
+# 用於 create_deployment_package.bat 的 xcopy /EXCLUDE 選項
+
+# Python 緩存
+__pycache__\
+*.pyc
+*.pyo
+*.pyd
+
+# 虛擬環境
+venv\
+env\
+ENV\
+.venv\
+
+# IDE 配置
+.vscode\
+.idea\
+*.swp
+*.swo
+
+# Git
+.git\
+.gitignore
+
+# 日誌文件
+*.log
+server.log
+
+# 數據庫文件（不包含在部署包中，每台電腦獨立）
+backend\db\chroma_db\
+*.db
+*.sqlite
+*.sqlite3
+
+# 訓練數據（不包含，每台電腦獨立生成）
+backend\training_data\*.json
+backend\training_data\finetuning\*.jsonl
+
+# 已訓練的模型（不包含，使用 .tar 文件）
+backend\models\finetuned\*
+
+# 臨時文件
+*.tmp
+*.temp
+.cache\
+
+# 備份文件
+backend\agents\backups\
+backend\agent_versions\
+
+# 軍備競賽數據（開發數據）
+backend\arms_race_data\
+
+# AB 測試結果
+backend\ab_test_results\
+
+# Docker 相關（不需要在部署包中）
+docker\
+docker-compose*.yml
+Dockerfile
+.dockerignore
+
+# 文檔（可選，如果需要可以包含）
+*.md
+!README.md
+
+# 批處理文件（部署腳本除外）
+*.bat
+!scripts\*.bat
+
+# 環境變數文件（使用模板）
+.env
+backend\.env
+
+# GPU 狀態文件
+backend\gpu_status.json
+
+# 模型報告
+backend\models\model_report.json
+

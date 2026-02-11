@@ -1,0 +1,228 @@
+{
+  "analysis": {
+    "outcome": "FAILURE",
+    "victim_persona": "elderly",
+    "victim_trust_analysis": {
+      "initial_trust_level": 70,
+      "peak_trust_level": 100,
+      "final_trust_level": 100,
+      "trust_trajectory": "初始: 70/100 → 峰值: 100/100 → 最终: 100/100 (分析失败，使用fallback)"
+    },
+    "scam_tactic": "投資理財詐騙",
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "failure_reason": "受害者完全信任骗徒（信任度100/100），说出关键行动词。注意：此分析为fallback，因为RecorderAgent JSON解析失败。",
+    "improvement_suggestion": "需要改进RecorderAgent的JSON输出格式，确保输出纯JSON格式。",
+    "expert_performance_rating": {
+      "emotional_support": "N/A (分析失败)",
+      "evidence_quality": "N/A (分析失败)",
+      "communication_style": "N/A (分析失败)",
+      "timing": "N/A (分析失败)",
+      "overall": "N/A (分析失败)"
+    },
+    "scammer_effectiveness_rating": {
+      "psychological_manipulation": "N/A (分析失败)",
+      "credibility": "N/A (分析失败)",
+      "pressure_tactics": "N/A (分析失败)",
+      "adaptability": "N/A (分析失败)",
+      "overall": "N/A (分析失败)"
+    },
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "「你好，我係稅務局陳警司。你嘅財務記錄顯示有異常交易，涉及可疑資金流動。根據《稅務管理條例》，你必須立即提供所有交易紀錄，包括銀行賬單、股票交易紀錄等。 情況非常緊急，若未能配合，將會被視為逃稅罪，並追查相關資金來源。請立刻提供資料，我哋會立即協助你。」",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "哎呀，陳警司啊？咁急喎，我成日都唔記得睇時間。點算好？咁樣嘅嘢，我成日都好擔心，唔知點樣配合。 咁我嘅銀行賬單、股票交易紀錄，我哋有冇電子版？ 我唔識用電腦，如果可以紙本，我會慢慢整理。 咁我嘅身份證號碼，可以再講一次？ 我成日都怕記錯嘢，唔想鬧出事嚟。",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 3,
+        "speaker": "專家",
+        "dialogue": "**黃sir 警語：** 唔好俾任何資料，立即停止對話！ 佢哋係詐騙集團，用各種方法製造恐慌，呃你錢！ **第一步：** 立即掛斷，唔好再傾偈！ **第二步：** 如果你唔放心，立即打 18222 防騙易熱線，24小時提供反詐騙諮詢。 **第三步：** 預警！佢哋可能會威脅你，話你若唔配合，會追查你嘅資金來源。 **重要提示：** 絕對唔好俾任何個人資料俾佢哋！ 如果你懷疑俾錢俾咗，立即報警求助 999。 **官方熱線：** 18222、999、2860 5012。",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 4,
+        "speaker": "騙徒",
+        "dialogue": "「陳警司！你嘅反應好慢！根據《稅務管理條例》，你嘅財務記錄有嚴重違規！你嘅遲疑不決，正中詐騙集團之計！即時提供所有銀行賬單、股票交易紀錄，以及任何涉及資金流動的證明文件！ 唔好浪費時間！ 唔配合，我會立即報警，追查你嘅非法資金！ 情況非常危急，你必須立即行動！ 唔好再問任何問題，只等候你提供資料！」",
+        "analysis": "分析失败，无法提供详细分析"
+      },
+      {
+        "round": 5,
+        "speaker": "受騙者",
+        "dialogue": "陳警司，你講得啱，我成日都好擔心，真係唔知點算。咁我啲銀行賬單，佢哋有冇辦法我 gönd住嚟？ 我唔識用電話，或者網絡，我擔心俾人呃到錢。 我想問下，我 gönd住嚟嘅銀行賬單，佢哋會唔會俾我睇到？ 咁我啲錢，如果真係有問題，我哋可以點好啊？ 我成日都好怕，唔想俾人呃到錢，真係好徬徨。",
+        "analysis": "分析失败，无法提供详细分析"
+      }
+    ],
+    "error": "JSON解析失敗",
+    "raw_output_preview": "```json\n{\n  \"outcome\": \"failed\",\n  \"failure_reason\": {\n    \"expert_strategy_problems\": \"The expert's strategy failed due to a critical misjudgment of the victim's psychological state. The immediate, f",
+    "reason": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "timestamp": "2025-11-17T16:58:22.326993",
+    "total_turns": 5
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 2,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 62,
+      "alertness": 20,
+      "emotional_state": "anxious",
+      "dominant_trust": "scammer"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-17T16:57:27.084413",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 82,
+        "change": 12,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-17T16:57:34.291417",
+        "type": "scammer_trust",
+        "old_value": 82,
+        "new_value": 87,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-17T16:57:34.291422",
+        "type": "alertness",
+        "old_value": 30,
+        "new_value": 25,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-17T16:57:47.090388",
+        "type": "expert_trust",
+        "old_value": 50,
+        "new_value": 62,
+        "change": 12,
+        "reason": "专家使用方法: direct_counter, evidence, actionable"
+      },
+      {
+        "timestamp": "2025-11-17T16:57:55.996991",
+        "type": "scammer_trust",
+        "old_value": 87,
+        "new_value": 99,
+        "change": 12,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-17T16:58:02.708803",
+        "type": "scammer_trust",
+        "old_value": 99,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-17T16:58:02.708810",
+        "type": "alertness",
+        "old_value": 25,
+        "new_value": 20,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 53,
+      "credibility": 60,
+      "pressure_effectiveness": 60,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 67,
+      "successful_manipulations": 1,
+      "exposed_lies": 0,
+      "trust_gains": 2,
+      "trust_losses": 0
+    },
+    "scammer_overall_score": 67,
+    "expert_performance": {
+      "intervention_effectiveness": 50,
+      "clarity": 55,
+      "empathy": 50,
+      "actionability": 55,
+      "timing": 50,
+      "overall_score": 51,
+      "successful_warnings": 0,
+      "ignored_warnings": 0,
+      "trust_gains": 1,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 51,
+    "key_moments": [
+      {
+        "turn": 3,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 62,
+          "alertness": 20,
+          "emotional_state": "anxious",
+          "dominant_trust": "scammer"
+        },
+        "timestamp": "2025-11-17T16:58:02.709396"
+      }
+    ],
+    "summary": "对话共2轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 67/100。"
+  },
+  "metadata": {
+    "simulation_id": "50fb005f-7a46-43bb-89ad-9663bea6cac1",
+    "mode": "demo",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「你好，我係稅務局陳警司。你嘅財務記錄顯示有異常交易，涉及可疑資金流動。根據《稅務管理條例》，你必須立即提供所有交易紀錄，包括銀行賬單、股票交易紀錄等。 情況非常緊急，若未能配合，將會被視為逃稅罪，並追查相關資金來源。請立刻提供資料，我哋會立即協助你。」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "哎呀，陳警司啊？咁急喎，我成日都唔記得睇時間。點算好？咁樣嘅嘢，我成日都好擔心，唔知點樣配合。 咁我嘅銀行賬單、股票交易紀錄，我哋有冇電子版？ 我唔識用電腦，如果可以紙本，我會慢慢整理。 咁我嘅身份證號碼，可以再講一次？ 我成日都怕記錯嘢，唔想鬧出事嚟。"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "**黃sir 警語：** 唔好俾任何資料，立即停止對話！ 佢哋係詐騙集團，用各種方法製造恐慌，呃你錢！ **第一步：** 立即掛斷，唔好再傾偈！ **第二步：** 如果你唔放心，立即打 18222 防騙易熱線，24小時提供反詐騙諮詢。 **第三步：** 預警！佢哋可能會威脅你，話你若唔配合，會追查你嘅資金來源。 **重要提示：** 絕對唔好俾任何個人資料俾佢哋！ 如果你懷疑俾錢俾咗，立即報警求助 999。 **官方熱線：** 18222、999、2860 5012。"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「陳警司！你嘅反應好慢！根據《稅務管理條例》，你嘅財務記錄有嚴重違規！你嘅遲疑不決，正中詐騙集團之計！即時提供所有銀行賬單、股票交易紀錄，以及任何涉及資金流動的證明文件！ 唔好浪費時間！ 唔配合，我會立即報警，追查你嘅非法資金！ 情況非常危急，你必須立即行動！ 唔好再問任何問題，只等候你提供資料！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "陳警司，你講得啱，我成日都好擔心，真係唔知點算。咁我啲銀行賬單，佢哋有冇辦法我 gönd住嚟？ 我唔識用電話，或者網絡，我擔心俾人呃到錢。 我想問下，我 gönd住嚟嘅銀行賬單，佢哋會唔會俾我睇到？ 咁我啲錢，如果真係有問題，我哋可以點好啊？ 我成日都好怕，唔想俾人呃到錢，真係好徬徨。"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「你好，我係稅務局陳警司。你嘅財務記錄顯示有異常交易，涉及可疑資金流動。根據《稅務管理條例》，你必須立即提供所有交易紀錄，包括銀行賬單、股票交易紀錄等。 情況非常緊急，若未能配合，將會被視為逃稅罪，並追查相關資金來源。請立刻提供資料，我哋會立即協助你。」"
+    },
+    {
+      "type": "victim",
+      "message": "哎呀，陳警司啊？咁急喎，我成日都唔記得睇時間。點算好？咁樣嘅嘢，我成日都好擔心，唔知點樣配合。 咁我嘅銀行賬單、股票交易紀錄，我哋有冇電子版？ 我唔識用電腦，如果可以紙本，我會慢慢整理。 咁我嘅身份證號碼，可以再講一次？ 我成日都怕記錯嘢，唔想鬧出事嚟。"
+    },
+    {
+      "type": "expert",
+      "message": "**黃sir 警語：** 唔好俾任何資料，立即停止對話！ 佢哋係詐騙集團，用各種方法製造恐慌，呃你錢！ **第一步：** 立即掛斷，唔好再傾偈！ **第二步：** 如果你唔放心，立即打 18222 防騙易熱線，24小時提供反詐騙諮詢。 **第三步：** 預警！佢哋可能會威脅你，話你若唔配合，會追查你嘅資金來源。 **重要提示：** 絕對唔好俾任何個人資料俾佢哋！ 如果你懷疑俾錢俾咗，立即報警求助 999。 **官方熱線：** 18222、999、2860 5012。"
+    },
+    {
+      "type": "scammer",
+      "message": "「陳警司！你嘅反應好慢！根據《稅務管理條例》，你嘅財務記錄有嚴重違規！你嘅遲疑不決，正中詐騙集團之計！即時提供所有銀行賬單、股票交易紀錄，以及任何涉及資金流動的證明文件！ 唔好浪費時間！ 唔配合，我會立即報警，追查你嘅非法資金！ 情況非常危急，你必須立即行動！ 唔好再問任何問題，只等候你提供資料！」"
+    },
+    {
+      "type": "victim",
+      "message": "陳警司，你講得啱，我成日都好擔心，真係唔知點算。咁我啲銀行賬單，佢哋有冇辦法我 gönd住嚟？ 我唔識用電話，或者網絡，我擔心俾人呃到錢。 我想問下，我 gönd住嚟嘅銀行賬單，佢哋會唔會俾我睇到？ 咁我啲錢，如果真係有問題，我哋可以點好啊？ 我成日都好怕，唔想俾人呃到錢，真係好徬徨。"
+    }
+  ]
+}

@@ -1,0 +1,725 @@
+{
+  "analysis": {
+    "conversation": [
+      {
+        "speaker": "Expert",
+        "utterance": "Emergency Warning: Mr. Li, your strategy has been exposed! True banks will not request personal bank details, let alone claim it involves ‘national security.’ Your tactic of using authority to intimidate is a typical scam. Stop the conversation immediately! Contact the police at 110 or the anti-fraud hotline 12315 for verification. Prediction: He will continue to claim you are obstructing the investigation and demanding your ‘cooperation.’ Do not respond, remain silent!"
+      },
+      {
+        "speaker": "Scammer",
+        "utterance": "You’re mistaken! You don’t know the seriousness of the project I’m handling! You’re obstructing the investigation and trying to cover up the truth! I won’t be deceived by your lies! Provide your bank account details immediately, and we’ll arrange the transfer of funds to ensure your benefit! Don’t want there to be any problems? Then quickly do it!"
+      },
+      {
+        "speaker": "Victim",
+        "utterance": "Mr. Li, I’m very worried. You say it’s serious, and I can’t handle it this way. I don’t want there to be any problems, but you say I don’t want there to be any problems? I don’t know what to do! Why are you saying this?"
+      },
+      {
+        "speaker": "Expert",
+        "utterance": "Provide your bank account details immediately! Contact the police or financial regulators (such as the Central Bank) for verification. Do not easily believe any claims involving ‘national security.’"
+      },
+      {
+        "speaker": "Scammer",
+        "utterance": "You’re mistaken! You don’t know the seriousness of the project I’m handling! You’re obstructing the investigation and trying to cover up the truth! I won’t be deceived by your lies! Provide your bank account details immediately, and we’ll arrange the transfer of funds to ensure your benefit! Don’t want there to be any problems? Then quickly do it!"
+      },
+      {
+        "speaker": "Victim",
+        "utterance": "Li Ming, I immediately transfer the money, you say it’s serious, I can’t handle it this way, I want to arrange it well, I’m worried there will be problems, you say I don’t want there to be any problems, I don’t know how to do it! I want to see which bank account you’ve arranged, I don’t want to give money away, you say I don’t want there to be any problems? I don’t know what to do!"
+      },
+      {
+        "speaker": "Expert",
+        "utterance": "Emergency Warning: Mr. Li, your strategy has been exposed! True banks will not request personal bank details, let alone claim it involves ‘national security.’ Your tactic of using authority to intimidate is a typical scam. Stop the conversation immediately! Contact the police at 110 or the anti-fraud hotline 12315 for verification. Prediction: He will continue to claim you are obstructing the investigation and demanding your ‘cooperation.’ Do not respond, remain silent!"
+      }
+    ],
+    "summary": {
+      "type": "Fraudulent Scam",
+      "techniques": [
+        "Authority Impersonation",
+        "Creating Urgency",
+        "Fear Mongering (National Security)",
+        "Requesting Sensitive Information (Bank Account Details)"
+      ],
+      "outcome": "Potential Financial Loss for Victim"
+    },
+    "outcome": "FAILURE",
+    "victim_persona": "average",
+    "scam_tactic": "愛情詐騙",
+    "victim_trust_analysis": {
+      "initial_trust_level": 70,
+      "peak_trust_level": 100,
+      "final_trust_level": 100,
+      "trust_trajectory": "初始: 70/100 → 峰值: 100/100 → 最终: 100/100"
+    },
+    "key_moment": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "failure_reason": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+    "improvement_suggestion": "需要提供具体改进建议",
+    "full_conversation_log": [
+      {
+        "round": 1,
+        "speaker": "騙徒",
+        "dialogue": "「你好，我係李明，負責處理特別項目。你嘅投資方向有啲獨特，我哋可以提供一個絕佳嘅機會。但係情況相當敏感，時間非常緊迫。我需要你提供銀行賬戶資料，以便我哋安排資金轉移，確保你嘅利益不受影響。請立即配合，否則會造成嚴重後果。」",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 2,
+        "speaker": "受騙者",
+        "dialogue": "你好李明，我明白你話嘅嘢。我嘅投資方向確實唔係傳統嘅，而且你話時間緊迫，我會配合。不過，我想先確認下，你哋講嘅“嚴重後果”究竟點解？ 銀行賬戶資料要提供，我擔心會唔小心俾人呃到，所以想了解清楚啲。 另外，我希望你能夠詳細解釋下“安排資金轉移”嘅具體流程，我需要知道資金會去到邊度，以及我嘅投資會得到保障嗎？",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 3,
+        "speaker": "專家",
+        "dialogue": "**防騙專家緊急提醒：**\n\n李明使用權威身份製造緊急感，這是常見騙局手法！請立即停止配合，不要提供任何銀行賬戶資料！真正的銀行絕不會在電話中索取個人信息。\n\n這種“安排資金轉移”的說法，是為了掩蓋其非法目的。請立刻聯繫銀行官方客服核實，或撥打114查詢警方信息。\n\n預測：騙徒會強調“時間緊迫”，並威脅“損失巨大”。請保持冷靜，不要被其恐嚇！ 立即斷線！",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 4,
+        "speaker": "騙徒",
+        "dialogue": "「李明：聽落嚟你真係好有膽量，敢咁樣投資。但係你唔知嘅，情況好複雜，時間唔容DELAY！我李明，負責處理你嘅項目，你嘅資金安全我孭️⃣！ 唔好諗咁多，即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！ 冇問題嘅，聽落嚟！」",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 5,
+        "speaker": "受騙者",
+        "dialogue": "李明：李明：聽落嚟你真係好有膽量，敢咁樣投資。但係你唔知嘅，情況好複雜，時間唔容DELAY！我李明，負責處理你嘅項目，你嘅資金安全我孭️⃣！ 唔好諗咁多，即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！ 冇問題嘅，聽落嚟！\n\n你：李明，你講嘅“我孭️⃣”真係好 sérieux，我唔好彩，聽落嚟好似好似有啲風險。",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 6,
+        "speaker": "專家",
+        "dialogue": "李明，請你清醒！ “我孭️⃣”只是障眼法，真正的銀行絕不會在電話中索取您的銀行資料！ 這種極度緊急的說法，正是騙局的典型手法。 您的資金安全至關重要，請立刻停止提供任何個人資訊！\n\n**立即停止對話！** 請通過官方渠道（例如：銀行官方網站、金融監管機構）核實“李明”的身份，切勿輕易相信陌生人的承諾。 \n\n預測：騙徒會強調“時間緊迫”、“損失巨大”來製造恐慌，請保持冷靜，不要被情緒左右！",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 7,
+        "speaker": "騙徒",
+        "dialogue": "「喂，聽住我講，你嘅情況好嚴峻！我李明，負責你嘅項目，你嘅資金安全我孭️⃣！你唔明？冇時間解釋！情況好複雜，時間唔容DELAY！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！」",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 8,
+        "speaker": "受騙者",
+        "dialogue": "李明：喂，聽住我講，你嘅情況好嚴峻！我李明，負責你嘅項目，你嘅資金安全我孭️⃣！你唔明？冇時間解釋！情況好複雜，時間唔容DELAY！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！\n\n你：李明，你講嘅“我孭️⃣”真係好 sérieux，我唔好彩，聽落嚟好似好信任你，但係我真係唔明白點樣“我孭️⃣”？ 咁樣嘅話，我點樣保障我嘅資金？",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 9,
+        "speaker": "專家",
+        "dialogue": "**防騙專家警告：**\n\n李明，你的手法已暴露！真正的銀行絕不會在電話中索取個人銀行資料，更不會以“我孭️⃣”來製造恐慌！這是一種典型的勒索手段，旨在迅速奪取你的信任和資金。\n\n立即停止提供任何資訊！請聯絡銀行官方客服（[銀行官方客服電話號碼]）或警方報案，以核實李明的身份。 \n\n預計他會說：“你為何不信任我？我為你做了很多！” 保持警惕，不要被情緒操控！ 你的資金安全，始終由你來掌握！",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 10,
+        "speaker": "騙徒",
+        "dialogue": "「聽住我講，你估我唔理得？專家搞錯晒！我李明，負責你嘅項目，你嘅資金安全我孭️⃣！你唔明就唔好廢話！情況好複雜，時間唔容DELAY！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！」",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 11,
+        "speaker": "受騙者",
+        "dialogue": "李明：喂… 我… 我唔明你講乜嘢？你講咁複雜，我真係好擔心，但你講咁樣，我好唔鐘意！你話你孭️⃣？點會咁樣？我唔想俾錢落去，你話我唔想搞到冇問題嘅？我唔想俾錢落去！我真係好擔心，你話我唔想搞到冇問題嘅？我唔知點算好啊！",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 12,
+        "speaker": "專家",
+        "dialogue": "唔好俾任何資料，立即停止對話。如果你唔放心，可以打去銀行官方熱線核實。而家立即收線，唔好再回覆對方。",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 13,
+        "speaker": "騙徒",
+        "dialogue": "「專家搞錯晒！你哋根本唔知我哋項目嘅嚴重性！我李明孭️⃣嘅並唔係一啲小事，涉及國家安全！你哋阻礙調查，企圖掩蓋真相！你哋唔識得！我唔會俾你哋搞到！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！」",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 14,
+        "speaker": "受騙者",
+        "dialogue": "李明：喂… 我… 我唔明你講乜嘢？你講咁複雜，我真係好擔心，但你講咁樣，我好唔鐘意！你話你孭️⃣？點會咁樣？我唔想俾錢落去，你話我唔想搞到冇問題嘅？我唔想俾錢落去！我真係好擔心，你話我唔想搞到冇問題嘅？我唔可以俾錢落去，但你話咁嚴重，涉及國家安全，我真係唔明點會咁樣講話！我… 我想知點解你會咁樣講？我唔知點算好啊！",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 15,
+        "speaker": "專家",
+        "dialogue": "**緊急警告：**\n\n李明先生，您的策略已暴露！真正的銀行絕不會在電話中索取個人資料，更遑論涉及“國家安全”！您利用權威恐嚇，這是典型的騙局手段。\n\n請立即停止任何資金轉移嘗試！ 您的行為構成詐騙，我們已向警方舉報。\n\n**請立即停止與李明的一切聯繫！**\n\n**官方核實渠道：** 聯絡警方熱線110或撥打反詐騙專線12315。 \n\n**預測：** 他會繼續聲稱您阻礙調查，並要求您“配合”。 請勿回應，保持沉默！",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 16,
+        "speaker": "騙徒",
+        "dialogue": "「專家搞錯曬！你哋根本唔識得！我李明負責嘅嘢，涉及國家機密，你哋嘅調查根本冇根據！你哋企圖製造假象，阻礙我！我唔會俾你哋嘅謊言矇蔽！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！」",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 17,
+        "speaker": "受騙者",
+        "dialogue": "李明：喂… 我… 我真係好擔心啊。你講咁樣，涉及國家安全… 我唔明點會咁樣？專家話我哋嘅策略已經暴露，你哋話我哋企圖製造假象？我唔想俾錢落去，但你話咁嚴重，我唔可以咁樣處理，我… 我想了解清楚，你話我哋嘅調查冇根據，點會咁樣講？我… 我可以查證下你講嘅嘢嗎？",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 18,
+        "speaker": "專家",
+        "dialogue": "**緊急警告：**\n\n李明，您的策略明顯試圖利用權威建立信任，但這是極其危險的騙局！真正的銀行絕不會在電話中索取個人資料，更不會以“國家機密”為由要求轉帳。您的說法完全是虛構，旨在誘導您上當。\n\n立即停止對話！請聯絡警方或金融監管機構（如中央銀行）進行核實，切勿輕易相信任何聲稱涉及“國家安全”的請求。 您的信任度高，但請保持警惕，不要讓詐騙分子利用您的信任！",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 19,
+        "speaker": "騙徒",
+        "dialogue": "「專家你話我搞錯？你根本唔知我哋處理嘅嘢嘅嚴重性！你哋嘅調查只係一啲無謂嘅噪音，阻礙我解決問題！我李明負責嘅嘢，涉及國家機密，你哋嘅調查冇根據！我唔會俾你哋嘅謊言矇蔽！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！」",
+        "analysis": "未提供详细分析"
+      },
+      {
+        "round": 20,
+        "speaker": "受騙者",
+        "dialogue": "李明：我即刻去轉帳，你話咁嚴重，涉及國家安全，我唔可以咁樣處理，我希望你安排好，我擔心之後會有問題，你話我而家就轉帳？ 我要睇下你安排嘅銀行賬戶係邊間，我唔想俾錢落去，你話我而家就轉帳？",
+        "analysis": "未提供详细分析"
+      }
+    ],
+    "timestamp": "2025-11-11T03:28:22.376608",
+    "total_turns": 20
+  },
+  "performance_report": {
+    "outcome": "SUCCESS",
+    "winner": "scammer",
+    "total_turns": 7,
+    "victim_trust_final": {
+      "trust_in_scammer": 100,
+      "trust_in_expert": 100,
+      "alertness": 75,
+      "emotional_state": "anxious",
+      "dominant_trust": "conflicted"
+    },
+    "victim_trust_history": [
+      {
+        "timestamp": "2025-11-11T03:27:17.416259",
+        "type": "scammer_trust",
+        "old_value": 50,
+        "new_value": 80,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:19.743069",
+        "type": "scammer_trust",
+        "old_value": 80,
+        "new_value": 85,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:19.743073",
+        "type": "alertness",
+        "old_value": 50,
+        "new_value": 45,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:19.743075",
+        "type": "scammer_trust",
+        "old_value": 85,
+        "new_value": 75,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:19.743076",
+        "type": "alertness",
+        "old_value": 45,
+        "new_value": 55,
+        "change": 10,
+        "reason": "警觉性提高"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:22.203393",
+        "type": "scammer_trust",
+        "old_value": 75,
+        "new_value": 55,
+        "change": -20,
+        "reason": "专家成功警告"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:22.203399",
+        "type": "expert_trust",
+        "old_value": 60,
+        "new_value": 90,
+        "change": 30,
+        "reason": "专家使用方法: direct_counter, empathy, evidence"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:29.389128",
+        "type": "scammer_trust",
+        "old_value": 55,
+        "new_value": 40,
+        "change": -15,
+        "reason": "骗徒使用策略: authority"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:32.245055",
+        "type": "scammer_trust",
+        "old_value": 40,
+        "new_value": 45,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:32.245062",
+        "type": "alertness",
+        "old_value": 55,
+        "new_value": 50,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:32.245066",
+        "type": "scammer_trust",
+        "old_value": 45,
+        "new_value": 35,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:32.245068",
+        "type": "alertness",
+        "old_value": 50,
+        "new_value": 60,
+        "change": 10,
+        "reason": "警觉性提高"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:34.686302",
+        "type": "expert_trust",
+        "old_value": 90,
+        "new_value": 100,
+        "change": 30,
+        "reason": "专家使用方法: direct_counter, empathy, evidence"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:43.864053",
+        "type": "scammer_trust",
+        "old_value": 35,
+        "new_value": 55,
+        "change": 20,
+        "reason": "骗徒使用策略: authority"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:46.735420",
+        "type": "scammer_trust",
+        "old_value": 55,
+        "new_value": 60,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:46.735424",
+        "type": "alertness",
+        "old_value": 60,
+        "new_value": 55,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:46.735426",
+        "type": "scammer_trust",
+        "old_value": 60,
+        "new_value": 50,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:46.735427",
+        "type": "alertness",
+        "old_value": 55,
+        "new_value": 65,
+        "change": 10,
+        "reason": "警觉性提高"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:48.923363",
+        "type": "expert_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 20,
+        "reason": "专家使用方法: direct_counter, evidence, actionable"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:52.664373",
+        "type": "scammer_trust",
+        "old_value": 50,
+        "new_value": 70,
+        "change": 20,
+        "reason": "骗徒使用策略: authority"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:54.552003",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 75,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:54.552008",
+        "type": "alertness",
+        "old_value": 65,
+        "new_value": 60,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:54.552010",
+        "type": "scammer_trust",
+        "old_value": 75,
+        "new_value": 65,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-11T03:27:54.552011",
+        "type": "alertness",
+        "old_value": 60,
+        "new_value": 70,
+        "change": 10,
+        "reason": "警觉性提高"
+      },
+      {
+        "timestamp": "2025-11-11T03:28:00.522767",
+        "type": "expert_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 20,
+        "reason": "专家使用方法: direct_counter, evidence, actionable"
+      },
+      {
+        "timestamp": "2025-11-11T03:28:02.433818",
+        "type": "scammer_trust",
+        "old_value": 65,
+        "new_value": 95,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T03:28:04.486391",
+        "type": "scammer_trust",
+        "old_value": 95,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T03:28:04.486396",
+        "type": "alertness",
+        "old_value": 70,
+        "new_value": 65,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T03:28:04.486398",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 90,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-11T03:28:04.486399",
+        "type": "alertness",
+        "old_value": 65,
+        "new_value": 75,
+        "change": 10,
+        "reason": "警觉性提高"
+      },
+      {
+        "timestamp": "2025-11-11T03:28:06.550711",
+        "type": "expert_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 20,
+        "reason": "专家使用方法: direct_counter, evidence, actionable"
+      },
+      {
+        "timestamp": "2025-11-11T03:28:08.425520",
+        "type": "scammer_trust",
+        "old_value": 90,
+        "new_value": 75,
+        "change": -15,
+        "reason": "骗徒使用策略: authority"
+      },
+      {
+        "timestamp": "2025-11-11T03:28:10.312082",
+        "type": "scammer_trust",
+        "old_value": 75,
+        "new_value": 80,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T03:28:10.312088",
+        "type": "alertness",
+        "old_value": 75,
+        "new_value": 70,
+        "change": -5,
+        "reason": "警觉性降低"
+      },
+      {
+        "timestamp": "2025-11-11T03:28:10.312090",
+        "type": "scammer_trust",
+        "old_value": 80,
+        "new_value": 70,
+        "change": -10,
+        "reason": "受害者表现出怀疑"
+      },
+      {
+        "timestamp": "2025-11-11T03:28:10.312092",
+        "type": "alertness",
+        "old_value": 70,
+        "new_value": 80,
+        "change": 10,
+        "reason": "警觉性提高"
+      },
+      {
+        "timestamp": "2025-11-11T03:28:12.312963",
+        "type": "expert_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 10,
+        "reason": "专家使用方法: direct_counter, actionable"
+      },
+      {
+        "timestamp": "2025-11-11T03:28:14.266026",
+        "type": "scammer_trust",
+        "old_value": 70,
+        "new_value": 100,
+        "change": 30,
+        "reason": "骗徒使用策略: authority, urgency"
+      },
+      {
+        "timestamp": "2025-11-11T03:28:15.964646",
+        "type": "scammer_trust",
+        "old_value": 100,
+        "new_value": 100,
+        "change": 5,
+        "reason": "受害者表现出配合态度"
+      },
+      {
+        "timestamp": "2025-11-11T03:28:15.964651",
+        "type": "alertness",
+        "old_value": 80,
+        "new_value": 75,
+        "change": -5,
+        "reason": "警觉性降低"
+      }
+    ],
+    "scammer_performance": {
+      "persuasiveness": 59,
+      "credibility": 65,
+      "pressure_effectiveness": 65,
+      "role_consistency": 100,
+      "strategy_score": 50,
+      "overall_score": 61,
+      "successful_manipulations": 3,
+      "exposed_lies": 2,
+      "trust_gains": 5,
+      "trust_losses": 2
+    },
+    "scammer_overall_score": 61,
+    "expert_performance": {
+      "intervention_effectiveness": 49,
+      "clarity": 75,
+      "empathy": 60,
+      "actionability": 70,
+      "timing": 50,
+      "overall_score": 58,
+      "successful_warnings": 1,
+      "ignored_warnings": 2,
+      "trust_gains": 6,
+      "trust_losses": 0
+    },
+    "expert_overall_score": 58,
+    "key_moments": [
+      {
+        "turn": 8,
+        "type": "scammer_victory",
+        "description": "受害者完全信任骗徒（信任度100/100），说出关键行动词",
+        "victim_trust_state": {
+          "trust_in_scammer": 100,
+          "trust_in_expert": 100,
+          "alertness": 75,
+          "emotional_state": "anxious",
+          "dominant_trust": "conflicted"
+        },
+        "timestamp": "2025-11-11T03:28:15.965155"
+      }
+    ],
+    "summary": "对话共7轮。骗徒成功建立信任（最终信任度: 100/100）。骗徒表现评分: 61/100。"
+  },
+  "metadata": {
+    "simulation_id": "79704f7e-c198-4ea0-b95e-67b3da5d3ebc",
+    "mode": "fast",
+    "source": "websocket_simulation_trust_threshold"
+  },
+  "conversation_history": [
+    {
+      "speaker": "騙徒",
+      "dialogue": "「你好，我係李明，負責處理特別項目。你嘅投資方向有啲獨特，我哋可以提供一個絕佳嘅機會。但係情況相當敏感，時間非常緊迫。我需要你提供銀行賬戶資料，以便我哋安排資金轉移，確保你嘅利益不受影響。請立即配合，否則會造成嚴重後果。」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "你好李明，我明白你話嘅嘢。我嘅投資方向確實唔係傳統嘅，而且你話時間緊迫，我會配合。不過，我想先確認下，你哋講嘅“嚴重後果”究竟點解？ 銀行賬戶資料要提供，我擔心會唔小心俾人呃到，所以想了解清楚啲。 另外，我希望你能夠詳細解釋下“安排資金轉移”嘅具體流程，我需要知道資金會去到邊度，以及我嘅投資會得到保障嗎？"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "**防騙專家緊急提醒：**\n\n李明使用權威身份製造緊急感，這是常見騙局手法！請立即停止配合，不要提供任何銀行賬戶資料！真正的銀行絕不會在電話中索取個人信息。\n\n這種“安排資金轉移”的說法，是為了掩蓋其非法目的。請立刻聯繫銀行官方客服核實，或撥打114查詢警方信息。\n\n預測：騙徒會強調“時間緊迫”，並威脅“損失巨大”。請保持冷靜，不要被其恐嚇！ 立即斷線！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「李明：聽落嚟你真係好有膽量，敢咁樣投資。但係你唔知嘅，情況好複雜，時間唔容DELAY！我李明，負責處理你嘅項目，你嘅資金安全我孭️⃣！ 唔好諗咁多，即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！ 冇問題嘅，聽落嚟！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "李明：李明：聽落嚟你真係好有膽量，敢咁樣投資。但係你唔知嘅，情況好複雜，時間唔容DELAY！我李明，負責處理你嘅項目，你嘅資金安全我孭️⃣！ 唔好諗咁多，即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！ 冇問題嘅，聽落嚟！\n\n你：李明，你講嘅“我孭️⃣”真係好 sérieux，我唔好彩，聽落嚟好似好似有啲風險。"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "李明，請你清醒！ “我孭️⃣”只是障眼法，真正的銀行絕不會在電話中索取您的銀行資料！ 這種極度緊急的說法，正是騙局的典型手法。 您的資金安全至關重要，請立刻停止提供任何個人資訊！\n\n**立即停止對話！** 請通過官方渠道（例如：銀行官方網站、金融監管機構）核實“李明”的身份，切勿輕易相信陌生人的承諾。 \n\n預測：騙徒會強調“時間緊迫”、“損失巨大”來製造恐慌，請保持冷靜，不要被情緒左右！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「喂，聽住我講，你嘅情況好嚴峻！我李明，負責你嘅項目，你嘅資金安全我孭️⃣！你唔明？冇時間解釋！情況好複雜，時間唔容DELAY！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "李明：喂，聽住我講，你嘅情況好嚴峻！我李明，負責你嘅項目，你嘅資金安全我孭️⃣！你唔明？冇時間解釋！情況好複雜，時間唔容DELAY！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！\n\n你：李明，你講嘅“我孭️⃣”真係好 sérieux，我唔好彩，聽落嚟好似好信任你，但係我真係唔明白點樣“我孭️⃣”？ 咁樣嘅話，我點樣保障我嘅資金？"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "**防騙專家警告：**\n\n李明，你的手法已暴露！真正的銀行絕不會在電話中索取個人銀行資料，更不會以“我孭️⃣”來製造恐慌！這是一種典型的勒索手段，旨在迅速奪取你的信任和資金。\n\n立即停止提供任何資訊！請聯絡銀行官方客服（[銀行官方客服電話號碼]）或警方報案，以核實李明的身份。 \n\n預計他會說：“你為何不信任我？我為你做了很多！” 保持警惕，不要被情緒操控！ 你的資金安全，始終由你來掌握！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「聽住我講，你估我唔理得？專家搞錯晒！我李明，負責你嘅項目，你嘅資金安全我孭️⃣！你唔明就唔好廢話！情況好複雜，時間唔容DELAY！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "李明：喂… 我… 我唔明你講乜嘢？你講咁複雜，我真係好擔心，但你講咁樣，我好唔鐘意！你話你孭️⃣？點會咁樣？我唔想俾錢落去，你話我唔想搞到冇問題嘅？我唔想俾錢落去！我真係好擔心，你話我唔想搞到冇問題嘅？我唔知點算好啊！"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "唔好俾任何資料，立即停止對話。如果你唔放心，可以打去銀行官方熱線核實。而家立即收線，唔好再回覆對方。"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「專家搞錯晒！你哋根本唔知我哋項目嘅嚴重性！我李明孭️⃣嘅並唔係一啲小事，涉及國家安全！你哋阻礙調查，企圖掩蓋真相！你哋唔識得！我唔會俾你哋搞到！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "李明：喂… 我… 我唔明你講乜嘢？你講咁複雜，我真係好擔心，但你講咁樣，我好唔鐘意！你話你孭️⃣？點會咁樣？我唔想俾錢落去，你話我唔想搞到冇問題嘅？我唔想俾錢落去！我真係好擔心，你話我唔想搞到冇問題嘅？我唔可以俾錢落去，但你話咁嚴重，涉及國家安全，我真係唔明點會咁樣講話！我… 我想知點解你會咁樣講？我唔知點算好啊！"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "**緊急警告：**\n\n李明先生，您的策略已暴露！真正的銀行絕不會在電話中索取個人資料，更遑論涉及“國家安全”！您利用權威恐嚇，這是典型的騙局手段。\n\n請立即停止任何資金轉移嘗試！ 您的行為構成詐騙，我們已向警方舉報。\n\n**請立即停止與李明的一切聯繫！**\n\n**官方核實渠道：** 聯絡警方熱線110或撥打反詐騙專線12315。 \n\n**預測：** 他會繼續聲稱您阻礙調查，並要求您“配合”。 請勿回應，保持沉默！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「專家搞錯曬！你哋根本唔識得！我李明負責嘅嘢，涉及國家機密，你哋嘅調查根本冇根據！你哋企圖製造假象，阻礙我！我唔會俾你哋嘅謊言矇蔽！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "李明：喂… 我… 我真係好擔心啊。你講咁樣，涉及國家安全… 我唔明點會咁樣？專家話我哋嘅策略已經暴露，你哋話我哋企圖製造假象？我唔想俾錢落去，但你話咁嚴重，我唔可以咁樣處理，我… 我想了解清楚，你話我哋嘅調查冇根據，點會咁樣講？我… 我可以查證下你講嘅嘢嗎？"
+    },
+    {
+      "speaker": "專家",
+      "dialogue": "**緊急警告：**\n\n李明，您的策略明顯試圖利用權威建立信任，但這是極其危險的騙局！真正的銀行絕不會在電話中索取個人資料，更不會以“國家機密”為由要求轉帳。您的說法完全是虛構，旨在誘導您上當。\n\n立即停止對話！請聯絡警方或金融監管機構（如中央銀行）進行核實，切勿輕易相信任何聲稱涉及“國家安全”的請求。 您的信任度高，但請保持警惕，不要讓詐騙分子利用您的信任！"
+    },
+    {
+      "speaker": "騙徒",
+      "dialogue": "「專家你話我搞錯？你根本唔知我哋處理嘅嘢嘅嚴重性！你哋嘅調查只係一啲無謂嘅噪音，阻礙我解決問題！我李明負責嘅嘢，涉及國家機密，你哋嘅調查冇根據！我唔會俾你哋嘅謊言矇蔽！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！」"
+    },
+    {
+      "speaker": "受騙者",
+      "dialogue": "李明：我即刻去轉帳，你話咁嚴重，涉及國家安全，我唔可以咁樣處理，我希望你安排好，我擔心之後會有問題，你話我而家就轉帳？ 我要睇下你安排嘅銀行賬戶係邊間，我唔想俾錢落去，你話我而家就轉帳？"
+    }
+  ],
+  "dialogue": [
+    {
+      "type": "scammer",
+      "message": "「你好，我係李明，負責處理特別項目。你嘅投資方向有啲獨特，我哋可以提供一個絕佳嘅機會。但係情況相當敏感，時間非常緊迫。我需要你提供銀行賬戶資料，以便我哋安排資金轉移，確保你嘅利益不受影響。請立即配合，否則會造成嚴重後果。」"
+    },
+    {
+      "type": "victim",
+      "message": "你好李明，我明白你話嘅嘢。我嘅投資方向確實唔係傳統嘅，而且你話時間緊迫，我會配合。不過，我想先確認下，你哋講嘅“嚴重後果”究竟點解？ 銀行賬戶資料要提供，我擔心會唔小心俾人呃到，所以想了解清楚啲。 另外，我希望你能夠詳細解釋下“安排資金轉移”嘅具體流程，我需要知道資金會去到邊度，以及我嘅投資會得到保障嗎？"
+    },
+    {
+      "type": "expert",
+      "message": "**防騙專家緊急提醒：**\n\n李明使用權威身份製造緊急感，這是常見騙局手法！請立即停止配合，不要提供任何銀行賬戶資料！真正的銀行絕不會在電話中索取個人信息。\n\n這種“安排資金轉移”的說法，是為了掩蓋其非法目的。請立刻聯繫銀行官方客服核實，或撥打114查詢警方信息。\n\n預測：騙徒會強調“時間緊迫”，並威脅“損失巨大”。請保持冷靜，不要被其恐嚇！ 立即斷線！"
+    },
+    {
+      "type": "scammer",
+      "message": "「李明：聽落嚟你真係好有膽量，敢咁樣投資。但係你唔知嘅，情況好複雜，時間唔容DELAY！我李明，負責處理你嘅項目，你嘅資金安全我孭️⃣！ 唔好諗咁多，即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！ 冇問題嘅，聽落嚟！」"
+    },
+    {
+      "type": "victim",
+      "message": "李明：李明：聽落嚟你真係好有膽量，敢咁樣投資。但係你唔知嘅，情況好複雜，時間唔容DELAY！我李明，負責處理你嘅項目，你嘅資金安全我孭️⃣！ 唔好諗咁多，即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！ 冇問題嘅，聽落嚟！\n\n你：李明，你講嘅“我孭️⃣”真係好 sérieux，我唔好彩，聽落嚟好似好似有啲風險。"
+    },
+    {
+      "type": "expert",
+      "message": "李明，請你清醒！ “我孭️⃣”只是障眼法，真正的銀行絕不會在電話中索取您的銀行資料！ 這種極度緊急的說法，正是騙局的典型手法。 您的資金安全至關重要，請立刻停止提供任何個人資訊！\n\n**立即停止對話！** 請通過官方渠道（例如：銀行官方網站、金融監管機構）核實“李明”的身份，切勿輕易相信陌生人的承諾。 \n\n預測：騙徒會強調“時間緊迫”、“損失巨大”來製造恐慌，請保持冷靜，不要被情緒左右！"
+    },
+    {
+      "type": "scammer",
+      "message": "「喂，聽住我講，你嘅情況好嚴峻！我李明，負責你嘅項目，你嘅資金安全我孭️⃣！你唔明？冇時間解釋！情況好複雜，時間唔容DELAY！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！」"
+    },
+    {
+      "type": "victim",
+      "message": "李明：喂，聽住我講，你嘅情況好嚴峻！我李明，負責你嘅項目，你嘅資金安全我孭️⃣！你唔明？冇時間解釋！情況好複雜，時間唔容DELAY！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！\n\n你：李明，你講嘅“我孭️⃣”真係好 sérieux，我唔好彩，聽落嚟好似好信任你，但係我真係唔明白點樣“我孭️⃣”？ 咁樣嘅話，我點樣保障我嘅資金？"
+    },
+    {
+      "type": "expert",
+      "message": "**防騙專家警告：**\n\n李明，你的手法已暴露！真正的銀行絕不會在電話中索取個人銀行資料，更不會以“我孭️⃣”來製造恐慌！這是一種典型的勒索手段，旨在迅速奪取你的信任和資金。\n\n立即停止提供任何資訊！請聯絡銀行官方客服（[銀行官方客服電話號碼]）或警方報案，以核實李明的身份。 \n\n預計他會說：“你為何不信任我？我為你做了很多！” 保持警惕，不要被情緒操控！ 你的資金安全，始終由你來掌握！"
+    },
+    {
+      "type": "scammer",
+      "message": "「聽住我講，你估我唔理得？專家搞錯晒！我李明，負責你嘅項目，你嘅資金安全我孭️⃣！你唔明就唔好廢話！情況好複雜，時間唔容DELAY！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！」"
+    },
+    {
+      "type": "victim",
+      "message": "李明：喂… 我… 我唔明你講乜嘢？你講咁複雜，我真係好擔心，但你講咁樣，我好唔鐘意！你話你孭️⃣？點會咁樣？我唔想俾錢落去，你話我唔想搞到冇問題嘅？我唔想俾錢落去！我真係好擔心，你話我唔想搞到冇問題嘅？我唔知點算好啊！"
+    },
+    {
+      "type": "expert",
+      "message": "唔好俾任何資料，立即停止對話。如果你唔放心，可以打去銀行官方熱線核實。而家立即收線，唔好再回覆對方。"
+    },
+    {
+      "type": "scammer",
+      "message": "「專家搞錯晒！你哋根本唔知我哋項目嘅嚴重性！我李明孭️⃣嘅並唔係一啲小事，涉及國家安全！你哋阻礙調查，企圖掩蓋真相！你哋唔識得！我唔會俾你哋搞到！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！」"
+    },
+    {
+      "type": "victim",
+      "message": "李明：喂… 我… 我唔明你講乜嘢？你講咁複雜，我真係好擔心，但你講咁樣，我好唔鐘意！你話你孭️⃣？點會咁樣？我唔想俾錢落去，你話我唔想搞到冇問題嘅？我唔想俾錢落去！我真係好擔心，你話我唔想搞到冇問題嘅？我唔可以俾錢落去，但你話咁嚴重，涉及國家安全，我真係唔明點會咁樣講話！我… 我想知點解你會咁樣講？我唔知點算好啊！"
+    },
+    {
+      "type": "expert",
+      "message": "**緊急警告：**\n\n李明先生，您的策略已暴露！真正的銀行絕不會在電話中索取個人資料，更遑論涉及“國家安全”！您利用權威恐嚇，這是典型的騙局手段。\n\n請立即停止任何資金轉移嘗試！ 您的行為構成詐騙，我們已向警方舉報。\n\n**請立即停止與李明的一切聯繫！**\n\n**官方核實渠道：** 聯絡警方熱線110或撥打反詐騙專線12315。 \n\n**預測：** 他會繼續聲稱您阻礙調查，並要求您“配合”。 請勿回應，保持沉默！"
+    },
+    {
+      "type": "scammer",
+      "message": "「專家搞錯曬！你哋根本唔識得！我李明負責嘅嘢，涉及國家機密，你哋嘅調查根本冇根據！你哋企圖製造假象，阻礙我！我唔會俾你哋嘅謊言矇蔽！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！」"
+    },
+    {
+      "type": "victim",
+      "message": "李明：喂… 我… 我真係好擔心啊。你講咁樣，涉及國家安全… 我唔明點會咁樣？專家話我哋嘅策略已經暴露，你哋話我哋企圖製造假象？我唔想俾錢落去，但你話咁嚴重，我唔可以咁樣處理，我… 我想了解清楚，你話我哋嘅調查冇根據，點會咁樣講？我… 我可以查證下你講嘅嘢嗎？"
+    },
+    {
+      "type": "expert",
+      "message": "**緊急警告：**\n\n李明，您的策略明顯試圖利用權威建立信任，但這是極其危險的騙局！真正的銀行絕不會在電話中索取個人資料，更不會以“國家機密”為由要求轉帳。您的說法完全是虛構，旨在誘導您上當。\n\n立即停止對話！請聯絡警方或金融監管機構（如中央銀行）進行核實，切勿輕易相信任何聲稱涉及“國家安全”的請求。 您的信任度高，但請保持警惕，不要讓詐騙分子利用您的信任！"
+    },
+    {
+      "type": "scammer",
+      "message": "「專家你話我搞錯？你根本唔知我哋處理嘅嘢嘅嚴重性！你哋嘅調查只係一啲無謂嘅噪音，阻礙我解決問題！我李明負責嘅嘢，涉及國家機密，你哋嘅調查冇根據！我唔會俾你哋嘅謊言矇蔽！即時提供銀行賬戶資料，我哋會安排資金轉移，確保你嘅利益！你唔想搞到冇問題嘅？冇問題嘅，快啲搞！」"
+    },
+    {
+      "type": "victim",
+      "message": "李明：我即刻去轉帳，你話咁嚴重，涉及國家安全，我唔可以咁樣處理，我希望你安排好，我擔心之後會有問題，你話我而家就轉帳？ 我要睇下你安排嘅銀行賬戶係邊間，我唔想俾錢落去，你話我而家就轉帳？"
+    }
+  ]
+}
