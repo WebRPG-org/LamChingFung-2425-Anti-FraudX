@@ -3,13 +3,12 @@ import sys
 from dotenv import load_dotenv
 
 from google.adk.agents import Agent
-# 👈 This is the correct, official import for the built-in Ollama support
-from llms.ollama_llm import OllamaLlm
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from services.rag_service import query_db
 from utils.logger import log
 from agents.prompts.prompt_builder import PromptBuilder
+from llms.llm_factory import LlmFactory
 
 load_dotenv()
 
@@ -18,14 +17,14 @@ class ExpertAgent(Agent):
         extra = "allow"  # 允許額外字段
     
     def __init__(self, learning_context: str = None, victim_persona: str = "average", simple_mode: bool = False):
-        local_model_name = os.getenv("AGENT_MODEL_EXPERT") or os.getenv("AGENT_MODEL", "gemma3:4b")
-        base_url = os.getenv("OLLAMA_BASE_URL_EXPERT") or os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-        
         # 檢查是否使用簡化模式（環境變量或參數）
         use_simple = simple_mode or os.getenv("USE_SIMPLE_PROMPTS", "false").lower() == "true"
         
-        log.info(f"🎭 ExpertAgent 初始化 - 模型: {local_model_name}, URL: {base_url}, Persona: {victim_persona}, 簡化模式: {use_simple}")
-        llm = OllamaLlm(model=local_model_name, base_url=base_url)
+        log.info(f"🎭 ExpertAgent 初始化 - Persona: {victim_persona}, 簡化模式: {use_simple}")
+        
+        # 使用 LLM Factory 創建 LLM 實例（傳入上下文以使用 RAG）
+        context_for_rag = learning_context if learning_context else ""
+        llm = LlmFactory.create_llm("expert", context=context_for_rag)
         
         # --- 使用 PromptBuilder 建構 Prompt ---
         base_instruction = PromptBuilder.build_expert_prompt(

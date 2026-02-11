@@ -3,8 +3,8 @@ from typing import ClassVar
 from dotenv import load_dotenv
 
 from google.adk.agents import Agent
-from llms.ollama_llm import OllamaLlm
 from agents.prompts.prompt_builder import PromptBuilder
+from llms.llm_factory import LlmFactory
 
 load_dotenv()
 
@@ -24,15 +24,15 @@ class VictimAgent(Agent):
         if persona_type not in self.PERSONAS:
             raise ValueError(f"Unknown persona_type: {persona_type}")
         
-        local_model_name = os.getenv("AGENT_MODEL_VICTIM") or os.getenv("AGENT_MODEL", "gemma3:4b")
-        base_url = os.getenv("OLLAMA_BASE_URL_VICTIM") or os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
         from utils.logger import log
         
         # 檢查是否使用簡化模式（環境變量或參數）
         use_simple = simple_mode or os.getenv("USE_SIMPLE_PROMPTS", "false").lower() == "true"
         
-        log.info(f"🎭 VictimAgent 初始化 - Persona: {persona_type}, 模型: {local_model_name}, URL: {base_url}, 簡化模式: {use_simple}")
-        llm = OllamaLlm(model=local_model_name, base_url=base_url)
+        log.info(f"🎭 VictimAgent 初始化 - Persona: {persona_type}, 簡化模式: {use_simple}")
+        
+        # 使用 LLM Factory 創建 LLM 實例
+        llm = LlmFactory.create_llm("victim")
 
         # --- 使用 PromptBuilder 建構 Prompt ---
         instruction = PromptBuilder.build_victim_prompt(

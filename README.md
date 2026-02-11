@@ -6,6 +6,7 @@
 
 ### 🤖 多智能體系統
 - **四大 AI 角色**：騙徒、受害者、防詐專家、記錄員
+- **雙模式 LLM**：Ollama 本地模型 + Google Gemini API（一鍵切換）✨ **NEW**
 - **動態信任系統**：模擬真實心理變化
 - **智能評估**：規則引擎 + AI 混合評估
 - **版本控制**：Prompt 版本管理和 A/B 測試
@@ -21,6 +22,37 @@
 - **混合評估**：每輪規則評分 + 每 3 輪 AI 校準
 - **性能追蹤**：自動記錄和分析對話數據
 - **GPU 加速**：支持 CUDA + Ollama 本地部署
+- **Gemini 整合**：支持 Google Gemini API 和 fine-tuned 模型 ✨ **NEW**
+
+## 🆕 最新功能（v2.1.0）
+
+### 🔄 雙模式 LLM 系統 ✨ **NEW**
+
+**Ollama 本地模式：**
+- ✅ 完全離線運行
+- ✅ 數據隱私保護
+- ✅ 無使用限制
+- ✅ 支持 GPU 加速
+- 📦 推薦模型：Gemma 3 4B / Llama 3.1 8B
+
+**Gemini API 雲端模式：**
+- ✅ 無需本地 GPU
+- ✅ 更強大的模型（gemini-2.5-flash）
+- ✅ 更快的響應速度
+- ✅ System Instructions（4 個 Agent 人設）
+- ✅ File API（Long Context，上傳 281 個真實案例）
+- ✅ 真實機構資料庫（100+ 香港機構，200+ 官方熱線）
+- 🆓 完全免費使用
+
+**一鍵切換：**
+- 🔄 主頁面右上角切換按鈕
+- ⚡ 動態切換，無需重啟
+- 📊 性能監控（Token 使用、響應時間）
+
+詳細說明請參考：
+- [Gemini 快速開始](GEMINI_QUICK_START_COMPLETE.md)
+- [Gemini 完整方案](GEMINI_FINAL_SUMMARY.md)
+- [Gemini TODO List](GEMINI_TODO_LIST.md)
 
 ## 🚀 快速開始
 
@@ -28,18 +60,32 @@
 
 - **Python 3.10+** - [下載](https://www.python.org/downloads/)
 - **Node.js 18+** - [下載](https://nodejs.org/)
-- **Ollama** - [安裝指南](https://ollama.ai/)
+- **Ollama** - [安裝指南](https://ollama.ai/)（使用 Ollama 模式時需要）
+- **Google Gemini API Key** - [獲取](https://aistudio.google.com/app/apikey)（使用 Gemini 模式時需要）✨ **NEW**
 - **NVIDIA GPU**（可選）- 用於 GPU 加速
 
 ### 方法 1：一鍵啟動（推薦）⭐
 
 **Windows 用戶：**
+
+**使用 Ollama（本地模型）：**
 ```bash
 # 雙擊運行
-.\scripts\本地启动.bat
+.\quick_start.bat
 
 # 或使用 V2 專用腳本
 .\启动V2.bat
+```
+
+**使用 Gemini API（雲端模型）：** ✨ **NEW**
+```bash
+# 1. 配置 API Key（首次使用）
+# 編輯 backend\.env，設置：
+#   GEMINI_ENABLED=true
+#   GEMINI_API_KEY=你的API Key
+
+# 2. 雙擊運行 Gemini 專用腳本
+.\quick_start_gemini.bat
 ```
 
 **Linux/Mac 用戶：**

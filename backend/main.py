@@ -16,6 +16,7 @@ from api.rpgv2_battle_routes import router as rpgv2_battle_router
 from api.rpgv2_game_modes_routes import router as rpgv2_game_modes_router
 from api.prompt_version_routes import router as prompt_version_router
 from api.demo_routes import router as demo_router
+from api.model_switch_routes import router as model_switch_router
 from fastapi.middleware.cors import CORSMiddleware
 
 # Load environment variables from .env file
@@ -89,6 +90,7 @@ app.include_router(rpgv2_battle_router)   # RPGv2 三方對話
 app.include_router(rpgv2_game_modes_router)  # RPGv2 遊戲模式（新）
 app.include_router(prompt_version_router)  # Prompt 版本管理
 app.include_router(demo_router)           # 演示模式
+app.include_router(model_switch_router)   # 模型切換 API
 
 # 掛載RPG項目的靜態文件（HTML, JS, CSS等）
 rpg_project_path = os.path.join(os.path.dirname(__file__), '..', 'RPG_platform', 'RPG_Project')

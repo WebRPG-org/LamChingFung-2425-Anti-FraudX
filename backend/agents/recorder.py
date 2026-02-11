@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 
 from google.adk.agents import Agent
-from llms.ollama_llm import OllamaLlm
+from llms.llm_factory import LlmFactory
 
 load_dotenv()
 
@@ -11,11 +11,11 @@ class RecorderAgent(Agent):
         extra = "allow"  # 允許額外字段
     
     def __init__(self):
-        local_model_name = os.getenv("AGENT_MODEL_RECORDER") or os.getenv("AGENT_MODEL", "gemma3:4b")
-        base_url = os.getenv("OLLAMA_BASE_URL_RECORDER") or os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
         from utils.logger import log
-        log.info(f"🎭 RecorderAgent 初始化 - 模型: {local_model_name} (关键！JSON输出专用), URL: {base_url}")
-        llm = OllamaLlm(model=local_model_name, base_url=base_url)
+        log.info(f"🎭 RecorderAgent 初始化 - JSON輸出專用")
+        
+        # 使用 LLM Factory 創建 LLM 實例
+        llm = LlmFactory.create_llm("recorder")
 
         instruction = """
 ## 基本身份

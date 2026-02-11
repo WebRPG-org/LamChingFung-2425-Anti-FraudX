@@ -260,6 +260,49 @@ class ScamTacticsConfig:
 
 
 # ============================================================================
+# Gemini API Configuration
+# ============================================================================
+
+@dataclass
+class GeminiConfig:
+    """Configuration for Gemini API"""
+    
+    # API 配置
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+    GEMINI_ENABLED: bool = os.getenv("GEMINI_ENABLED", "false").lower() == "true"
+    
+    # Fine-tuned 模型 ID（4個 Agent）
+    SCAMMER_MODEL_ID: str = os.getenv("GEMINI_MODEL_SCAMMER", "gemini-3-flash-preview")
+    VICTIM_MODEL_ID: str = os.getenv("GEMINI_MODEL_VICTIM", "gemini-3-flash-preview")
+    EXPERT_MODEL_ID: str = os.getenv("GEMINI_MODEL_EXPERT", "gemini-3-flash-preview")
+    RECORDER_MODEL_ID: str = os.getenv("GEMINI_MODEL_RECORDER", "gemini-3-flash-preview")
+    
+    # 生成參數
+    TEMPERATURE: float = float(os.getenv("GEMINI_TEMPERATURE", "0.7"))
+    TOP_P: float = float(os.getenv("GEMINI_TOP_P", "0.95"))
+    TOP_K: int = int(os.getenv("GEMINI_TOP_K", "40"))
+    MAX_OUTPUT_TOKENS: int = int(os.getenv("GEMINI_MAX_OUTPUT_TOKENS", "2048"))
+    
+    # 性能配置
+    TIMEOUT: float = float(os.getenv("GEMINI_TIMEOUT", "60.0"))
+    MAX_RETRIES: int = int(os.getenv("GEMINI_MAX_RETRIES", "3"))
+    
+    def get_model_id(self, agent_type: str) -> str:
+        """獲取指定 Agent 的模型 ID"""
+        mapping = {
+            "scammer": self.SCAMMER_MODEL_ID,
+            "victim": self.VICTIM_MODEL_ID,
+            "expert": self.EXPERT_MODEL_ID,
+            "recorder": self.RECORDER_MODEL_ID
+        }
+        return mapping.get(agent_type, "gemini-3-flash-preview")
+    
+    def is_configured(self) -> bool:
+        """檢查 Gemini 是否已配置"""
+        return bool(self.GEMINI_API_KEY and len(self.GEMINI_API_KEY) > 10)
+
+
+# ============================================================================
 # Logging Configuration
 # ============================================================================
 
@@ -289,6 +332,7 @@ class Config:
         self.trust = TrustConfig()
         self.simulation = SimulationConfig()
         self.llm = LLMConfig()
+        self.gemini = GeminiConfig()
         self.validation = ValidationConfig()
         self.database = DatabaseConfig()
         self.persona = PersonaConfig()
