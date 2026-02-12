@@ -328,7 +328,7 @@ async def _test_gemini_connection() -> Dict[str, Any]:
         
         # 測試簡單的生成請求（使用正確的模型名稱）
         response = client.models.generate_content(
-            model="models/gemini-3-flash-preview",
+            model="models/gemini-2.5-flash",
             contents=types.Content(
                 parts=[types.Part(text="測試連接")]
             ),

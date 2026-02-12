@@ -2,7 +2,6 @@ import Phaser from 'phaser';
 import { Player } from '../entities/Player';
 import { NPC } from '../entities/NPC';
 import { RoleManager } from '../systems/RoleManager';
-import { CollisionSystem } from '../systems/CollisionSystem';
 import { getAllScamTypes } from '../types/ScamTypes';
 
 export class WorldMapScene extends Phaser.Scene {
@@ -12,11 +11,10 @@ export class WorldMapScene extends Phaser.Scene {
   private interactionRadius = 80;
   private hud!: Phaser.GameObjects.Container;
   private roleText!: Phaser.GameObjects.Text;
-  private map!: Phaser.Tilemaps.Tilemap;
-  private groundLayer!: Phaser.Tilemaps.TilemapLayer;
-  private collisionSystem!: CollisionSystem;
   private instructionsContainer: Phaser.GameObjects.Container | null = null;
   private homeButton!: Phaser.GameObjects.Container;
+  private obstacles: Phaser.Physics.Arcade.StaticGroup | null = null;
+  private roleChangeCallback: (() => void) | null = null;
 
   constructor() {
     super({ key: 'WorldMapScene' });
@@ -24,27 +22,38 @@ export class WorldMapScene extends Phaser.Scene {
   }
 
   create(): void {
-    // Create professional tilemap background (RPG Maker Forest Town map)
-    this.createTilemapWorld();
-
-    // Calculate map dimensions from loaded map (40x40 tiles * 48px = 1920x1920)
-    const mapPixelWidth = this.map.widthInPixels;
-    const mapPixelHeight = this.map.heightInPixels;
+    console.log('[WorldMapScene] Creating scene...');
+    
+    // Use simple background image instead of tilemap
+    const worldMapBg = this.add.image(0, 0, 'world-map-bg').setOrigin(0, 0);
+    worldMapBg.setDepth(0);
+    
+    // Get map dimensions from background image
+    const mapPixelWidth = worldMapBg.width;
+    const mapPixelHeight = worldMapBg.height;
 
     console.log(`[WorldMapScene] Map size: ${mapPixelWidth}x${mapPixelHeight} pixels`);
 
-    // Initialize collision system with RPG Maker rules
-    this.collisionSystem = new CollisionSystem(this, this.map);
-    this.loadTilesetCollisionData();
+    // Create obstacles (invisible collision boxes)
+    this.createObstacles(mapPixelWidth, mapPixelHeight);
 
     // Create player at center of map
     this.player = new Player(this, mapPixelWidth / 2, mapPixelHeight / 2);
     
-    // Connect collision system to player
-    this.player.setCollisionSystem(this.collisionSystem);
+    // Setup collision between player and obstacles
+    if (this.obstacles) {
+      this.physics.add.collider(this.player.sprite, this.obstacles);
+    }
 
     // Create NPCs at different positions
     this.createNPCs(mapPixelWidth, mapPixelHeight);
+    
+    // Setup collision between NPCs and obstacles
+    if (this.obstacles) {
+      this.npcs.forEach(npc => {
+        this.physics.add.collider(npc.sprite, this.obstacles!);
+      });
+    }
 
     // Setup camera to follow player
     this.cameras.main.startFollow(this.player.sprite, true, 0.1, 0.1);
@@ -67,111 +76,115 @@ export class WorldMapScene extends Phaser.Scene {
     this.showInstructions();
     
     // Add ambient effects
-    this.addAmbientEffects();
+    this.addAmbientEffects(mapPixelWidth, mapPixelHeight);
   }
 
-  private createTilemapWorld(): void {
-    // Load test map with proper tileset
-    console.log('[WorldMapScene] Loading test map...');
+  /**
+   * 創建障礙物 - 根據香港街景地圖設置不可通行區域
+   * 包含建築物、樹木、車輛等障礙物
+   */
+  private createObstacles(mapWidth: number, mapHeight: number): void {
+    // 創建靜態物理組用於障礙物
+    this.obstacles = this.physics.add.staticGroup();
     
-    // Load the test map
-    this.map = this.make.tilemap({ key: 'test-minimal' });
+    const centerX = mapWidth / 2;
+    const centerY = mapHeight / 2;
     
-    // Add tileset image (using Outside_B tileset - proper non-autotile format)
-    const tileset = this.map.addTilesetImage('tileset-outside-b', 'tileset-outside-b');
-    
-    if (!tileset) {
-      console.error('[WorldMapScene] Failed to load tileset');
-      return;
-    }
-    
-    console.log(`[WorldMapScene] Map loaded: ${this.map.width}x${this.map.height} tiles`);
-    
-    // Create layers - try by index first (more reliable)
-    let groundLayer: Phaser.Tilemaps.TilemapLayer | null = null;
-    let lowerLayer: Phaser.Tilemaps.TilemapLayer | null = null;
-    let upperLayer: Phaser.Tilemaps.TilemapLayer | null = null;
-    let shadowLayer: Phaser.Tilemaps.TilemapLayer | null = null;
-    
-    // Try to create layers by index (0, 1, 2, 3)
-    try {
-      groundLayer = this.map.createLayer(0, tileset, 0, 0);
-      if (this.map.layers.length > 1) lowerLayer = this.map.createLayer(1, tileset, 0, 0);
-      if (this.map.layers.length > 2) upperLayer = this.map.createLayer(2, tileset, 0, 0);
-      if (this.map.layers.length > 3) shadowLayer = this.map.createLayer(3, tileset, 0, 0);
-    } catch (e) {
-      console.error('[WorldMapScene] Failed to create layers by index:', e);
-    }
-    
-    if (!groundLayer) {
-      console.error('[WorldMapScene] Failed to create ground layer');
-      return;
-    }
-    
-    this.groundLayer = groundLayer;
-    
-    // Set layer depths (RPG Maker standard)
-    this.groundLayer.setDepth(0);
-    if (lowerLayer) lowerLayer.setDepth(1);
-    if (shadowLayer) shadowLayer.setDepth(0.5);
-    if (upperLayer) upperLayer.setDepth(100);
-    
-    console.log('[WorldMapScene] All layers created successfully');
-    
-    // Load NPCs from map events
-    this.loadMapEvents();
-  }
+    // 根據 outside_map.jpg 的實際內容設置障礙物
+    const obstacleData = [
+      // ========== 四邊邊界（不要動）==========
+      // 上方邊界牆
+      { x: centerX, y: 15, width: mapWidth - 50, height: 50, color: 0x888888, name: '上邊界' },
+      
+      // 下方邊界牆
+      { x: centerX, y: mapHeight - 15, width: mapWidth - 50, height: 50, color: 0x888888, name: '下邊界' },
+      
+      // 左方邊界牆
+      { x: 15, y: centerY, width: 50, height: mapHeight - 50, color: 0x888888, name: '左邊界' },
+      
+      // 右方邊界牆
+      { x: mapWidth - 15, y: centerY, width: 50, height: mapHeight - 50, color: 0x888888, name: '右邊界' },
+      
+      // ========== 左側建築群 ==========
+      // 左上角大樓
+      { x: 200 , y: 100, width: 300, height: 140, color: 0xff6b6b, name: '左上大樓' },
+      { x: 100 , y: 190, width: 150, height: 50, color: 0xff6b6b, name: '水' },   
+      { x: 100 , y: 240, width: 60, height: 50, color: 0xff6b6b, name: '水' },
+      { x: 80 , y: 290, width: 100, height: 1200, color: 0xff6b6b, name: '左中大樓' },
+      { x: 370 , y: 300, width: 220, height: 175, color: 0xff6b6b, name: '左上中大樓' },
+      { x: 420 , y: 60, width: 300, height: 50, color: 0xff6b6b, name: '左上杆欄' },
+      { x: 420 , y: 150, width: 300, height: 40, color: 0xff6b6b, name: '左上杆欄' },
+      { x: 150 , y: 570, width: 220, height: 170, color: 0xff6b6b, name: '左中下大樓' },
+      { x: 220 , y: 350, width: 80, height: 175, color: 0xff6b6b, name: '左上中大樓' },
+      { x: 150 , y: 680, width: 50, height: 375, color: 0xff6b6b, name: '左下大樓' },
+      { x: 200 , y: 840, width: 45, height: 100, color: 0xff6b6b, name: '吊車' },
+      { x: 285 , y: 680, width: 95, height: 35, color: 0xff6b6b, name: '左下杆欄' },
+      { x: 445 , y: 680, width: 70, height: 35, color: 0xff6b6b, name: '左下杆欄' },
+      { x: 460 , y: 780, width: 40, height: 175, color: 0xff6b6b, name: '左下杆欄' },
+      { x: 310 , y: 810, width: 80, height: 155, color: 0xff6b6b, name: '車' },
+      { x: 420 , y: 825, width: 40, height: 80, color: 0xff6b6b, name: '紅筒' },
+      { x: 375 , y: 440, width: 40, height: 80, color: 0xff6b6b, name: '燈' },
+      { x: 550 , y: 875, width: 40, height: 80, color: 0xff6b6b, name: '燈' },
+      { x: 550 , y: 745, width: 40, height: 80, color: 0xff6b6b, name: '燈' },
+      { x: 550 , y: 615, width: 40, height: 80, color: 0xff6b6b, name: '燈' },
+      { x: 550 , y: 350, width: 40, height: 180, color: 0xff6b6b, name: '燈' },
+      { x: 550 , y: 190, width: 40, height: 40, color: 0xff6b6b, name: '箱' },
 
-  private loadMapEvents(): void {
-    // Get events object layer from the map
-    const eventLayer = this.map.getObjectLayer('Events');
+      // ========== 右側建築群 ==========
+      { x: 725 , y: 170, width: 40, height: 80, color: 0x4ecdc4, name: '箱' },
+      { x: 725 , y: 350, width: 40, height: 180, color: 0x4ecdc4, name: '箱' },
+      { x: 725 , y: 615, width: 40, height: 80, color: 0x4ecdc4, name: '燈' },
+      { x: 770 , y: 720, width: 130, height: 220, color: 0x4ecdc4, name: '右下大樓' },
+      { x: 860 , y: 785, width: 40, height: 90, color: 0x4ecdc4, name: '右下大樓' },
+      { x: 920 , y: 807, width: 90, height: 45, color: 0x4ecdc4, name: '右下大樓' },
+      { x: 900 , y: 440, width: 40, height: 80, color: 0x4ecdc4, name: '燈' },
+      { x: 1150 , y: 700, width: 180, height: 180, color: 0x4ecdc4, name: '右大樓' },
+      { x: 1125 , y: 480, width: 130, height: 270, color: 0x4ecdc4, name: '右大樓' },
+      { x: 925 , y: 370, width: 260, height: 40, color: 0x4ecdc4, name: '右上杆欄' },
+      { x: 880 , y: 225, width: 90, height: 70, color: 0x4ecdc4, name: '箱' },
+      { x: 870 , y: 140, width: 110, height: 30, color: 0x4ecdc4, name: '右上杆欄' },
+      { x: 1080 , y: 190, width: 310, height: 50, color: 0x4ecdc4, name: '箱' },
+      { x: 1080 , y: 235, width: 40, height: 40, color: 0x4ecdc4, name: '吊車' },
+      { x: 1210 , y: 235, width: 40, height: 40, color: 0x4ecdc4, name: '洞' },
+      { x: 1080 , y: 100, width: 310, height: 150, color: 0x4ecdc4, name: '右上大樓' },
+      { x: 900 , y: 60, width: 40, height: 40, color: 0x4ecdc4, name: '右上大樓' },
+      { x: 730 , y: 60, width: 40, height: 40, color: 0x4ecdc4, name: '右上大樓' },
+      
+     
+      
     
-    if (!eventLayer) {
-      console.log('[WorldMapScene] No events layer found');
-      return;
-    }
+    ];
     
-    console.log(`[WorldMapScene] Found ${eventLayer.objects.length} events`);
+    console.log(`[WorldMapScene] 創建 ${obstacleData.length} 個障礙物（包含4個邊界）`);
     
-    // Process events (NPCs, triggers, etc.)
-    eventLayer.objects.forEach(obj => {
-      if (obj.type === 'event') {
-        console.log(`[WorldMapScene] Event: ${obj.name} at (${obj.x}, ${obj.y})`);
-        // Events will be handled separately
-      }
+    obstacleData.forEach((obstacle, index) => {
+      // 創建矩形作為障礙物
+      const rect = this.add.rectangle(
+        obstacle.x, 
+        obstacle.y, 
+        obstacle.width, 
+        obstacle.height, 
+        obstacle.color, 
+        0 // 完全隱藏填充
+      );
+      rect.setStrokeStyle(2, obstacle.color, 0); // 邊線透明度改為 0（完全透明）
+      rect.setDepth(5);
+      
+      // 添加到物理組
+      this.obstacles!.add(rect);
+      
+      console.log(`[WorldMapScene] 障礙物 ${index + 1} [${obstacle.name}]: (${Math.round(obstacle.x)}, ${Math.round(obstacle.y)}) ${obstacle.width}x${obstacle.height}`);
     });
+    
+    // 刷新物理邊界
+    this.obstacles.refresh();
+    
+    console.log('[WorldMapScene] 障礙物系統初始化完成！');
+    console.log('[WorldMapScene] 提示：將障礙物透明度改為 0 可完全隱藏');
   }
 
-  /**
-   * Load tileset collision data from RPG Maker
-   * This loads the flags array that defines which tiles are passable
-   */
-  private loadTilesetCollisionData(): void {
-    console.log('[WorldMapScene] Loading tileset collision data...');
-    
-    // For test map, use simple collision rules
-    console.log('[WorldMapScene] Using test map collision configuration');
-    this.setupTestMapCollisionRules();
-  }
-
-  /**
-   * Setup collision rules for test map
-   * Tile 1 and 65 are borders (impassable), tile 81 is walkable
-   */
-  private setupTestMapCollisionRules(): void {
-    // Border tiles - impassable
-    this.collisionSystem.setTileFlags(1, 0x0010);  // Outer border
-    this.collisionSystem.setTileFlags(65, 0x0010); // Inner border
-    
-    // Tile 81 is walkable (no flags needed, default is passable)
-    
-    console.log('[WorldMapScene] Test map collision rules configured');
-  }
-
-  private addAmbientEffects(): void {
-    // Add subtle particles for atmosphere (RPG Maker style)
-    const mapPixelWidth = this.map.widthInPixels;
-    const mapPixelHeight = this.map.heightInPixels;
+  private addAmbientEffects(mapPixelWidth: number, mapPixelHeight: number): void {
+    // Add subtle particles for atmosphere
     
     const particles = this.add.particles(0, 0, 'player', {
       frame: 0,
@@ -191,39 +204,39 @@ export class WorldMapScene extends Phaser.Scene {
 
   /**
    * 創建 NPC - 每個 NPC 代表一種騙案類型
-   * 
-   * 重要改變：不再使用人名（陳婆婆、王小明等），
-   * 而是使用騙案類型（投資詐騙、釣魚短訊等）
+   * NPC 位置已調整，避免生成在障礙物內部
    */
   private createNPCs(mapWidth: number, mapHeight: number): void {
     const centerX = mapWidth / 2;
     const centerY = mapHeight / 2;
 
-    // 定義 NPC 位置和對應的騙案類型
+    // 定義 NPC 位置和對應的騙案類型（確保在可通行區域）
     const npcData: Array<{ x: number; y: number; scamId: string }> = [
-      // 市中心區域 - 高危險騙案
-      { x: centerX + 200, y: centerY, scamId: 'investment' },           // 💰 投資詐騙
-      { x: centerX - 200, y: centerY + 150, scamId: 'phishing' },       // 📱 釣魚短訊
-      { x: centerX + 300, y: centerY - 200, scamId: 'romance' },        // 💕 愛情詐騙
-      { x: centerX - 300, y: centerY - 100, scamId: 'impersonation' },  // 👮 假冒官員
+      // 中央道路區域 - 安全位置
+      { x: centerX, y: centerY, scamId: 'investment' },                 // 💰 投資詐騙（中央）
+      { x: centerX, y: centerY + 150, scamId: 'phishing' },             // 📱 釣魚短訊
+      { x: centerX, y: centerY - 150, scamId: 'romance' },              // 💕 愛情詐騙
       
-      // 外圍區域 - 中等危險騙案
-      { x: centerX, y: centerY + 400, scamId: 'banking' },              // 🏦 假冒銀行
-      { x: centerX + 500, y: centerY + 300, scamId: 'crypto' },         // ₿ 加密貨幣
+      // 左側道路區域
+      { x: 250, y: 450, scamId: 'impersonation' },                      // 👮 假冒官員
+      { x: 400, y: 550, scamId: 'banking' },                            // 🏦 假冒銀行
+      { x: 250, y: 750, scamId: 'whatsapp' },                           // 💬 WhatsApp 詐騙
       
-      // 四個角落 - 各種騙案類型
-      { x: 300, y: 300, scamId: 'whatsapp' },                           // 💬 WhatsApp 詐騙
-      { x: mapWidth - 300, y: 300, scamId: 'shopping' },                // 🛒 購物詐騙
-      { x: 300, y: mapHeight - 300, scamId: 'job' },                    // 💼 求職詐騙
-      { x: mapWidth - 300, y: mapHeight - 300, scamId: 'prize' },       // 🎁 中獎詐騙
+      // 右側道路區域
+      { x: mapWidth - 250, y: 450, scamId: 'crypto' },                  // ₿ 加密貨幣
+      { x: mapWidth - 400, y: 550, scamId: 'shopping' },                // 🛒 購物詐騙
+      { x: mapWidth - 450, y: 850, scamId: 'job' },                     // 💼 求職詐騙（調整位置避開右下大樓）
       
-      // 額外騙案類型
-      { x: centerX + 400, y: centerY + 200, scamId: 'rental' },         // 🏠 租屋詐騙
-      { x: centerX - 400, y: centerY - 300, scamId: 'tech_support' },   // 💻 技術支援
-      { x: centerX + 100, y: centerY - 400, scamId: 'charity' }         // ❤️ 慈善詐騙
+      // 上方道路區域
+      { x: centerX - 130, y: 250, scamId: 'prize' },                    // 🎁 中獎詐騙
+      { x: centerX + 150, y: 250, scamId: 'rental' },                   // 🏠 租屋詐騙
+      
+      // 下方道路區域
+      { x: centerX - 130, y: mapHeight - 150, scamId: 'tech_support' }, // 💻 技術支援
+      { x: centerX + 350, y: mapHeight - 250, scamId: 'charity' }       // ❤️ 慈善詐騙（調整位置避開障礙物）
     ];
 
-    console.log(`[WorldMapScene] 創建 ${npcData.length} 個騙案類型 NPC`);
+    console.log(`[WorldMapScene] 創建 ${npcData.length} 個騙案類型 NPC（已避開障礙物）`);
 
     npcData.forEach(data => {
       const npc = new NPC(this, data.x, data.y, data.scamId);
@@ -295,9 +308,15 @@ export class WorldMapScene extends Phaser.Scene {
     roleContainer.add([roleBox, iconBg, this.roleText, roleLabel]);
     this.hud.add(roleContainer);
 
-    // Update role display
-    this.updateRoleDisplay();
-    this.roleManager.onRoleChange(() => this.updateRoleDisplay());
+    // 保存回調函數的引用，以便稍後移除
+    this.roleChangeCallback = () => this.updateRoleDisplay();
+    this.roleManager.onRoleChange(this.roleChangeCallback);
+    
+    // 延遲更新角色顯示，確保場景完全激活
+    this.time.delayedCall(100, () => {
+      console.log('[WorldMapScene] Delayed role display update...');
+      this.updateRoleDisplay();
+    });
 
     // Modern instructions panel
     const instructionsContainer = this.add.container(20, 100);
@@ -414,6 +433,9 @@ export class WorldMapScene extends Phaser.Scene {
         duration: 100,
         yoyo: true,
         onComplete: () => {
+          // 清理場景資源
+          console.log('[WorldMapScene] 返回主頁，清理資源...');
+          
           // Fade transition
           const overlay = this.add.rectangle(
             this.cameras.main.centerX,
@@ -431,6 +453,8 @@ export class WorldMapScene extends Phaser.Scene {
             alpha: 1,
             duration: 400,
             onComplete: () => {
+              // 停止當前場景並啟動主選單
+              this.scene.stop('WorldMapScene');
               this.scene.start('MainMenuScene');
             }
           });
@@ -480,7 +504,14 @@ export class WorldMapScene extends Phaser.Scene {
   }
 
   private updateRoleDisplay(): void {
+    // 檢查場景是否還在運行
+    if (!this.scene.isActive('WorldMapScene') || !this.roleText) {
+      console.log('[WorldMapScene] updateRoleDisplay skipped - scene not active or roleText not ready');
+      return;
+    }
+    
     const role = this.roleManager.getCurrentRole();
+    console.log('[WorldMapScene] Updating role display:', role.nameZh, role.icon, role.color);
     this.roleText.setText(`${role.icon} ${role.nameZh}`);
     this.roleText.setColor(role.color);
   }
@@ -587,7 +618,7 @@ export class WorldMapScene extends Phaser.Scene {
       {
         icon: '🕹️',
         title: '操作說明',
-        content: '方向鍵 或 WASD - 移動角色\nE 鍵 - 與 NPC 互動\nH 鍵 - 顯示/隱藏說明\nF1/F2/F3 - 切換角色（受害者/騙徒/專家）'
+        content: 'E 鍵 - 與 NPC 互動\nH 鍵 - 顯示/隱藏說明\nF1/F2/F3 - 切換角色（受害者/騙徒/專家）'
       },
       {
         icon: '💡',
@@ -764,12 +795,27 @@ export class WorldMapScene extends Phaser.Scene {
   }
 
   update(): void {
+    // 檢查場景是否還在運行
+    if (!this.scene.isActive('WorldMapScene')) {
+      return;
+    }
+    
+    // 檢查玩家是否存在
+    if (!this.player || !this.player.sprite) {
+      return;
+    }
+    
     this.player.update();
 
     // Update NPCs and check proximity
     const playerPos = this.player.getPosition();
     
     this.npcs.forEach(npc => {
+      // 檢查 NPC 是否還有效
+      if (!npc || !npc.sprite) {
+        return;
+      }
+      
       npc.update();
       
       const distance = Phaser.Math.Distance.Between(
@@ -785,5 +831,57 @@ export class WorldMapScene extends Phaser.Scene {
         npc.hideInteractionIndicator();
       }
     });
+  }
+
+  /**
+   * 場景關閉時清理資源
+   */
+  shutdown(): void {
+    console.log('[WorldMapScene] Shutting down scene, cleaning up resources...');
+    
+    // 移除 RoleManager 的監聽器
+    if (this.roleChangeCallback) {
+      this.roleManager.offRoleChange(this.roleChangeCallback);
+      this.roleChangeCallback = null;
+    }
+    
+    // 停止所有 NPC
+    this.npcs.forEach(npc => {
+      npc.stopWandering();
+      npc.destroy();
+    });
+    this.npcs = [];
+    
+    // 清理障礙物
+    if (this.obstacles) {
+      this.obstacles.clear(true, true);
+      this.obstacles = null;
+    }
+    
+    // 清理玩家
+    if (this.player) {
+      this.player.sprite.destroy();
+    }
+    
+    // 清理 HUD
+    if (this.hud) {
+      this.hud.destroy();
+    }
+    
+    // 清理說明容器
+    if (this.instructionsContainer) {
+      this.instructionsContainer.destroy();
+      this.instructionsContainer = null;
+    }
+    
+    // 清理返回按鈕
+    if (this.homeButton) {
+      this.homeButton.destroy();
+    }
+    
+    // 移除所有鍵盤事件監聽
+    this.input.keyboard?.removeAllListeners();
+    
+    console.log('[WorldMapScene] Cleanup complete');
   }
 }

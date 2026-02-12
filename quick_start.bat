@@ -73,7 +73,7 @@ echo Services Started!
 echo ================================================================================
 echo.
 if /i "%GEMINI_ENABLED%"=="true" (
-    echo LLM Provider: Gemini API (gemini-3-flash-preview)
+    echo LLM Provider: Gemini API (gemini-2.5-flash)
 ) else (
     echo LLM Provider: Ollama (local)
 )

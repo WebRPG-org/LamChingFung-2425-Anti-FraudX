@@ -14,10 +14,10 @@ if not exist backend\.env (
     echo Please create backend\.env with:
     echo   GEMINI_ENABLED=true
     echo   GEMINI_API_KEY=your_api_key_here
-    echo   GEMINI_MODEL_SCAMMER=gemini-3-flash-preview
-    echo   GEMINI_MODEL_VICTIM=gemini-3-flash-preview
-    echo   GEMINI_MODEL_EXPERT=gemini-3-flash-preview
-    echo   GEMINI_MODEL_RECORDER=gemini-3-flash-preview
+    echo   GEMINI_MODEL_SCAMMER=gemini-2.5-flash
+    echo   GEMINI_MODEL_VICTIM=gemini-2.5-flash
+    echo   GEMINI_MODEL_EXPERT=gemini-2.5-flash
+    echo   GEMINI_MODEL_RECORDER=gemini-2.5-flash
     echo.
     pause
     exit /b 1
@@ -90,7 +90,7 @@ echo ===========================================================================
 echo Services Started Successfully!
 echo ================================================================================
 echo.
-echo LLM Provider:  Gemini API (gemini-3-flash-preview)
+echo LLM Provider:  Gemini API (gemini-2.5-flash)
 echo Backend API:   http://localhost:8000
 echo API Docs:      http://localhost:8000/docs
 echo RPGv2:         http://localhost:3000

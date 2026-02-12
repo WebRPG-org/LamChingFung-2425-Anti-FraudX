@@ -91,7 +91,7 @@ class GeminiLlm(BaseLlm):
     - 文件上傳（Long Context）
     """
 
-    model: str  # Gemini 模型 ID (例如: "gemini-3-flash-preview" 或 "tunedModels/xxx")
+    model: str  # Gemini 模型 ID (例如: "gemini-2.5-flash" 或 "tunedModels/xxx")
     api_key: Optional[str] = None
     system_instruction: str = ""  # System Instruction
     uploaded_files: List = []  # 已上傳的文件列表
@@ -126,7 +126,7 @@ class GeminiLlm(BaseLlm):
     def supported_models(cls) -> list[str]:
         """返回支持的模型列表"""
         return [
-            "gemini-3-flash-preview",  # 推薦：免費版，性能優秀
+            "gemini-2.5-flash",  # 推薦：免費版，性能優秀
             "gemini-2.0-flash-exp",
             "gemini-1.5-flash",
             "gemini-1.5-pro",

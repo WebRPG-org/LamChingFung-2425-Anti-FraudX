@@ -272,10 +272,10 @@ class GeminiConfig:
     GEMINI_ENABLED: bool = os.getenv("GEMINI_ENABLED", "false").lower() == "true"
     
     # Fine-tuned 模型 ID（4個 Agent）
-    SCAMMER_MODEL_ID: str = os.getenv("GEMINI_MODEL_SCAMMER", "gemini-3-flash-preview")
-    VICTIM_MODEL_ID: str = os.getenv("GEMINI_MODEL_VICTIM", "gemini-3-flash-preview")
-    EXPERT_MODEL_ID: str = os.getenv("GEMINI_MODEL_EXPERT", "gemini-3-flash-preview")
-    RECORDER_MODEL_ID: str = os.getenv("GEMINI_MODEL_RECORDER", "gemini-3-flash-preview")
+    SCAMMER_MODEL_ID: str = os.getenv("GEMINI_MODEL_SCAMMER", "gemini-2.5-flash")
+    VICTIM_MODEL_ID: str = os.getenv("GEMINI_MODEL_VICTIM", "gemini-2.5-flash")
+    EXPERT_MODEL_ID: str = os.getenv("GEMINI_MODEL_EXPERT", "gemini-2.5-flash")
+    RECORDER_MODEL_ID: str = os.getenv("GEMINI_MODEL_RECORDER", "gemini-2.5-flash")
     
     # 生成參數
     TEMPERATURE: float = float(os.getenv("GEMINI_TEMPERATURE", "0.7"))
@@ -295,7 +295,7 @@ class GeminiConfig:
             "expert": self.EXPERT_MODEL_ID,
             "recorder": self.RECORDER_MODEL_ID
         }
-        return mapping.get(agent_type, "gemini-3-flash-preview")
+        return mapping.get(agent_type, "gemini-2.5-flash")
     
     def is_configured(self) -> bool:
         """檢查 Gemini 是否已配置"""

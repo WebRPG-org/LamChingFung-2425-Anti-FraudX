@@ -116,9 +116,15 @@ else:
 def read_root():
     """主頁路由 - 返回模式選擇頁面"""
     log.info("Root endpoint was called.")
-    index_path = os.path.join(os.path.dirname(__file__), '..', 'RPG_platform', 'RPG_Project', 'index.html')
-    if os.path.exists(index_path):
-        return FileResponse(index_path)
+    # 優先使用 frontend/index.html（包含模型切換開關）
+    frontend_index_path = os.path.join(os.path.dirname(__file__), '..', 'frontend', 'index.html')
+    if os.path.exists(frontend_index_path):
+        return FileResponse(frontend_index_path)
+    
+    # Fallback 到 RPG 項目的 index.html
+    rpg_index_path = os.path.join(os.path.dirname(__file__), '..', 'RPG_platform', 'RPG_Project', 'index.html')
+    if os.path.exists(rpg_index_path):
+        return FileResponse(rpg_index_path)
     else:
         return {"status": "Backend is running", "model_in_use": AGENT_MODEL_NAME, "error": "index.html not found"}
 

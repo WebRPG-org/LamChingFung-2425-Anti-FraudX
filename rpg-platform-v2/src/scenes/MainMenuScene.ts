@@ -496,8 +496,28 @@ export class MainMenuScene extends Phaser.Scene {
       alpha: 1,
       duration: 500,
       onComplete: () => {
+        console.log('[MainMenuScene] Transition complete, starting WorldMapScene...');
+        // 停止當前場景並啟動遊戲場景
+        this.scene.stop('MainMenuScene');
         this.scene.start('WorldMapScene');
       }
     });
+  }
+
+  /**
+   * 場景關閉時清理資源
+   */
+  shutdown(): void {
+    console.log('[MainMenuScene] Shutting down scene, cleaning up resources...');
+    
+    // 停止粒子效果
+    if (this.particles) {
+      this.particles.stop();
+    }
+    
+    // 移除所有事件監聽
+    this.input.removeAllListeners();
+    
+    console.log('[MainMenuScene] Cleanup complete');
   }
 }

@@ -1,0 +1,109 @@
+{
+  "session_id": "087dacff-7445-43ce-b9ca-2466986729a8",
+  "mode": "victim",
+  "scam_type": "shopping",
+  "victim_persona": "average",
+  "start_time": "2026-02-12T13:43:10.927455",
+  "end_time": "2026-02-12T13:50:58.605274",
+  "game_over": true,
+  "winner": "ai",
+  "final_scores": {
+    "player": 0,
+    "ai": 120
+  },
+  "final_trust": {
+    "trust_in_scammer": 100,
+    "trust_in_expert": 6.0,
+    "alertness": 0
+  },
+  "total_rounds": 2,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "你好！我係店主。見你對我哋呢款限量版手袋有興趣。呢批貨係廠家直銷，只做限時清倉優惠，原價$8000，依家只需$1800！真係好抵，手快有手慢無！好多客都搶緊，你考慮清楚未？"
+    },
+    {
+      "role": "expert",
+      "content": "你收到呢啲訊息，要小心喇！我係黃sir。呢個係典型嘅**網購詐騙**手法，騙徒會利用「限量版」、「廠家直銷」同「超低價」嚟**利誘**你，再用「限時優惠」、「手快有手慢無」嚟製造**時間壓力**..."
+    },
+    {
+      "role": "victim",
+      "content": "可唔可以講多d",
+      "timestamp": "2026-02-12T13:46:52.163262"
+    },
+    {
+      "role": "scammer",
+      "content": "店主: 當然可以！呢批手袋係我哋獨家從廠家攞到嘅，數量真係好有限。市面上絕對搵唔到呢個價錢。好多客都已經落咗單，我哋預計好快就會斷貨。你如果真係有興趣，要把握機會，錯過咗就冇㗎喇！",
+      "timestamp": "2026-02-12T13:46:52.163283"
+    },
+    {
+      "role": "expert",
+      "content": "唔使驚，我係黃sir，你收到呢啲訊息真係要提高警覺！佢哋繼續用「獨家」、「限量」同「市面最低價」去**利誘**你，再用「好快斷貨」、「錯過咗就冇」嚟製造極大嘅**時間壓力**。",
+      "timestamp": "2026-02-12T13:46:52.163287"
+    },
+    {
+      "role": "victim",
+      "content": "我而家過數比你",
+      "timestamp": "2026-02-12T13:50:58.605202"
+    },
+    {
+      "role": "scammer",
+      "content": "店主：太好啦！多謝你支持！你而家可以將$1800轉帳到我哋公司嘅指定戶口。戶口號碼係：**[隨機銀行戶口號碼]**。記得轉帳後影番張入數紙俾我哋核對，我哋會盡快安排發貨。",
+      "timestamp": "2026-02-12T13:50:58.605233"
+    },
+    {
+      "role": "expert",
+      "content": "千祈唔好過數住！我係黃sir，你而家好危險！呢個係典型嘅**網購詐騙**，騙徒用「限量版」、「超低價」嚟**利誘**你，再製造「時間壓力」催你轉帳，目的就係想你冇時間思考，即刻過數。",
+      "timestamp": "2026-02-12T13:50:58.605238"
+    }
+  ],
+  "round_logs": [
+    {
+      "round": 1,
+      "timestamp": "2026-02-12T13:46:52.163401",
+      "player_message": "可唔可以講多d",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "店主: 當然可以！呢批手袋係我哋獨家從廠家攞到嘅，數量真係好有限。市面上絕對搵唔到呢個價錢。好多客都已經落咗單，我哋預計好快就會斷貨。你如果真係有興趣，要把握機會，錯過咗就冇㗎喇！"
+        },
+        {
+          "role": "expert",
+          "content": "唔使驚，我係黃sir，你收到呢啲訊息真係要提高警覺！佢哋繼續用「獨家」、「限量」同「市面最低價」去**利誘**你，再用「好快斷貨」、「錯過咗就冇」嚟製造極大嘅**時間壓力**。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 7,
+        "expert": 6,
+        "alertness": 4
+      },
+      "trust_state": {
+        "trust_in_scammer": 57.0,
+        "trust_in_expert": 56.0,
+        "alertness": 54.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 10
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 10
+        },
+        "final_trust": {
+          "trust_in_scammer": 57.0,
+          "trust_in_expert": 56.0,
+          "alertness": 54.0
+        }
+      }
+    }
+  ]
+}

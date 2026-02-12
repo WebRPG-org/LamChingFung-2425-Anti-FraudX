@@ -292,7 +292,7 @@ class LlmFactory:
         for agent_type, model_id in models.items():
             if not model_id:
                 result["errors"].append(f"{agent_type} 模型 ID 未設置")
-            elif model_id == "gemini-2.0-flash-exp" or model_id == "gemini-3-flash-preview":
+            elif model_id == "gemini-2.0-flash-exp" or model_id == "gemini-2.5-flash":
                 result["warnings"].append(
                     f"{agent_type} 使用默認模型（未使用 System Instructions 優化）"
                 )
