@@ -14,7 +14,7 @@
     "NVIDIA_VISIBLE_DEVICES": null,
     "NVIDIA_DRIVER_CAPABILITIES": null,
     "CUDA_VISIBLE_DEVICES": null,
-    "FORCE_GPU": "0 "
+    "FORCE_GPU": "0"
   },
   "ollama_url": "http://127.0.0.1:11434",
   "note": "GPU usage is automatically managed by Ollama container with NVIDIA runtime"

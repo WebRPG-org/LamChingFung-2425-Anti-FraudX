@@ -2,13 +2,19 @@ import os
 from typing import ClassVar
 from dotenv import load_dotenv
 
-from google.adk.agents import Agent
 from agents.prompts.prompt_builder import PromptBuilder
 from llms.llm_factory import LlmFactory
 
 load_dotenv()
 
-class VictimAgent(Agent):
+# 嘗試導入 ADK Agent（如果使用 Ollama 模式）
+try:
+    from google.adk.agents import Agent as ADKAgent
+    BaseAgent = ADKAgent
+except ImportError:
+    BaseAgent = object
+
+class VictimAgent(BaseAgent):
     class Config:
         extra = "allow"  # 允許額外字段
     
@@ -53,9 +59,16 @@ class VictimAgent(Agent):
             "student": "大學生"
         }
         
-        super().__init__(
-            name=name_mapping.get(persona_type, "受騙者"),
-            model=llm,
-            instruction=instruction,
-            app_name="agents"  # 匹配文件夾名稱
-        )
+        # 根據基類決定初始化方式
+        if BaseAgent != object:
+            super().__init__(
+                name=name_mapping.get(persona_type, "受騙者"),
+                model=llm,
+                instruction=instruction,
+                app_name="agents"
+            )
+        else:
+            self.name = name_mapping.get(persona_type, "受騙者")
+            self.model = llm
+            self.instruction = instruction
+            self.app_name = "agents"

@@ -1,12 +1,18 @@
 import os
 from dotenv import load_dotenv
 
-from google.adk.agents import Agent
 from llms.llm_factory import LlmFactory
 
 load_dotenv()
 
-class RecorderAgent(Agent):
+# 嘗試導入 ADK Agent（如果使用 Ollama 模式）
+try:
+    from google.adk.agents import Agent as ADKAgent
+    BaseAgent = ADKAgent
+except ImportError:
+    BaseAgent = object
+
+class RecorderAgent(BaseAgent):
     class Config:
         extra = "allow"  # 允許額外字段
     
@@ -377,9 +383,16 @@ class RecorderAgent(Agent):
 
 **你是專業分析師，你的分析將直接用於改進系統和訓練專家。請確保每個分析都有實際價值。特別是FAILURE分析，必須深入、全面、可執行。**
 """
-        super().__init__(
-            name="記錄人",
-            model=llm,
-            instruction=instruction,
-            app_name="agents"  # 匹配文件夾名稱
-        )
+        # 根據基類決定初始化方式
+        if BaseAgent != object:
+            super().__init__(
+                name="記錄人",
+                model=llm,
+                instruction=instruction,
+                app_name="agents"
+            )
+        else:
+            self.name = "記錄人"
+            self.model = llm
+            self.instruction = instruction
+            self.app_name = "agents"

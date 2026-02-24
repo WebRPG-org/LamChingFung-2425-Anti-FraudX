@@ -105,6 +105,9 @@ export class BootScene extends Phaser.Scene {
     this.load.tilemapTiledJSON('forest-town', 'assets/maps/Forest_Town.json');
     this.load.tilemapTiledJSON('test-minimal', 'assets/maps/test-minimal.json');
     
+    // Load world map background image
+    this.load.image('world-map-bg', 'assets/outside_map.jpg');
+    
     console.log('[BootScene] Essential assets loaded');
   }
 

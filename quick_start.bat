@@ -29,6 +29,7 @@ echo [2/5] Checking LLM Provider...
 if /i "%GEMINI_ENABLED%"=="true" (
     echo [INFO] Gemini API mode enabled
     echo [INFO] Checking Gemini files...
+    call venv\Scripts\activate.bat
     cd backend
     py scripts\init_gemini_files.py
     cd ..
@@ -54,7 +55,7 @@ echo.
 
 echo [4/5] Starting Backend (port 8000)...
 cd backend
-start "Backend Server" /MIN cmd /c "set FORCE_GPU=0 && set OLLAMA_NUM_PREDICT_SCAMMER=200 && set USE_SIMPLE_PROMPTS=true && py main.py"
+start "Backend Server" /MIN cmd /c "cd /d %~dp0 && call venv\Scripts\activate.bat && cd backend && set FORCE_GPU=0 && set OLLAMA_NUM_PREDICT_SCAMMER=200 && set USE_SIMPLE_PROMPTS=true && py main.py"
 cd ..
 timeout /t 3 /nobreak >nul
 echo [OK] Backend started

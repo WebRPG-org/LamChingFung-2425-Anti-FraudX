@@ -87,14 +87,14 @@ export class BackendClient {
    */
   async checkConnection(): Promise<boolean> {
     try {
-      const response = await fetch(`${this.baseURL}/api/game/v2/health`, {
+      const response = await fetch(`${this.baseURL}/health`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
       });
       
       if (response.ok) {
         const data = await response.json();
-        this.isConnected = data.status === 'ok';
+        this.isConnected = data.status === 'ok' || data.status === 'Backend is running';
         console.log('[BackendClient] Backend 連接成功:', data);
         return this.isConnected;
       }

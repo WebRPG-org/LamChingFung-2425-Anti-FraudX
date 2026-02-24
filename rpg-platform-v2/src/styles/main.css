@@ -265,16 +265,20 @@ body::after {
 
 /* ==================== Game Container ==================== */
 #game-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
-  position: relative;
   z-index: 2;
 }
 
 #game-container canvas {
+  display: block;
+  margin: 0 auto;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg), var(--glow-secondary);
   border: 2px solid rgba(8, 217, 214, 0.3);

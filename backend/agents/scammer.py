@@ -2,8 +2,6 @@ import os
 import sys
 from dotenv import load_dotenv
 
-from google.adk.agents import Agent
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from services.rag_service import query_db
 from utils.logger import log
@@ -12,7 +10,15 @@ from llms.llm_factory import LlmFactory
 
 load_dotenv()
 
-class ScammerAgent(Agent):
+# 嘗試導入 ADK Agent（如果使用 Ollama 模式）
+try:
+    from google.adk.agents import Agent as ADKAgent
+    BaseAgent = ADKAgent
+except ImportError:
+    # Gemini 模式不需要 ADK
+    BaseAgent = object
+
+class ScammerAgent(BaseAgent):
     class Config:
         extra = "allow"  # 允許額外字段
     
@@ -40,13 +46,23 @@ class ScammerAgent(Agent):
         stats = PromptBuilder.get_prompt_stats(instruction)
         log.info(f"📊 Scammer Prompt 統計 - 字數: {stats['total_chars']}, 預估 Token: {stats['estimated_tokens']}")
 
-        super().__init__(
-            name="專業騙徒",
-            model=llm,
-            instruction=instruction,
-            tools=[self.get_tactic_context],
-            app_name="agents"  # 匹配文件夾名稱
-        )
+        # 根據基類決定初始化方式
+        if BaseAgent != object:
+            # ADK 模式：使用 super().__init__
+            super().__init__(
+                name="專業騙徒",
+                model=llm,
+                instruction=instruction,
+                tools=[self.get_tactic_context],
+                app_name="agents"
+            )
+        else:
+            # Gemini 模式：直接設置屬性
+            self.name = "專業騙徒"
+            self.model = llm
+            self.instruction = instruction
+            self.tools = [self.get_tactic_context]
+            self.app_name = "agents"
 
     def get_tactic_context(self, query: str) -> str:
         """

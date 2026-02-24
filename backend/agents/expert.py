@@ -2,8 +2,6 @@ import os
 import sys
 from dotenv import load_dotenv
 
-from google.adk.agents import Agent
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from services.rag_service import query_db
 from utils.logger import log
@@ -12,7 +10,14 @@ from llms.llm_factory import LlmFactory
 
 load_dotenv()
 
-class ExpertAgent(Agent):
+# 嘗試導入 ADK Agent（如果使用 Ollama 模式）
+try:
+    from google.adk.agents import Agent as ADKAgent
+    BaseAgent = ADKAgent
+except ImportError:
+    BaseAgent = object
+
+class ExpertAgent(BaseAgent):
     class Config:
         extra = "allow"  # 允許額外字段
     
@@ -41,13 +46,21 @@ class ExpertAgent(Agent):
         # 如果有學習上下文，添加到 Prompt 前面
         final_instruction = f"**重要提醒：** {learning_context}\n\n{base_instruction}" if learning_context else base_instruction
 
-        super().__init__(
-            name="防騙專家",
-            model=llm,
-            instruction=final_instruction,
-            tools=[self.get_expert_opinion],
-            app_name="agents"  # 匹配文件夾名稱
-        )
+        # 根據基類決定初始化方式
+        if BaseAgent != object:
+            super().__init__(
+                name="防騙專家",
+                model=llm,
+                instruction=final_instruction,
+                tools=[self.get_expert_opinion],
+                app_name="agents"
+            )
+        else:
+            self.name = "防騙專家"
+            self.model = llm
+            self.instruction = final_instruction
+            self.tools = [self.get_expert_opinion]
+            self.app_name = "agents"
 
     def get_expert_opinion(self, query: str) -> str:
         """
