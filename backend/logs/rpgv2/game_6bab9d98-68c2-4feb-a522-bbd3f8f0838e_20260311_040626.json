@@ -1,0 +1,46 @@
+{
+  "session_id": "6bab9d98-68c2-4feb-a522-bbd3f8f0838e",
+  "mode": "expert",
+  "scam_type": "banking",
+  "victim_persona": "average",
+  "start_time": "2026-03-11T04:05:42.980479",
+  "end_time": "2026-03-11T04:06:26.087756",
+  "game_over": true,
+  "winner": "player",
+  "final_scores": {
+    "player": 130,
+    "ai": 10
+  },
+  "final_trust": {
+    "trust_in_scammer": 0,
+    "trust_in_expert": 100,
+    "alertness": 100
+  },
+  "total_rounds": 1,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "您好，我是警務處反欺詐行動組的李先生。我打電話給您的原因是因為我們接獲情報，發現您的銀行帳戶可能存在異常交易風險。 根據最新的犯罪趨勢，不肖分子經常利用技術手段盜取個人金融資訊，造成重大損失。"
+    },
+    {
+      "role": "victim",
+      "content": "This is a classic and very convincing phishing scam."
+    },
+    {
+      "role": "expert",
+      "content": "無錯,呢個係一場詐騙,你唔好信佢",
+      "timestamp": "2026-03-11T04:06:26.087727"
+    },
+    {
+      "role": "victim",
+      "content": "好的，以下是一些你可以用到的回應選項 (都符合100字內)：\n\n*   **選項 1 (直接確認):** “非常感謝您的提醒！我明白了，這肯定是詐騙電話，不會相信。謝謝您告知！",
+      "timestamp": "2026-03-11T04:06:26.087731"
+    },
+    {
+      "role": "scammer",
+      "content": "您好，非常幸運！我們的系統 tespit到您的帳戶正被黑客鎖定。李先生已經準備了緊急措施，但需要您的協助才能確保您的資產安全。請立即提供您的銀行賬戶號碼和 OTP 驗證碼，以防止更大的損失發生。",
+      "timestamp": "2026-03-11T04:06:26.087732"
+    }
+  ],
+  "round_logs": []
+}

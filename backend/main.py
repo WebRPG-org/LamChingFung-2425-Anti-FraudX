@@ -17,10 +17,12 @@ from api.rpgv2_game_modes_routes import router as rpgv2_game_modes_router
 from api.prompt_version_routes import router as prompt_version_router
 from api.demo_routes import router as demo_router
 from api.model_switch_routes import router as model_switch_router
+from api.tools_routes import router as tools_router
 from fastapi.middleware.cors import CORSMiddleware
 
-# Load environment variables from .env file
-load_dotenv()
+# Load environment variables from backend/.env (authoritative single source)
+_env_file = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(_env_file, override=True)
 
 # 離線模式檢查（確保數據不流出）
 try:
@@ -91,6 +93,7 @@ app.include_router(rpgv2_game_modes_router)  # RPGv2 遊戲模式（新）
 app.include_router(prompt_version_router)  # Prompt 版本管理
 app.include_router(demo_router)           # 演示模式
 app.include_router(model_switch_router)   # 模型切換 API
+app.include_router(tools_router)          # 工具中心 API (scraper/finetune/modelgen)
 
 # 掛載RPG項目的靜態文件（HTML, JS, CSS等）
 rpg_project_path = os.path.join(os.path.dirname(__file__), '..', 'RPG_platform', 'RPG_Project')
@@ -204,4 +207,4 @@ def test_json_endpoint():
 if __name__ == "__main__":
     log.info(f"Starting server with model: {AGENT_MODEL_NAME}")
     # uvicorn.run("filename:FastAPI_instance_name", ...other_parameters)
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=False)

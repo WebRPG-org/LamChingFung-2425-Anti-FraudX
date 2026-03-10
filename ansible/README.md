@@ -1,175 +1,200 @@
-# Hong Kong Anti-Scam RPG - Ansible Deployment
+# AI Anti-Fraud Platform — Ansible Deployment
 
-This directory contains Ansible playbooks for automated deployment of the Hong Kong Anti-Scam RPG training system across multiple computers.
+> Version: 4.1 | Updated: 2026-03-11
 
-## Prerequisites
+Automated deployment for local servers, GCP, and AWS. Supports both **Ollama** (local GPU) and **Gemini API** (cloud) modes.
 
-### On Control Machine (Your Computer)
-```bash
-# Install Ansible
-pip install ansible
-
-# Or on Windows with WSL/Git Bash
-pip install ansible
-```
-
-### On Target Machines
-- SSH access enabled
-- Python 3.8+ installed
-- User with sudo privileges
+---
 
 ## Quick Start
 
+### Prerequisites
+
+```bash
+# Install Ansible (on your control machine)
+pip install ansible
+
+# On Windows: use WSL or Git Bash
+```
+
 ### 1. Configure Inventory
-Edit `inventory/hosts.yml` with your target machines:
 
-```yaml
-all:
-  children:
-    game_servers:
-      hosts:
-        server1:
-          ansible_host: 192.168.1.10
-        server2:
-          ansible_host: 192.168.1.11
-```
-
-### 2. Configure Variables
-Edit `group_vars/all.yml` to customize installation settings.
-
-### 3. Run Deployment
-
-**Full Installation (Frontend + Backend + Database):**
 ```bash
-ansible-playbook -i inventory/hosts.yml playbooks/site.yml
+cp ansible/inventory/hosts.example.yml ansible/inventory/hosts.yml
+# Edit hosts.yml with your server IPs and settings
 ```
 
-**Frontend Only:**
+### 2. Set Secrets (Ansible Vault)
+
 ```bash
-ansible-playbook -i inventory/hosts.yml playbooks/frontend.yml
+# Create encrypted secrets file
+ansible-vault create ansible/inventory/group_vars/vault.yml
+
+# Add:
+vault_gemini_api_key: "your-gemini-api-key"
 ```
 
-**Backend Only:**
+### 3. Deploy
+
 ```bash
-ansible-playbook -i inventory/hosts.yml playbooks/backend.yml
+# Full local deployment (Ollama mode)
+ansible-playbook -i ansible/inventory/hosts.yml ansible/playbooks/site.yml
+
+# Full deployment (Gemini mode)
+ansible-playbook -i ansible/inventory/hosts.yml ansible/playbooks/site.yml \
+  -e "gemini_enabled=true gemini_api_key=your_key"
+
+# GCP deployment
+ansible-playbook -i ansible/inventory/hosts.yml ansible/playbooks/deploy-gcp.yml
+
+# AWS deployment
+ansible-playbook -i ansible/inventory/hosts.yml ansible/playbooks/deploy-aws.yml
 ```
 
-**Development Environment:**
-```bash
-ansible-playbook -i inventory/hosts.yml playbooks/dev-setup.yml
-```
+---
 
 ## Playbooks
 
-- `site.yml` - Complete installation (all components)
-- `frontend.yml` - RPG game frontend only
-- `backend.yml` - AI backend API only
-- `dev-setup.yml` - Development environment setup
-- `update.yml` - Update existing installation
+| Playbook | Purpose | Command |
+|----------|---------|--------|
+| `site.yml` | Full deployment (all components) | `ansible-playbook ... playbooks/site.yml` |
+| `update.yml` | Update existing installation | `ansible-playbook ... playbooks/update.yml` |
+| `deploy-gcp.yml` | GCP-specific deployment | `ansible-playbook ... playbooks/deploy-gcp.yml` |
+| `deploy-aws.yml` | AWS-specific deployment | `ansible-playbook ... playbooks/deploy-aws.yml` |
+
+---
 
 ## Roles
 
-- `common` - Base system setup (Node.js, Python, Git)
-- `frontend` - RPG game frontend deployment
-- `backend` - AI backend API deployment
-- `database` - Database setup (if needed)
-- `nginx` - Web server configuration
+| Role | Purpose | Condition |
+|------|---------|----------|
+| `common` | Python 3.10, Node.js, NVIDIA toolkit, directories, firewall | Always |
+| `ollama` | Install Ollama, pull models, systemd service, warm-up | `gemini_enabled=false` |
+| `backend` | Clone repo, venv, pip install, build frontend, systemd service | Always |
+| `nginx` | Reverse proxy, WebSocket support, optional SSL/Let's Encrypt | `nginx_install=true` |
+
+---
+
+## LLM Mode Selection
+
+### Ollama (local GPU — default)
+
+```yaml
+# group_vars/all.yml or host var
+gemini_enabled: false
+ollama_model: gemma3:4b
+nvidia_gpu: true      # installs NVIDIA Container Toolkit
+```
+
+### Gemini API (cloud — recommended for GCP/AWS)
+
+```yaml
+gemini_enabled: true
+gemini_api_key: "{{ vault_gemini_api_key }}"
+gemini_model_scammer: gemini-2.5-flash
+gemini_model_expert: gemini-2.5-flash
+```
+
+---
+
+## Key Variables (`group_vars/all.yml`)
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `gemini_enabled` | `false` | Use Gemini API instead of Ollama |
+| `ollama_model` | `gemma3:4b` | Default Ollama model |
+| `ollama_models_to_pull` | `[gemma3:4b]` | Models to pull at deploy time |
+| `nvidia_gpu` | `false` | Install NVIDIA Container Toolkit |
+| `backend_port` | `8000` | FastAPI port |
+| `app_domain` | `antiscam.example.com` | Domain for nginx |
+| `enable_ssl` | `false` | Enable Let's Encrypt SSL |
+| `nginx_install` | `true` | Install nginx reverse proxy |
+| `deploy_mode` | `local` | `local` / `gcp` / `aws` |
+
+---
 
 ## Directory Structure
 
 ```
 ansible/
-├── README.md
 ├── ansible.cfg
 ├── inventory/
-│   ├── hosts.yml
+│   ├── hosts.yml              # Your server list (git-ignored)
+│   ├── hosts.example.yml      # Example — copy and edit
 │   └── group_vars/
-│       └── all.yml
+│       ├── all.yml            # Global variables
+│       └── vault.yml          # Encrypted secrets (ansible-vault)
 ├── playbooks/
-│   ├── site.yml
-│   ├── frontend.yml
-│   ├── backend.yml
-│   ├── dev-setup.yml
-│   └── update.yml
+│   ├── site.yml               # Full deployment
+│   ├── update.yml             # Update existing
+│   ├── deploy-gcp.yml         # GCP-specific
+│   └── deploy-aws.yml         # AWS-specific
 └── roles/
-    ├── common/
-    ├── frontend/
-    ├── backend/
-    ├── database/
-    └── nginx/
+    ├── common/                # Base system setup
+    ├── ollama/                # Ollama LLM service
+    ├── backend/               # FastAPI backend
+    └── nginx/                 # Nginx reverse proxy
 ```
 
-## Configuration Variables
+---
 
-Key variables in `group_vars/all.yml`:
+## Common Commands
 
-```yaml
-# Application settings
-app_name: hk-antiscam-rpg
-app_user: rpgadmin
-install_dir: /opt/{{ app_name }}
-
-# Frontend settings
-frontend_port: 3000
-frontend_domain: rpg.example.com
-
-# Backend settings
-backend_port: 5000
-backend_api_key: your-secret-key
-
-# Node.js version
-nodejs_version: "20.x"
-
-# Python version
-python_version: "3.11"
-```
-
-## Examples
-
-### Deploy to Single Server
 ```bash
-ansible-playbook -i inventory/hosts.yml playbooks/site.yml --limit server1
-```
-
-### Deploy with Custom Variables
-```bash
-ansible-playbook -i inventory/hosts.yml playbooks/site.yml -e "frontend_port=8080"
-```
-
-### Check Mode (Dry Run)
-```bash
+# Dry run (check mode)
 ansible-playbook -i inventory/hosts.yml playbooks/site.yml --check
+
+# Single host
+ansible-playbook -i inventory/hosts.yml playbooks/site.yml --limit server1
+
+# Single role
+ansible-playbook -i inventory/hosts.yml playbooks/site.yml --tags backend
+
+# With vault password
+ansible-playbook -i inventory/hosts.yml playbooks/site.yml --ask-vault-pass
+
+# Test SSH connectivity
+ansible all -i inventory/hosts.yml -m ping
+
+# View logs on remote
+ansible all -i inventory/hosts.yml -m shell -a "tail -50 /var/log/ai-antiscam/backend.log"
+
+# Restart backend only
+ansible all -i inventory/hosts.yml -m systemd -a "name=ai-antiscam-backend state=restarted" --become
+
+# Pull new Ollama model
+ansible all -i inventory/hosts.yml -m command -a "ollama pull gemma3:4b" --become
 ```
 
-### Verbose Output
-```bash
-ansible-playbook -i inventory/hosts.yml playbooks/site.yml -vvv
-```
+---
+
+## After Deployment
+
+| URL | Purpose |
+|-----|---------|
+| `http://HOST:8000/` | Main dashboard |
+| `http://HOST:8000/rpgv2` | RPGv2 game |
+| `http://HOST:8000/docs` | FastAPI Swagger docs |
+| `http://HOST:8000/health` | Health check |
+| `http://HOST:8000/tools` | Tools Center (scraper/finetune/modelgen) |
+
+---
 
 ## Troubleshooting
 
-### SSH Connection Issues
 ```bash
-# Test connection
-ansible all -i inventory/hosts.yml -m ping
+# Check service status
+systemctl status ai-antiscam-backend
+systemctl status ollama
 
-# Use password authentication
-ansible-playbook -i inventory/hosts.yml playbooks/site.yml --ask-pass
+# View logs
+journalctl -u ai-antiscam-backend -f
+journalctl -u ollama -f
+tail -f /var/log/ai-antiscam/backend.log
+
+# Test Ollama
+curl http://localhost:11434/api/tags
+
+# Test backend
+curl http://localhost:8000/health
 ```
-
-### Permission Issues
-```bash
-# Use sudo
-ansible-playbook -i inventory/hosts.yml playbooks/site.yml --become --ask-become-pass
-```
-
-## Security Notes
-
-- Store sensitive data in Ansible Vault
-- Use SSH keys instead of passwords
-- Restrict file permissions on inventory files
-- Use firewall rules to limit access
-
-## Support
-
-For issues or questions, refer to the main project documentation.

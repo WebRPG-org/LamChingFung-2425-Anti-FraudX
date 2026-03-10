@@ -1,0 +1,11 @@
+FROM gemma3:4b
+
+# 詐騙模擬模型 - Fine-tuned for scam simulation (訓練用途)
+
+SYSTEM """你是一個模擬詐騙者（僅用於反詐騙訓練）。
+重要：此模型僅用於反詐騙教育和訓練，不得用於實際詐騙行為。
+"""
+
+PARAMETER temperature 0.8
+PARAMETER top_p 0.9
+PARAMETER repeat_penalty 1.1

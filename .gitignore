@@ -1,73 +1,60 @@
-# Virtual Environment
-venv/
-env/
-ENV/
-.venv/
-
-# Python
+﻿# Python
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+*.pyc
+.pytest_cache/
+.mypy_cache/
 
-# Environment Variables
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment secrets
 .env
-.env.local
-.env.*.local
+*.env
+.env.bak
+*.env.bak
+apikey.md
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+
+# Logs and runtime files
+*.log
+logs/*.log
+gpu_status.json
+backend_out.log
+backend_err.log
+health.json
+
+# Database files (auto-generated)
+*.db
+backend/db/chroma_db/
+
+# Training data (large, auto-generated)
+backend/training_data/
+backend/models/
+data/scraped_alerts.json
+
+# Fine-tune outputs
+backend/training_data/finetuning/
+
+# Node
+node_modules/
+
+# TypeScript build output
+rpg-platform-v2/dist/
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
-.DS_Store
-
-# Logs
-*.log
-logs/
-*.log.*
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
-
-# ChromaDB / RAG
-backend/rag/chroma_db/
-*.index
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
-.tox/
 
 # OS
+.DS_Store
 Thumbs.db
-desktop.ini
-
-# Temporary files
-*.tmp
-*.temp
-tmp/
-temp/

@@ -10,7 +10,7 @@ import { TrustData } from '../systems/TrustSystem';
 
 interface ResultSceneData {
   outcome: 'scammer_win' | 'expert_win' | 'ongoing';
-  analysis: {
+  analysis?: {
     success: boolean;
     session_id: string;
     analysis: {
@@ -27,7 +27,7 @@ interface ResultSceneData {
     conversation_count: number;
   };
   scamType: ScamType;
-  trustData: TrustData;
+  trustData?: TrustData;
   roundCount: number;
 }
 
@@ -39,8 +39,17 @@ export class ResultScene extends Phaser.Scene {
   }
 
   init(data: ResultSceneData): void {
-    this.data = data;
-    console.log('[ResultScene] 顯示結果:', data);
+    // 防護：確保 analysis 欄位存在
+    this.data = {
+      ...data,
+      analysis: data.analysis ?? {
+        success: true,
+        session_id: '',
+        analysis: { scammer_score: 0, expert_score: 0, outcome: data.outcome },
+        conversation_count: data.roundCount ?? 0
+      }
+    };
+    console.log('[ResultScene] 顯示結果:', this.data);
   }
 
   create(): void {
@@ -113,38 +122,33 @@ export class ResultScene extends Phaser.Scene {
     const panel = this.add.container(0, 0);
 
     // 面板背景
-    const panelBg = this.add.rectangle(0, 0, 900, 650, 0x16213E, 0.95);
+    const panelBg = this.add.rectangle(0, 0, 900, 550, 0x16213E, 0.95);
     panelBg.setStrokeStyle(3, this.getOutcomeColor(), 0.8);
     panel.add(panelBg);
 
     // 標題
     const title = this.createTitle();
-    title.setPosition(0, -280);
+    title.setPosition(0, -260);
     panel.add(title);
 
     // 騙案類型資訊
     const scamInfo = this.createScamInfo();
-    scamInfo.setPosition(0, -220);
+    scamInfo.setPosition(0, -195);
     panel.add(scamInfo);
-
-    // 評分區域
-    const scores = this.createScores();
-    scores.setPosition(0, -120);
-    panel.add(scores);
 
     // 信任度數據
     const trustInfo = this.createTrustInfo();
-    trustInfo.setPosition(0, 20);
+    trustInfo.setPosition(0, -80);
     panel.add(trustInfo);
 
     // 建議區域
     const recommendations = this.createRecommendations();
-    recommendations.setPosition(0, 150);
+    recommendations.setPosition(0, 70);
     panel.add(recommendations);
 
     // 按鈕
     const buttons = this.createButtons();
-    buttons.setPosition(0, 280);
+    buttons.setPosition(0, 240);
     panel.add(buttons);
 
     return panel;
@@ -206,56 +210,6 @@ export class ResultScene extends Phaser.Scene {
     return container;
   }
 
-  private createScores(): Phaser.GameObjects.Container {
-    const container = this.add.container(0, 0);
-
-    // 背景
-    const bg = this.add.rectangle(0, 0, 850, 100, 0x0A0E27, 0.5);
-    bg.setStrokeStyle(2, 0x08D9D6, 0.3);
-    container.add(bg);
-
-    const analysis = this.data.analysis.analysis;
-
-    // 騙徒評分
-    const scammerScore = this.add.text(-300, -20, '🎭 騙徒表現', {
-      fontFamily: 'Noto Sans TC, sans-serif',
-      fontSize: '18px',
-      color: '#FF2E63',
-      fontStyle: 'bold'
-    });
-    scammerScore.setOrigin(0, 0.5);
-
-    const scammerValue = this.add.text(-300, 15, 
-      `${analysis.scammer_score || 0}/100`, {
-      fontFamily: 'Rajdhani, sans-serif',
-      fontSize: '32px',
-      color: '#FFFFFF',
-      fontStyle: 'bold'
-    });
-    scammerValue.setOrigin(0, 0.5);
-
-    // 專家評分
-    const expertScore = this.add.text(100, -20, '🛡️ 專家表現', {
-      fontFamily: 'Noto Sans TC, sans-serif',
-      fontSize: '18px',
-      color: '#08D9D6',
-      fontStyle: 'bold'
-    });
-    expertScore.setOrigin(0, 0.5);
-
-    const expertValue = this.add.text(100, 15, 
-      `${analysis.expert_score || 0}/100`, {
-      fontFamily: 'Rajdhani, sans-serif',
-      fontSize: '32px',
-      color: '#FFFFFF',
-      fontStyle: 'bold'
-    });
-    expertValue.setOrigin(0, 0.5);
-
-    container.add([scammerScore, scammerValue, expertScore, expertValue]);
-    return container;
-  }
-
   private createTrustInfo(): Phaser.GameObjects.Container {
     const container = this.add.container(0, 0);
 
@@ -264,7 +218,7 @@ export class ResultScene extends Phaser.Scene {
     bg.setStrokeStyle(2, 0x08D9D6, 0.3);
     container.add(bg);
 
-    const trustData = this.data.trustData;
+    const trustData = this.data.trustData ?? { trustInScammer: 0, trustInExpert: 0, alertness: 50 };
 
     // 標題
     const title = this.add.text(0, -35, '📊 最終信任度數據', {

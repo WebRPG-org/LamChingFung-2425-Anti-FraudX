@@ -1,104 +1,99 @@
 ---
-# Global variables for all hosts
+# ============================================================
+# AI Anti-Fraud Platform — Global Ansible Variables
+# Version: 4.1 | Updated: 2026-03-11
+# ============================================================
 
-# Application settings
-app_name: hk-antiscam-rpg
-app_user: rpgadmin
-app_group: rpgadmin
+# ── Application ─────────────────────────────────────────────
+app_name: ai-antiscam
+app_user: antiscam
+app_group: antiscam
 install_dir: /opt/{{ app_name }}
 log_dir: /var/log/{{ app_name }}
+backup_dir: /backup/{{ app_name }}
 
-# Git repository
-git_repo: https://github.com/yourusername/hk-antiscam-rpg.git
+# ── Git ─────────────────────────────────────────────────────
+git_repo: https://github.com/yourusername/AI-Agentv4.git
 git_branch: main
 
-# Node.js settings
-nodejs_version: "20.x"
-npm_registry: https://registry.npmjs.org/
+# ── Python ──────────────────────────────────────────────────
+python_version: "3.10"
 
-# Python settings
-python_version: "3.11"
-pip_mirror: https://pypi.org/simple
-
-# Frontend settings
-frontend_port: 3000
-frontend_domain: rpg.example.com
-frontend_build_dir: "{{ install_dir }}/rpg-platform-v2"
-frontend_dist_dir: "{{ frontend_build_dir }}/dist"
-
-# Backend settings
-backend_port: 5000
-backend_domain: api.rpg.example.com
+# ── Backend (FastAPI + uvicorn) ──────────────────────────────
+backend_port: 8000
 backend_dir: "{{ install_dir }}/backend"
-backend_api_key: "{{ vault_backend_api_key | default('change-me-in-production') }}"
+backend_workers: 1          # Keep at 1 — session state is in-memory
 
-# Database settings (if needed)
-db_type: sqlite  # or postgresql, mysql
-db_name: antiscam_rpg
-db_user: rpguser
-db_password: "{{ vault_db_password | default('change-me') }}"
-db_host: localhost
-db_port: 5432
+# ── Frontend (rpg-platform-v2, served by FastAPI) ────────────
+# FastAPI serves the built frontend — no separate Node server needed
+frontend_build_dir: "{{ install_dir }}/rpg-platform-v2"
+nodejs_version: "20.x"      # Needed only for building rpg-platform-v2
 
-# Nginx settings
-nginx_worker_processes: auto
-nginx_worker_connections: 1024
-nginx_client_max_body_size: 10M
+# ── LLM Provider ────────────────────────────────────────────
+# Set gemini_enabled=true to skip Ollama installation
+gemini_enabled: false
+gemini_api_key: "{{ vault_gemini_api_key | default('') }}"
+gemini_model_scammer: "gemini-2.5-flash"
+gemini_model_expert: "gemini-2.5-flash"
+gemini_model_victim: "gemini-2.5-flash"
+gemini_model_recorder: "gemini-2.5-flash"
+gemini_max_output_tokens: 800
+gemini_timeout: 45.0
 
-# SSL/TLS settings
+# ── Ollama ───────────────────────────────────────────────────
+ollama_install: "{{ not gemini_enabled }}"
+ollama_port: 11434
+ollama_base_url: "http://localhost:{{ ollama_port }}"
+ollama_model: "gemma3:4b"
+ollama_models_to_pull:
+  - gemma3:4b
+# After Tools Center fine-tune, add custom models:
+# - anti-fraud-expert
+# - scammer-sim
+ollama_num_ctx: 2048
+ollama_num_predict: 400
+ollama_temperature: 0.7
+ollama_keep_alive: "5m"
+ollama_num_parallel: 2
+ollama_max_loaded_models: 2
+
+# ── GPU ──────────────────────────────────────────────────────
+nvidia_gpu: false           # Set true on GPU instances (installs NVIDIA Container Toolkit)
+force_gpu: 0                # 1 = exit if no GPU found
+
+# ── Per-agent model overrides (optional) ─────────────────────
+agent_model_scammer: "{{ ollama_model }}"
+agent_model_expert: "{{ ollama_model }}"
+agent_model_victim: "{{ ollama_model }}"
+agent_model_recorder: "{{ ollama_model }}"
+
+# ── Nginx ────────────────────────────────────────────────────
+nginx_install: true
+app_domain: "antiscam.example.com"
 enable_ssl: false
-ssl_cert_path: /etc/ssl/certs/{{ frontend_domain }}.crt
-ssl_key_path: /etc/ssl/private/{{ frontend_domain }}.key
+ssl_cert_path: "/etc/ssl/certs/{{ app_domain }}.crt"
+ssl_key_path: "/etc/ssl/private/{{ app_domain }}.key"
+nginx_client_max_body_size: "10M"
 
-# Firewall settings
+# ── Firewall ─────────────────────────────────────────────────
 enable_firewall: true
 allowed_ports:
-  - 22    # SSH
-  - 80    # HTTP
-  - 443   # HTTPS
-  - "{{ frontend_port }}"
+  - 22     # SSH
+  - 80     # HTTP
+  - 443    # HTTPS
   - "{{ backend_port }}"
 
-# System settings
+# ── System ───────────────────────────────────────────────────
 timezone: Asia/Hong_Kong
 locale: zh_HK.UTF-8
 
-# Monitoring (optional)
-enable_monitoring: false
-monitoring_port: 9090
-
-# Backup settings
+# ── Backup ───────────────────────────────────────────────────
 enable_backup: true
-backup_dir: /backup/{{ app_name }}
 backup_retention_days: 7
 
-# Development mode
-dev_mode: false
-hot_reload: true
-
-# Performance tuning
-pm2_instances: 2  # Number of Node.js instances
-gunicorn_workers: 4  # Number of Python workers
-
-# Dependencies versions
-dependencies:
-  node_packages:
-    - name: vite
-      version: latest
-    - name: typescript
-      version: latest
-  
-  python_packages:
-    - name: flask
-      version: ">=2.0.0"
-    - name: openai
-      version: latest
-    - name: python-dotenv
-      version: latest
-
-# Environment variables
-env_vars:
-  NODE_ENV: production
-  VITE_API_URL: "http://{{ backend_domain }}:{{ backend_port }}"
-  FLASK_ENV: production
-  OPENAI_API_KEY: "{{ vault_openai_api_key | default('') }}"
+# ── Deployment mode ──────────────────────────────────────────
+# local: bare-metal / VM
+# docker: Docker Compose
+# gcp:   GCP Cloud Run or GCE
+# aws:   AWS ECS or EC2
+deploy_mode: local

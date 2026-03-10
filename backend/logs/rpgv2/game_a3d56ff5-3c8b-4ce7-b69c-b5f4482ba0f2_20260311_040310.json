@@ -1,0 +1,229 @@
+{
+  "session_id": "a3d56ff5-3c8b-4ce7-b69c-b5f4482ba0f2",
+  "mode": "victim",
+  "scam_type": "investment",
+  "victim_persona": "average",
+  "start_time": "2026-03-11T04:01:33.356068",
+  "end_time": "2026-03-11T04:03:10.513039",
+  "game_over": true,
+  "winner": "ai",
+  "final_scores": {
+    "player": 0,
+    "ai": 140
+  },
+  "final_trust": {
+    "trust_in_scammer": 100,
+    "trust_in_expert": 0,
+    "alertness": 0
+  },
+  "total_rounds": 4,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "您好，最近股市波動很大，想請問您是否也對投資有興趣，特別是利用AI技術分析的加密貨幣投資機會呢？或許能為您帶來意想不到的回報！"
+    },
+    {
+      "role": "victim",
+      "content": "係呀,有咩推介",
+      "timestamp": "2026-03-11T04:02:00.051059"
+    },
+    {
+      "role": "scammer",
+      "content": "您好，我有一個非常好的機會！我們團隊利用最先進的AI模型，篩選出波動性最高、潛力最大的加密貨幣。目前有少量名額，價格非常優惠，而且保證回報20%以上！ 立即加入，別錯過這個賺錢的好機會！",
+      "timestamp": "2026-03-11T04:02:00.051065"
+    },
+    {
+      "role": "expert",
+      "content": "唔使驚，先生/女士！聽落嚟真係好似好嘢，但係股市、加密貨幣投資都好複雜，好多時候都係騙徒嘅伎倆。 \n\n第一步：**立刻停止討論**，唔好再俾佢哋話更多。",
+      "timestamp": "2026-03-11T04:02:00.051068"
+    },
+    {
+      "role": "victim",
+      "content": "好似好正WOR,講多D",
+      "timestamp": "2026-03-11T04:02:30.724019"
+    },
+    {
+      "role": "scammer",
+      "content": "您好，這確實是一個非常誘人的機會。但請記住，高回報往往伴隨著高風險。我建議您先做足功課，了解加密貨幣的特性和市場波動，不要輕易相信任何“保證回報”的投資方案。 我們可以聊聊您對加密貨幣的了解程度嗎？",
+      "timestamp": "2026-03-11T04:02:30.724025"
+    },
+    {
+      "role": "expert",
+      "content": "先生/女士，您好！聽到您覺得咁樣好正，我明白您想嘗試機會。但係，投資永遠都係要小心嘅。**唔好再繼續傾偈啦！** 佢哋話嘅嘢都可能係想您入套。記住，如果收益好高好快，一定有陷阱！",
+      "timestamp": "2026-03-11T04:02:30.724027"
+    },
+    {
+      "role": "victim",
+      "content": "快D",
+      "timestamp": "2026-03-11T04:02:53.388595"
+    },
+    {
+      "role": "scammer",
+      "content": "沒問題！時間非常寶貴，我們已經準備好一切。請立刻提供您的銀行帳戶信息，以便進行資金轉移和交易操作。您將獲得最大化的回報！",
+      "timestamp": "2026-03-11T04:02:53.388598"
+    },
+    {
+      "role": "expert",
+      "content": "先生/女士，您好！明白您想快啲行動，但係要特別小心！ 聽到“快D”嘅話，就表示騙徒想加快您的決定速度。**第一步：立即停止討論！**  唔好再俾佢哋話更多，更要你提供任何個人資料或錢款。",
+      "timestamp": "2026-03-11T04:02:53.388600"
+    },
+    {
+      "role": "victim",
+      "content": "無問題,我立即過數",
+      "timestamp": "2026-03-11T04:03:10.513031"
+    },
+    {
+      "role": "scammer",
+      "content": "太棒了！請立刻轉帳5000港元到以下賬戶，確認收到後我們會開始您的投資。銀行名稱：XX銀行，賬號：XXXXXXXXXXXXXXX，Swift Code：XXBANKHK。時間有限，請您盡快操作！",
+      "timestamp": "2026-03-11T04:03:10.513033"
+    },
+    {
+      "role": "expert",
+      "content": "先生/女士！**絕對唔好過數！** 聽到“立即過數”嘅時候，就要警惕！佢哋想用錢嚟綁住你，阻止你反思。**第一步：立刻掛斷電話！** 第二步：立即報警！",
+      "timestamp": "2026-03-11T04:03:10.513034"
+    }
+  ],
+  "round_logs": [
+    {
+      "round": 1,
+      "timestamp": "2026-03-11T04:02:00.051095",
+      "player_message": "係呀,有咩推介",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "您好，我有一個非常好的機會！我們團隊利用最先進的AI模型，篩選出波動性最高、潛力最大的加密貨幣。目前有少量名額，價格非常優惠，而且保證回報20%以上！ 立即加入，別錯過這個賺錢的好機會！"
+        },
+        {
+          "role": "expert",
+          "content": "唔使驚，先生/女士！聽落嚟真係好似好嘢，但係股市、加密貨幣投資都好複雜，好多時候都係騙徒嘅伎倆。 \n\n第一步：**立刻停止討論**，唔好再俾佢哋話更多。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 6,
+        "expert": -2,
+        "alertness": 4
+      },
+      "trust_state": {
+        "trust_in_scammer": 56.0,
+        "trust_in_expert": 48.0,
+        "alertness": 54.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 10
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 10
+        },
+        "final_trust": {
+          "trust_in_scammer": 56.0,
+          "trust_in_expert": 48.0,
+          "alertness": 54.0
+        }
+      }
+    },
+    {
+      "round": 2,
+      "timestamp": "2026-03-11T04:02:30.724055",
+      "player_message": "好似好正WOR,講多D",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "您好，這確實是一個非常誘人的機會。但請記住，高回報往往伴隨著高風險。我建議您先做足功課，了解加密貨幣的特性和市場波動，不要輕易相信任何“保證回報”的投資方案。 我們可以聊聊您對加密貨幣的了解程度嗎？"
+        },
+        {
+          "role": "expert",
+          "content": "先生/女士，您好！聽到您覺得咁樣好正，我明白您想嘗試機會。但係，投資永遠都係要小心嘅。**唔好再繼續傾偈啦！** 佢哋話嘅嘢都可能係想您入套。記住，如果收益好高好快，一定有陷阱！"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 6,
+        "expert": -2,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 62.0,
+        "trust_in_expert": 46.0,
+        "alertness": 50.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 20
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 20
+        },
+        "final_trust": {
+          "trust_in_scammer": 62.0,
+          "trust_in_expert": 46.0,
+          "alertness": 50.0
+        }
+      }
+    },
+    {
+      "round": 3,
+      "timestamp": "2026-03-11T04:02:53.388613",
+      "player_message": "快D",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "沒問題！時間非常寶貴，我們已經準備好一切。請立刻提供您的銀行帳戶信息，以便進行資金轉移和交易操作。您將獲得最大化的回報！"
+        },
+        {
+          "role": "expert",
+          "content": "先生/女士，您好！明白您想快啲行動，但係要特別小心！ 聽到“快D”嘅話，就表示騙徒想加快您的決定速度。**第一步：立即停止討論！**  唔好再俾佢哋話更多，更要你提供任何個人資料或錢款。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 4,
+        "expert": -3,
+        "alertness": -5
+      },
+      "trust_state": {
+        "trust_in_scammer": 66.0,
+        "trust_in_expert": 43.0,
+        "alertness": 45.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 30
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 30
+        },
+        "final_trust": {
+          "trust_in_scammer": 66.0,
+          "trust_in_expert": 43.0,
+          "alertness": 45.0
+        }
+      }
+    }
+  ]
+}

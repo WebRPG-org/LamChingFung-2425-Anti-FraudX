@@ -1,0 +1,38 @@
+{
+  "session_id": "a0783c23-1992-4c9f-895c-99b77e2f0dd1",
+  "mode": "scammer",
+  "scam_type": "shopping",
+  "victim_persona": "average",
+  "start_time": "2026-03-11T04:04:28.881503",
+  "end_time": "2026-03-11T04:05:23.751201",
+  "game_over": true,
+  "winner": "player",
+  "final_scores": {
+    "player": 100,
+    "ai": 10
+  },
+  "final_trust": {
+    "trust_in_scammer": 100,
+    "trust_in_expert": 50.0,
+    "alertness": 0
+  },
+  "total_rounds": 1,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "你好,我係HKTVMALL的客戶服務主任,你的帳號出現異常",
+      "timestamp": "2026-03-11T04:05:23.751186"
+    },
+    {
+      "role": "expert",
+      "content": "警惕！你聽到有人自稱HKTVMall客戶服務主任，話你嘅帳戶有問題，**絕對要保持警覺！** 唔好輕易相信！佢哋通常會試圖逼你提供個人資料或者轉賬。第一步：**立即掛斷電話！",
+      "timestamp": "2026-03-11T04:05:23.751192"
+    },
+    {
+      "role": "victim",
+      "content": "“您好，請詳細說明異常情況以及需要我提供哪些資訊。我需要確認您的身份才能處理。”\n\n**重點：** 保持警惕，不要立即透露個人資料或付款信息。要求對方提供更多細節以驗證其身份。",
+      "timestamp": "2026-03-11T04:05:23.751194"
+    }
+  ],
+  "round_logs": []
+}

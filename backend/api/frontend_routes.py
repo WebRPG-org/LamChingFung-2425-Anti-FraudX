@@ -112,6 +112,20 @@ async def serve_test_page():
     }
     return FileResponse(test_path, headers=headers)
 
+@router.get("/tools")
+async def serve_tools_page():
+    """提供工具中心頁面"""
+    tools_path = os.path.join(os.path.dirname(__file__), '..', '..', 'frontend', 'tools.html')
+    if not os.path.exists(tools_path):
+        raise HTTPException(status_code=404, detail="工具頁面未找到")
+    headers = {
+        "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+        "Pragma": "no-cache",
+        "Expires": "0",
+    }
+    return FileResponse(tools_path, headers=headers)
+
+
 @router.get("/rpg")
 async def serve_rpg_page():
     """提供RPG游戏页面 - 重定向到完整路径"""

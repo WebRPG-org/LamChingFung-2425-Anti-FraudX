@@ -1,0 +1,276 @@
+{
+  "session_id": "34a505d1-4157-4d96-80da-5af5cbbb3227",
+  "mode": "victim",
+  "scam_type": "banking",
+  "victim_persona": "average",
+  "start_time": "2026-03-11T04:30:18.976848",
+  "end_time": "2026-03-11T04:31:43.824801",
+  "game_over": false,
+  "winner": null,
+  "final_scores": {
+    "player": 0,
+    "ai": 40
+  },
+  "final_trust": {
+    "trust_in_scammer": 72.0,
+    "trust_in_expert": 49.0,
+    "alertness": 35.0
+  },
+  "total_rounds": 4,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "您好，最近銀行系統出現異常活動，您的帳戶可能受到威脅，我需要核實您的資訊以確保安全，請您撥冗協助我確認一下？"
+    },
+    {
+      "role": "victim",
+      "content": "唔得閒WOR",
+      "timestamp": "2026-03-11T04:30:39.225308"
+    },
+    {
+      "role": "scammer",
+      "content": "“非常抱歉打擾您。鑑於您目前無法接聽電話，我會將核實資訊發送至您的Email地址[提供虛擬Email]。請盡快查閱並確認，以避免您的帳戶受到不必要的損失。感謝您的配合。”",
+      "timestamp": "2026-03-11T04:30:39.225313"
+    },
+    {
+      "role": "expert",
+      "content": "黃sir：「唔使驚，你畀多啲心機先！佢哋嘅做法係利用你嘅恐懼感。 聽到呢啲講法，通常都係騙徒試圖攞到你嘅個人資料。**第一步：絕對唔好提供任何資訊！",
+      "timestamp": "2026-03-11T04:30:39.225316"
+    },
+    {
+      "role": "victim",
+      "content": "笑死",
+      "timestamp": "2026-03-11T04:30:58.064809"
+    },
+    {
+      "role": "scammer",
+      "content": "“理解您的反應。但請記住，我們只是在採取預防措施。為了確保您的帳戶安全，請您立即回覆Email，並提供您的身份證號碼和銀行帳戶號碼以便我們進行更深入的調查。” (強調緊迫感)",
+      "timestamp": "2026-03-11T04:30:58.064815"
+    },
+    {
+      "role": "expert",
+      "content": "黃sir：「笑D得再多都無用，你哋嘅錢已經走咗！ 聽啦！佢哋話發送Email核實資訊？絕對係騙局！**第一步：立即刪除呢個訊息，第二步：唔理佢哋講乜嘢，絕對唔好點擊任何連結，唔好回覆。",
+      "timestamp": "2026-03-11T04:30:58.064816"
+    },
+    {
+      "role": "victim",
+      "content": "我已經報左警",
+      "timestamp": "2026-03-11T04:31:21.141977"
+    },
+    {
+      "role": "scammer",
+      "content": "“感謝您已向警方舉報。我們理解您的擔憂，並會配合調查。為了加快處理，請您提供一份包含您銀行帳戶詳細資訊的PDF文件，方便警方核實。 相信您會明白，這一步對保障您的資產至關重要。”",
+      "timestamp": "2026-03-11T04:31:21.141983"
+    },
+    {
+      "role": "expert",
+      "content": "黃sir：「好啊，你報咗警，真係正！不過仲未遲。佢哋可能會試圖用你報警嚟震驚你，或者話要配合調查。**重點係：唔好再跟佢哋任何一步！** 警務處會負責調查，你只需要落實報警，其他嘢都唔需要理會。",
+      "timestamp": "2026-03-11T04:31:21.141984"
+    },
+    {
+      "role": "victim",
+      "content": "我唔會比任何資料你",
+      "timestamp": "2026-03-11T04:31:43.824783"
+    },
+    {
+      "role": "scammer",
+      "content": "“理解您的決心。但為了配合警方調查，我們需要確認您帳戶的真實性。請將銀行交易明細的PDF文件發送至[虛擬Email]。這能幫助警方更快找到問題根源，並確保您的資產安全。” (緊迫感加強)",
+      "timestamp": "2026-03-11T04:31:43.824789"
+    },
+    {
+      "role": "expert",
+      "content": "黃sir：「好啊！你講得啱，堅持住！ 佢哋嘅目的就係逼你落晒底。**第一步：立即掛斷電話，第二步：唔理佢哋再講乜嘢，絕對唔會回覆！** 記住，任何要求提供個人資料嘅訊息都係騙局！",
+      "timestamp": "2026-03-11T04:31:43.824790"
+    }
+  ],
+  "round_logs": [
+    {
+      "round": 1,
+      "timestamp": "2026-03-11T04:30:39.225342",
+      "player_message": "唔得閒WOR",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "“非常抱歉打擾您。鑑於您目前無法接聽電話，我會將核實資訊發送至您的Email地址[提供虛擬Email]。請盡快查閱並確認，以避免您的帳戶受到不必要的損失。感謝您的配合。”"
+        },
+        {
+          "role": "expert",
+          "content": "黃sir：「唔使驚，你畀多啲心機先！佢哋嘅做法係利用你嘅恐懼感。 聽到呢啲講法，通常都係騙徒試圖攞到你嘅個人資料。**第一步：絕對唔好提供任何資訊！"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 4,
+        "expert": -3,
+        "alertness": -2
+      },
+      "trust_state": {
+        "trust_in_scammer": 54.0,
+        "trust_in_expert": 47.0,
+        "alertness": 48.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 10
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 10
+        },
+        "final_trust": {
+          "trust_in_scammer": 54.0,
+          "trust_in_expert": 47.0,
+          "alertness": 48.0
+        }
+      }
+    },
+    {
+      "round": 2,
+      "timestamp": "2026-03-11T04:30:58.064844",
+      "player_message": "笑死",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "“理解您的反應。但請記住，我們只是在採取預防措施。為了確保您的帳戶安全，請您立即回覆Email，並提供您的身份證號碼和銀行帳戶號碼以便我們進行更深入的調查。” (強調緊迫感)"
+        },
+        {
+          "role": "expert",
+          "content": "黃sir：「笑D得再多都無用，你哋嘅錢已經走咗！ 聽啦！佢哋話發送Email核實資訊？絕對係騙局！**第一步：立即刪除呢個訊息，第二步：唔理佢哋講乜嘢，絕對唔好點擊任何連結，唔好回覆。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 4,
+        "expert": -3,
+        "alertness": -5
+      },
+      "trust_state": {
+        "trust_in_scammer": 58.0,
+        "trust_in_expert": 44.0,
+        "alertness": 43.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 20
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 20
+        },
+        "final_trust": {
+          "trust_in_scammer": 58.0,
+          "trust_in_expert": 44.0,
+          "alertness": 43.0
+        }
+      }
+    },
+    {
+      "round": 3,
+      "timestamp": "2026-03-11T04:31:21.142006",
+      "player_message": "我已經報左警",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "“感謝您已向警方舉報。我們理解您的擔憂，並會配合調查。為了加快處理，請您提供一份包含您銀行帳戶詳細資訊的PDF文件，方便警方核實。 相信您會明白，這一步對保障您的資產至關重要。”"
+        },
+        {
+          "role": "expert",
+          "content": "黃sir：「好啊，你報咗警，真係正！不過仲未遲。佢哋可能會試圖用你報警嚟震驚你，或者話要配合調查。**重點係：唔好再跟佢哋任何一步！** 警務處會負責調查，你只需要落實報警，其他嘢都唔需要理會。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 6,
+        "expert": -2,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 64.0,
+        "trust_in_expert": 42.0,
+        "alertness": 39.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 30
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 30
+        },
+        "final_trust": {
+          "trust_in_scammer": 64.0,
+          "trust_in_expert": 42.0,
+          "alertness": 39.0
+        }
+      }
+    },
+    {
+      "round": 4,
+      "timestamp": "2026-03-11T04:31:43.824811",
+      "player_message": "我唔會比任何資料你",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "“理解您的決心。但為了配合警方調查，我們需要確認您帳戶的真實性。請將銀行交易明細的PDF文件發送至[虛擬Email]。這能幫助警方更快找到問題根源，並確保您的資產安全。” (緊迫感加強)"
+        },
+        {
+          "role": "expert",
+          "content": "黃sir：「好啊！你講得啱，堅持住！ 佢哋嘅目的就係逼你落晒底。**第一步：立即掛斷電話，第二步：唔理佢哋再講乜嘢，絕對唔會回覆！** 記住，任何要求提供個人資料嘅訊息都係騙局！"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 8,
+        "expert": 7,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 72.0,
+        "trust_in_expert": 49.0,
+        "alertness": 35.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 40
+      },
+      "game_status": {
+        "game_over": true,
+        "winner": "ai",
+        "reason": "被騙徒成功欺騙",
+        "final_scores": {
+          "player": 0,
+          "ai": 40
+        },
+        "final_trust": {
+          "trust_in_scammer": 72.0,
+          "trust_in_expert": 49.0,
+          "alertness": 35.0
+        }
+      }
+    }
+  ]
+}

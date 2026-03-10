@@ -1,15 +1,17 @@
-version: '3.8'
+# ============================================================
+# docker-compose.yml — Local development with GPU + Ollama
+# Usage: docker compose up
+# ============================================================
 
 services:
-  # Ollama LLM服务
+
+  # ── Ollama (local LLM) ──────────────────────────────────
   ollama:
-    build: 
+    build:
       context: ./docker/ollama
       dockerfile: Dockerfile
     container_name: ai-antiscam-ollama
     restart: unless-stopped
-    
-    # GPU配置 (NVIDIA) - 使用 deploy 方式（Docker Compose v2推荐）
     deploy:
       resources:
         reservations:
@@ -17,12 +19,8 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu, compute, utility]
-    
-    # 端口映射
     ports:
       - "11434:11434"
-    
-    # 环境变量
     environment:
       - OLLAMA_HOST=0.0.0.0
       - OLLAMA_ORIGINS=*
@@ -31,150 +29,81 @@ services:
       - OLLAMA_KEEP_ALIVE=5m
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,utility
-      - CUDA_VISIBLE_DEVICES=all
-    
-    # 数据持久化
     volumes:
       - ollama_models:/root/.ollama
-    
-    # 健康检查
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
       interval: 30s
       timeout: 10s
       retries: 5
       start_period: 120s
-    
-    # 网络
     networks:
-      - ai-antiscam-network
-    
-    # 共享内存大小（GPU操作需要）
+      - antiscam-net
     shm_size: '2gb'
 
-  # AI反诈骗平台
-  ai-antiscam-backend:
+  # ── Backend ─────────────────────────────────────────────
+  backend:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - PYTHON_VERSION=3.10
     container_name: ai-antiscam-backend
     restart: unless-stopped
-    
-    # 依赖Ollama服务
     depends_on:
       ollama:
         condition: service_healthy
-    
-    # 端口映射
     ports:
       - "8000:8000"
-    
-    # 环境变量
     environment:
-      # Python配置
-      - PYTHONPATH=/app/backend
-      - PYTHONUNBUFFERED=1
-      - PYTHONDONTWRITEBYTECODE=1
-      
-      # Ollama配置
+      # LLM provider
+      - GEMINI_ENABLED=false
       - OLLAMA_BASE_URL=http://ollama:11434
-      - OLLAMA_AUTO_PULL=1
-      - OLLAMA_NUM_CTX=4096
-      - OLLAMA_NUM_PREDICT=2000
-      - OLLAMA_TEMPERATURE=0.5
+      # Optimised generation params
+      - OLLAMA_NUM_CTX=2048
+      - OLLAMA_NUM_PREDICT=400
+      - OLLAMA_TEMPERATURE=0.7
       - OLLAMA_TOP_P=0.85
       - OLLAMA_REPEAT_PENALTY=1.1
-      
-      # Agent模型配置
+      # Agent models (override with fine-tuned models after Tools Center)
       - AGENT_MODEL=${AGENT_MODEL:-gemma3:4b}
       - AGENT_MODEL_SCAMMER=${AGENT_MODEL_SCAMMER:-gemma3:4b}
-      - AGENT_MODEL_VICTIM=${AGENT_MODEL_VICTIM:-gemma3:4b}
       - AGENT_MODEL_EXPERT=${AGENT_MODEL_EXPERT:-gemma3:4b}
+      - AGENT_MODEL_VICTIM=${AGENT_MODEL_VICTIM:-gemma3:4b}
       - AGENT_MODEL_RECORDER=${AGENT_MODEL_RECORDER:-gemma3:4b}
-      
-      # GPU配置（仅用于检测，不强制）
+      # GPU
       - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
-      - CUDA_VISIBLE_DEVICES=all
-      - FORCE_GPU=${FORCE_GPU:-0}  # 0=允许CPU, 1=强制GPU
-      
-      # 应用配置
-      - APP_ENV=${APP_ENV:-development}
-      - LOG_LEVEL=${LOG_LEVEL:-info}
-    
-    # 数据持久化和代码挂载
+      - FORCE_GPU=0
+      # App
+      - APP_ENV=development
+      - LOG_LEVEL=info
+      - PORT=8000
     volumes:
-      # 代码挂载(开发模式，生产环境应注释掉)
+      # Hot-reload in development
       - ./backend:/app/backend
       - ./frontend:/app/frontend:ro
-      
-      # 数据持久化
+      # Persistent data
       - training_data:/app/backend/training_data
       - models_data:/app/backend/models
       - db_data:/app/backend/db
-      - arms_race_data:/app/backend/arms_race_data
-      - agent_versions:/app/backend/agent_versions
-      - ab_test_results:/app/backend/ab_test_results
-    
-    # 健康检查
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 90s
-    
-    # 网络
     networks:
-      - ai-antiscam-network
-    
-    # 共享内存大小
+      - antiscam-net
     shm_size: '1gb'
-    
-    # 资源限制(可选，根据实际情况调整)
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: '4'
-    #       memory: 8G
-    #     reservations:
-    #       cpus: '2'
-    #       memory: 4G
 
-# 网络配置
 networks:
-  ai-antiscam-network:
+  antiscam-net:
     driver: bridge
-    name: ai-antiscam-network
 
-# 数据卷
 volumes:
   ollama_models:
-    driver: local
     name: ai-antiscam-ollama-models
-  
   training_data:
-    driver: local
     name: ai-antiscam-training-data
-  
   models_data:
-    driver: local
     name: ai-antiscam-models
-  
   db_data:
-    driver: local
     name: ai-antiscam-db
-  
-  arms_race_data:
-    driver: local
-    name: ai-antiscam-arms-race
-  
-  agent_versions:
-    driver: local
-    name: ai-antiscam-versions
-  
-  ab_test_results:
-    driver: local
-    name: ai-antiscam-ab-tests

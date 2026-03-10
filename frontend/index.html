@@ -41,11 +41,10 @@
                     </button>
                 </div>
                 <div class="version-badge">v2.0</div>
+                <button class="settings-btn" onclick="openSettings()" title="系統設定">⚙️ 設定</button>
             </div>
         </div>
     </div>
-
-    <!-- 模型配置對話框 - 已移除，直接使用 .env 配置 -->
 
     <!-- 切換確認對話框 -->
     <div class="modal-overlay" id="switchModal" style="display: none;">
@@ -74,6 +73,24 @@
                 <button class="btn-primary" onclick="confirmSwitch()">確認切換</button>
             </div>
         </div>
+    </div>
+
+    <!-- ⚙️ 系統設定 Modal -->
+    <div class="modal-overlay" id="settingsModal" style="display:none;">
+      <div class="modal-content" style="max-width:680px;max-height:85vh;overflow-y:auto;">
+        <div class="modal-header">
+          <h2>⚙️ 系統設定</h2>
+          <button class="modal-close" onclick="closeSettings()">×</button>
+        </div>
+        <div class="modal-body" id="settingsBody">
+          <div style="text-align:center;padding:30px;opacity:.6;">⏳ 載入中...</div>
+        </div>
+        <div class="modal-footer">
+          <span id="settingsSaveMsg" style="flex:1;font-size:13px;color:#08D9D6;"></span>
+          <button class="btn-secondary" onclick="closeSettings()">關閉</button>
+          <button class="btn-primary" onclick="saveSettings()">💾 儲存</button>
+        </div>
+      </div>
     </div>
 
     <!-- 模式選擇容器 -->
@@ -191,6 +208,34 @@
                 </button>
             </div>
         </div>
+
+        <!-- 工具中心 -->
+        <div class="mode-card" data-color="coral" onclick="openMode('tools')">
+            <div class="card-glow"></div>
+            <div class="mode-content">
+                <div class="icon-wrapper">
+                    <span class="mode-icon">🛠️</span>
+                </div>
+                <div class="badge-container">
+                    <span class="mode-badge new">工具</span>
+                </div>
+                <h2 class="mode-title">工具中心</h2>
+                <p class="mode-description">
+                    爬蟲抓取、Fine-tune 訓練、訓練記錄管理
+                </p>
+                <ul class="mode-features">
+                    <li><span class="feature-icon">✓</span>ADCC 詐騙警示爬蟲</li>
+                    <li><span class="feature-icon">✓</span>Fine-tune 數據生成</li>
+                    <li><span class="feature-icon">✓</span>訓練記錄 & 統計</li>
+                </ul>
+                <button class="mode-button" onclick="event.stopPropagation(); openMode('tools')" style="background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);">
+                    <span>進入工具</span>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
     </div>
     <!-- 結束 modes-container -->
 
@@ -210,5 +255,153 @@
 
     <script src="js/app.js"></script>
     <script src="js/model_switch.js"></script>
+    <style>
+      .settings-btn{background:rgba(8,217,214,.15);border:1.5px solid rgba(8,217,214,.4);color:#08D9D6;
+        padding:6px 16px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;
+        transition:all .2s;white-space:nowrap;}
+      .settings-btn:hover{background:rgba(8,217,214,.3);}
+      .settings-section{margin-bottom:22px;}
+      .settings-section h3{font-size:13px;font-weight:700;color:#08D9D6;text-transform:uppercase;
+        letter-spacing:.08em;margin:0 0 12px;padding-bottom:6px;
+        border-bottom:1px solid rgba(8,217,214,.2);}
+      .settings-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+      .settings-row label{flex:0 0 180px;font-size:13px;color:rgba(255,255,255,.8);}
+      .settings-row input,.settings-row select{
+        flex:1;background:rgba(10,14,39,.8);border:1.5px solid rgba(8,217,214,.3);
+        border-radius:7px;padding:7px 12px;font-size:13px;color:#fff;outline:none;
+        font-family:inherit;transition:border-color .2s;}
+      .settings-row input:focus,.settings-row select:focus{border-color:#08D9D6;}
+      .settings-row input[type=password]{letter-spacing:.1em;}
+      .settings-toggle{display:flex;align-items:center;gap:10px;}
+      .toggle-label{font-size:13px;color:rgba(255,255,255,.7);}
+      .reveal-btn{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);
+        border-radius:5px;padding:3px 8px;font-size:11px;cursor:pointer;}
+      .reveal-btn:hover{color:#fff;border-color:#fff;}
+    </style>
+    <script>
+    const BASE = 'http://localhost:8000';
+    let _settingsData = {};
+
+    async function openSettings() {
+      console.log('[Settings] openSettings called');
+      document.getElementById('settingsModal').style.display = 'flex';
+      document.getElementById('settingsSaveMsg').textContent = '';
+      await loadSettings();
+    }
+
+    function closeSettings() {
+      document.getElementById('settingsModal').style.display = 'none';
+    }
+
+    async function loadSettings() {
+      const body = document.getElementById('settingsBody');
+      body.innerHTML = '<div style="text-align:center;padding:30px;opacity:.6;">⏳ 載入中...</div>';
+      try {
+        const res = await fetch(`${BASE}/api/model/config`);
+        const json = await res.json();
+        _settingsData = json.config || {};
+        body.innerHTML = renderSettings(_settingsData);
+      } catch(e) {
+        body.innerHTML = `<div style="color:#FF2E63;padding:20px;">❌ 無法載入設定：${e.message}</div>`;
+      }
+    }
+
+    function renderSettings(c) {
+      const f = (key, label, type='text', opts) => {
+        const val = c[key] || '';
+        const isKey = key.toUpperCase().includes('KEY');
+        const inputId = `cfg_${key}`;
+        const revealBtn = isKey ? `<button class="reveal-btn" type="button" onclick="toggleReveal('${inputId}')">👁</button>` : '';
+        if (type === 'select') {
+          const options = (opts||[]).map(o => `<option value="${o}" ${val===o?'selected':''}>${o}</option>`).join('');
+          return `<div class="settings-row"><label>${label}</label><select id="${inputId}" data-key="${key}">${options}</select></div>`;
+        }
+        return `<div class="settings-row"><label>${label}</label><input id="${inputId}" data-key="${key}" type="${isKey?'password':type}" value="${val}" placeholder="${isKey?'輸入 API Key...':''}">${revealBtn}</div>`;
+      };
+      const geminiModels = ['gemini-2.5-flash-lite','gemini-3-flash-preview','gemini-2.0-flash-exp','gemini-1.5-flash','gemini-1.5-pro'];
+      return `
+      <div class="settings-section">
+        <h3>🔀 LLM 提供者</h3>
+        ${f('GEMINI_ENABLED','使用 Gemini API','select',['false','true'])}
+      </div>
+      <div class="settings-section">
+        <h3>✨ Gemini 設定</h3>
+        ${f('GEMINI_API_KEY','API Key')}
+        ${f('GEMINI_MODEL_SCAMMER','騙徒模型','select',geminiModels)}
+        ${f('GEMINI_MODEL_VICTIM','受害者模型','select',geminiModels)}
+        ${f('GEMINI_MODEL_EXPERT','專家模型','select',geminiModels)}
+        ${f('GEMINI_MODEL_RECORDER','記錄員模型','select',geminiModels)}
+        ${f('GEMINI_TEMPERATURE','Temperature','text')}
+        ${f('GEMINI_MAX_OUTPUT_TOKENS','Max Output Tokens','text')}
+      </div>
+      <div class="settings-section">
+        <h3>🦙 Ollama 設定</h3>
+        ${f('OLLAMA_BASE_URL','Ollama URL')}
+        ${f('AGENT_MODEL','預設模型')}
+        ${f('AGENT_MODEL_SCAMMER','騙徒模型')}
+        ${f('AGENT_MODEL_VICTIM','受害者模型')}
+        ${f('AGENT_MODEL_EXPERT','專家模型')}
+        ${f('AGENT_MODEL_RECORDER','記錄員模型')}
+        ${f('OLLAMA_TEMPERATURE','Temperature','text')}
+        ${f('OLLAMA_NUM_CTX','Context Length','text')}
+        ${f('OLLAMA_NUM_PREDICT','Max Predict','text')}
+      </div>
+      <div class="settings-section">
+        <h3>⚙️ 其他設定</h3>
+        ${f('USE_SIMPLE_PROMPTS','簡化 Prompt','select',['false','true'])}
+        ${f('FORCE_GPU','強制 GPU','select',['0','1'])}
+        ${f('LOG_LEVEL','Log 級別','select',['info','debug','warning','error'])}
+        ${f('AUTO_TRAIN_ENABLED','自動訓練','select',['true','false'])}
+      </div>`;
+    }
+
+    function toggleReveal(id) {
+      const el = document.getElementById(id);
+      el.type = el.type === 'password' ? 'text' : 'password';
+    }
+
+    async function saveSettings() {
+      const inputs = document.querySelectorAll('#settingsBody [data-key]');
+      const updates = {};
+      inputs.forEach(el => {
+        const key = el.dataset.key;
+        const val = el.value.trim();
+        if (val && !val.includes('****')) updates[key] = val;
+        else if (!val.includes('****') && val !== '') updates[key] = val;
+      });
+      const msg = document.getElementById('settingsSaveMsg');
+      msg.textContent = '⏳ 儲存中...';
+      try {
+        const res = await fetch(`${BASE}/api/model/config/update`, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({updates})
+        });
+        const json = await res.json();
+        if (json.success) {
+          msg.textContent = `✅ 已儲存 ${json.updated_keys?.length || 0} 項設定`;
+          msg.style.color = '#08D9D6';
+          setTimeout(() => { msg.textContent = ''; }, 3000);
+        } else {
+          msg.textContent = '❌ 儲存失敗: ' + (json.detail || JSON.stringify(json));
+          msg.style.color = '#FF2E63';
+        }
+      } catch(e) {
+        msg.textContent = '❌ 網絡錯誤: ' + e.message;
+        msg.style.color = '#FF2E63';
+      }
+    }
+
+    // 點擊背景關閉
+    document.getElementById('settingsModal').addEventListener('click', function(e) {
+      if (e.target === this) closeSettings();
+    });
+
+    // 明確掛到 window，確保 onclick 屬性可以呼叫
+    window.openSettings  = openSettings;
+    window.closeSettings = closeSettings;
+    window.saveSettings  = saveSettings;
+    window.toggleReveal  = toggleReveal;
+    </script>
 </body>
-</html>
+</html> 

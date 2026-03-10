@@ -1,0 +1,42 @@
+{
+  "session_id": "ae34bbde-7251-485d-bfff-4329d1d8bc75",
+  "mode": "victim",
+  "scam_type": "investment",
+  "victim_persona": "average",
+  "start_time": "2026-03-11T00:06:36.057270",
+  "end_time": "2026-03-11T00:06:49.140222",
+  "game_over": true,
+  "winner": "player",
+  "final_scores": {
+    "player": 120,
+    "ai": 10
+  },
+  "final_trust": {
+    "trust_in_scammer": 0,
+    "trust_in_expert": 100,
+    "alertness": 100
+  },
+  "total_rounds": 1,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "您好，最近市場波動很大，但如果您能掌握一個獨家投資機會，就能在短時間內獲得可觀的回報，讓您的資金快速增值呢！想了解更多嗎？"
+    },
+    {
+      "role": "victim",
+      "content": "好",
+      "timestamp": "2026-03-11T00:06:49.140205"
+    },
+    {
+      "role": "scammer",
+      "content": "太棒了！這是一個絕佳的機會。我現在需要您的銀行帳戶信息和最後四位數字的信用卡號碼，以便快速啟動您的投資。請放心，這一切都是為了確保您能最大化收益，並在市場波動中獲得優勢。 立即提供，我們將立刻開始！",
+      "timestamp": "2026-03-11T00:06:49.140212"
+    },
+    {
+      "role": "expert",
+      "content": "唔使驚！聽到咁嘅話業，通常係詐騙手法。市場波動大並唔代表真投資機會一定會賺錢，騙徒經常用「獨家」同「快速增值」嚟誘惑你。第一步：**絕對唔好輕易落手**！",
+      "timestamp": "2026-03-11T00:06:49.140215"
+    }
+  ],
+  "round_logs": []
+}

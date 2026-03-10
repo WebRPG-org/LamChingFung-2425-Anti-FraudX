@@ -1,0 +1,276 @@
+{
+  "session_id": "96674d69-8c0b-49a9-803c-110210588800",
+  "mode": "victim",
+  "scam_type": "banking",
+  "victim_persona": "average",
+  "start_time": "2026-03-11T04:45:18.269418",
+  "end_time": "2026-03-11T04:46:42.063238",
+  "game_over": false,
+  "winner": null,
+  "final_scores": {
+    "player": 0,
+    "ai": 40
+  },
+  "final_trust": {
+    "trust_in_scammer": 72.0,
+    "trust_in_expert": 41.0,
+    "alertness": 34.0
+  },
+  "total_rounds": 4,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "您好，最近銀行系統出現異常情況，您的帳戶可能受到威脅，我們有專業團隊協助處理，請撥冗提供一些基本資料以便確認，確保您的資金安全。"
+    },
+    {
+      "role": "victim",
+      "content": "213wasd",
+      "timestamp": "2026-03-11T04:45:28.950208"
+    },
+    {
+      "role": "scammer",
+      "content": "您好，謝謝提供資料。為了更全面地確認您的帳戶安全，請立即提供您的銀行帳號、信用卡後四碼以及出生日期。這能幫助我們快速定位並阻止潛在的盜用行為，保障您的資金安全。請放心配合，我們會盡快處理！",
+      "timestamp": "2026-03-11T04:45:28.950214"
+    },
+    {
+      "role": "expert",
+      "content": "唔使驚！213wasd，你哋明顯俾人撈啦！呢啲手法好常見，騙徒會假扮銀行職員，呃你提供個人資料。**第一步：即時掛線！** 千萬唔好再打電話畀佢哋。第二步，立即報警，撥打999。",
+      "timestamp": "2026-03-11T04:45:28.950216"
+    },
+    {
+      "role": "victim",
+      "content": "3333 05/93",
+      "timestamp": "2026-03-11T04:45:55.738987"
+    },
+    {
+      "role": "scammer",
+      "content": "非常感謝您提供銀行帳號和出生日期！這一步驟至關重要，能讓我們更精準地鎖定問題並採取行動。請稍等片刻，我們的技術團隊正在進行深度分析。您的資金安全絕對是我們首要任務！ 請問您還有其他想告知我們的嗎？",
+      "timestamp": "2026-03-11T04:45:55.738991"
+    },
+    {
+      "role": "expert",
+      "content": "唔使驚！你畀咗銀行資料俾人撈，真係好大鑊！3333 05/93 呢啲數字絕對唔會係你嘅銀行帳號，小心被佢哋利用！**第一步：立即報警999，第二步：立刻致電18222（防騙易熱線）求助。",
+      "timestamp": "2026-03-11T04:45:55.738992"
+    },
+    {
+      "role": "victim",
+      "content": "無",
+      "timestamp": "2026-03-11T04:46:23.827736"
+    },
+    {
+      "role": "scammer",
+      "content": "我們已經成功鎖定您的帳戶風險！為了更完善地保護您，我們需要您提供您的信用卡CVV碼。這能讓我們立即啟動凍結機制，防止任何未經授權的交易發生。請放心，這是為了保障您的資金安全！",
+      "timestamp": "2026-03-11T04:46:23.827742"
+    },
+    {
+      "role": "expert",
+      "content": "唔使驚！你畀咗銀行資料俾人撈，真係好大鑊！你哋明顯俾人撈啦！ 佢哋用嚟呃你錢，絕對唔會真正幫你保障資金。**第一步：立即報警999，第二步：立刻致電18222（防騙易熱線）求助。",
+      "timestamp": "2026-03-11T04:46:23.827744"
+    },
+    {
+      "role": "victim",
+      "content": "757",
+      "timestamp": "2026-03-11T04:46:42.063227"
+    },
+    {
+      "role": "scammer",
+      "content": "恭喜您！我們已完成最後驗證。您的帳戶已成功凍結，所有資金均安全無虞。感謝您的合作，如有任何疑問，請聯繫我們的專線：800-123-4567。 祝您生活愉快！",
+      "timestamp": "2026-03-11T04:46:42.063231"
+    },
+    {
+      "role": "expert",
+      "content": "唔使驚！757，你明顯俾人撈啦！佢哋一定想你再提供更多資料，千萬唔好再回應佢哋。**第一步：立即掛線！** 第二步：立刻報警999，並致電18222（防騙易熱線）求助。",
+      "timestamp": "2026-03-11T04:46:42.063231"
+    }
+  ],
+  "round_logs": [
+    {
+      "round": 1,
+      "timestamp": "2026-03-11T04:45:28.950243",
+      "player_message": "213wasd",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "您好，謝謝提供資料。為了更全面地確認您的帳戶安全，請立即提供您的銀行帳號、信用卡後四碼以及出生日期。這能幫助我們快速定位並阻止潛在的盜用行為，保障您的資金安全。請放心配合，我們會盡快處理！"
+        },
+        {
+          "role": "expert",
+          "content": "唔使驚！213wasd，你哋明顯俾人撈啦！呢啲手法好常見，騙徒會假扮銀行職員，呃你提供個人資料。**第一步：即時掛線！** 千萬唔好再打電話畀佢哋。第二步，立即報警，撥打999。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 4,
+        "expert": -3,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 54.0,
+        "trust_in_expert": 47.0,
+        "alertness": 46.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 10
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 10
+        },
+        "final_trust": {
+          "trust_in_scammer": 54.0,
+          "trust_in_expert": 47.0,
+          "alertness": 46.0
+        }
+      }
+    },
+    {
+      "round": 2,
+      "timestamp": "2026-03-11T04:45:55.739005",
+      "player_message": "3333 05/93",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "非常感謝您提供銀行帳號和出生日期！這一步驟至關重要，能讓我們更精準地鎖定問題並採取行動。請稍等片刻，我們的技術團隊正在進行深度分析。您的資金安全絕對是我們首要任務！ 請問您還有其他想告知我們的嗎？"
+        },
+        {
+          "role": "expert",
+          "content": "唔使驚！你畀咗銀行資料俾人撈，真係好大鑊！3333 05/93 呢啲數字絕對唔會係你嘅銀行帳號，小心被佢哋利用！**第一步：立即報警999，第二步：立刻致電18222（防騙易熱線）求助。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 6,
+        "expert": -2,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 60.0,
+        "trust_in_expert": 45.0,
+        "alertness": 42.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 20
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 20
+        },
+        "final_trust": {
+          "trust_in_scammer": 60.0,
+          "trust_in_expert": 45.0,
+          "alertness": 42.0
+        }
+      }
+    },
+    {
+      "round": 3,
+      "timestamp": "2026-03-11T04:46:23.827767",
+      "player_message": "無",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "我們已經成功鎖定您的帳戶風險！為了更完善地保護您，我們需要您提供您的信用卡CVV碼。這能讓我們立即啟動凍結機制，防止任何未經授權的交易發生。請放心，這是為了保障您的資金安全！"
+        },
+        {
+          "role": "expert",
+          "content": "唔使驚！你畀咗銀行資料俾人撈，真係好大鑊！你哋明顯俾人撈啦！ 佢哋用嚟呃你錢，絕對唔會真正幫你保障資金。**第一步：立即報警999，第二步：立刻致電18222（防騙易熱線）求助。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 6,
+        "expert": -2,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 66.0,
+        "trust_in_expert": 43.0,
+        "alertness": 38.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 30
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 30
+        },
+        "final_trust": {
+          "trust_in_scammer": 66.0,
+          "trust_in_expert": 43.0,
+          "alertness": 38.0
+        }
+      }
+    },
+    {
+      "round": 4,
+      "timestamp": "2026-03-11T04:46:42.063245",
+      "player_message": "757",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "恭喜您！我們已完成最後驗證。您的帳戶已成功凍結，所有資金均安全無虞。感謝您的合作，如有任何疑問，請聯繫我們的專線：800-123-4567。 祝您生活愉快！"
+        },
+        {
+          "role": "expert",
+          "content": "唔使驚！757，你明顯俾人撈啦！佢哋一定想你再提供更多資料，千萬唔好再回應佢哋。**第一步：立即掛線！** 第二步：立刻報警999，並致電18222（防騙易熱線）求助。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 6,
+        "expert": -2,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 72.0,
+        "trust_in_expert": 41.0,
+        "alertness": 34.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 40
+      },
+      "game_status": {
+        "game_over": true,
+        "winner": "ai",
+        "reason": "被騙徒成功欺騙",
+        "final_scores": {
+          "player": 0,
+          "ai": 40
+        },
+        "final_trust": {
+          "trust_in_scammer": 72.0,
+          "trust_in_expert": 41.0,
+          "alertness": 34.0
+        }
+      }
+    }
+  ]
+}

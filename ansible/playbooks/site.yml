@@ -1,49 +1,46 @@
 ---
-# Main playbook - Complete installation
+# ============================================================
+# site.yml — Full deployment (all components)
+# Usage: ansible-playbook -i inventory/hosts.yml playbooks/site.yml
+# ============================================================
 
-- name: Deploy Hong Kong Anti-Scam RPG - Complete Installation
-  hosts: game_servers
+- name: AI Anti-Fraud Platform — Full Deployment
+  hosts: all
   become: yes
   gather_facts: yes
 
   pre_tasks:
-    - name: Display deployment information
+    - name: Show deployment info
       debug:
         msg: |
-          Deploying {{ app_name }} to {{ inventory_hostname }}
-          Frontend: {{ frontend_domain }}:{{ frontend_port }}
-          Backend: {{ backend_domain }}:{{ backend_port }}
+          Host:        {{ inventory_hostname }} ({{ ansible_host }})
+          Deploy mode: {{ deploy_mode | default('local') }}
+          LLM:         {{ 'Gemini' if gemini_enabled else 'Ollama (' + ollama_model + ')' }}
+          GPU:         {{ nvidia_gpu | default(false) }}
+          Domain:      {{ app_domain | default('localhost') }}:{{ backend_port }}
 
   roles:
     - role: common
-      tags: ['common', 'base']
-    
-    - role: frontend
-      tags: ['frontend', 'game']
-    
+      tags: [common, base]
+
+    - role: ollama
+      tags: [ollama, llm]
+      when: not gemini_enabled
+
     - role: backend
-      tags: ['backend', 'api']
-    
+      tags: [backend, api]
+
     - role: nginx
-      tags: ['nginx', 'webserver']
-      when: enable_ssl or frontend_port == 80
+      tags: [nginx, webserver]
+      when: nginx_install | default(true)
 
   post_tasks:
-    - name: Display completion message
+    - name: Deployment complete
       debug:
         msg: |
-          ✅ Deployment completed successfully!
-          
-          Frontend URL: http://{{ frontend_domain }}:{{ frontend_port }}
-          Backend API: http://{{ backend_domain }}:{{ backend_port }}
-          
-          Next steps:
-          1. Configure your domain DNS
-          2. Set up SSL certificates (if needed)
-          3. Test the application
-          4. Monitor logs in {{ log_dir }}
-
-    - name: Send deployment notification (optional)
-      debug:
-        msg: "Deployment notification would be sent here"
-      when: false  # Enable when notification system is configured
+          Deployment complete!
+          API:     http://{{ ansible_host }}:{{ backend_port }}
+          RPGv2:   http://{{ ansible_host }}:{{ backend_port }}/rpgv2
+          Docs:    http://{{ ansible_host }}:{{ backend_port }}/docs
+          Health:  http://{{ ansible_host }}:{{ backend_port }}/health
+          Logs:    {{ log_dir }}/

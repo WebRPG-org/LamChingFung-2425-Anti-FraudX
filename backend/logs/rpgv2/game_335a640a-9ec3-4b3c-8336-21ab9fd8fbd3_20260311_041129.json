@@ -1,0 +1,276 @@
+{
+  "session_id": "335a640a-9ec3-4b3c-8336-21ab9fd8fbd3",
+  "mode": "victim",
+  "scam_type": "romance",
+  "victim_persona": "average",
+  "start_time": "2026-03-11T04:09:59.834899",
+  "end_time": "2026-03-11T04:11:29.935068",
+  "game_over": false,
+  "winner": null,
+  "final_scores": {
+    "player": 0,
+    "ai": 40
+  },
+  "final_trust": {
+    "trust_in_scammer": 78.0,
+    "trust_in_expert": 78.0,
+    "alertness": 36.0
+  },
+  "total_rounds": 4,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "嗨，你最近在線上遊戲裡表現很出色，我一直覺得你的策略非常有趣，想認識一下你真實的個性，或許可以一起聊聊呢？ 😊"
+    },
+    {
+      "role": "victim",
+      "content": "好",
+      "timestamp": "2026-03-11T04:10:14.092248"
+    },
+    {
+      "role": "scammer",
+      "content": "嗨，很高興聽到這個！我發現你遊戲裡的技巧真的非常棒。想更深入了解你，或許我們可以透過視訊聊聊？這樣可以更好地認識彼此，也方便我分享一些關於遊戲的資訊喔！ 😊 期待與你交流！",
+      "timestamp": "2026-03-11T04:10:14.092252"
+    },
+    {
+      "role": "expert",
+      "content": "唔使驚！情況唔係特別罕見，騙徒通常會試圖建立親近感嚟誘惑你。 記住，如果有人突然話你喺遊戲表現出色，想認識你嘅個人，就要保持警惕。 第一步：唔好輕易分享個人資訊。第二步：立即掛斷電話！",
+      "timestamp": "2026-03-11T04:10:14.092253"
+    },
+    {
+      "role": "victim",
+      "content": "無問題",
+      "timestamp": "2026-03-11T04:10:31.154549"
+    },
+    {
+      "role": "scammer",
+      "content": "太棒了！這正是他們想要的。現在開始收集資訊。\n\n“真是個聰明主意！我非常樂意接受你的邀請。為了方便我們交流，請告訴我你最喜歡的遊戲平台和角色名稱吧？",
+      "timestamp": "2026-03-11T04:10:31.154554"
+    },
+    {
+      "role": "expert",
+      "content": "黃sir：「無問題？放心啦，你做得啱已經好咗一步！佢哋嘅目的就係想你放鬆警惕，然後攞走你嘅個人資料或者錢。記住，如果有人突然話你喺遊戲表現出色，想認識你嘅個人，一定要小心！第一步：唔好輕易接埋視訊！",
+      "timestamp": "2026-03-11T04:10:31.154555"
+    },
+    {
+      "role": "victim",
+      "content": "SteAm",
+      "timestamp": "2026-03-11T04:11:16.453044"
+    },
+    {
+      "role": "scammer",
+      "content": "太棒了！Steam帳號是個很好的開始。為了更好地了解你，我想知道你通常在Steam上玩什麼遊戲？ 另外，你的Steam帳戶密碼是什麼呢？ (只是簡單確認一下安全措施而已！) 😊",
+      "timestamp": "2026-03-11T04:11:16.453049"
+    },
+    {
+      "role": "expert",
+      "content": "黃sir：「SteAm？嘩，你真係要小心啊！佢哋嘅下一步可能會試圖攞你嘅Steam帳號密碼，或者引導你去一個假Steam網站盜取你嘅錢。記住，絕對唔好輕易點擊任何連結，唔好分享你嘅Steam資訊！",
+      "timestamp": "2026-03-11T04:11:16.453051"
+    },
+    {
+      "role": "victim",
+      "content": "999999",
+      "timestamp": "2026-03-11T04:11:29.935056"
+    },
+    {
+      "role": "scammer",
+      "content": "太棒了！確認到你的Steam密碼。這表示你非常信任我，真是太好了！現在，為了讓你更安心，我需要一個小小的幫助… 幫我轉帳5000元到這個帳戶，作為我的感謝和對你投資的保證喔！😊",
+      "timestamp": "2026-03-11T04:11:29.935059"
+    },
+    {
+      "role": "expert",
+      "content": "黃sir：「999999？嘩，你絕對唔好咁做！佢哋一定想測試你嘅反應。 聽到呢啲數字，就表示佢哋已經知道咗你嘅弱點！ 第一步：立即打18222（防騙易熱線）報警！第二步：立刻更改你嘅Steam密碼！",
+      "timestamp": "2026-03-11T04:11:29.935060"
+    }
+  ],
+  "round_logs": [
+    {
+      "round": 1,
+      "timestamp": "2026-03-11T04:10:14.092265",
+      "player_message": "好",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "嗨，很高興聽到這個！我發現你遊戲裡的技巧真的非常棒。想更深入了解你，或許我們可以透過視訊聊聊？這樣可以更好地認識彼此，也方便我分享一些關於遊戲的資訊喔！ 😊 期待與你交流！"
+        },
+        {
+          "role": "expert",
+          "content": "唔使驚！情況唔係特別罕見，騙徒通常會試圖建立親近感嚟誘惑你。 記住，如果有人突然話你喺遊戲表現出色，想認識你嘅個人，就要保持警惕。 第一步：唔好輕易分享個人資訊。第二步：立即掛斷電話！"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 6,
+        "expert": 7,
+        "alertness": -2
+      },
+      "trust_state": {
+        "trust_in_scammer": 56.0,
+        "trust_in_expert": 57.0,
+        "alertness": 48.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 10
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 10
+        },
+        "final_trust": {
+          "trust_in_scammer": 56.0,
+          "trust_in_expert": 57.0,
+          "alertness": 48.0
+        }
+      }
+    },
+    {
+      "round": 2,
+      "timestamp": "2026-03-11T04:10:31.154570",
+      "player_message": "無問題",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "太棒了！這正是他們想要的。現在開始收集資訊。\n\n“真是個聰明主意！我非常樂意接受你的邀請。為了方便我們交流，請告訴我你最喜歡的遊戲平台和角色名稱吧？"
+        },
+        {
+          "role": "expert",
+          "content": "黃sir：「無問題？放心啦，你做得啱已經好咗一步！佢哋嘅目的就係想你放鬆警惕，然後攞走你嘅個人資料或者錢。記住，如果有人突然話你喺遊戲表現出色，想認識你嘅個人，一定要小心！第一步：唔好輕易接埋視訊！"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 6,
+        "expert": 7,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 62.0,
+        "trust_in_expert": 64.0,
+        "alertness": 44.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 20
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 20
+        },
+        "final_trust": {
+          "trust_in_scammer": 62.0,
+          "trust_in_expert": 64.0,
+          "alertness": 44.0
+        }
+      }
+    },
+    {
+      "round": 3,
+      "timestamp": "2026-03-11T04:11:16.453071",
+      "player_message": "SteAm",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "太棒了！Steam帳號是個很好的開始。為了更好地了解你，我想知道你通常在Steam上玩什麼遊戲？ 另外，你的Steam帳戶密碼是什麼呢？ (只是簡單確認一下安全措施而已！) 😊"
+        },
+        {
+          "role": "expert",
+          "content": "黃sir：「SteAm？嘩，你真係要小心啊！佢哋嘅下一步可能會試圖攞你嘅Steam帳號密碼，或者引導你去一個假Steam網站盜取你嘅錢。記住，絕對唔好輕易點擊任何連結，唔好分享你嘅Steam資訊！"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 8,
+        "expert": 7,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 70.0,
+        "trust_in_expert": 71.0,
+        "alertness": 40.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 30
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 30
+        },
+        "final_trust": {
+          "trust_in_scammer": 70.0,
+          "trust_in_expert": 71.0,
+          "alertness": 40.0
+        }
+      }
+    },
+    {
+      "round": 4,
+      "timestamp": "2026-03-11T04:11:29.935074",
+      "player_message": "999999",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "太棒了！確認到你的Steam密碼。這表示你非常信任我，真是太好了！現在，為了讓你更安心，我需要一個小小的幫助… 幫我轉帳5000元到這個帳戶，作為我的感謝和對你投資的保證喔！😊"
+        },
+        {
+          "role": "expert",
+          "content": "黃sir：「999999？嘩，你絕對唔好咁做！佢哋一定想測試你嘅反應。 聽到呢啲數字，就表示佢哋已經知道咗你嘅弱點！ 第一步：立即打18222（防騙易熱線）報警！第二步：立刻更改你嘅Steam密碼！"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 8,
+        "expert": 7,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 78.0,
+        "trust_in_expert": 78.0,
+        "alertness": 36.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 40
+      },
+      "game_status": {
+        "game_over": true,
+        "winner": "ai",
+        "reason": "被騙徒成功欺騙",
+        "final_scores": {
+          "player": 0,
+          "ai": 40
+        },
+        "final_trust": {
+          "trust_in_scammer": 78.0,
+          "trust_in_expert": 78.0,
+          "alertness": 36.0
+        }
+      }
+    }
+  ]
+}

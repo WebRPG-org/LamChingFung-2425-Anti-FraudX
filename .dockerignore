@@ -1,60 +1,78 @@
-# Python
+# ── Python ──────────────────────────────────────
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
+*.pyc
+*.pyo
+*.pyd
 .Python
 *.egg-info/
 dist/
 build/
 
-# Virtual environments
+# ── Virtual environments ─────────────────────────
 venv/
 env/
 ENV/
+.venv/
 
-# IDEs
+# ── IDE ──────────────────────────────────────────
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Git
+# ── Git ──────────────────────────────────────────
 .git/
 .gitignore
 
-# Training data (可能很大，开发时挂载volume)
-backend/training_data/*.json
-backend/db/chroma_db/
-
-# Models (可能很大)
-backend/models/*.gguf
-backend/models/*.bin
-
-# Logs
+# ── Logs ─────────────────────────────────────────
 *.log
+backend/logs/
 
-# Documentation (不需要在容器中)
-*.md
-!README.md
+# ── Databases (each deployment creates its own) ──
+backend/db/chroma_db/
+*.db
+*.sqlite
+*.sqlite3
 
-# Batch files (Windows专用)
-*.bat
+# ── Training data (large, generated locally) ─────
+backend/training_data/
 
-# Temporary files
+# ── Models (deployed separately) ─────────────────
+backend/models/finetuned/
+
+# ── Dev / temp ───────────────────────────────────
 *.tmp
 *.temp
 .cache/
-
-# Arms race data (开发数据)
-backend/arms_race_data/
-backend/agent_versions/
-backend/ab_test_results/
-
-# Agent backups
 backend/agents/backups/
+backend/agent_versions/
+backend/arms_race_data/
+backend/ab_test_results/
+backend/gpu_status.json
+
+# ── Node / frontend build ────────────────────────
+node_modules/
+rpg-platform-v2/node_modules/
+rpg-platform-v2/dist/
+
+# ── Docker ───────────────────────────────────────
+docker-compose*.yml
+.dockerignore
+
+# ── Secrets ──────────────────────────────────────
+.env
+backend/.env
+*.pem
+*.key
+
+# -- pytest / cache
+.pytest_cache/
+**/.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+
+.pytest_cache/
+**/.pytest_cache/
+.mypy_cache/
+.ruff_cache/

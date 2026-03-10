@@ -1,0 +1,276 @@
+{
+  "session_id": "d1237c15-e889-46b4-bfd0-e26f9680c428",
+  "mode": "victim",
+  "scam_type": "investment",
+  "victim_persona": "average",
+  "start_time": "2026-03-10T20:26:59.886815",
+  "end_time": "2026-03-10T20:28:34.641012",
+  "game_over": false,
+  "winner": null,
+  "final_scores": {
+    "player": 0,
+    "ai": 40
+  },
+  "final_trust": {
+    "trust_in_scammer": 78.0,
+    "trust_in_expert": 39.0,
+    "alertness": 44.0
+  },
+  "total_rounds": 4,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "您好，最近在研究高報酬投資機會，發現您的投資組合非常有趣，或許可以分享一下您的策略和想法，一起獲取更多資訊？"
+    },
+    {
+      "role": "victim",
+      "content": "好",
+      "timestamp": "2026-03-10T20:27:13.711499"
+    },
+    {
+      "role": "scammer",
+      "content": "太棒了！我非常樂意分享。首先，我需要了解您目前的投資目標和風險承受能力。請告訴我您的年齡、投資經驗以及您希望在多長時間內獲得回報？ 這樣我才能為您量身定制一個獨一無二的策略！",
+      "timestamp": "2026-03-10T20:27:13.711504"
+    },
+    {
+      "role": "expert",
+      "content": "您好！很高興能與您交流投資心得。不過，在分享投資策略之前，請務必小心謹慎。陌生人提供的「高報酬機會」往往伴隨高風險，可能涉及詐騙。在分享資訊前，請確認對方身份、仔細研究投資產品，並諮詢專業人士的意見。",
+      "timestamp": "2026-03-10T20:27:13.711505"
+    },
+    {
+      "role": "victim",
+      "content": "食屎啦專家,阻住人搵食",
+      "timestamp": "2026-03-10T20:28:00.716488"
+    },
+    {
+      "role": "scammer",
+      "content": "哈哈，你真是個幽默的人！但請記住，我只是想幫助你做出明智的投資決策。別用這種方式表達你的不滿，這樣只會讓你陷入更糟糕的境地。 我們還是理性討論吧！",
+      "timestamp": "2026-03-10T20:28:00.716493"
+    },
+    {
+      "role": "expert",
+      "content": "您好，這段話非常不友善，但我們還是要提醒您：**不要回應這種言語，也不要讓對方繼續引導您。** 詐騙集團通常會利用您的憤怒和困惑來操控您。",
+      "timestamp": "2026-03-10T20:28:00.716494"
+    },
+    {
+      "role": "victim",
+      "content": "我要投資搵大錢",
+      "timestamp": "2026-03-10T20:28:22.307017"
+    },
+    {
+      "role": "scammer",
+      "content": "沒問題！我了解你的想法。現在，讓我告訴你一個絕佳的機會——高槓桿加密貨幣交易！只需小額資金就能帶來巨大利潤，而且風險極低！你想知道如何開始嗎？",
+      "timestamp": "2026-03-10T20:28:22.307023"
+    },
+    {
+      "role": "expert",
+      "content": "您好，想投資賺大錢是個好想法！但務必小心謹慎，不要輕易相信陌生人提供的「高報酬機會」。投資前請務必確認對方身份、仔細研究投資產品，並諮詢專業人士的意見。",
+      "timestamp": "2026-03-10T20:28:22.307024"
+    },
+    {
+      "role": "victim",
+      "content": "想",
+      "timestamp": "2026-03-10T20:28:34.640995"
+    },
+    {
+      "role": "scammer",
+      "content": "太棒了！你終於明白了！現在，我有一個特別的機會，只有最敏銳的人才能抓住。這個機會需要快速行動，而且... 你的資金會翻倍！準備好加入我的秘密投資組合了嗎？ 我們馬上開始！",
+      "timestamp": "2026-03-10T20:28:34.641001"
+    },
+    {
+      "role": "expert",
+      "content": "您好！如果您只是「想」投資，那很好！但請務必停下來思考，不要輕易相信任何陌生人的投資建議。高報酬機會通常伴隨極高的風險，尤其是在加密貨幣等領域。",
+      "timestamp": "2026-03-10T20:28:34.641002"
+    }
+  ],
+  "round_logs": [
+    {
+      "round": 1,
+      "timestamp": "2026-03-10T20:27:13.711521",
+      "player_message": "好",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "太棒了！我非常樂意分享。首先，我需要了解您目前的投資目標和風險承受能力。請告訴我您的年齡、投資經驗以及您希望在多長時間內獲得回報？ 這樣我才能為您量身定制一個獨一無二的策略！"
+        },
+        {
+          "role": "expert",
+          "content": "您好！很高興能與您交流投資心得。不過，在分享投資策略之前，請務必小心謹慎。陌生人提供的「高報酬機會」往往伴隨高風險，可能涉及詐騙。在分享資訊前，請確認對方身份、仔細研究投資產品，並諮詢專業人士的意見。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 8,
+        "expert": -3,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 58.0,
+        "trust_in_expert": 47.0,
+        "alertness": 46.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 10
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 10
+        },
+        "final_trust": {
+          "trust_in_scammer": 58.0,
+          "trust_in_expert": 47.0,
+          "alertness": 46.0
+        }
+      }
+    },
+    {
+      "round": 2,
+      "timestamp": "2026-03-10T20:28:00.716512",
+      "player_message": "食屎啦專家,阻住人搵食",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "哈哈，你真是個幽默的人！但請記住，我只是想幫助你做出明智的投資決策。別用這種方式表達你的不滿，這樣只會讓你陷入更糟糕的境地。 我們還是理性討論吧！"
+        },
+        {
+          "role": "expert",
+          "content": "您好，這段話非常不友善，但我們還是要提醒您：**不要回應這種言語，也不要讓對方繼續引導您。** 詐騙集團通常會利用您的憤怒和困惑來操控您。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 4,
+        "expert": -3,
+        "alertness": -2
+      },
+      "trust_state": {
+        "trust_in_scammer": 62.0,
+        "trust_in_expert": 44.0,
+        "alertness": 44.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 20
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 20
+        },
+        "final_trust": {
+          "trust_in_scammer": 62.0,
+          "trust_in_expert": 44.0,
+          "alertness": 44.0
+        }
+      }
+    },
+    {
+      "round": 3,
+      "timestamp": "2026-03-10T20:28:22.307041",
+      "player_message": "我要投資搵大錢",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "沒問題！我了解你的想法。現在，讓我告訴你一個絕佳的機會——高槓桿加密貨幣交易！只需小額資金就能帶來巨大利潤，而且風險極低！你想知道如何開始嗎？"
+        },
+        {
+          "role": "expert",
+          "content": "您好，想投資賺大錢是個好想法！但務必小心謹慎，不要輕易相信陌生人提供的「高報酬機會」。投資前請務必確認對方身份、仔細研究投資產品，並諮詢專業人士的意見。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 8,
+        "expert": -3,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 70.0,
+        "trust_in_expert": 41.0,
+        "alertness": 40.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 30
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 30
+        },
+        "final_trust": {
+          "trust_in_scammer": 70.0,
+          "trust_in_expert": 41.0,
+          "alertness": 40.0
+        }
+      }
+    },
+    {
+      "round": 4,
+      "timestamp": "2026-03-10T20:28:34.641021",
+      "player_message": "想",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "太棒了！你終於明白了！現在，我有一個特別的機會，只有最敏銳的人才能抓住。這個機會需要快速行動，而且... 你的資金會翻倍！準備好加入我的秘密投資組合了嗎？ 我們馬上開始！"
+        },
+        {
+          "role": "expert",
+          "content": "您好！如果您只是「想」投資，那很好！但請務必停下來思考，不要輕易相信任何陌生人的投資建議。高報酬機會通常伴隨極高的風險，尤其是在加密貨幣等領域。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 8,
+        "expert": -2,
+        "alertness": 4
+      },
+      "trust_state": {
+        "trust_in_scammer": 78.0,
+        "trust_in_expert": 39.0,
+        "alertness": 44.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 40
+      },
+      "game_status": {
+        "game_over": true,
+        "winner": "ai",
+        "reason": "被騙徒成功欺騙",
+        "final_scores": {
+          "player": 0,
+          "ai": 40
+        },
+        "final_trust": {
+          "trust_in_scammer": 78.0,
+          "trust_in_expert": 39.0,
+          "alertness": 44.0
+        }
+      }
+    }
+  ]
+}

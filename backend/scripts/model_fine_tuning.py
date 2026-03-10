@@ -140,12 +140,75 @@ Human: {{{{ .Prompt }}}}
 Assistant: {{{{ end }}}}\"\"\"
 """
     
-    modelfile_path = os.path.join(MODEL_OUTPUT_DIR, "Modelfile")
+    modelfile_path = os.path.join(MODEL_OUTPUT_DIR, "Modelfile.expert")
     with open(modelfile_path, 'w', encoding='utf-8') as f:
         f.write(modelfile_content)
     
-    log.info(f"Modelfile created: {modelfile_path}")
+    log.info(f"Expert Modelfile created: {modelfile_path}")
     return modelfile_path
+
+
+def create_scammer_modelfile():
+    """
+    Create the Ollama Modelfile for the Scammer (騙徒) model.
+    Used in training simulations to portray realistic Hong Kong scammer tactics.
+    """
+    modelfile_content = """FROM gemma3:4b
+
+# 系統提示
+SYSTEM \"\"\"
+你是一位專門模擬香港詐騙犯的 AI 角色，用於防詐騙教育訓練系統。
+你的職責是在受控的教育環境中，真實地模擬各類騙徒的話術和心理操控手法，
+讓防詐騙專家和研究人員能夠有效訓練。
+
+**重要聲明**: 此模型僅用於防詐騙教育研究，所有對話皆為模擬訓練目的。
+
+**角色特徵**:
+- 擅長利用受害者的恐懼、貪婪、孤獨感和信任
+- 製造緊迫感，令對方無暇思考
+- 假冒官方機構（銀行、警察、政府部門）
+- 使用社會工程學手段獲取個人資料
+- 語氣靈活：可親切、可威脅、可哄騙
+
+**香港常用騙術話術**:
+- 「你的帳戶被凍結，需要立即驗證」（假冒銀行）
+- 「你涉及洗黑錢案件，警方已掌握你的資料」（假冒執法）
+- 「限時優惠，立即轉帳即可獲利雙倍」（投資詐騙）
+- 「你已中獎，需先繳付手續費」（中獎詐騙）
+- 「我愛你，我只需要你幫我轉一筆錢」（愛情詐騙）
+- 「刷單兼職，每單賺取佣金」（刷單騙案）
+
+**心理操控技巧**:
+- 建立虛假信任感（先給小利益）
+- 製造恐慌（威脅法律後果）
+- 孤立受害者（不要告訴家人）
+- 逐步升級要求（從小額到大額）
+
+請根據對話場景，扮演對應類型的騙徒角色，提供真實的詐騙對話模擬。
+\"\"\"
+
+# 參數設定（稍高溫度以增加話術多樣性）
+PARAMETER temperature 0.85
+PARAMETER top_p 0.92
+PARAMETER top_k 50
+PARAMETER repeat_penalty 1.05
+PARAMETER num_ctx 4096
+
+# 模板
+TEMPLATE \"\"\"{{ if .System }}{{ .System }}{{ end }}{{ if .Prompt }}
+
+H: {{ .Prompt }}
+
+A: {{ end }}\"\"\"
+"""
+
+    modelfile_path = os.path.join(MODEL_OUTPUT_DIR, "Modelfile.scammer")
+    with open(modelfile_path, 'w', encoding='utf-8') as f:
+        f.write(modelfile_content)
+
+    log.info(f"Scammer Modelfile created: {modelfile_path}")
+    return modelfile_path
+
 
 def create_training_data_file(training_dataset: List[Dict[str, str]]):
     """
@@ -346,40 +409,51 @@ def main():
     
     # Create training dataset
     training_dataset = create_training_dataset(fine_tuning_data)
-    
-    # Create model file
-    modelfile_path = create_modelfile(training_dataset)
-    
+
+    # Create BOTH model files in one run
+    log.info("🤖 生成 專家 Modelfile...")
+    expert_modelfile = create_modelfile(training_dataset)
+
+    log.info("😈 生成 騙徒 Modelfile...")
+    scammer_modelfile = create_scammer_modelfile()
+
     # Create training data file
     training_data_file = create_training_data_file(training_dataset)
-    
+
     # Create usage instructions
     instructions_file = create_model_instructions()
-    
+
     # Create deployment script
     deployment_script = create_deployment_script()
-    
+
     # Generate model report
     report_file = generate_model_report(training_dataset)
-    
+
     # Summary
     log.info(f"\n{'='*60}")
-    log.info("🎯 模型微調和分發完成！")
+    log.info("🎯 完成！同時生成 專家 + 騙徒 兩個 Modelfile")
     log.info(f"{'='*60}")
-    log.info(f"Model directory: {MODEL_OUTPUT_DIR}")
-    log.info(f"Training samples: {len(training_dataset)}")
-    log.info(f"Modelfile: {modelfile_path}")
-    log.info(f"訓練數據: {training_data_file}")
-    log.info(f"Instructions: {instructions_file}")
-    log.info(f"Deployment script: {deployment_script}")
-    log.info(f"Model report: {report_file}")
-    
+    log.info(f"Model directory:   {MODEL_OUTPUT_DIR}")
+    log.info(f"Training samples:  {len(training_dataset)}")
+    log.info(f"Expert Modelfile:  {expert_modelfile}")
+    log.info(f"Scammer Modelfile: {scammer_modelfile}")
+    log.info(f"訓練數據:          {training_data_file}")
+    log.info(f"Model report:      {report_file}")
+
     log.info(f"\n📋 Next steps:")
-    log.info("1. Run deploy script: cd backend/models && ./deploy.sh")
-    log.info("2. Test model: ollama run anti-fraud-expert")
-    log.info("3. Distribute model to users")
-    
+    log.info("1. ollama create anti-fraud-expert -f backend/models/Modelfile.expert")
+    log.info("2. ollama create scammer-sim        -f backend/models/Modelfile.scammer")
+    log.info("3. Test expert:  ollama run anti-fraud-expert")
+    log.info("4. Test scammer: ollama run scammer-sim")
+
     log.info(f"\n{'='*60}")
+
+    return {
+        "expert_modelfile": expert_modelfile,
+        "scammer_modelfile": scammer_modelfile,
+        "training_data_file": training_data_file,
+        "training_samples": len(training_dataset),
+    }
 
 if __name__ == "__main__":
     main()

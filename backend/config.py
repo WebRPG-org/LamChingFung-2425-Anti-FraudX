@@ -8,7 +8,7 @@ from typing import Dict, List
 from dataclasses import dataclass
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=False)
 
 
 # ============================================================================
@@ -137,21 +137,21 @@ class LLMConfig:
     NUM_PREDICT: int = int(os.getenv("OLLAMA_NUM_PREDICT", "2000"))
     
     # Timeouts (seconds)
-    GENERATION_TIMEOUT: float = 300.0
-    CONNECTION_TIMEOUT: float = 30.0
+    GENERATION_TIMEOUT: float = 180.0   # Optimized from 300.0 (T5.A3)
+    CONNECTION_TIMEOUT: float = 10.0    # Optimized from 30.0
     PULL_TIMEOUT: float = 900.0
     
     # Retry configuration
-    MAX_RETRIES: int = 3
-    RETRY_DELAY_INITIAL: float = 1.0
+    MAX_RETRIES: int = 2                # Optimized from 3 (T5.A3)
+    RETRY_DELAY_INITIAL: float = 0.5   # Optimized from 1.0 (T5.A3)
     RETRY_DELAY_MULTIPLIER: float = 2.0  # Exponential backoff
     
     # Response limits
-    MAX_RESPONSE_LENGTH: int = 5000  # Characters
-    MAX_REASONABLE_LENGTH: int = 5000  # Warn if exceeded
+    MAX_RESPONSE_LENGTH: int = 2000    # Optimized from 5000 (T5.A3)
+    MAX_REASONABLE_LENGTH: int = 2000  # Optimized from 5000 (T5.A3)
     
-    # Auto-pull
-    AUTO_PULL_MODELS: bool = os.getenv("OLLAMA_AUTO_PULL", "1") != "0"
+    # Auto-pull — disabled; use warm_up_model() at startup instead
+    AUTO_PULL_MODELS: bool = False
 
 
 # ============================================================================

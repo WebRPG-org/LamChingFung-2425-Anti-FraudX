@@ -1,0 +1,42 @@
+{
+  "session_id": "f2615933-75ec-43ee-bb18-8e02fb7dc46c",
+  "mode": "victim",
+  "scam_type": "investment",
+  "victim_persona": "average",
+  "start_time": "2026-03-10T23:52:21.755628",
+  "end_time": "2026-03-10T23:52:37.646089",
+  "game_over": true,
+  "winner": "player",
+  "final_scores": {
+    "player": 120,
+    "ai": 10
+  },
+  "final_trust": {
+    "trust_in_scammer": 0,
+    "trust_in_expert": 100,
+    "alertness": 100
+  },
+  "total_rounds": 1,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "您好，最近股市波動很大，但如果您知道一個秘密策略，就能輕鬆把握機會，讓您的投資收益翻倍，您願意花幾分鐘了解一下嗎？"
+    },
+    {
+      "role": "victim",
+      "content": "好",
+      "timestamp": "2026-03-10T23:52:37.646078"
+    },
+    {
+      "role": "scammer",
+      "content": "太棒了！這是一個絕佳的機會。我掌握了一個獨家策略，能讓您在股市中快速獲利。不過，這個資訊非常保密，需要私下溝通。請提供您的銀行帳號和餘額，以便我為您安排資金轉移，開始您的豐厚投資之旅。",
+      "timestamp": "2026-03-10T23:52:37.646082"
+    },
+    {
+      "role": "expert",
+      "content": "唔使驚！聽到呢啲話術一定小心啲！股市波動正常，絕對唔需要任何人吹捧「秘密策略」幫你翻倍收益。上個月就有類似案件，好多人都咁樣俾人呃走錢。第一步：即時掛斷電話！",
+      "timestamp": "2026-03-10T23:52:37.646083"
+    }
+  ],
+  "round_logs": []
+}

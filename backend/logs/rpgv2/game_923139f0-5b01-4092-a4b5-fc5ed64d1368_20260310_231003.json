@@ -1,0 +1,42 @@
+{
+  "session_id": "923139f0-5b01-4092-a4b5-fc5ed64d1368",
+  "mode": "victim",
+  "scam_type": "investment",
+  "victim_persona": "average",
+  "start_time": "2026-03-10T23:09:39.252778",
+  "end_time": "2026-03-10T23:10:03.039897",
+  "game_over": true,
+  "winner": "player",
+  "final_scores": {
+    "player": 120,
+    "ai": 10
+  },
+  "final_trust": {
+    "trust_in_scammer": 0,
+    "trust_in_expert": 100,
+    "alertness": 100
+  },
+  "total_rounds": 1,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "您好，最近市場波動很大，但如果您知道一個秘訣，就能輕鬆把握機會，讓您的投資收益翻倍！想了解更多嗎？"
+    },
+    {
+      "role": "victim",
+      "content": "咁正,比多D資訊我",
+      "timestamp": "2026-03-10T23:10:03.039887"
+    },
+    {
+      "role": "scammer",
+      "content": "太棒了！這是一個絕佳的機會。您現在擁有一個獨家投資秘訣。為了確保您的收益翻倍，我需要您提供一些個人信息，以便為您量身定制投資方案。請告訴我您的姓名和銀行帳戶號碼？",
+      "timestamp": "2026-03-10T23:10:03.039891"
+    },
+    {
+      "role": "expert",
+      "content": "唔使驚，你畀咗人機會佢！聽到呢啲話術，就要心提心提。投資消息如果真係咁好，絕對唔會只俾電話講。第一步：**即時掛線！** 之後，立即去網上搜索相關資訊，驗證佢哋講嘅嘢。",
+      "timestamp": "2026-03-10T23:10:03.039892"
+    }
+  ],
+  "round_logs": []
+}

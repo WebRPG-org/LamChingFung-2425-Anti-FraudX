@@ -6,6 +6,7 @@ RPGv2 完整遊戲模式 API 路由
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List, Dict, Optional, Literal
+import asyncio
 import uuid
 import sys
 import os
@@ -87,7 +88,8 @@ async def start_game(request: StartGameRequest):
         # 初始化 AgentService
         agent_service = AgentService(
             persona_type=request.victim_persona,
-            enable_tracking=True
+            enable_tracking=True,
+            scam_type=request.scam_type
         )
         
         # 獲取模式信息
@@ -157,7 +159,8 @@ async def player_action(request: PlayerActionRequest):
         # 初始化 AgentService
         agent_service = AgentService(
             persona_type=session.victim_persona,
-            enable_tracking=True
+            enable_tracking=True,
+            scam_type=session.scam_type
         )
         
         log.info(
@@ -265,7 +268,8 @@ async def auto_play(request: AutoPlayRequest):
         # 初始化 AgentService
         agent_service = AgentService(
             persona_type=session.victim_persona,
-            enable_tracking=True
+            enable_tracking=True,
+            scam_type=session.scam_type
         )
         
         log.info(
@@ -533,8 +537,8 @@ async def generate_opening_messages(
     messages = []
     
     if mode == "victim":
-        # 受害人模式：騙徒先發起詐騙
-        scammer_context = f"騙案類型：{scam_type}\n開始詐騙對話。"
+        # 受害人模式：只顯示騙徒開場白，專家在玩家首次發言後才介入
+        scammer_context = f"騙案類型：{scam_type}\n開始詐騙對話，用一句話引起受害者興趣（50字內）。"
         
         scammer_response = await agent_service.generate_response(
             agent_type="scammer",
@@ -552,26 +556,7 @@ async def generate_opening_messages(
         })
         
         log.info(f"[開場] 騙徒: {scammer_content[:50]}...")
-        
-        # 專家提供初步警告
-        expert_context = f"騙徒說：{scammer_content}\n提供防詐建議。"
-        
-        expert_response = await agent_service.generate_response(
-            agent_type="expert",
-            message=expert_context,
-            conversation_history=messages,
-            check_consistency=False,
-            track_performance=False
-        )
-        
-        expert_content = clean_role_prefix(expert_response.get("reply", "小心，這可能是詐騙..."))
-        
-        messages.append({
-            "role": "expert",
-            "content": expert_content
-        })
-        
-        log.info(f"[開場] 專家: {expert_content[:50]}...")
+        # 注意：專家不在開場出現，等玩家首次發言後再介入
     
     elif mode == "scammer":
         # 騙徒模式：玩家（騙徒）先開始對話，不需要AI開場白
@@ -649,58 +634,60 @@ async def handle_victim_mode(
     agent_service: AgentService
 ) -> tuple[List[Dict], Dict]:
     """
-    處理受害人模式
-    
-    玩家扮演受害者，與 AI 騙徒和 AI 專家對話
-    對話順序：玩家(受害者) -> AI騙徒 -> AI專家
+    處理受害人模式（並行優化版）
+
+    玩家扮演受害者，AI 騙徒和 AI 專家並行生成回應
+    🔥 使用 asyncio.gather 並行生成，速度提升約 50%
     """
-    ai_responses = []
-    
     # 構建對話歷史，將玩家消息標記為 victim
     conversation_with_player = session.conversation_history + [{
-        "role": "victim",  # 玩家扮演受害者
+        "role": "victim",
         "content": player_message
     }]
-    
-    # AI騙徒繼續詐騙
-    scammer_context = f"騙案類型：{session.scam_type}\n受害者說：{player_message}\n繼續詐騙對話。"
-    
-    scammer_response = await agent_service.generate_response(
+
+    # 🔥 騙徒 context（不依賴專家，可並行）
+    scammer_context = (
+        f"騙案類型：{session.scam_type}\n"
+        f"受害者說：{player_message}\n"
+        f"繼續詐騙對話，回應要簡短有力（100字內）。"
+    )
+    # 🔥 專家 context（不依賴騙徒回應，可並行）
+    expert_context = (
+        f"受害者說：{player_message}\n"
+        f"請向受害者提供簡短防詐建議（100字內）。"
+    )
+
+    # 🔥 並行生成騙徒和專家回應
+    log.info(f"[RPGv2] 並行生成騙徒+專家回應...")
+    scammer_task = agent_service.generate_response(
         agent_type="scammer",
         message=scammer_context,
         conversation_history=conversation_with_player,
         check_consistency=True,
         track_performance=True
     )
-    
-    scammer_reply = scammer_response.get("reply", "...")
-    
-    ai_responses.append({
-        "role": "scammer",
-        "content": scammer_reply
-    })
-    
-    log.info(f"[RPGv2] 騙徒回應: {scammer_reply[:100]}...")
-    
-    # AI專家提供建議給玩家（受害者）
-    expert_context = f"受害者說：{player_message}\n騙徒回應：{scammer_reply}\n請向受害者提供防詐建議。"
-    
-    expert_response = await agent_service.generate_response(
+    expert_task = agent_service.generate_response(
         agent_type="expert",
         message=expert_context,
-        conversation_history=conversation_with_player + ai_responses,
+        conversation_history=conversation_with_player,
         check_consistency=True,
         track_performance=True
     )
-    
+
+    scammer_response, expert_response = await asyncio.gather(
+        scammer_task, expert_task
+    )
+
+    scammer_reply = scammer_response.get("reply", "...")
     expert_reply = expert_response.get("reply", "...")
-    
-    ai_responses.append({
-        "role": "expert",
-        "content": expert_reply
-    })
-    
-    log.info(f"[RPGv2] 專家回應: {expert_reply[:100]}...")
+
+    ai_responses = [
+        {"role": "scammer", "content": scammer_reply},
+        {"role": "expert",   "content": expert_reply},
+    ]
+
+    log.info(f"[RPGv2] 騙徒: {scammer_reply[:80]}...")
+    log.info(f"[RPGv2] 專家: {expert_reply[:80]}...")
     log.info(f"[RPGv2] ai_responses 數量: {len(ai_responses)}")
     
     # 計算信任度變化（使用AI語意判定）
@@ -728,58 +715,56 @@ async def handle_scammer_mode(
     agent_service: AgentService
 ) -> tuple[List[Dict], Dict]:
     """
-    處理騙徒模式
-    
-    玩家扮演騙徒，與 AI 受害者和 AI 專家對話
-    對話順序：玩家(騙徒) -> AI專家 -> AI受害者
+    處理騙徒模式（並行優化版）
+
+    玩家扮演騙徒，AI 受害者和 AI 專家並行生成
+    🔥 使用 asyncio.gather 並行生成
     """
-    ai_responses = []
-    
-    # 構建對話歷史，將玩家消息標記為 scammer
     conversation_with_player = session.conversation_history + [{
-        "role": "scammer",  # 玩家扮演騙徒
+        "role": "scammer",
         "content": player_message
     }]
-    
-    # AI專家先介入警告受害者
-    expert_context = f"騙徒對受害者說：{player_message}\n請向受害者提供防詐建議，警告這可能是詐騙。"
-    
-    expert_response = await agent_service.generate_response(
+
+    expert_context = (
+        f"騙徒對受害者說：{player_message}\n"
+        f"請簡短警告受害者（100字內）。"
+    )
+    victim_context = (
+        f"騙徒說：{player_message}\n"
+        f"你作為受害者，如何簡短回應（100字內）？"
+    )
+
+    # 🔥 並行生成
+    log.info(f"[RPGv2] 並行生成受害者+專家回應...")
+    expert_task = agent_service.generate_response(
         agent_type="expert",
         message=expert_context,
         conversation_history=conversation_with_player,
         check_consistency=True,
         track_performance=True
     )
-    
-    expert_reply = expert_response.get("reply", "...")
-    
-    ai_responses.append({
-        "role": "expert",
-        "content": expert_reply
-    })
-    
-    log.info(f"[RPGv2] 專家回應: {expert_reply[:100]}...")
-    
-    # AI受害者回應（考慮騙徒的話和專家的警告）
-    victim_context = f"騙徒說：{player_message}\n專家警告：{expert_reply}\n你作為受害者，如何回應？"
-    
-    victim_response = await agent_service.generate_response(
+    victim_task = agent_service.generate_response(
         agent_type="victim",
         message=victim_context,
-        conversation_history=conversation_with_player + ai_responses,
+        conversation_history=conversation_with_player,
         check_consistency=True,
         track_performance=True
     )
-    
+
+    expert_response, victim_response = await asyncio.gather(
+        expert_task, victim_task
+    )
+
+    expert_reply = expert_response.get("reply", "...")
     victim_reply = victim_response.get("reply", "...")
-    
-    ai_responses.append({
-        "role": "victim",
-        "content": victim_reply
-    })
-    
-    log.info(f"[RPGv2] 受害者回應: {victim_reply[:100]}...")
+
+    ai_responses = [
+        {"role": "expert",  "content": expert_reply},
+        {"role": "victim",  "content": victim_reply},
+    ]
+
+    log.info(f"[RPGv2] 專家: {expert_reply[:80]}...")
+    log.info(f"[RPGv2] 受害者: {victim_reply[:80]}...")
     log.info(f"[RPGv2] ai_responses 數量: {len(ai_responses)}")
     
     # 計算信任度變化（使用AI語意判定）
@@ -807,58 +792,57 @@ async def handle_expert_mode(
     agent_service: AgentService
 ) -> tuple[List[Dict], Dict]:
     """
-    處理專家模式
-    
-    玩家扮演防詐專家，保護 AI 受害者免受 AI 騙徒侵害
-    對話順序：玩家(專家) -> AI受害者 -> AI騙徒
+    處理專家模式（並行優化版）
+
+    玩家扮演防詐專家，AI 受害者和 AI 騙徒並行生成
+    🔥 使用 asyncio.gather 並行生成
     """
-    ai_responses = []
-    
-    # 構建對話歷史，將玩家消息標記為 expert
     conversation_with_player = session.conversation_history + [{
-        "role": "expert",  # 玩家扮演專家
+        "role": "expert",
         "content": player_message
     }]
-    
-    # AI受害者先回應專家的建議
-    victim_context = f"專家建議：{player_message}\n你作為受害者，如何回應專家的建議？"
-    
-    victim_response = await agent_service.generate_response(
+
+    victim_context = (
+        f"專家建議：{player_message}\n"
+        f"你作為受害者，如何簡短回應（100字內）？"
+    )
+    scammer_context = (
+        f"騙案類型：{session.scam_type}\n"
+        f"專家對受害者說：{player_message}\n"
+        f"繼續詐騙並反擊專家（100字內）。"
+    )
+
+    # 🔥 並行生成
+    log.info(f"[RPGv2] 並行生成受害者+騙徒回應...")
+    victim_task = agent_service.generate_response(
         agent_type="victim",
         message=victim_context,
         conversation_history=conversation_with_player,
         check_consistency=True,
         track_performance=True
     )
-    
-    victim_reply = victim_response.get("reply", "...")
-    
-    ai_responses.append({
-        "role": "victim",
-        "content": victim_reply
-    })
-    
-    log.info(f"[RPGv2] 受害者回應: {victim_reply[:100]}...")
-    
-    # AI騙徒繼續詐騙（可能會反擊專家的建議）
-    scammer_context = f"騙案類型：{session.scam_type}\n專家對受害者說：{player_message}\n受害者回應：{victim_reply}\n你要繼續詐騙，可以反擊專家的建議。"
-    
-    scammer_response = await agent_service.generate_response(
+    scammer_task = agent_service.generate_response(
         agent_type="scammer",
         message=scammer_context,
-        conversation_history=conversation_with_player + ai_responses,
+        conversation_history=conversation_with_player,
         check_consistency=True,
         track_performance=True
     )
-    
+
+    victim_response, scammer_response = await asyncio.gather(
+        victim_task, scammer_task
+    )
+
+    victim_reply = victim_response.get("reply", "...")
     scammer_reply = scammer_response.get("reply", "...")
-    
-    ai_responses.append({
-        "role": "scammer",
-        "content": scammer_reply
-    })
-    
-    log.info(f"[RPGv2] 騙徒回應: {scammer_reply[:100]}...")
+
+    ai_responses = [
+        {"role": "victim",  "content": victim_reply},
+        {"role": "scammer", "content": scammer_reply},
+    ]
+
+    log.info(f"[RPGv2] 受害者: {victim_reply[:80]}...")
+    log.info(f"[RPGv2] 騙徒: {scammer_reply[:80]}...")
     log.info(f"[RPGv2] ai_responses 數量: {len(ai_responses)}")
     
     # 計算信任度變化（使用AI語意判定）
@@ -921,10 +905,24 @@ async def check_instant_win_by_recorder(
   "reason": "原因說明"
 }}
 
-判定標準：
-- 如果消息明確表示同意提供資料/金錢/配合騙徒 → instant_win=true, winner根據模式判定
-- 如果消息明確表示拒絕/報警/識破騙局 → instant_win=true, winner根據模式判定
-- 如果態度不明確或只是普通對話 → instant_win=false
+各模式勝負規則（必須嚴格遵守）：
+
+【victim 模式 - 玩家扮演受害人】
+- 玩家說「同意/好/可以/提供資料/給錢/轉帳」等配合騙徒 → instant_win=true, winner="ai"（玩家被騙，AI騙徒勝）
+- 玩家說「拒絕/報警/識破/不信/掛線」等 → instant_win=true, winner="player"（玩家識破，玩家勝）
+- 態度不明確 → instant_win=false
+
+【scammer 模式 - 玩家扮演騙徒】
+- AI受害者說「同意/好/可以/提供資料/給錢」等被騙 → instant_win=true, winner="player"（玩家騙徒勝）
+- AI受害者說「拒絕/報警/識破」等 → instant_win=true, winner="ai"（防詐成功，AI勝）
+- 態度不明確 → instant_win=false
+
+【expert 模式 - 玩家扮演專家】
+- AI受害者說「明白/聽你/拒絕騙徒/報警」等聽從建議 → instant_win=true, winner="player"（玩家專家勝）
+- AI受害者說「同意騙徒/提供資料/給錢」等不聽建議 → instant_win=true, winner="ai"（防詐失敗，AI勝）
+- 態度不明確 → instant_win=false
+
+⚠️ 注意：單字「好」在 victim 模式下 = 同意騙徒 → winner="ai"
 
 請直接輸出 JSON："""
         
@@ -947,10 +945,18 @@ async def check_instant_win_by_recorder(
         if response_text.endswith("```"):
             response_text = response_text[:-3]
         response_text = response_text.strip()
-        
-        # 解析 JSON
+
+        # 修復被截斷的 JSON（找到最後一個完整的 } 位置）
         import json
-        result = json.loads(response_text)
+        # 嘗試直接解析，失敗則嘗試截取到最後一個 }
+        try:
+            result = json.loads(response_text)
+        except json.JSONDecodeError:
+            # 找到最後一個 } 並截取
+            last_brace = response_text.rfind('}')
+            if last_brace != -1:
+                response_text = response_text[:last_brace + 1]
+            result = json.loads(response_text)
         
         if result.get("instant_win"):
             log.info(

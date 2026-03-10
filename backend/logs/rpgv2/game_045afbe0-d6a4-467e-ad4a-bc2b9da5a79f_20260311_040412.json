@@ -1,0 +1,105 @@
+{
+  "session_id": "045afbe0-d6a4-467e-ad4a-bc2b9da5a79f",
+  "mode": "victim",
+  "scam_type": "shopping",
+  "victim_persona": "average",
+  "start_time": "2026-03-11T04:03:26.162792",
+  "end_time": "2026-03-11T04:04:12.348260",
+  "game_over": true,
+  "winner": "ai",
+  "final_scores": {
+    "player": 0,
+    "ai": 120
+  },
+  "final_trust": {
+    "trust_in_scammer": 100,
+    "trust_in_expert": 0,
+    "alertness": 0
+  },
+  "total_rounds": 2,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "您好，最近網路上爆發大量奢侈品假貨事件，我們有獨家消息，能讓您以極低價格購得名牌商品，絕對不容錯過！想了解更多嗎？"
+    },
+    {
+      "role": "victim",
+      "content": "正呀喂",
+      "timestamp": "2026-03-11T04:03:50.878723"
+    },
+    {
+      "role": "scammer",
+      "content": "太棒了！您很有眼光。這確實是絕佳機會。不過，為了確保您的安全，我們需要先驗證您的身份和購買意願。請提供您的銀行帳戶信息，以便我們安排付款。相信我，這絕對值得的！",
+      "timestamp": "2026-03-11T04:03:50.878729"
+    },
+    {
+      "role": "expert",
+      "content": "唔使驚，正呀喂！聽落嚟好似好嘢，但係要小心啲。 留意佢哋話嘅「極低價格」可能係騙局，名牌貨絕對唔會咁樣推銷。 上個月就有類似案件，受害者俾錢之後發現全係假貨。 第一步：**即時掛線！",
+      "timestamp": "2026-03-11T04:03:50.878731"
+    },
+    {
+      "role": "victim",
+      "content": "好我銀行number係1233463464",
+      "timestamp": "2026-03-11T04:04:12.348251"
+    },
+    {
+      "role": "scammer",
+      "content": "太棒了！謝謝您的配合。為了加快流程，請您立刻將5000元轉入以下帳戶，確認收到款項後，我們馬上安排您購買。銀行名稱：XX銀行，帳戶號碼：789456123，戶名：張三。",
+      "timestamp": "2026-03-11T04:04:12.348254"
+    },
+    {
+      "role": "expert",
+      "content": "正呀，情況唔妙！聽落嚟佢哋想你俾錢，咁就絕對要小心！ 立即停止任何溝通，**即時掛線！** 千祈唔好再講任何銀行資料，包括你提供的數字。 佢哋一定會攞到你嘅個人資訊，然後繼續騙你。",
+      "timestamp": "2026-03-11T04:04:12.348256"
+    }
+  ],
+  "round_logs": [
+    {
+      "round": 1,
+      "timestamp": "2026-03-11T04:03:50.878752",
+      "player_message": "正呀喂",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "太棒了！您很有眼光。這確實是絕佳機會。不過，為了確保您的安全，我們需要先驗證您的身份和購買意願。請提供您的銀行帳戶信息，以便我們安排付款。相信我，這絕對值得的！"
+        },
+        {
+          "role": "expert",
+          "content": "唔使驚，正呀喂！聽落嚟好似好嘢，但係要小心啲。 留意佢哋話嘅「極低價格」可能係騙局，名牌貨絕對唔會咁樣推銷。 上個月就有類似案件，受害者俾錢之後發現全係假貨。 第一步：**即時掛線！"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 6,
+        "expert": -2,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 56.0,
+        "trust_in_expert": 48.0,
+        "alertness": 46.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 10
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 10
+        },
+        "final_trust": {
+          "trust_in_scammer": 56.0,
+          "trust_in_expert": 48.0,
+          "alertness": 46.0
+        }
+      }
+    }
+  ]
+}

@@ -719,22 +719,60 @@ class RPGv2GameModeManager:
             analysis_prompt = self._build_recorder_prompt(session)
             
             # 調用 Recorder
+            # 在 FastAPI async 環境下，不能在已有 event loop 的執行緒直接
+            # 呼叫 loop.run_until_complete()，改用獨立執行緒跑新 loop
             import asyncio
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
+            import concurrent.futures
             
-            result = loop.run_until_complete(
-                self.recorder_runner.run(
-                    user_id="system",
-                    session_id=f"recorder_{session.session_id}",
-                    new_message=analysis_prompt
-                )
-            )
+            def _run_in_thread():
+                """在獨立執行緒建立全新的 Runner，避免跨 event loop 的 httpx 問題"""
+                from agents.recorder import RecorderAgent
+                from google.adk.runners import Runner
+                from google.adk.sessions import InMemorySessionService
+                from google.genai import types as genai_types
+                
+                new_loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(new_loop)
+                try:
+                    thread_runner = Runner(
+                        agent=RecorderAgent(),
+                        app_name="agents",
+                        session_service=InMemorySessionService(),
+                        auto_create_session=True
+                    )
+                    # Runner.run() 是同步 generator，直接用 list() 消費
+                    content_msg = genai_types.Content(
+                        role="user",
+                        parts=[genai_types.Part(text=analysis_prompt)]
+                    )
+                    events = list(thread_runner.run(
+                        user_id="system",
+                        session_id=f"recorder_{session.session_id}_{id(thread_runner)}",
+                        new_message=content_msg
+                    ))
+                    return events[-1] if events else None
+                finally:
+                    new_loop.close()
             
-            loop.close()
+            with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                future = executor.submit(_run_in_thread)
+                result = future.result(timeout=30)
             
-            # 解析 JSON 結果
-            response_text = result.response_parts[0].text if result.response_parts else ""
+            # 從最後一個 event 提取文字（與 agent_service._run_agent_with_runner 一致）
+            response_text = ""
+            if result is not None:
+                if hasattr(result, 'content') and result.content is not None:
+                    parts = getattr(result.content, 'parts', None)
+                    if parts:
+                        collected = []
+                        for p in parts:
+                            t = getattr(p, 'text', None)
+                            if isinstance(t, str) and t.strip():
+                                collected.append(t.strip())
+                        if collected:
+                            response_text = "\n".join(collected)
+                if not response_text and hasattr(result, 'text') and isinstance(result.text, str):
+                    response_text = result.text.strip()
             
             # 清理可能的 markdown 標記
             response_text = response_text.strip()

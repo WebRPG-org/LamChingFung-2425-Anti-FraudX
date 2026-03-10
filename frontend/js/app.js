@@ -5,7 +5,8 @@ function openMode(mode) {
         'rpgv2': 'http://localhost:3000',
         'simulation': '/app',
         'chat': '/personal_chat.html',
-        'test': '/test'
+        'test': '/test',
+        'tools': '/tools'
     };
     
     if (routes[mode]) {

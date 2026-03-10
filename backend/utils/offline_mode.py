@@ -37,8 +37,8 @@ def verify_ollama_local_only(base_url: Optional[str] = None) -> bool:
     if base_url is None:
         base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
     
-    # 檢查是否只監聽本地
-    if "127.0.0.1" in base_url or "localhost" in base_url:
+    # 檢查是否只監聽本地（含 Docker 容器內訪問 host 的標準方式）
+    if "127.0.0.1" in base_url or "localhost" in base_url or "host.docker.internal" in base_url:
         log.info(f"✅ Ollama 配置為本地模式: {base_url}")
         return True
     elif "0.0.0.0" in base_url:

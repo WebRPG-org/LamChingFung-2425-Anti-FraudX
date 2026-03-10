@@ -13,7 +13,8 @@ from config import config
 from llms.llm_factory import LlmFactory
 from utils.logger import log
 
-load_dotenv()
+_ENV_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.env'))
+load_dotenv(_ENV_FILE, override=True)
 
 router = APIRouter(prefix="/api/model", tags=["Model Management"])
 
@@ -267,9 +268,6 @@ async def save_gemini_config(request: GeminiConfigRequest):
 async def get_available_providers():
     """
     獲取可用的 LLM 提供者列表
-    
-    Returns:
-        dict: 提供者列表和狀態
     """
     return {
         "providers": [
@@ -292,6 +290,85 @@ async def get_available_providers():
     }
 
 
+@router.get("/config")
+async def get_full_config():
+    """
+    讀取完整的 .env 配置（API Key 遮蔽顯示）
+    """
+    try:
+        from dotenv import dotenv_values
+        env_file = _ENV_FILE
+        
+        values = dotenv_values(env_file) if os.path.exists(env_file) else {}
+        
+        # 遮蔽 API Key
+        masked = dict(values)
+        for k in masked:
+            if 'KEY' in k.upper() or 'SECRET' in k.upper() or 'PASSWORD' in k.upper():
+                v = masked[k]
+                if v and len(v) > 8:
+                    masked[k] = v[:4] + '****' + v[-4:]
+        
+        return {
+            "success": True,
+            "config": masked,
+            "env_file": env_file
+        }
+    except Exception as e:
+        log.error(f"[MODEL_API] 讀取配置失敗: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+class EnvUpdateRequest(BaseModel):
+    """批量更新 .env 配置請求"""
+    updates: Dict[str, str] = Field(..., description="要更新的 key-value 對")
+
+
+@router.post("/config/update")
+async def update_full_config(request: EnvUpdateRequest):
+    """
+    批量更新 .env 配置
+    僅允許更新白名單中的 key
+    """
+    ALLOWED_KEYS = {
+        "GEMINI_ENABLED", "GEMINI_API_KEY",
+        "GEMINI_MODEL_SCAMMER", "GEMINI_MODEL_VICTIM",
+        "GEMINI_MODEL_EXPERT", "GEMINI_MODEL_RECORDER",
+        "GEMINI_TEMPERATURE", "GEMINI_MAX_OUTPUT_TOKENS",
+        "AGENT_MODEL", "OLLAMA_BASE_URL",
+        "AGENT_MODEL_SCAMMER", "AGENT_MODEL_VICTIM",
+        "AGENT_MODEL_EXPERT", "AGENT_MODEL_RECORDER",
+        "OLLAMA_TEMPERATURE", "OLLAMA_NUM_CTX", "OLLAMA_NUM_PREDICT",
+        "USE_SIMPLE_PROMPTS", "LOG_LEVEL", "FORCE_GPU",
+        "AUTO_TRAIN_ENABLED", "OLLAMA_NUM_PREDICT_SCAMMER",
+    }
+    
+    try:
+        rejected = [k for k in request.updates if k not in ALLOWED_KEYS]
+        if rejected:
+            raise HTTPException(status_code=400, detail=f"不允許修改的 key: {rejected}")
+        
+        env_file = _ENV_FILE
+        if not os.path.exists(env_file):
+            open(env_file, 'a').close()
+        
+        for key, value in request.updates.items():
+            _update_env_variable(key, value)
+        
+        log.info(f"[MODEL_API] 批量更新配置: {list(request.updates.keys())}")
+        
+        return {
+            "success": True,
+            "message": f"已更新 {len(request.updates)} 項配置",
+            "updated_keys": list(request.updates.keys())
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        log.error(f"[MODEL_API] 批量更新配置失敗: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ============================================================================
 # Helper Functions
 # ============================================================================
@@ -299,10 +376,8 @@ async def get_available_providers():
 def _update_env_variable(key: str, value: str):
     """更新 .env 文件中的環境變量"""
     try:
-        env_file = find_dotenv()
-        if not env_file:
-            # 如果 .env 不存在，創建一個
-            env_file = os.path.join(os.path.dirname(__file__), '..', '..', '.env')
+        env_file = _ENV_FILE
+        if not os.path.exists(env_file):
             with open(env_file, 'w') as f:
                 f.write(f"{key}={value}\n")
         else:

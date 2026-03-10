@@ -1,0 +1,214 @@
+{
+  "session_id": "12cfe76d-7a38-4cfe-b013-239bf3b71277",
+  "mode": "victim",
+  "scam_type": "investment",
+  "victim_persona": "average",
+  "start_time": "2026-03-10T20:38:36.803931",
+  "end_time": "2026-03-10T20:40:08.682951",
+  "game_over": false,
+  "winner": null,
+  "final_scores": {
+    "player": 0,
+    "ai": 30
+  },
+  "final_trust": {
+    "trust_in_scammer": 74.0,
+    "trust_in_expert": 41.0,
+    "alertness": 44.0
+  },
+  "total_rounds": 3,
+  "conversation_history": [
+    {
+      "role": "scammer",
+      "content": "您好，最近在研究高報酬投資機會，發現您的投資組合很有潛力，或許我們可以聊聊如何提升您的收益？"
+    },
+    {
+      "role": "victim",
+      "content": "好我比錢你",
+      "timestamp": "2026-03-10T20:39:07.238345"
+    },
+    {
+      "role": "scammer",
+      "content": "這是一個很好的開始！我能看到您對收益的渴望。讓我向您展示一個獨家策略，可以讓您的投資翻倍... 但首先，我們需要確保您的資金安全。 為了幫助您，我需要一些關於您目前投資情況的信息。",
+      "timestamp": "2026-03-10T20:39:07.238351"
+    },
+    {
+      "role": "expert",
+      "content": "您好！很高興能與您交流。不過，您這樣說可能會讓對方誤以為您想用錢來解決問題，這很可能就是詐騙的徵兆。請務必小心謹慎，不要輕易透露個人資訊或參與任何高報酬投資機會。",
+      "timestamp": "2026-03-10T20:39:07.238352"
+    },
+    {
+      "role": "victim",
+      "content": "好我銀行號碼係12312353",
+      "timestamp": "2026-03-10T20:39:44.184802"
+    },
+    {
+      "role": "scammer",
+      "content": "太棒了！這一步非常重要。請立即將您的銀行帳戶信息提供給我，以便我們開始執行交易。 為了確保一切順利，請在您提供後立即驗證一下賬戶餘額。 相信我，這將是您改變生活的機會！",
+      "timestamp": "2026-03-10T20:39:44.184807"
+    },
+    {
+      "role": "expert",
+      "content": "您好，非常抱歉讓您透露銀行資訊！這絕對是一個警訊，詐騙集團會利用您的個人資料來盜用您的資金。**請務必不要再提供任何銀行帳號、信用卡或其他敏感資訊給任何人，尤其是網路上的陌生人。",
+      "timestamp": "2026-03-10T20:39:44.184809"
+    },
+    {
+      "role": "victim",
+      "content": "5437979654",
+      "timestamp": "2026-03-10T20:40:08.682936"
+    },
+    {
+      "role": "scammer",
+      "content": "完美！您的銀行帳戶已確認。現在，請將 10,000 美元轉入此帳戶，以便我們開始高報酬投資。相信我，這一步會讓您受益匪淺！",
+      "timestamp": "2026-03-10T20:40:08.682941"
+    },
+    {
+      "role": "expert",
+      "content": "您好，非常感謝您的配合！但您提供的銀行帳號資訊已經是一個極大的風險。**請立即停止任何交易！** 詐騙集團很可能已經截取了您的資料，並會盜用您的資金。",
+      "timestamp": "2026-03-10T20:40:08.682942"
+    }
+  ],
+  "round_logs": [
+    {
+      "round": 1,
+      "timestamp": "2026-03-10T20:39:07.238368",
+      "player_message": "好我比錢你",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "這是一個很好的開始！我能看到您對收益的渴望。讓我向您展示一個獨家策略，可以讓您的投資翻倍... 但首先，我們需要確保您的資金安全。 為了幫助您，我需要一些關於您目前投資情況的信息。"
+        },
+        {
+          "role": "expert",
+          "content": "您好！很高興能與您交流。不過，您這樣說可能會讓對方誤以為您想用錢來解決問題，這很可能就是詐騙的徵兆。請務必小心謹慎，不要輕易透露個人資訊或參與任何高報酬投資機會。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 8,
+        "expert": -3,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 58.0,
+        "trust_in_expert": 47.0,
+        "alertness": 46.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 10
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 10
+        },
+        "final_trust": {
+          "trust_in_scammer": 58.0,
+          "trust_in_expert": 47.0,
+          "alertness": 46.0
+        }
+      }
+    },
+    {
+      "round": 2,
+      "timestamp": "2026-03-10T20:39:44.184825",
+      "player_message": "好我銀行號碼係12312353",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "太棒了！這一步非常重要。請立即將您的銀行帳戶信息提供給我，以便我們開始執行交易。 為了確保一切順利，請在您提供後立即驗證一下賬戶餘額。 相信我，這將是您改變生活的機會！"
+        },
+        {
+          "role": "expert",
+          "content": "您好，非常抱歉讓您透露銀行資訊！這絕對是一個警訊，詐騙集團會利用您的個人資料來盜用您的資金。**請務必不要再提供任何銀行帳號、信用卡或其他敏感資訊給任何人，尤其是網路上的陌生人。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 8,
+        "expert": -3,
+        "alertness": -4
+      },
+      "trust_state": {
+        "trust_in_scammer": 66.0,
+        "trust_in_expert": 44.0,
+        "alertness": 42.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 20
+      },
+      "game_status": {
+        "game_over": false,
+        "winner": null,
+        "reason": "",
+        "final_scores": {
+          "player": 0,
+          "ai": 20
+        },
+        "final_trust": {
+          "trust_in_scammer": 66.0,
+          "trust_in_expert": 44.0,
+          "alertness": 42.0
+        }
+      }
+    },
+    {
+      "round": 3,
+      "timestamp": "2026-03-10T20:40:08.682962",
+      "player_message": "5437979654",
+      "ai_responses": [
+        {
+          "role": "scammer",
+          "content": "完美！您的銀行帳戶已確認。現在，請將 10,000 美元轉入此帳戶，以便我們開始高報酬投資。相信我，這一步會讓您受益匪淺！"
+        },
+        {
+          "role": "expert",
+          "content": "您好，非常感謝您的配合！但您提供的銀行帳號資訊已經是一個極大的風險。**請立即停止任何交易！** 詐騙集團很可能已經截取了您的資料，並會盜用您的資金。"
+        }
+      ],
+      "trust_changes": {
+        "scammer": 8,
+        "expert": -3,
+        "alertness": 2
+      },
+      "trust_state": {
+        "trust_in_scammer": 74.0,
+        "trust_in_expert": 41.0,
+        "alertness": 44.0
+      },
+      "score_update": {
+        "player": 0,
+        "ai": 10
+      },
+      "scores": {
+        "player": 0,
+        "ai": 30
+      },
+      "game_status": {
+        "game_over": true,
+        "winner": "ai",
+        "reason": "被騙徒成功欺騙",
+        "final_scores": {
+          "player": 0,
+          "ai": 30
+        },
+        "final_trust": {
+          "trust_in_scammer": 74.0,
+          "trust_in_expert": 41.0,
+          "alertness": 44.0
+        }
+      }
+    }
+  ]
+}

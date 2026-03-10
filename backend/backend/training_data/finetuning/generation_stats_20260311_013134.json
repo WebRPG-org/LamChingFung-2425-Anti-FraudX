@@ -1,0 +1,13 @@
+{
+  "timestamp": "20260311_013134",
+  "stats": {
+    "total_files": 0,
+    "processed_files": 0,
+    "expert_samples": 0,
+    "scammer_samples": 0,
+    "skipped_files": 0,
+    "errors": 0
+  },
+  "files": {},
+  "split_ratio": 0.9
+}

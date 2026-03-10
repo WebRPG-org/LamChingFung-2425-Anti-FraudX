@@ -1,0 +1,118 @@
+# ============================================================
+# docker-compose.gcp.yml — Google Cloud Platform deployment
+#
+# Targets:
+#   - Cloud Run (Gemini mode, serverless, no Ollama)
+#   - GCE / GKE (Ollama mode, with GPU node)
+#
+# Gemini mode (Cloud Run recommended):
+#   docker compose -f docker-compose.gcp.yml up
+#   Then push image to Artifact Registry and deploy to Cloud Run.
+#
+# Ollama mode (GCE with GPU):
+#   docker compose -f docker-compose.gcp.yml --profile ollama up
+#
+# Required env vars (set in GCP Secret Manager or .env.gcp):
+#   GEMINI_API_KEY, GCP_PROJECT_ID, GCP_REGION
+# ============================================================
+
+services:
+
+  # ── Ollama (GCE GPU node only) ───────────────────────────
+  # Only started when: --profile ollama
+  ollama:
+    profiles: [ollama]
+    build:
+      context: ./docker/ollama
+      dockerfile: Dockerfile
+    container_name: ai-antiscam-ollama
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu, compute, utility]
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+      - OLLAMA_ORIGINS=*
+      - OLLAMA_NUM_PARALLEL=2
+      - OLLAMA_MAX_LOADED_MODELS=2
+      - OLLAMA_KEEP_ALIVE=10m
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - ollama_models_gcp:/root/.ollama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+    networks:
+      - antiscam-gcp
+    shm_size: '2gb'
+    logging:
+      driver: gcplogs
+      options:
+        gcp-project: ${GCP_PROJECT_ID}
+        labels: service=ollama
+
+  # ── Backend ─────────────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # Tag for Artifact Registry:
+      # ${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT_ID}/ai-antiscam/backend:latest
+    image: ${GCP_REGION:-asia-east1}-docker.pkg.dev/${GCP_PROJECT_ID:-my-project}/ai-antiscam/backend:${IMAGE_TAG:-latest}
+    container_name: ai-antiscam-backend
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8080}:8080"   # Cloud Run uses 8080 by default
+    environment:
+      # ── LLM provider ──────────────────────────────────
+      # Default: Gemini (no Ollama needed on Cloud Run)
+      - GEMINI_ENABLED=${GEMINI_ENABLED:-true}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_MODEL_SCAMMER=${GEMINI_MODEL_SCAMMER:-gemini-2.5-flash}
+      - GEMINI_MODEL_EXPERT=${GEMINI_MODEL_EXPERT:-gemini-2.5-flash}
+      - GEMINI_MODEL_VICTIM=${GEMINI_MODEL_VICTIM:-gemini-2.5-flash}
+      - GEMINI_MODEL_RECORDER=${GEMINI_MODEL_RECORDER:-gemini-2.5-flash}
+      - GEMINI_MAX_OUTPUT_TOKENS=800
+      - GEMINI_TIMEOUT=45.0
+      - GEMINI_MAX_RETRIES=2
+      # Ollama fallback (GCE mode with --profile ollama)
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://ollama:11434}
+      - OLLAMA_NUM_CTX=2048
+      - OLLAMA_NUM_PREDICT=400
+      # ── App ───────────────────────────────────────────
+      - APP_ENV=production
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - FORCE_GPU=0
+      - PORT=8080
+      # ── GCP specifics ─────────────────────────────────
+      - GOOGLE_CLOUD_PROJECT=${GCP_PROJECT_ID}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - antiscam-gcp
+    logging:
+      driver: gcplogs
+      options:
+        gcp-project: ${GCP_PROJECT_ID}
+        labels: service=backend
+
+networks:
+  antiscam-gcp:
+    driver: bridge
+
+volumes:
+  ollama_models_gcp:
+    name: ai-antiscam-ollama-models-gcp

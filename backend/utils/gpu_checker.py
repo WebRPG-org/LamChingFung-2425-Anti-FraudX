@@ -106,6 +106,11 @@ class GPUChecker:
     def force_gpu_usage(self) -> bool:
         """强制使用GPU，如果GPU可用但未使用则报错"""
         
+        # 快速短路：FORCE_GPU=0 時跳過所有檢查，避免阻塞啟動
+        if os.getenv("FORCE_GPU", "0") == "0":
+            log.info("[GPU] FORCE_GPU=0，跳過GPU檢測，使用CPU/自動模式")
+            return False
+
         log.info("="*80)
         log.info("🔍 GPU检测开始...")
         log.info("="*80)
@@ -115,75 +120,39 @@ class GPUChecker:
         
         if not gpu_detected:
             log.warning("⚠️ 未检测到NVIDIA GPU，将使用CPU模式")
-            log.warning("   如果您有GPU，请确保:")
-            log.warning("   1. 已安装NVIDIA驱动")
-            log.warning("   2. 已安装nvidia-docker2")
-            log.warning("   3. Docker配置了GPU支持")
             return False
         
         # 2. 检查环境变量配置
         log.info("\n🔧 检查环境变量配置...")
-        
         required_env_vars = {
             "NVIDIA_VISIBLE_DEVICES": os.getenv("NVIDIA_VISIBLE_DEVICES", "未设置"),
             "NVIDIA_DRIVER_CAPABILITIES": os.getenv("NVIDIA_DRIVER_CAPABILITIES", "未设置"),
             "CUDA_VISIBLE_DEVICES": os.getenv("CUDA_VISIBLE_DEVICES", "未设置"),
         }
-        
         for var, value in required_env_vars.items():
             if value == "未设置":
                 log.warning(f"   ⚠️ {var}: {value}")
             else:
                 log.info(f"   ✅ {var}: {value}")
         
-        # 3. 检查Ollama连接性（GPU配置由Ollama容器自动处理）
-        log.info("\n🔗 检查Ollama服务连接...")
-        log.info(f"   Ollama URL: {self.ollama_base_url}")
+        # 3. 快速檢查 Ollama 可達性（單次，不重試）
+        log.info(f"\n🔗 检查Ollama服务连接: {self.ollama_base_url}")
+        try:
+            response = httpx.get(f"{self.ollama_base_url}/api/tags", timeout=3)
+            if response.status_code == 200:
+                log.info("✅ Ollama服务已就绪")
+            else:
+                log.warning(f"⚠️ Ollama 回應 {response.status_code}")
+        except Exception as e:
+            log.warning(f"⚠️ Ollama 連接失敗（非致命）: {e}")
         
-        # Note: OLLAMA_LLM_LIBRARY is deprecated and handled by Ollama container
-        # GPU usage is automatic when NVIDIA runtime is available
+        # 4. 驗證 GPU 使用情況
+        self.check_ollama_gpu_usage()
         
-        # 4. 等待并检查Ollama服务
-        log.info("\n⏳ 等待Ollama服务启动...")
-        
-        import time
-        max_retries = 30
-        for i in range(max_retries):
-            try:
-                response = httpx.get(f"{self.ollama_base_url}/api/tags", timeout=5)
-                if response.status_code == 200:
-                    log.info("✅ Ollama服务已就绪")
-                    break
-            except:
-                if i < max_retries - 1:
-                    time.sleep(2)
-                else:
-                    log.error("❌ Ollama服务启动超时")
-                    return False
-        
-        # 5. 验证GPU使用情况
-        ollama_info = self.check_ollama_gpu_usage()
-        
-        # 6. 最终验证
         log.info("\n"+"="*80)
-        if gpu_detected:
-            log.info("✅ GPU硬件检测成功，Ollama将自动使用GPU加速")
-            log.info("   （GPU使用由Ollama容器的NVIDIA runtime自动管理）")
-            log.info("="*80)
-            return True
-        else:
-            log.warning("⚠️ 未检测到GPU硬件，将使用CPU模式")
-            log.info("="*80)
-            
-            if os.getenv("FORCE_GPU", "0") == "1":
-                log.error("\n🚨 强制GPU模式启用（FORCE_GPU=1），但未检测到GPU硬件！")
-                log.error("   选项:")
-                log.error("   1. 安装NVIDIA驱动和nvidia-docker2")
-                log.error("   2. 设置 FORCE_GPU=0 允许CPU模式")
-                sys.exit(1)
-            
-            log.info("💡 提示: 设置 FORCE_GPU=1 可在缺少GPU时阻止启动")
-            return False
+        log.info("✅ GPU硬件检测成功，Ollama将自动使用GPU加速")
+        log.info("="*80)
+        return True
     
     def get_gpu_status_report(self) -> Dict:
         """生成GPU状态报告"""

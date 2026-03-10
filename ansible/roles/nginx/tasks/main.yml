@@ -1,58 +1,59 @@
 ---
-# Nginx role - Web server configuration
+# ============================================================
+# nginx role — Reverse proxy for FastAPI backend
+# ============================================================
 
-- name: Install Nginx
-  package:
+- name: Install nginx
+  apt:
     name: nginx
     state: present
+  when: ansible_os_family == "Debian"
 
-- name: Remove default Nginx site
+- name: Write nginx site config
+  template:
+    src: antiscam-nginx.conf.j2
+    dest: /etc/nginx/sites-available/{{ app_name }}
+    mode: '0644'
+  notify: reload nginx
+
+- name: Enable nginx site
+  file:
+    src: /etc/nginx/sites-available/{{ app_name }}
+    dest: /etc/nginx/sites-enabled/{{ app_name }}
+    state: link
+  notify: reload nginx
+
+- name: Remove default nginx site
   file:
     path: /etc/nginx/sites-enabled/default
     state: absent
-
-- name: Create Nginx configuration for frontend
-  template:
-    src: frontend-nginx.conf.j2
-    dest: /etc/nginx/sites-available/{{ app_name }}-frontend
-    mode: '0644'
   notify: reload nginx
 
-- name: Create Nginx configuration for backend
-  template:
-    src: backend-nginx.conf.j2
-    dest: /etc/nginx/sites-available/{{ app_name }}-backend
-    mode: '0644'
-  notify: reload nginx
-
-- name: Enable frontend site
-  file:
-    src: /etc/nginx/sites-available/{{ app_name }}-frontend
-    dest: /etc/nginx/sites-enabled/{{ app_name }}-frontend
-    state: link
-  notify: reload nginx
-
-- name: Enable backend site
-  file:
-    src: /etc/nginx/sites-available/{{ app_name }}-backend
-    dest: /etc/nginx/sites-enabled/{{ app_name }}-backend
-    state: link
-  notify: reload nginx
-
-- name: Test Nginx configuration
+- name: Test nginx config
   command: nginx -t
-  register: nginx_test
   changed_when: false
 
-- name: Enable and start Nginx
+- name: Enable and start nginx
   systemd:
     name: nginx
     enabled: yes
     state: started
 
-- name: Display Nginx information
-  debug:
-    msg: |
-      Nginx configured successfully!
-      Frontend: http://{{ frontend_domain }}
-      Backend: http://{{ backend_domain }}
+- name: Install certbot (Let's Encrypt)
+  apt:
+    name:
+      - certbot
+      - python3-certbot-nginx
+    state: present
+  when: enable_ssl and ansible_os_family == "Debian"
+
+- name: Obtain SSL certificate
+  command: >
+    certbot --nginx -d {{ app_domain }}
+    --non-interactive --agree-tos
+    --email admin@{{ app_domain }}
+    --redirect
+  args:
+    creates: /etc/letsencrypt/live/{{ app_domain }}/fullchain.pem
+  when: enable_ssl
+  ignore_errors: yes

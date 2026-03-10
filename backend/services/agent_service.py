@@ -14,16 +14,18 @@ from utils.logger import log
 class AgentService:
     """統一的 Agent 服務層"""
     
-    def __init__(self, persona_type: str = "average", enable_tracking: bool = True):
+    def __init__(self, persona_type: str = "average", enable_tracking: bool = True, scam_type: str = "假冒銀行"):
         """
         初始化 Agent 服務
         
         Args:
             persona_type: 受騙者 persona 類型 (elderly, average, overconfident)
             enable_tracking: 是否啟用性能追踪和角色一致性檢查
+            scam_type: 騙案類型，用於初始化 ScammerAgent
         """
         self.persona_type = persona_type
         self.enable_tracking = enable_tracking
+        self.scam_type = scam_type
         self.app_name = "agents"
         
         # 初始化 Session Service
@@ -47,12 +49,31 @@ class AgentService:
             from agents.expert import ExpertAgent
             from agents.recorder import RecorderAgent
             
+            # 將 scam_type ID 映射到騙案手法中文名稱
+            scam_tactic_map = {
+                "investment":     "虛假投資應用程式",
+                "phishing":       "假冒銀行",
+                "romance":        "假冒銀行",
+                "impersonation":  "假冒政府部門",
+                "shopping":       "刷單騙案",
+                "job":            "刷單騙案",
+                "prize":          "假冒銀行",
+                "whatsapp":       "假冒銀行",
+                "banking":        "假冒銀行",
+                "crypto":         "虛假投資應用程式",
+                "rental":         "假冒銀行",
+                "tech_support":   "假冒政府部門",
+                "charity":        "假冒銀行",
+                "phone_scam":     "假冒政府部門",
+            }
+            scam_tactic = scam_tactic_map.get(self.scam_type, self.scam_type)
+            
             self.victim = VictimAgent(persona_type=self.persona_type)
-            self.scammer = ScammerAgent()
+            self.scammer = ScammerAgent(scam_tactic=scam_tactic)
             self.expert = ExpertAgent()
             self.recorder = RecorderAgent()
             
-            log.info(f"✅ AgentService 初始化完成 (persona={self.persona_type})")
+            log.info(f"✅ AgentService 初始化完成 (persona={self.persona_type}, scam={scam_tactic})")
         except Exception as e:
             log.error(f"❌ Agent 初始化失敗: {e}", exc_info=True)
             raise
@@ -223,31 +244,12 @@ class AgentService:
         user_id = "service_user"
         
         try:
-            # 確保 session 存在
-            if not hasattr(self.session_service, 'sessions'):
-                self.session_service.sessions = {}
-            
-            if self.app_name not in self.session_service.sessions:
-                self.session_service.sessions[self.app_name] = {}
-            
-            if user_id not in self.session_service.sessions[self.app_name]:
-                self.session_service.sessions[self.app_name][user_id] = {}
-            
-            # 創建 session
-            if session_id not in self.session_service.sessions[self.app_name][user_id]:
-                from google.adk.sessions import Session
-                self.session_service.sessions[self.app_name][user_id][session_id] = Session(
-                    id=session_id,
-                    user_id=user_id,
-                    app_name=self.app_name,
-                    events=[]
-                )
-            
-            # 創建 Runner
+            # 創建 Runner（auto_create_session=True 讓 ADK 自動管理 session）
             runner = Runner(
                 app_name=self.app_name,
                 agent=agent,
-                session_service=self.session_service
+                session_service=self.session_service,
+                auto_create_session=True
             )
             
             # 創建消息部分（文字 + 圖片）

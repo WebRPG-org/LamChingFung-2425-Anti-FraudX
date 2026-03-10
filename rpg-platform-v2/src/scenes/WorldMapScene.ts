@@ -537,13 +537,16 @@ export class WorldMapScene extends Phaser.Scene {
   }
 
   private startBattle(npc: NPC): void {
-    console.log(`[WorldMapScene] Starting battle with ${npc.getDisplayName()}`);
-    this.scene.start('BattleScene', {
+    console.log(`[WorldMapScene] Launching BattleScene overlay for ${npc.getDisplayName()}`);
+    // 🔥 Use launch (overlay) instead of start (replace) so the map stays visible
+    // behind the 75%-opacity battle panel. WorldMap is paused, not destroyed.
+    this.scene.launch('BattleScene', {
       npc: npc,
-      scamType: npc.scamId,           // 傳遞騙案類型 ID
-      scamTypeInfo: npc.scamType,     // 傳遞完整騙案類型資訊
+      scamType: npc.scamId,
+      scamTypeInfo: npc.scamType,
       playerRole: this.roleManager.getCurrentRole()
     });
+    this.scene.pause('WorldMapScene');
   }
 
   private toggleInstructions(): void {
