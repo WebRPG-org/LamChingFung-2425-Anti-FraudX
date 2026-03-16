@@ -1,0 +1,51 @@
+# docker-compose.cloud.yml
+# Cloud 部署配置 - 用於本地測試 Cloud Run 容器
+
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.cloud
+    container_name: anti-fraudx-backend-cloud
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DEPLOYMENT_ENV=cloud
+      - PROJECT_ID=anti-fraudx-us-ci
+      - GCP_PROJECT_ID=anti-fraudx-us-ci
+      - GCP_LOCATION=us-central1
+      - USE_VERTEX_AI=true
+      - VERTEX_AI_MODEL=gemini-3.1-flash
+      - DATABASE_TYPE=firestore
+      - FIRESTORE_PROJECT_ID=anti-fraudx-us-ci
+      - FIRESTORE_DATABASE=anti-fraudx-db
+      - STORAGE_TYPE=gcs
+      - CLOUD_STORAGE_BUCKET=anti-fraudx-storage
+      - CLOUD_RUN_SERVICE=anti-fraudx-backend
+      - DOMAIN_NAME=anti-fraudx.us.ci
+      - APP_NAME=Anti-FraudX
+      - APP_VERSION=2.0.0
+      - APP_ENV=production
+      - LOG_LEVEL=info
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./backend:/app/backend
+      - ./frontend:/app/frontend:ro
+      - ./rpg-platform-v2:/app/rpg-platform-v2:ro
+      - ./RPG_platform:/app/RPG_platform:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - anti-fraudx-cloud
+
+networks:
+  anti-fraudx-cloud:
+    driver: bridge
+

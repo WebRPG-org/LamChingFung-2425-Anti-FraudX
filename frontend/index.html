@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 防詐騙訓練系統 - 模式選擇</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=2">
+</head>
+<body>
+    <div class="background-pattern"></div>
+    
+    <div class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="shield-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L4 6V11C4 16.55 7.84 21.74 13 23C18.16 21.74 22 16.55 22 11V6L14 2H12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="title-group">
+                    <h1>AI 防詐騙訓練系統</h1>
+                    <p class="subtitle">多模式智能防詐教育平台</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <!-- 模型切換開關 -->
+                <div class="model-switch-container" id="modelSwitchContainer">
+                    <div class="model-indicator" id="modelIndicator">
+                        <span class="model-icon">🤖</span>
+                        <span class="model-label" id="currentModelLabel">載入中...</span>
+                    </div>
+                    <button class="switch-button" id="modelSwitchBtn">
+                        <span class="switch-text" id="switchText">切換模型</span>
+                        <div class="switch-toggle">
+                            <div class="switch-slider"></div>
+                        </div>
+                    </button>
+                </div>
+                <div class="version-badge">v2.0</div>
+                <button class="settings-btn" onclick="openSettings()" title="系統設定">⚙️ 設定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 切換確認對話框 -->
+    <div class="modal-overlay" id="switchModal" style="display: none;">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>🔄 切換模型提供者</h2>
+                <button class="modal-close" onclick="closeSwitchModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="switchMessage"></p>
+                <div class="switch-info">
+                    <div class="info-item">
+                        <strong>當前:</strong> <span id="currentProvider"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>切換至:</strong> <span id="targetProvider"></span>
+                    </div>
+                </div>
+                <div class="config-note" style="margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px; font-size: 0.9em;">
+                    <strong>💡 提示：</strong>配置從 <code>backend/.env</code> 自動讀取<br>
+                    <small style="opacity: 0.7;">如需修改 API Key 或模型，請編輯 .env 文件後重啟後端</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeSwitchModal()">取消</button>
+                <button class="btn-primary" onclick="confirmSwitch()">確認切換</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ⚙️ 系統設定 Modal -->
+    <div class="modal-overlay" id="settingsModal" style="display:none;">
+      <div class="modal-content" style="max-width:680px;max-height:85vh;overflow-y:auto;">
+        <div class="modal-header">
+          <h2>⚙️ 系統設定</h2>
+          <button class="modal-close" onclick="closeSettings()">×</button>
+        </div>
+        <div class="modal-body" id="settingsBody">
+          <div style="text-align:center;padding:30px;opacity:.6;">⏳ 載入中...</div>
+        </div>
+        <div class="modal-footer">
+          <span id="settingsSaveMsg" style="flex:1;font-size:13px;color:#08D9D6;"></span>
+          <button class="btn-secondary" onclick="closeSettings()">關閉</button>
+          <button class="btn-primary" onclick="saveSettings()">💾 儲存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 模式選擇容器 -->
+    <div class="modes-container">
+        <!-- RPG v2 遊戲模式 -->
+        <div class="mode-card" data-color="coral" onclick="openMode('rpgv2')">
+            <div class="card-glow"></div>
+            <div class="mode-content">
+                <div class="icon-wrapper">
+                    <span class="mode-icon">🎮</span>
+                </div>
+                <div class="badge-container">
+                    <span class="mode-badge updated">最新版</span>
+                </div>
+                <h2 class="mode-title">RPG v2 遊戲</h2>
+                <p class="mode-description">
+                    全新 2D RPG 平台，現代化遊戲引擎
+                </p>
+                <ul class="mode-features">
+                    <li><span class="feature-icon">✓</span>支持人設和騙局輪換</li>
+                    <li><span class="feature-icon">✓</span>遊戲化學習體驗</li>
+                    <li><span class="feature-icon">✓</span>實時 AI 對話</li>
+                </ul>
+                <!-- <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="mode-button" onclick="openMode('rpg')" style="flex: 1;">
+                        <span>開始遊戲 v1</span>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="mode-button" onclick="openMode('rpgv2')" style="flex: 1; background: linear-gradient(135deg, #FA8BFF 0%, #2BD2FF 100%);">
+                        <span>體驗 v2 🎯</span>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div> -->
+                <button class="mode-button" onclick="openMode('rpgv2')" style="flex: 1; background: linear-gradient(135deg, #FA8BFF 0%, #2BD2FF 100%);">
+                    <span>開始遊戲</span>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 自動模擬模式 -->
+        <div class="mode-card" data-color="violet" onclick="openMode('simulation')">
+            <div class="card-glow"></div>
+            <div class="mode-content">
+                <div class="icon-wrapper">
+                    <span class="mode-icon">🤖</span>
+                </div>
+                <h2 class="mode-title">自動模擬模式</h2>
+                <p class="mode-description">
+                    觀看AI三方對話：騙徒 vs 受害者 vs 防詐專家
+                </p>
+                <ul class="mode-features">
+                    <li><span class="feature-icon">✓</span>全自動演示詐騙過程</li>
+                    <li><span class="feature-icon">✓</span>多輪對話模擬</li>
+                    <li><span class="feature-icon">✓</span>訓練數據生成</li>
+                </ul>
+                <button class="mode-button" onclick="event.stopPropagation(); openMode('simulation')">
+                    <span>開始觀看</span>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 個人對話模式 -->
+        <div class="mode-card" data-color="emerald" onclick="openMode('chat')">
+            <div class="card-glow"></div>
+            <div class="mode-content">
+                <div class="icon-wrapper">
+                    <span class="mode-icon">💬</span>
+                </div>
+                <div class="badge-container">
+                    <span class="mode-badge new">全新</span>
+                </div>
+                <h2 class="mode-title">個人對話模式</h2>
+                <p class="mode-description">
+                    一對一 AI 對話，可切換助手或騙徒角色
+                </p>
+                <ul class="mode-features">
+                    <li><span class="feature-icon">✓</span>防詐助手：專業諮詢</li>
+                    <li><span class="feature-icon">✓</span>騙徒模擬：安全體驗</li>
+                    <li><span class="feature-icon">✓</span>10種騙局類型可選</li>
+                </ul>
+                <button class="mode-button" onclick="event.stopPropagation(); openMode('chat')">
+                    <span>開始對話</span>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- API 測試模式 -->
+        <div class="mode-card" data-color="azure" onclick="openMode('test')">
+            <div class="card-glow"></div>
+            <div class="mode-content">
+                <div class="icon-wrapper">
+                    <span class="mode-icon">🔧</span>
+                </div>
+                <h2 class="mode-title">API 測試模式</h2>
+                <p class="mode-description">
+                    測試插件功能，驗證 AI 團隊生成
+                </p>
+                <ul class="mode-features">
+                    <li><span class="feature-icon">✓</span>WebSocket 實時測試</li>
+                    <li><span class="feature-icon">✓</span>API 端點驗證</li>
+                    <li><span class="feature-icon">✓</span>系統健康檢查</li>
+                </ul>
+                <button class="mode-button" onclick="event.stopPropagation(); openMode('test')">
+                    <span>開始測試</span>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 工具中心 -->
+        <div class="mode-card" data-color="coral" onclick="openMode('tools')">
+            <div class="card-glow"></div>
+            <div class="mode-content">
+                <div class="icon-wrapper">
+                    <span class="mode-icon">🛠️</span>
+                </div>
+                <div class="badge-container">
+                    <span class="mode-badge new">工具</span>
+                </div>
+                <h2 class="mode-title">工具中心</h2>
+                <p class="mode-description">
+                    爬蟲抓取、Fine-tune 訓練、訓練記錄管理
+                </p>
+                <ul class="mode-features">
+                    <li><span class="feature-icon">✓</span>ADCC 詐騙警示爬蟲</li>
+                    <li><span class="feature-icon">✓</span>Fine-tune 數據生成</li>
+                    <li><span class="feature-icon">✓</span>訓練記錄 & 統計</li>
+                </ul>
+                <button class="mode-button" onclick="event.stopPropagation(); openMode('tools')" style="background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);">
+                    <span>進入工具</span>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- 結束 modes-container -->
+
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <p class="footer-title">AI 防詐騙訓練系統</p>
+                <p class="footer-tech">使用 Google ADK + Ollama 技術 | 本地部署，數據安全</p>
+            </div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">文檔</a>
+                <a href="#" class="footer-link">關於</a>
+                <a href="#" class="footer-link">支援</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/model_switch.js"></script>
+    <style>
+      .settings-btn{background:rgba(8,217,214,.15);border:1.5px solid rgba(8,217,214,.4);color:#08D9D6;
+        padding:6px 16px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;
+        transition:all .2s;white-space:nowrap;}
+      .settings-btn:hover{background:rgba(8,217,214,.3);}
+      .settings-section{margin-bottom:22px;}
+      .settings-section h3{font-size:13px;font-weight:700;color:#08D9D6;text-transform:uppercase;
+        letter-spacing:.08em;margin:0 0 12px;padding-bottom:6px;
+        border-bottom:1px solid rgba(8,217,214,.2);}
+      .settings-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+      .settings-row label{flex:0 0 180px;font-size:13px;color:rgba(255,255,255,.8);}
+      .settings-row input,.settings-row select{
+        flex:1;background:rgba(10,14,39,.8);border:1.5px solid rgba(8,217,214,.3);
+        border-radius:7px;padding:7px 12px;font-size:13px;color:#fff;outline:none;
+        font-family:inherit;transition:border-color .2s;}
+      .settings-row input:focus,.settings-row select:focus{border-color:#08D9D6;}
+      .settings-row input[type=password]{letter-spacing:.1em;}
+      .settings-toggle{display:flex;align-items:center;gap:10px;}
+      .toggle-label{font-size:13px;color:rgba(255,255,255,.7);}
+      .reveal-btn{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);
+        border-radius:5px;padding:3px 8px;font-size:11px;cursor:pointer;}
+      .reveal-btn:hover{color:#fff;border-color:#fff;}
+    </style>
+    <script>
+    const BASE = 'https://anti-fraudx-backend-5gznvtwxga-uc.a.run.app';
+    let _settingsData = {};
+
+    async function openSettings() {
+      console.log('[Settings] openSettings called');
+      document.getElementById('settingsModal').style.display = 'flex';
+      document.getElementById('settingsSaveMsg').textContent = '';
+      await loadSettings();
+    }
+
+    function closeSettings() {
+      document.getElementById('settingsModal').style.display = 'none';
+    }
+
+    async function loadSettings() {
+      const body = document.getElementById('settingsBody');
+      body.innerHTML = '<div style="text-align:center;padding:30px;opacity:.6;">⏳ 載入中...</div>';
+      try {
+        const res = await fetch(`${BASE}/api/model/config`);
+        const json = await res.json();
+        _settingsData = json.config || {};
+        body.innerHTML = renderSettings(_settingsData);
+      } catch(e) {
+        body.innerHTML = `<div style="color:#FF2E63;padding:20px;">❌ 無法載入設定：${e.message}</div>`;
+      }
+    }
+
+    function renderSettings(c) {
+      const f = (key, label, type='text', opts) => {
+        const val = c[key] || '';
+        const isKey = key.toUpperCase().includes('KEY');
+        const inputId = `cfg_${key}`;
+        const revealBtn = isKey ? `<button class="reveal-btn" type="button" onclick="toggleReveal('${inputId}')">👁</button>` : '';
+        if (type === 'select') {
+          const options = (opts||[]).map(o => `<option value="${o}" ${val===o?'selected':''}>${o}</option>`).join('');
+          return `<div class="settings-row"><label>${label}</label><select id="${inputId}" data-key="${key}">${options}</select></div>`;
+        }
+        return `<div class="settings-row"><label>${label}</label><input id="${inputId}" data-key="${key}" type="${isKey?'password':type}" value="${val}" placeholder="${isKey?'輸入 API Key...':''}">${revealBtn}</div>`;
+      };
+      const geminiModels = ['gemini-3.1-flash-lite-preview','gemini-3-flash-preview','gemini-2.5-flash','gemini-2.0-flash-exp','gemini-1.5-flash','gemini-1.5-pro'];
+      return `
+      <div class="settings-section">
+        <h3>🔀 LLM 提供者</h3>
+        ${f('GEMINI_ENABLED','使用 Gemini API','select',['false','true'])}
+      </div>
+      <div class="settings-section">
+        <h3>✨ Gemini 設定</h3>
+        ${f('GEMINI_API_KEY','API Key')}
+        ${f('GEMINI_MODEL_SCAMMER','騙徒模型','select',geminiModels)}
+        ${f('GEMINI_MODEL_VICTIM','受害者模型','select',geminiModels)}
+        ${f('GEMINI_MODEL_EXPERT','專家模型','select',geminiModels)}
+        ${f('GEMINI_MODEL_RECORDER','記錄員模型','select',geminiModels)}
+        ${f('GEMINI_TEMPERATURE','Temperature','text')}
+        ${f('GEMINI_MAX_OUTPUT_TOKENS','Max Output Tokens','text')}
+      </div>
+      <div class="settings-section">
+        <h3>🦙 Ollama 設定</h3>
+        ${f('OLLAMA_BASE_URL','Ollama URL')}
+        ${f('AGENT_MODEL','預設模型')}
+        ${f('AGENT_MODEL_SCAMMER','騙徒模型')}
+        ${f('AGENT_MODEL_VICTIM','受害者模型')}
+        ${f('AGENT_MODEL_EXPERT','專家模型')}
+        ${f('AGENT_MODEL_RECORDER','記錄員模型')}
+        ${f('OLLAMA_TEMPERATURE','Temperature','text')}
+        ${f('OLLAMA_NUM_CTX','Context Length','text')}
+        ${f('OLLAMA_NUM_PREDICT','Max Predict','text')}
+      </div>
+      <div class="settings-section">
+        <h3>⚙️ 其他設定</h3>
+        ${f('USE_SIMPLE_PROMPTS','簡化 Prompt','select',['false','true'])}
+        ${f('FORCE_GPU','強制 GPU','select',['0','1'])}
+        ${f('LOG_LEVEL','Log 級別','select',['info','debug','warning','error'])}
+        ${f('AUTO_TRAIN_ENABLED','自動訓練','select',['true','false'])}
+      </div>`;
+    }
+
+    function toggleReveal(id) {
+      const el = document.getElementById(id);
+      el.type = el.type === 'password' ? 'text' : 'password';
+    }
+
+    async function saveSettings() {
+      const inputs = document.querySelectorAll('#settingsBody [data-key]');
+      const updates = {};
+      inputs.forEach(el => {
+        const key = el.dataset.key;
+        const val = el.value.trim();
+        if (val && !val.includes('****')) updates[key] = val;
+        else if (!val.includes('****') && val !== '') updates[key] = val;
+      });
+      const msg = document.getElementById('settingsSaveMsg');
+      msg.textContent = '⏳ 儲存中...';
+      try {
+        const res = await fetch(`${BASE}/api/model/config/update`, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({updates})
+        });
+        const json = await res.json();
+        if (json.success) {
+          msg.textContent = `✅ 已儲存 ${json.updated_keys?.length || 0} 項設定`;
+          msg.style.color = '#08D9D6';
+          setTimeout(() => { msg.textContent = ''; }, 3000);
+        } else {
+          msg.textContent = '❌ 儲存失敗: ' + (json.detail || JSON.stringify(json));
+          msg.style.color = '#FF2E63';
+        }
+      } catch(e) {
+        msg.textContent = '❌ 網絡錯誤: ' + e.message;
+        msg.style.color = '#FF2E63';
+      }
+    }
+
+    // 點擊背景關閉
+    document.getElementById('settingsModal').addEventListener('click', function(e) {
+      if (e.target === this) closeSettings();
+    });
+
+    // 明確掛到 window，確保 onclick 屬性可以呼叫
+    window.openSettings  = openSettings;
+    window.closeSettings = closeSettings;
+    window.saveSettings  = saveSettings;
+    window.toggleReveal  = toggleReveal;
+    </script>
+</body>
+</html> 

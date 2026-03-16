@@ -1,0 +1,87 @@
+---
+# ============================================================
+# update.yml — Update existing installation
+# Usage: ansible-playbook -i inventory/hosts.yml playbooks/update.yml
+# ============================================================
+
+- name: AI Anti-Fraud Platform — Update
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  tasks:
+    - name: Stop backend service
+      systemd:
+        name: "{{ app_name }}-backend"
+        state: stopped
+      ignore_errors: yes
+
+    - name: Pull latest code
+      git:
+        repo: "{{ git_repo }}"
+        dest: "{{ install_dir }}"
+        version: "{{ git_branch }}"
+        force: yes
+      become_user: "{{ app_user }}"
+
+    - name: Update backend dependencies
+      pip:
+        requirements: "{{ backend_dir }}/requirements.txt"
+        virtualenv: "{{ backend_dir }}/venv"
+        state: latest
+      become_user: "{{ app_user }}"
+
+    - name: Build rpg-platform-v2 (if Node.js present)
+      block:
+        - name: Install npm dependencies
+          npm:
+            path: "{{ frontend_build_dir }}"
+            state: present
+          become_user: "{{ app_user }}"
+
+        - name: Build frontend
+          command: npm run build
+          args:
+            chdir: "{{ frontend_build_dir }}"
+          become_user: "{{ app_user }}"
+      when: ansible_facts.packages is not defined or 'nodejs' in (ansible_facts.packages | default({}))
+      ignore_errors: yes
+
+    - name: Update backend .env
+      template:
+        src: ../roles/backend/templates/backend.env.j2
+        dest: "{{ backend_dir }}/.env"
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: '0600'
+
+    - name: Pull updated Ollama models
+      command: ollama pull {{ item }}
+      loop: "{{ ollama_models_to_pull }}"
+      when: not gemini_enabled
+      ignore_errors: yes
+
+    - name: Restart backend service
+      systemd:
+        name: "{{ app_name }}-backend"
+        state: restarted
+        daemon_reload: yes
+
+    - name: Wait for backend to be ready
+      wait_for:
+        port: "{{ backend_port }}"
+        delay: 5
+        timeout: 60
+
+    - name: Health check
+      uri:
+        url: "http://localhost:{{ backend_port }}/health"
+        status_code: 200
+      retries: 5
+      delay: 5
+      register: health
+      until: health.status == 200
+
+    - name: Update complete
+      debug:
+        msg: "Update complete. Health: {{ health.status }}"

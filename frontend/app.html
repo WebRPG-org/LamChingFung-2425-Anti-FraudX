@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自動模擬模式 - AI 防詐騙訓練系統</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #6C5CE7 0%, #A29BFE 100%);
+            --bg-dark: #0F1419;
+            --bg-medium: #1A1F2E;
+            --bg-light: #2D3748;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0AEC0;
+            --accent-coral: #FF6B6B;
+            --accent-emerald: #00B894;
+            --accent-azure: #0984E3;
+            --accent-warning: #FDCB6E;
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Outfit', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(26, 31, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            animation: fadeIn 0.6s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 2rem 2.5rem;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .back-home {
+            position: absolute;
+            left: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--radius-lg);
+            text-decoration: none;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .back-home:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-50%) translateX(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-size: 1.125rem;
+            opacity: 0.9;
+            font-weight: 300;
+            letter-spacing: 0.01em;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 24px;
+            padding: 2rem;
+            background: var(--bg-dark);
+        }
+        
+        .control-panel {
+            background: var(--bg-medium);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .dialogue-panel {
+            background: var(--bg-medium);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            height: 600px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        
+        .dialogue-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .dialogue-panel::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+        
+        .dialogue-panel::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        
+        .dialogue-panel::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-size: 0.9375rem;
+            letter-spacing: 0.01em;
+        }
+        
+        select, input[type="text"], button {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-sm);
+            font-size: 0.9375rem;
+            font-family: inherit;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: #6C5CE7;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+        }
+        
+        select option {
+            background: var(--bg-medium);
+            color: var(--text-primary);
+        }
+        
+        button {
+            background: linear-gradient(135deg, #6C5CE7 0%, #A29BFE 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            letter-spacing: 0.02em;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(108, 92, 231, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: var(--bg-light);
+            cursor: not-allowed;
+            transform: none;
+            opacity: 0.5;
+        }
+        
+        .btn-stop {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+            margin-top: 0.75rem;
+        }
+        
+        .btn-stop:hover {
+            box-shadow: 0 8px 24px rgba(255, 107, 107, 0.4);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            letter-spacing: 0.02em;
+            border: 1px solid;
+        }
+        
+        .status-idle {
+            background: rgba(160, 174, 192, 0.1);
+            color: var(--text-secondary);
+            border-color: rgba(160, 174, 192, 0.2);
+        }
+        
+        .status-running {
+            background: rgba(0, 184, 148, 0.15);
+            color: #00B894;
+            border-color: rgba(0, 184, 148, 0.3);
+            animation: statusPulse 2s infinite;
+        }
+        
+        .status-completed {
+            background: rgba(9, 132, 227, 0.15);
+            color: #0984E3;
+            border-color: rgba(9, 132, 227, 0.3);
+        }
+        
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-sm);
+            animation: messageSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 3px solid;
+            backdrop-filter: blur(10px);
+        }
+        
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .msg-scammer {
+            background: rgba(255, 107, 107, 0.1);
+            border-left-color: #FF6B6B;
+        }
+        
+        .msg-victim {
+            background: rgba(9, 132, 227, 0.1);
+            border-left-color: #0984E3;
+        }
+        
+        .msg-expert {
+            background: rgba(0, 184, 148, 0.1);
+            border-left-color: #00B894;
+        }
+        
+        .msg-recorder {
+            background: rgba(160, 174, 192, 0.1);
+            border-left-color: var(--text-secondary);
+        }
+        
+        .msg-system {
+            background: rgba(253, 203, 110, 0.1);
+            border-left-color: var(--accent-warning);
+            text-align: center;
+            border-left: none;
+            border: 1px solid rgba(253, 203, 110, 0.2);
+        }
+        
+        .speaker {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 0.9375rem;
+            letter-spacing: 0.01em;
+        }
+        
+        .speaker-scammer { color: #FF6B6B; }
+        .speaker-victim { color: #0984E3; }
+        .speaker-expert { color: #00B894; }
+        .speaker-recorder { color: var(--text-secondary); }
+        
+        .content {
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 0.9375rem;
+        }
+        
+        .result-panel {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-medium);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .result-success {
+            background: rgba(0, 184, 148, 0.1);
+            border-color: rgba(0, 184, 148, 0.3);
+        }
+        
+        .result-failure {
+            background: rgba(255, 107, 107, 0.1);
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #6C5CE7;
+            letter-spacing: -0.01em;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="http://localhost:8000/" class="back-home">🏠 返回主頁</a>
+            <h1>🎭 自動模擬模式</h1>
+            <p class="subtitle">防詐騙 AI 自動對話模擬 - 詐騙者 vs 受害者 + 專家</p>
+        </header>
+        
+        <div class="main-content">
+            <!-- 控制面板 -->
+            <div class="control-panel">
+                <div class="status-badge status-idle" id="statusBadge">閒置中</div>
+                
+                <div class="form-group">
+                    <label>👴 受害者類型</label>
+                    <select id="victimPersona">
+                        <option value="elderly">長者（陳婆婆）- 容易被騙</option>
+                        <option value="average">一般市民 - 中等警覺</option>
+                        <option value="overconfident">過度自信者 - 容易輕敵</option>
+                        <option value="student">年輕學生 - 熟悉科技但缺經驗</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>🎯 詐騙手法</label>
+                    <select id="scamTactic">
+                        <option value="WhatsApp 對話詐騙">WhatsApp 對話詐騙</option>
+                        <option value="假短訊釣魚">假短訊釣魚</option>
+                        <option value="虛假投資應用程式">虛假投資應用程式</option>
+                        <option value="假網站冒充銀行">假網站冒充銀行</option>
+                        <option value="刷單騙案">刷單騙案</option>
+                        <option value="中獎詐騙">中獎詐騙</option>
+                        <option value="假冒官員詐騙">假冒官員詐騙</option>
+                        <option value="假網站冒充政府">假網站冒充政府</option>
+                        <option value="虛假購物平台">虛假購物平台</option>
+                        <option value="愛情詐騙">愛情詐騙</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>⚡ 模式</label>
+                    <select id="mode">
+                        <option value="fast">快速（2秒/輪）</option>
+                        <option value="demo">演示（5秒/輪）</option>
+                    </select>
+                </div>
+                
+                <button id="startBtn" onclick="startSimulation()">🚀 開始模擬</button>
+                <button class="btn-stop" id="stopBtn" onclick="stopSimulation()">⏹️ 停止所有模擬</button>
+                
+                <div class="stats" style="margin-top: 20px;">
+                    <div class="stat-item">
+                        <div class="stat-value" id="messageCount">0</div>
+                        <div class="stat-label">對話數</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="duration">0s</div>
+                        <div class="stat-label">持續時間</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 對話面板 -->
+            <div class="dialogue-panel" id="dialoguePanel">
+                <div class="msg-system">
+                    <p>👋 歡迎使用自動模擬模式</p>
+                    <p>選擇受害者類型和詐騙手法，點擊「開始模擬」即可自動運行完整對話</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 結果面板 -->
+        <div id="resultPanel" style="display: none; padding: 30px;">
+            <h2>📊 模擬結果分析</h2>
+            <div id="resultContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:8000';
+        
+        let currentSimulationId = null;
+        let activeWebSocket = null;
+        let messageCount = 0;
+        let startTime = null;
+        let durationInterval = null;
+        
+        function updateStatus(status, text) {
+            const badge = document.getElementById('statusBadge');
+            badge.className = `status-badge status-${status}`;
+            badge.textContent = text;
+        }
+        
+        function addMessage(speaker, role, message, type = 'system') {
+            const panel = document.getElementById('dialoguePanel');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message msg-${type}`;
+            
+            if (type !== 'system') {
+                msgDiv.innerHTML = `
+                    <div class="speaker speaker-${type}">${speaker} (${role})</div>
+                    <div class="content">${message}</div>
+                `;
+                messageCount++;
+                document.getElementById('messageCount').textContent = messageCount;
+            } else {
+                msgDiv.innerHTML = `<p>${message}</p>`;
+            }
+            
+            panel.appendChild(msgDiv);
+            panel.scrollTop = panel.scrollHeight;
+        }
+        
+        function updateDuration() {
+            if (!startTime) return;
+            const seconds = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('duration').textContent = seconds + 's';
+        }
+        
+        async function startSimulation() {
+            const victimPersona = document.getElementById('victimPersona').value;
+            const scamTactic = document.getElementById('scamTactic').value;
+            const mode = document.getElementById('mode').value;
+            
+            // 清空對話
+            document.getElementById('dialoguePanel').innerHTML = '';
+            document.getElementById('resultPanel').style.display = 'none';
+            messageCount = 0;
+            document.getElementById('messageCount').textContent = '0';
+            
+            // 開始計時
+            startTime = Date.now();
+            durationInterval = setInterval(updateDuration, 1000);
+            
+            updateStatus('running', '模擬進行中...');
+            document.getElementById('startBtn').disabled = true;
+            // 停止按鈕保持啟用
+            
+            addMessage('', '', '🚀 正在啟動 AI 模擬...', 'system');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/simulation/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        victim_persona: victimPersona,
+                        scam_tactic: scamTactic,
+                        mode: mode,
+                        auto_train: true
+                    })
+                });
+                
+                const data = await response.json();
+                currentSimulationId = data.simulation_id;
+                
+                addMessage('', '', `✅ 模擬已啟動 (ID: ${currentSimulationId.substring(0, 8)})`, 'system');
+                
+                // 連接 WebSocket
+                connectWebSocket(currentSimulationId);
+                
+            } catch (error) {
+                console.error('啟動失敗:', error);
+                addMessage('', '', '❌ 啟動失敗：' + error.message, 'system');
+                resetUI();
+            }
+        }
+        
+        function connectWebSocket(simulationId) {
+            const wsUrl = API_BASE_URL.replace('https://', 'wss://').replace('http://', 'ws://');
+            const ws = new WebSocket(`${wsUrl}/ws/simulation/${simulationId}`);
+            
+            ws.onopen = () => {
+                console.log('WebSocket 已連接');
+                addMessage('', '', '🔌 WebSocket 已連接', 'system');
+            };
+            
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                handleWebSocketMessage(data);
+            };
+            
+            ws.onerror = (error) => {
+                console.error('WebSocket 錯誤:', error);
+                addMessage('', '', '❌ WebSocket 連接錯誤', 'system');
+            };
+            
+            ws.onclose = () => {
+                console.log('WebSocket 已關閉');
+                activeWebSocket = null;
+            };
+            
+            activeWebSocket = ws;
+        }
+        
+        function handleWebSocketMessage(data) {
+            const eventType = data.event_type || data.event;
+            
+            // 只記錄非心跳消息
+            if (eventType !== 'heartbeat') {
+                console.log('[WebSocket消息]', eventType, data);
+            }
+            
+            switch(eventType) {
+                case 'agent_message':
+                case 'dialogue':
+                    const msgData = data.payload || data.data || data;
+                    const speaker = msgData.speaker || '未知';
+                    const role = msgData.role || speaker;
+                    const message = msgData.message || msgData.dialogue || '';
+                    
+                    console.log('[調試] speaker:', speaker, 'role:', role, 'message:', message.substring(0, 50));
+                    
+                    // 判斷類型 - 修復邏輯
+                    let type = 'system';
+                    
+                    // 直接檢查中文字符（不用 toLowerCase）
+                    if (speaker.includes('騙') || role.includes('騙') || 
+                        speaker.includes('scam') || role.includes('scam')) {
+                        type = 'scammer';
+                    } else if (speaker.includes('受') || role.includes('受') || 
+                               speaker.includes('被騙') || role.includes('被騙') ||
+                               speaker.includes('victim') || role.includes('victim') ||
+                               speaker.includes('陳婆婆') || role.includes('陳婆婆')) {
+                        type = 'victim';
+                    } else if (speaker.includes('專家') || role.includes('專家') || 
+                               speaker.includes('防') || role.includes('防') ||
+                               speaker.includes('expert') || role.includes('expert')) {
+                        type = 'expert';
+                    } else if (speaker.includes('記錄') || role.includes('記錄') || 
+                               speaker.includes('分析') || role.includes('分析') ||
+                               speaker.includes('recorder') || role.includes('recorder')) {
+                        type = 'recorder';
+                    }
+                    
+                    console.log('[調試] 最終類型:', type);
+                    
+                    addMessage(speaker, role, message, type);
+                    break;
+                    
+                case 'status':
+                    const statusData = data.payload || data.data;
+                    addMessage('', '', '📢 ' + statusData.message, 'system');
+                    break;
+                    
+                case 'completed':
+                    console.log('[事件] 收到 completed 事件，準備處理');
+                    const completedData = data.payload || data.data;
+                    handleSimulationCompleted(completedData);
+                    break;
+                    
+                case 'simulation_end':
+                    console.log('[事件] 收到 simulation_end 事件');
+                    const endData = data.payload || data.data;
+                    addMessage('', '', `🏁 模擬結束：${endData.reason || '未知原因'}`, 'system');
+                    handleSimulationCompleted(endData);
+                    break;
+                    
+                case 'simulation_stopped':
+                    console.log('[事件] 收到 simulation_stopped 事件');
+                    const stoppedData = data.payload || data.data;
+                    clearInterval(durationInterval);
+                    updateStatus('stopped', '已停止');
+                    addMessage('', '', `⏹️ 模擬已停止：${stoppedData.reason || '用戶手動停止'}`, 'system');
+                    
+                    // 關閉 WebSocket
+                    if (activeWebSocket) {
+                        activeWebSocket.close();
+                    }
+                    
+                    // 重置 UI
+                    resetUI();
+                    break;
+                    
+                case 'auto_new_round_starting':
+                    console.log('[事件] 收到 auto_new_round_starting 事件');
+                    const newRoundData = data.payload || data.data;
+                    const newSimId = newRoundData.new_simulation_id;
+                    
+                    addMessage('', '', `🔄 自動開始新一輪模擬 (ID: ${newSimId.substring(0, 8)})`, 'system');
+                    addMessage('', '', `👤 受害者: ${newRoundData.victim_persona} | 🎯 手法: ${newRoundData.scam_tactic}`, 'system');
+                    
+                    // 更新當前模擬 ID（關鍵！）
+                    currentSimulationId = newSimId;
+                    
+                    // 關閉舊的 WebSocket
+                    if (activeWebSocket) {
+                        activeWebSocket.close();
+                    }
+                    
+                    // 連接新的 WebSocket
+                    connectWebSocket(newSimId);
+                    
+                    // 重置計數器
+                    messageCount = 0;
+                    document.getElementById('messageCount').textContent = '0';
+                    startTime = Date.now();
+                    break;
+                    
+                case 'error':
+                    const errorData = data.payload || data.data;
+                    addMessage('', '', '❌ 錯誤：' + errorData.message, 'system');
+                    break;
+                    
+                case 'heartbeat':
+                    // 心跳消息，靜默處理
+                    break;
+                    
+                case 'agent_turn':
+                    // Agent輪次信息，靜默處理
+                    break;
+                    
+                case 'trust_update':
+                    // 信任度更新，靜默處理
+                    break;
+                    
+                case 'turn_progress':
+                    // 輪次進度，靜默處理
+                    break;
+                    
+                case 'tool_use':
+                    // 工具使用，靜默處理
+                    break;
+                    
+                case 'performance_scores':
+                    // 性能評分，靜默處理
+                    break;
+                    
+                default:
+                    console.log('[未知事件]', eventType, data);
+            }
+        }
+        
+        function handleSimulationCompleted(data) {
+            console.log('[完成處理] 模擬已完成，data:', data);
+            clearInterval(durationInterval);
+            updateStatus('completed', '模擬已完成');
+            
+            addMessage('', '', '✅ 模擬已完成！', 'system');
+            
+            // 顯示結果
+            showResult(data);
+            
+            // 自動關閉 WebSocket（模擬完成後不需要保持連接）
+            if (activeWebSocket) {
+                activeWebSocket.close();
+            }
+            
+            // 重置 UI（可以開始新的模擬）
+            resetUI();
+        }
+        
+        function showResult(data) {
+            const resultPanel = document.getElementById('resultPanel');
+            const resultContent = document.getElementById('resultContent');
+            
+            const outcome = data.outcome || 'UNKNOWN';
+            const analysis = data.analysis || '無分析數據';
+            
+            const isSuccess = outcome === 'SUCCESS';
+            
+            resultContent.innerHTML = `
+                <div class="result-panel ${isSuccess ? 'result-success' : 'result-failure'}">
+                    <h3>${isSuccess ? '✅ 成功防詐' : '❌ 詐騙得逞'}</h3>
+                    <p style="margin-top: 10px; font-size: 1.1em;">${analysis}</p>
+                    
+                    ${data.victim_trust_score !== undefined ? `
+                        <div class="stats" style="margin-top: 20px;">
+                            <div class="stat-item">
+                                <div class="stat-value">${data.victim_trust_score}</div>
+                                <div class="stat-label">最終信任度</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">${data.expert_effectiveness || 'N/A'}</div>
+                                <div class="stat-label">專家有效性</div>
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${data.training_saved ? `
+                        <p style="margin-top: 15px; color: #28a745; font-weight: bold;">
+                            🎓 訓練數據已保存，AI 將會學習並進化
+                        </p>
+                    ` : ''}
+                </div>
+            `;
+            
+            resultPanel.style.display = 'block';
+        }
+        
+        async function stopSimulation() {
+            // 如果沒有當前模擬ID，使用一個臨時ID來觸發全局停止
+            const simId = currentSimulationId || 'global-stop';
+            
+            try {
+                await fetch(`${API_BASE_URL}/simulation/stop/${simId}`, {
+                    method: 'POST'
+                });
+                
+                addMessage('', '', '⏹️ 已發送停止所有模擬的請求', 'system');
+                
+                if (activeWebSocket) {
+                    activeWebSocket.close();
+                }
+                
+                resetUI();
+                
+            } catch (error) {
+                console.error('停止失敗:', error);
+                addMessage('', '', '❌ 停止請求失敗：' + error.message, 'system');
+            }
+        }
+        
+        function resetUI() {
+            clearInterval(durationInterval);
+            updateStatus('idle', '閒置中');
+            document.getElementById('startBtn').disabled = false;
+            // 停止按鈕始終保持啟用
+        }
+        
+        // 頁面載入時測試連接
+        window.onload = async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/`);
+                if (response.ok) {
+                    addMessage('', '', '✅ 後端連接正常！', 'system');
+                }
+            } catch (error) {
+                addMessage('', '', '⚠️ 無法連接到後端服務器，請確認後端正在運行', 'system');
+            }
+        };
+    </script>
+</body>
+</html>

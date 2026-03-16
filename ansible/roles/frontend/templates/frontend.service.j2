@@ -1,0 +1,19 @@
+[Unit]
+Description={{ app_name }} Frontend Service
+After=network.target
+
+[Service]
+Type=forking
+User={{ app_user }}
+Group={{ app_group }}
+WorkingDirectory={{ frontend_build_dir }}
+Environment="PATH=/usr/bin:/usr/local/bin"
+Environment="NODE_ENV={{ env_vars.NODE_ENV | default('production') }}"
+ExecStart=/usr/bin/pm2 start {{ frontend_build_dir }}/ecosystem.config.js
+ExecReload=/usr/bin/pm2 reload {{ frontend_build_dir }}/ecosystem.config.js
+ExecStop=/usr/bin/pm2 stop {{ frontend_build_dir }}/ecosystem.config.js
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,75 @@
+[
+  {
+    "timestamp": "2025-11-11T22:04:56.039563",
+    "base_model": "gemma3:4b",
+    "trained_models": {
+      "expert": "anti-fraud-expert-20251111_220455",
+      "scammer": "anti-fraud-scammer-20251111_220455"
+    },
+    "max_samples": null
+  },
+  {
+    "timestamp": "2025-11-11T22:06:38.650852",
+    "base_model": "gemma3:4b",
+    "trained_models": {
+      "expert": "anti-fraud-expert-20251111_220638"
+    },
+    "max_samples": null
+  },
+  {
+    "timestamp": "2025-11-17T16:10:57.873462",
+    "base_model": "gemma3:4b",
+    "trained_models": {
+      "expert": "anti-fraud-expert-20251117_161057"
+    },
+    "max_samples": null
+  },
+  {
+    "timestamp": "2025-11-17T16:23:22.280330",
+    "base_model": "gemma3:4b",
+    "trained_models": {
+      "expert": "anti-fraud-expert-20251117_162322"
+    },
+    "max_samples": null
+  },
+  {
+    "timestamp": "2025-11-17T16:25:57.862078",
+    "base_model": "gemma3:4b",
+    "trained_models": {
+      "expert": "anti-fraud-expert-20251117_162557"
+    },
+    "max_samples": null
+  },
+  {
+    "timestamp": "2025-11-17T16:29:37.410371",
+    "base_model": "gemma3:4b",
+    "trained_models": {
+      "expert": "anti-fraud-expert-20251117_162937"
+    },
+    "max_samples": null
+  },
+  {
+    "timestamp": "2025-11-17T16:45:33.562527",
+    "base_model": "gemma3:4b",
+    "trained_models": {
+      "expert": "anti-fraud-expert-20251117_164533"
+    },
+    "max_samples": null
+  },
+  {
+    "timestamp": "2025-11-17T17:34:53.749012",
+    "base_model": "gemma3:4b",
+    "trained_models": {
+      "expert": "anti-fraud-expert-20251117_173453"
+    },
+    "max_samples": null
+  },
+  {
+    "timestamp": "2025-11-17T17:34:53.932958",
+    "base_model": "gemma3:4b",
+    "trained_models": {
+      "scammer": "anti-fraud-scammer-20251117_173453"
+    },
+    "max_samples": null
+  }
+]

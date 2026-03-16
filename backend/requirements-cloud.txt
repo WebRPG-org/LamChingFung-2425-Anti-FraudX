@@ -1,0 +1,40 @@
+# Anti-FraudX Cloud 部署 - 最小化依賴
+# 只包含必需的依賴，避免大型機器學習庫
+
+# Web Framework
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+python-dotenv>=1.0.0
+pydantic>=2.6.0
+requests>=2.31.0
+websockets>=12.0
+aiohttp>=3.9.0
+httpx>=0.27.0
+jinja2>=3.1.3
+python-multipart>=0.0.7
+aiofiles>=23.2.1
+
+# Google Cloud 依賴
+google-cloud-aiplatform>=1.42.0
+google-cloud-firestore>=2.14.0
+google-cloud-storage>=2.14.0
+google-cloud-logging>=3.8.0
+google-auth>=2.25.2
+
+# Firebase Admin SDK
+firebase-admin>=6.2.0
+
+# LLM 依賴
+vertexai>=0.42.0
+
+# 基本工具
+tqdm>=4.66.0
+psutil>=5.9.0
+python-json-logger>=2.0.7
+
+# 加密和安全
+cryptography>=41.0.0
+
+# 數據處理
+numpy>=1.24.0
+pandas>=2.0.0

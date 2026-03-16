@@ -1,0 +1,81 @@
+---
+# ============================================================
+# ollama role — Install and configure Ollama LLM service
+# Only runs when gemini_enabled=false
+# ============================================================
+
+- name: Install Ollama
+  shell: curl -fsSL https://ollama.ai/install.sh | sh
+  args:
+    creates: /usr/local/bin/ollama
+
+- name: Create ollama systemd service
+  copy:
+    dest: /etc/systemd/system/ollama.service
+    mode: '0644'
+    content: |
+      [Unit]
+      Description=Ollama LLM Service
+      After=network-online.target
+      Wants=network-online.target
+
+      [Service]
+      Type=exec
+      ExecStart=/usr/local/bin/ollama serve
+      Restart=always
+      RestartSec=3
+      Environment="OLLAMA_HOST=127.0.0.1:{{ ollama_port }}"
+      Environment="OLLAMA_ORIGINS=*"
+      Environment="OLLAMA_NUM_PARALLEL={{ ollama_num_parallel }}"
+      Environment="OLLAMA_MAX_LOADED_MODELS={{ ollama_max_loaded_models }}"
+      Environment="OLLAMA_KEEP_ALIVE={{ ollama_keep_alive }}"
+      {% if nvidia_gpu | default(false) %}
+      Environment="NVIDIA_VISIBLE_DEVICES=all"
+      Environment="CUDA_VISIBLE_DEVICES=all"
+      {% endif %}
+
+      [Install]
+      WantedBy=multi-user.target
+  notify: reload systemd
+
+- name: Enable and start Ollama
+  systemd:
+    name: ollama
+    enabled: yes
+    state: started
+    daemon_reload: yes
+
+- name: Wait for Ollama to be ready
+  wait_for:
+    port: "{{ ollama_port }}"
+    delay: 5
+    timeout: 60
+
+- name: Pull required Ollama models
+  command: ollama pull {{ item }}
+  loop: "{{ ollama_models_to_pull }}"
+  become_user: root
+  register: pull_result
+  changed_when: "'pulling' in pull_result.stdout"
+  ignore_errors: yes
+
+- name: Warm up model (1-token request)
+  uri:
+    url: "http://localhost:{{ ollama_port }}/api/generate"
+    method: POST
+    body_format: json
+    body:
+      model: "{{ ollama_model }}"
+      prompt: "hi"
+      options:
+        num_predict: 1
+    timeout: 120
+  ignore_errors: yes
+
+- name: Ollama setup complete
+  debug:
+    msg: |
+      Ollama ready:
+        URL:    http://localhost:{{ ollama_port }}
+        Models: {{ ollama_models_to_pull | join(', ') }}
+        GPU:    {{ nvidia_gpu | default(false) }}

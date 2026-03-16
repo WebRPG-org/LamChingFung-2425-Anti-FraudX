@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPGv2 遊戲模式 - 防詐騙互動體驗</title>
+    <link rel="stylesheet" href="rpgv2_game_modes.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 頂部導航 -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🎮</span>
+                <h1>RPGv2 遊戲模式</h1>
+            </div>
+            <nav class="nav-tabs">
+                <button class="nav-tab active" data-view="mode-select">選擇模式</button>
+                <button class="nav-tab" data-view="game-play" disabled>遊戲進行</button>
+                <button class="nav-tab" data-view="game-result" disabled>遊戲結果</button>
+            </nav>
+        </header>
+
+        <!-- 模式選擇界面 -->
+        <section id="mode-select" class="view active">
+            <div class="mode-select-container">
+                <h2 class="section-title">選擇遊戲模式</h2>
+                <p class="section-subtitle">從不同角度體驗防詐騙教育</p>
+
+                <div class="modes-grid">
+                    <!-- 騙徒模式 -->
+                    <div class="mode-card" data-mode="scammer">
+                        <div class="mode-icon">🎭</div>
+                        <h3 class="mode-title">騙徒模式</h3>
+                        <p class="mode-description">扮演騙徒，嘗試騙取AI受害者的信任</p>
+                        <div class="mode-features">
+                            <span class="feature-tag">策略思考</span>
+                            <span class="feature-tag">心理博弈</span>
+                            <span class="feature-tag">高難度</span>
+                        </div>
+                        <button class="mode-select-btn" data-mode="scammer">選擇此模式</button>
+                    </div>
+
+                    <!-- 專家模式 -->
+                    <div class="mode-card" data-mode="expert">
+                        <div class="mode-icon">🛡️</div>
+                        <h3 class="mode-title">專家模式</h3>
+                        <p class="mode-description">扮演防詐專家，保護AI受害者</p>
+                        <div class="mode-features">
+                            <span class="feature-tag">識別詐騙</span>
+                            <span class="feature-tag">教育意義</span>
+                            <span class="feature-tag">推薦</span>
+                        </div>
+                        <button class="mode-select-btn" data-mode="expert">選擇此模式</button>
+                    </div>
+
+                    <!-- 自動模式 -->
+                    <div class="mode-card" data-mode="auto">
+                        <div class="mode-icon">👁️</div>
+                        <h3 class="mode-title">自動模式</h3>
+                        <p class="mode-description">觀察AI騙徒與AI受害者的對話</p>
+                        <div class="mode-features">
+                            <span class="feature-tag">學習觀察</span>
+                            <span class="feature-tag">輕鬆體驗</span>
+                            <span class="feature-tag">新手友好</span>
+                        </div>
+                        <button class="mode-select-btn" data-mode="auto">選擇此模式</button>
+                    </div>
+                </div>
+
+                <!-- 遊戲設置 -->
+                <div class="game-settings" id="game-settings" style="display: none;">
+                    <h3 class="settings-title">遊戲設置</h3>
+                    
+                    <div class="setting-group">
+                        <label for="scam-type">騙案類型</label>
+                        <select id="scam-type" class="setting-input">
+                            <option value="假冒銀行">假冒銀行</option>
+                            <option value="假冒親友">假冒親友</option>
+                            <option value="投資詐騙">投資詐騙</option>
+                            <option value="網購詐騙">網購詐騙</option>
+                            <option value="求職詐騙">求職詐騙</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label for="victim-persona">受害者人設</label>
+                        <select id="victim-persona" class="setting-input">
+                            <option value="elderly">長者（容易信任權威）</option>
+                            <option value="average" selected>一般人（平衡理性）</option>
+                            <option value="overconfident">自信者（不易被騙但易中激將法）</option>
+                            <option value="student">學生（對新事物接受度高）</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label for="difficulty">難度</label>
+                        <select id="difficulty" class="setting-input">
+                            <option value="easy">簡單</option>
+                            <option value="normal" selected>普通</option>
+                            <option value="hard">困難</option>
+                        </select>
+                    </div>
+
+                    <div class="settings-actions">
+                        <button id="start-game-btn" class="primary-btn">開始遊戲</button>
+                        <button id="cancel-settings-btn" class="secondary-btn">取消</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 遊戲進行界面 -->
+        <section id="game-play" class="view">
+            <div class="game-container">
+                <!-- 遊戲信息欄 -->
+                <div class="game-info-bar">
+                    <div class="info-item">
+                        <span class="info-label">模式</span>
+                        <span class="info-value" id="current-mode">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">回合</span>
+                        <span class="info-value" id="round-count">0</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">玩家分數</span>
+                        <span class="info-value score-highlight" id="player-score">0</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">AI分數</span>
+                        <span class="info-value" id="ai-score">0</span>
+                    </div>
+                </div>
+
+                <!-- 信任度儀表板 -->
+                <div class="trust-dashboard">
+                    <div class="trust-meter">
+                        <label>對騙徒信任度</label>
+                        <div class="meter-bar">
+                            <div class="meter-fill scammer" id="trust-scammer-bar" style="width: 50%"></div>
+                        </div>
+                        <span class="meter-value" id="trust-scammer-value">50</span>
+                    </div>
+                    <div class="trust-meter">
+                        <label>對專家信任度</label>
+                        <div class="meter-bar">
+                            <div class="meter-fill expert" id="trust-expert-bar" style="width: 50%"></div>
+                        </div>
+                        <span class="meter-value" id="trust-expert-value">50</span>
+                    </div>
+                    <div class="trust-meter">
+                        <label>警覺性</label>
+                        <div class="meter-bar">
+                            <div class="meter-fill alertness" id="alertness-bar" style="width: 50%"></div>
+                        </div>
+                        <span class="meter-value" id="alertness-value">50</span>
+                    </div>
+                </div>
+
+                <!-- AI判定提示 -->
+                <div class="ai-judgment-notice">
+                    <span class="notice-icon">🧠</span>
+                    <span class="notice-text">本遊戲使用AI語意判定系統，智能分析對話內容，而非簡單關鍵字匹配</span>
+                </div>
+
+                <!-- 對話區域 -->
+                <div class="conversation-area">
+                    <div class="messages-container" id="messages-container">
+                        <!-- 消息將動態添加 -->
+                    </div>
+                </div>
+
+                <!-- 輸入區域 -->
+                <div class="input-area">
+                    <textarea 
+                        id="player-input" 
+                        class="message-input" 
+                        placeholder="輸入你的消息..."
+                        rows="3"
+                    ></textarea>
+                    <div class="input-actions">
+                        <button id="send-message-btn" class="primary-btn">發送</button>
+                        <button id="auto-play-btn" class="secondary-btn" style="display: none;">自動播放</button>
+                        <button id="end-game-btn" class="danger-btn">結束遊戲</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 遊戲結果界面 -->
+        <section id="game-result" class="view">
+            <div class="result-container">
+                <div class="result-header">
+                    <div class="result-icon" id="result-icon">🎉</div>
+                    <h2 class="result-title" id="result-title">遊戲結束</h2>
+                    <p class="result-subtitle" id="result-subtitle">-</p>
+                </div>
+
+                <div class="result-stats">
+                    <div class="stat-card">
+                        <div class="stat-label">最終分數</div>
+                        <div class="stat-value" id="final-player-score">0</div>
+                        <div class="stat-sublabel">玩家</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">AI分數</div>
+                        <div class="stat-value" id="final-ai-score">0</div>
+                        <div class="stat-sublabel">AI</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">回合數</div>
+                        <div class="stat-value" id="final-rounds">0</div>
+                        <div class="stat-sublabel">總計</div>
+                    </div>
+                </div>
+
+                <div class="result-trust-data">
+                    <h3>最終信任度數據</h3>
+                    <div class="trust-bars">
+                        <div class="trust-bar-item">
+                            <span>對騙徒信任度</span>
+                            <div class="bar">
+                                <div class="bar-fill scammer" id="final-trust-scammer"></div>
+                            </div>
+                            <span id="final-trust-scammer-value">0</span>
+                        </div>
+                        <div class="trust-bar-item">
+                            <span>對專家信任度</span>
+                            <div class="bar">
+                                <div class="bar-fill expert" id="final-trust-expert"></div>
+                            </div>
+                            <span id="final-trust-expert-value">0</span>
+                        </div>
+                        <div class="trust-bar-item">
+                            <span>警覺性</span>
+                            <div class="bar">
+                                <div class="bar-fill alertness" id="final-alertness"></div>
+                            </div>
+                            <span id="final-alertness-value">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-actions">
+                    <button id="play-again-btn" class="primary-btn">再玩一次</button>
+                    <button id="back-to-menu-btn" class="secondary-btn">返回主菜單</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 載入提示 -->
+        <div id="loading-overlay" class="loading-overlay" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">處理中...</p>
+        </div>
+    </div>
+
+    <script src="rpgv2_game_modes.js"></script>
+</body>
+</html>

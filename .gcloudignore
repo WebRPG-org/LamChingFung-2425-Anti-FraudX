@@ -1,0 +1,55 @@
+# .gcloudignore file
+# This file specifies files that should NOT be uploaded to Google Cloud
+# when deploying with gcloud
+
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+.pytest_cache
+.mypy_cache
+venv/
+env/
+
+# Node
+node_modules/
+npm-debug.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+*.log
+.env.local
+.env.*.local
+
+# Documentation
+docs/
+README.md
+*.md
+
+# Tests
+tests/
+test_*.py
+
+# Build artifacts
+build/
+dist/
+*.egg
+
+# Keep only essential files for deployment
+

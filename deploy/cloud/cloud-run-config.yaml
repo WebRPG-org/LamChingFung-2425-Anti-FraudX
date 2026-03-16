@@ -1,0 +1,92 @@
+# Cloud Run 服務配置
+# 用於部署 Anti-FraudX 後端
+
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: anti-fraudx-backend
+  namespace: default
+  labels:
+    app: anti-fraudx
+    version: "2.0.0"
+spec:
+  template:
+    metadata:
+      labels:
+        app: anti-fraudx
+      annotations:
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "10"
+    spec:
+      serviceAccountName: anti-fraudx-sa
+      containers:
+      - name: backend
+        image: gcr.io/anti-fraudx-us-ci/anti-fraudx-backend:latest
+        ports:
+        - containerPort: 8000
+          protocol: TCP
+        env:
+        - name: DEPLOYMENT_ENV
+          value: "cloud"
+        - name: PROJECT_ID
+          value: "anti-fraudx-us-ci"
+        - name: GCP_PROJECT_ID
+          value: "anti-fraudx-us-ci"
+        - name: GCP_LOCATION
+          value: "us-central1"
+        - name: USE_VERTEX_AI
+          value: "true"
+        - name: VERTEX_AI_MODEL
+          value: "gemini-3.1-flash"
+        - name: DATABASE_TYPE
+          value: "firestore"
+        - name: FIRESTORE_PROJECT_ID
+          value: "anti-fraudx-us-ci"
+        - name: FIRESTORE_DATABASE
+          value: "anti-fraudx-db"
+        - name: STORAGE_TYPE
+          value: "gcs"
+        - name: CLOUD_STORAGE_BUCKET
+          value: "anti-fraudx-storage"
+        - name: CLOUD_RUN_SERVICE
+          value: "anti-fraudx-backend"
+        - name: DOMAIN_NAME
+          value: "anti-fraudx.us.ci"
+        - name: APP_NAME
+          value: "Anti-FraudX"
+        - name: APP_VERSION
+          value: "2.0.0"
+        - name: APP_ENV
+          value: "production"
+        - name: LOG_LEVEL
+          value: "info"
+        - name: PYTHONUNBUFFERED
+          value: "1"
+        resources:
+          limits:
+            cpu: "1"
+            memory: "512Mi"
+          requests:
+            cpu: "0.5"
+            memory: "256Mi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+      timeoutSeconds: 3600
+  traffic:
+  - percent: 100
+    latestRevision: true
+

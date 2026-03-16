@@ -1,0 +1,69 @@
+---
+# ============================================================
+# deploy-aws.yml — AWS deployment (Gemini default / EC2 GPU)
+# Usage:
+#   Gemini mode: ansible-playbook -i inventory/hosts.yml playbooks/deploy-aws.yml
+#   GPU mode:    ansible-playbook -i inventory/hosts.yml playbooks/deploy-aws.yml -e "gemini_enabled=false nvidia_gpu=true"
+# ============================================================
+
+- name: AI Anti-Fraud Platform — AWS Deployment
+  hosts: aws_servers
+  become: yes
+  gather_facts: yes
+
+  vars:
+    deploy_mode: aws
+    # AWS defaults: use Gemini (no Ollama needed on ECS/Fargate)
+    gemini_enabled: true
+    nginx_install: true
+    enable_ssl: true
+
+  pre_tasks:
+    - name: Show AWS deployment info
+      debug:
+        msg: |
+          AWS Deployment
+          Host:   {{ inventory_hostname }}
+          LLM:    {{ 'Gemini API' if gemini_enabled else 'Ollama on EC2 GPU' }}
+          Domain: {{ app_domain }}
+          SSL:    {{ enable_ssl }}
+
+    - name: Install CloudWatch agent
+      shell: |
+        wget https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
+        dpkg -i amazon-cloudwatch-agent.deb
+      args:
+        creates: /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent
+      ignore_errors: yes
+
+  roles:
+    - role: common
+      tags: [common]
+
+    - role: ollama
+      tags: [ollama]
+      when: not gemini_enabled
+
+    - role: backend
+      tags: [backend]
+
+    - role: nginx
+      tags: [nginx]
+      when: nginx_install
+
+  post_tasks:
+    - name: AWS Security Group note
+      debug:
+        msg: |
+          Remember to open AWS Security Group rules:
+            Port 80  (HTTP)
+            Port 443 (HTTPS)
+            Port 22  (SSH)
+
+    - name: AWS deployment complete
+      debug:
+        msg: |
+          AWS deployment complete!
+          API:   https://{{ app_domain }}/
+          RPGv2: https://{{ app_domain }}/rpgv2
+          Docs:  https://{{ app_domain }}/docs
