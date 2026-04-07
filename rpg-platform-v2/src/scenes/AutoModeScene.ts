@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { localization } from '../systems/LocalizationManager';
 
 export class AutoModeScene extends Phaser.Scene {
   private isRunning = false;
@@ -71,7 +72,7 @@ export class AutoModeScene extends Phaser.Scene {
     titleBg.setStrokeStyle(2, 0x08D9D6, 0.5);
 
     // Main title
-    const title = this.add.text(0, -15, '🤖 自動訓練模式', {
+    const title = this.add.text(0, -15, localization.t('autoTitle'), {
       fontFamily: 'Orbitron, sans-serif',
       fontSize: '42px',
       color: '#08D9D6',
@@ -82,7 +83,7 @@ export class AutoModeScene extends Phaser.Scene {
     title.setOrigin(0.5);
 
     // Subtitle
-    const subtitle = this.add.text(0, 25, 'AI 自動運行訓練模擬', {
+    const subtitle = this.add.text(0, 25, localization.t('autoSubtitle'), {
       fontFamily: 'Rajdhani, sans-serif',
       fontSize: '18px',
       color: '#B8C5D6',
@@ -282,7 +283,7 @@ export class AutoModeScene extends Phaser.Scene {
     const startBg = this.add.rectangle(0, 0, 220, 60, 0x6BCF7F, 0.9);
     startBg.setOrigin(0.5);
     startBg.setStrokeStyle(2, 0x7FDF95, 0.8);
-    const startText = this.add.text(0, 0, '▶️ 開始模擬', {
+    const startText = this.add.text(0, 0, localization.t('autoStart'), {
       fontFamily: 'Rajdhani, sans-serif',
       fontSize: '22px',
       color: '#0A0E27',
@@ -315,7 +316,7 @@ export class AutoModeScene extends Phaser.Scene {
     const backBg = this.add.rectangle(0, 0, 220, 60, 0xFF2E63, 0.9);
     backBg.setOrigin(0.5);
     backBg.setStrokeStyle(2, 0xFF6B9D, 0.8);
-    const backText = this.add.text(0, 0, '🏠 返回主頁', {
+    const backText = this.add.text(0, 0, localization.t('backHome'), {
       fontFamily: 'Rajdhani, sans-serif',
       fontSize: '22px',
       color: '#FFFFFF',
@@ -368,7 +369,7 @@ export class AutoModeScene extends Phaser.Scene {
     infoBg.setStrokeStyle(1, 0x08D9D6, 0.3);
 
     const info = this.add.text(0, 0,
-      '💡 自動模式將持續運行模擬，AI 控制角色自動導航並與 NPC 互動',
+      localization.t('autoInfo'),
       {
         fontFamily: 'Noto Sans TC, sans-serif',
         fontSize: '12px',
@@ -433,12 +434,12 @@ export class AutoModeScene extends Phaser.Scene {
     this.isRunning = !this.isRunning;
 
     if (this.isRunning) {
-      text.setText('⏸️ 停止模擬');
+      text.setText(localization.t('autoStop'));
       bg.setFillStyle(0xFF2E63, 0.9);
       bg.setStrokeStyle(2, 0xFF6B9D, 0.8);
       this.startAutoSimulation();
     } else {
-      text.setText('▶️ 開始模擬');
+      text.setText(localization.t('autoStart'));
       bg.setFillStyle(0x6BCF7F, 0.9);
       bg.setStrokeStyle(2, 0x7FDF95, 0.8);
     }

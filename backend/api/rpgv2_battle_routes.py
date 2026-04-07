@@ -14,6 +14,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from services.agent_service import AgentService
 from utils.logger import log
+from utils.scam_scoring_hybrid import HybridScamScoring
 
 router = APIRouter(prefix="/api/rpgv2", tags=["RPGv2"])
 
@@ -63,12 +64,15 @@ async def start_battle(request: StartBattleRequest):
             enable_tracking=True
         )
         
-        # 創建會話
+        # 創建會話（使用混合評分系統）
+        hybrid_scorer = HybridScamScoring(victim_persona=request.victim_persona)
+        
         rpg_sessions[session_id] = {
             "scam_type": request.scam_type,
             "player_role": request.player_role,
             "victim_persona": request.victim_persona,
             "agent_service": agent_service,
+            "hybrid_scorer": hybrid_scorer,
             "conversation_history": [],
             "round_count": 0,
             "trust_in_scammer": 50,
@@ -213,38 +217,92 @@ async def send_battle_message(request: SendMessageRequest):
 
 def update_trust_levels(session: Dict, player_msg: str, scammer_msg: str, expert_msg: str) -> Dict:
     """
-    更新信任度數據
+    更新信任度數據（使用混合評分系統）
     
-    基於對話內容和關鍵詞分析更新信任度
+    基於混合評分系統的動態乘數計算信任度變化
     """
-    # 簡單的關鍵詞分析
-    player_lower = player_msg.lower()
+    hybrid_scorer = session["hybrid_scorer"]
     
-    # 玩家表現出懷疑 -> 增加警覺性，降低對騙徒信任
-    suspicious_keywords = ['懷疑', '不信', '騙', '假', '詐', '警察', '報警', '可疑']
-    if any(keyword in player_msg for keyword in suspicious_keywords):
-        session["trust_in_scammer"] = max(0, session["trust_in_scammer"] - 10)
-        session["alertness"] = min(100, session["alertness"] + 15)
-        session["trust_in_expert"] = min(100, session["trust_in_expert"] + 10)
+    # 使用混合評分系統分析騙徒消息
+    scammer_tactics = detect_tactics(scammer_msg)
     
-    # 玩家表現出興趣 -> 降低警覺性，增加對騙徒信任
-    interested_keywords = ['好', '可以', '想', '試', '了解', '怎麼', '多少']
-    if any(keyword in player_msg for keyword in interested_keywords):
-        session["trust_in_scammer"] = min(100, session["trust_in_scammer"] + 5)
-        session["alertness"] = max(0, session["alertness"] - 5)
+    # 只有檢測到策略才調用混合評分系統
+    if scammer_tactics:
+        score, status = hybrid_scorer.add_scammer_message(scammer_msg, scammer_tactics)
+        
+        # 檢查是否即時勝負
+        if status == "scammer_win":
+            session["trust_in_scammer"] = 100
+            log.info(f"[RPGv2] 騙徒即時贏！")
+            return get_trust_data(session)
     
-    # 玩家詢問細節 -> 增加警覺性
-    question_keywords = ['為什麼', '怎麼', '證明', '保證', '合法', '執照']
-    if any(keyword in player_msg for keyword in question_keywords):
-        session["alertness"] = min(100, session["alertness"] + 5)
-        session["trust_in_expert"] = min(100, session["trust_in_expert"] + 5)
+    # 使用混合評分系統分析專家消息
+    expert_defenses = detect_defenses(expert_msg)
     
-    # 隨著回合數增加，自然變化
-    if session["round_count"] > 5:
-        # 長時間對話，騙徒可能露出破綻
-        session["trust_in_scammer"] = max(0, session["trust_in_scammer"] - 2)
-        session["alertness"] = min(100, session["alertness"] + 2)
+    # 只有檢測到防騙方法才調用混合評分系統
+    if expert_defenses:
+        score, status = hybrid_scorer.add_expert_message(expert_msg, expert_defenses)
+        
+        # 檢查是否即時勝負
+        if status == "expert_win":
+            session["trust_in_scammer"] = 0
+            session["trust_in_expert"] = 100
+            log.info(f"[RPGv2] 專家即時贏！")
+            return get_trust_data(session)
     
+    # 分析玩家反應
+    hybrid_scorer.add_victim_response(player_msg)
+    
+    # 從混合評分系統獲取當前狀態
+    state = hybrid_scorer.get_current_state()
+    
+    # 更新會話信任度
+    session["trust_in_scammer"] = state["trust_in_scammer"]
+    session["trust_in_expert"] = state["trust_in_expert"]
+    session["alertness"] = state["alertness"]
+    
+    log.info(f"[RPGv2] 信任度更新 - 騙徒: {session['trust_in_scammer']}, 專家: {session['trust_in_expert']}, 警覺: {session['alertness']}")
+    
+    return get_trust_data(session)
+
+def detect_tactics(message: str) -> List[str]:
+    """檢測騙徒使用的策略"""
+    tactics = []
+    message_lower = message.lower()
+    
+    # 只檢測明確的策略詞，避免誤判
+    if any(word in message_lower for word in ["銀行", "政府", "警察", "官方", "執法"]):
+        tactics.append("authority")
+    if any(word in message_lower for word in ["立即", "馬上", "緊急", "嚴重", "急"]):
+        tactics.append("urgency")
+    if any(word in message_lower for word in ["補貼", "福利", "回贈", "優惠", "獎勵", "獲利"]):
+        tactics.append("benefits")
+    if any(word in message_lower for word in ["凍結", "損失", "危險", "後果", "風險", "虧損"]):
+        tactics.append("fear")
+    if any(word in message_lower for word in ["唔信", "唔係咁", "你以為", "不信", "不相信"]):
+        tactics.append("challenge")
+    
+    # 如果沒有檢測到任何策略，返回空列表（不使用默認值）
+    return tactics
+
+def detect_defenses(message: str) -> List[str]:
+    """檢測專家使用的防騙方法"""
+    defenses = []
+    message_lower = message.lower()
+    
+    if any(word in message_lower for word in ["唔好驚", "冷靜", "理解", "明白"]):
+        defenses.append("empathy")
+    if any(word in message_lower for word in ["銀行唔會", "騙案手法", "真正", "官方"]):
+        defenses.append("evidence")
+    if any(word in message_lower for word in ["打去", "聯絡", "報警", "掛斷"]):
+        defenses.append("actionable")
+    if len(message) < 100 and "。" in message:
+        defenses.append("clarity")
+    
+    return defenses if defenses else ["evidence"]  # 默認證據方法
+
+def get_trust_data(session: Dict) -> Dict:
+    """獲取信任度數據"""
     return {
         "trust_in_scammer": session["trust_in_scammer"],
         "trust_in_expert": session["trust_in_expert"],

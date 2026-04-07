@@ -4,9 +4,12 @@
  * 負責與 FastAPI Backend 通信，處理 AI 對話和會話管理
  */
 
+import { localization, AppLanguage } from '../systems/LocalizationManager';
+
 export interface SimulationConfig {
   scamType: string;                    // 騙案類型 ID
   playerRole: 'victim' | 'expert' | 'scammer';     // 玩家角色
+  language?: AppLanguage;
   victimPersona?: string;              // 受害者人格
 }
 
@@ -53,6 +56,15 @@ export interface ThreeWayMessageResponse {
   success: boolean;
 }
 
+export interface TTSResponse {
+  success: boolean;
+  audio_base64: string;
+  mime_type: string;
+  role: 'scammer' | 'victim' | 'expert';
+  voice_name: string;
+  language: AppLanguage;
+}
+
 export interface AnalysisResponse {
   success: boolean;
   session_id: string;
@@ -60,12 +72,12 @@ export interface AnalysisResponse {
     scammer_score: number;             // 騙徒評分 (0-100)
     expert_score: number;              // 專家評分 (0-100)
     outcome: string;                   // 結果描述
-    key_moments: Array<{               // 關鍵時刻
+    key_moments: Array<{
       round: number;
       description: string;
       impact: string;
     }>;
-    recommendations: string[];         // 建議
+    recommendations: string[];
   };
   conversation_count: number;
 }
@@ -95,7 +107,7 @@ export class BackendClient {
       if (response.ok) {
         const data = await response.json();
         this.isConnected = data.status === 'ok' || data.status === 'Backend is running';
-        console.log('[BackendClient] Backend 連接成功:', data);
+        console.log('[BackendClient] Backend 連接成功:', this.baseURL, data);
         return this.isConnected;
       }
       
@@ -126,7 +138,8 @@ export class BackendClient {
         body: JSON.stringify({
           mode: config.playerRole,  // victim, expert, scammer
           scam_type: config.scamType,
-          victim_persona: config.victimPersona || 'average'
+          victim_persona: config.victimPersona || 'average',
+          language: config.language || localization.getLanguage()
         })
       });
 
@@ -157,7 +170,7 @@ export class BackendClient {
    * @param message 玩家消息
    * @returns AI 回應和遊戲狀態
    */
-  async sendThreeWayMessage(message: string): Promise<ThreeWayMessageResponse> {
+  async sendThreeWayMessage(message: string, language?: AppLanguage): Promise<ThreeWayMessageResponse> {
     if (!this.sessionId) {
       throw new Error('未初始化會話，請先調用 startThreeWaySession()');
     }
@@ -170,7 +183,8 @@ export class BackendClient {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           session_id: this.sessionId,
-          message: message
+          message: message,
+          language: language || localization.getLanguage()
         })
       });
 
@@ -226,6 +240,28 @@ export class BackendClient {
       console.error('[BackendClient] 獲取 RPGv2 遊戲狀態失敗:', error);
       throw error;
     }
+  }
+
+  /**
+   * 生成 Google 粵語 TTS（後端）
+   */
+  async synthesizeTTS(
+    role: 'scammer' | 'victim' | 'expert',
+    text: string,
+    language?: AppLanguage
+  ): Promise<TTSResponse> {
+    const response = await fetch(`${this.baseURL}/api/tts/synthesize`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ role, text, language: language || localization.getLanguage() })
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error(`TTS HTTP ${response.status}: ${errText}`);
+    }
+
+    return await response.json();
   }
 
   /**
@@ -382,11 +418,15 @@ export class BackendClient {
    * @param newMode 新的角色模式 ('victim' | 'expert' | 'scammer')
    * @returns 切換結果
    */
-  async switchRole(newMode: 'victim' | 'expert' | 'scammer'): Promise<{
+  async switchRole(
+    newMode: 'victim' | 'expert' | 'scammer',
+    language?: AppLanguage
+  ): Promise<{
     success: boolean;
     old_mode: string;
     new_mode: string;
     mode_info: any;
+    language?: AppLanguage;
     message: string;
   }> {
     if (!this.sessionId) {
@@ -401,7 +441,8 @@ export class BackendClient {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           session_id: this.sessionId,
-          new_mode: newMode
+          new_mode: newMode,
+          language: language || localization.getLanguage()
         })
       });
 

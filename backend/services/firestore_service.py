@@ -31,14 +31,45 @@ class FirestoreService:
             try:
                 # 初始化 Firebase Admin SDK
                 if not self._is_firebase_initialized():
-                    initialize_app()
+                    deployment_env = os.getenv('DEPLOYMENT_ENV', 'local').lower()
+                    
+                    if deployment_env == 'cloud':
+                        # Cloud Run 環境：使用默認認證（服務帳戶）
+                        log.info("[FIRESTORE_SERVICE] 🌐 Cloud Run 環境檢測到，使用默認認證")
+                        initialize_app()
+                    else:
+                        # 本地開發環境：嘗試使用密鑰文件
+                        creds_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+                        
+                        if not creds_path:
+                            # 嘗試默認路徑
+                            default_paths = [
+                                'backend/config/anti-fraudx-key.json',
+                                'config/anti-fraudx-key.json',
+                                '/app/backend/config/anti-fraudx-key.json'
+                            ]
+                            
+                            for path in default_paths:
+                                if os.path.exists(path):
+                                    creds_path = path
+                                    log.info(f"[FIRESTORE_SERVICE] 找到認證文件: {path}")
+                                    break
+                        
+                        if creds_path and os.path.exists(creds_path):
+                            creds = credentials.Certificate(creds_path)
+                            initialize_app(creds)
+                            log.info(f"[FIRESTORE_SERVICE] ✅ 本地開發：使用認證文件初始化: {creds_path}")
+                        else:
+                            log.warning("[FIRESTORE_SERVICE] ⚠️ 本地開發：未找到認證文件，嘗試使用默認認證")
+                            initialize_app()
                 
                 # 獲取 Firestore 客戶端
                 FirestoreService._db = firestore.client()
                 log.info("[FIRESTORE_SERVICE] ✅ Firestore 連接成功")
             except Exception as e:
                 log.error(f"[FIRESTORE_SERVICE] ❌ Firestore 初始化失敗: {str(e)}")
-                raise
+                log.warning("[FIRESTORE_SERVICE] ⚠️ 將使用本地 SQLite 作為備用")
+                FirestoreService._db = None
     
     @staticmethod
     def _is_firebase_initialized() -> bool:

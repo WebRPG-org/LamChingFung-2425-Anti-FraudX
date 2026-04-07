@@ -625,3 +625,4 @@ def get_global_session_manager() -> GlobalSessionManager:
         _global_session_manager = GlobalSessionManager()
     return _global_session_manager
 
+

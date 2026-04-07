@@ -22,6 +22,7 @@ class GameSession:
     mode: GameMode
     scam_type: str
     victim_persona: str
+    language: str
     conversation_history: List[Dict]
     round_count: int
     trust_in_scammer: float
@@ -126,7 +127,8 @@ class RPGv2GameModeManager:
         session_id: str,
         mode: GameMode,
         scam_type: str,
-        victim_persona: str
+        victim_persona: str,
+        language: str = "zh-HK"
     ) -> GameSession:
         """
         創建遊戲會話
@@ -148,6 +150,7 @@ class RPGv2GameModeManager:
             mode=mode,
             scam_type=scam_type,
             victim_persona=victim_persona,
+            language=language,
             conversation_history=[],
             round_count=0,
             trust_in_scammer=50.0,
@@ -208,6 +211,7 @@ class RPGv2GameModeManager:
                 "game_status": {
                     "game_over": True,
                     "winner": session.winner,
+                    "outcome": self._resolve_outcome(session, session.winner, "遊戲已結束"),
                     "reason": "遊戲已結束",
                     "final_scores": {
                         "player": session.player_score,
@@ -268,15 +272,10 @@ class RPGv2GameModeManager:
             session.round_count += 1
             session.last_update = datetime.now().isoformat()
             
-            # 計算分數（即時勝負給予額外獎勵）
+            # 計算分數（分數上限 100）
             score_update = self._calculate_score_update(session, player_message, ai_responses)
-            if instant_win["winner"] == "player":
-                score_update["player"] += 100  # 即時勝利獎勵
-            else:
-                score_update["ai"] += 100
-            
-            session.player_score += score_update["player"]
-            session.ai_score += score_update["ai"]
+            session.player_score = max(0, min(100, session.player_score + score_update["player"]))
+            session.ai_score = max(0, min(100, session.ai_score + score_update["ai"]))
             
             # 🔥 修復：設置 session 的遊戲結束狀態
             session.game_over = True
@@ -286,6 +285,7 @@ class RPGv2GameModeManager:
             game_status = {
                 "game_over": True,
                 "winner": instant_win["winner"],
+                "outcome": self._resolve_outcome(session, instant_win["winner"], instant_win["reason"]),
                 "reason": instant_win["reason"],
                 "instant_win": True,
                 "final_scores": {
@@ -345,13 +345,14 @@ class RPGv2GameModeManager:
         session.round_count += 1
         session.last_update = datetime.now().isoformat()
         
-        # 計算分數
+        # 計算分數（分數上限 100）
         score_update = self._calculate_score_update(session, player_message, ai_responses)
-        session.player_score += score_update["player"]
-        session.ai_score += score_update["ai"]
+        session.player_score = max(0, min(100, session.player_score + score_update["player"]))
+        session.ai_score = max(0, min(100, session.ai_score + score_update["ai"]))
         
         # 檢查勝利條件
         game_status = self._check_win_condition(session)
+        game_status["outcome"] = self._resolve_outcome(session, game_status.get("winner"), game_status.get("reason", ""))
         
         # 🔥 新增：記錄本回合的詳細數據
         round_log = {
@@ -488,6 +489,36 @@ class RPGv2GameModeManager:
             "ai": ai_score
         }
     
+    def _resolve_outcome(self, session: GameSession, winner: Optional[str], reason: str = "") -> str:
+        """統一輸出前端可直接路由的 outcome。"""
+        text = reason or ""
+
+        # 先以 100 分規則作最高優先級
+        if session.trust_in_expert >= 100 and session.trust_in_scammer < 100:
+            return "expert_win"
+        if session.trust_in_scammer >= 100 and session.trust_in_expert < 100:
+            return "scammer_win"
+
+        # reason 明示時優先
+        if "專家勝" in text:
+            return "expert_win"
+        if "騙徒勝" in text or "被騙" in text:
+            return "scammer_win"
+
+        # winner + mode 映射
+        if winner in ("expert", "expert_win"):
+            return "expert_win"
+        if winner in ("scammer", "scammer_win"):
+            return "scammer_win"
+
+        if winner == "player":
+            return "scammer_win" if session.mode == "scammer" else "expert_win"
+        if winner == "ai":
+            return "expert_win" if session.mode == "scammer" else "scammer_win"
+
+        # 最後保底看信任度
+        return "expert_win" if session.trust_in_expert >= session.trust_in_scammer else "scammer_win"
+
     def _check_win_condition(self, session: GameSession) -> Dict:
         """檢查勝利條件"""
         mode_config = self.mode_configs[session.mode]
@@ -498,53 +529,67 @@ class RPGv2GameModeManager:
         reason = ""
         
         if session.mode == "victim":
-            # 受害人模式勝利條件
-            if session.alertness > 70 or session.trust_in_scammer < 30:
-                game_over = True
-                winner = "player"
-                reason = "成功識破騙局，保護自己"
-            elif session.trust_in_scammer > 70:
+            # 受害人模式：
+            # - 騙徒信任度達到 100 = 被騙（AI 勝）
+            # - 專家信任度達到 100 = 防詐成功（玩家勝）
+            if session.trust_in_scammer >= 100:
                 game_over = True
                 winner = "ai"
-                reason = "被騙徒成功欺騙"
+                reason = "被騙徒成功欺騙（騙徒信任度達到100）"
+            elif session.trust_in_expert >= 100:
+                game_over = True
+                winner = "player"
+                reason = "成功識破騙局（專家信任度達到100）"
             elif session.round_count >= 15:
                 game_over = True
-                winner = "player" if session.alertness > 50 else "ai"
+                winner = "player" if session.trust_in_expert >= session.trust_in_scammer else "ai"
                 reason = "達到最大回合數"
-        
+
         elif session.mode == "scammer":
-            # 騙徒模式勝利條件
-            if session.trust_in_scammer > 70:
+            # 騙徒模式：
+            # - 騙徒信任度達到 100 = 玩家（騙徒）勝
+            # - 專家信任度達到 100 = AI（防詐方）勝
+            if session.trust_in_scammer >= 100:
                 game_over = True
                 winner = "player"
-                reason = "成功獲取受害者信任"
-            elif session.alertness > 70:
+                reason = "成功獲取受害者信任（騙徒信任度達到100）"
+            elif session.trust_in_expert >= 100:
                 game_over = True
                 winner = "ai"
-                reason = "受害者在專家幫助下識破騙局"
+                reason = "受害者在專家幫助下識破騙局（專家信任度達到100）"
             elif session.round_count >= 15:
                 game_over = True
-                winner = "player" if session.trust_in_scammer > session.alertness else "ai"
+                winner = "player" if session.trust_in_scammer >= session.trust_in_expert else "ai"
                 reason = "達到最大回合數"
-        
+
         elif session.mode == "expert":
-            # 專家模式勝利條件
-            if session.alertness > 70 or session.trust_in_scammer < 30:
+            # 專家模式：
+            # - 專家信任度達到 100 = 玩家（專家）勝
+            # - 騙徒信任度達到 100 = AI（騙徒方）勝
+            if session.trust_in_expert >= 100:
                 game_over = True
                 winner = "player"
-                reason = "成功保護受害者"
-            elif session.trust_in_scammer > 70:
+                reason = "成功保護受害者（專家信任度達到100）"
+            elif session.trust_in_scammer >= 100:
                 game_over = True
                 winner = "ai"
-                reason = "受害者被騙"
+                reason = "受害者被騙（騙徒信任度達到100）"
             elif session.round_count >= 15:
                 game_over = True
-                winner = "player" if session.alertness > 50 else "ai"
+                winner = "player" if session.trust_in_expert >= session.trust_in_scammer else "ai"
                 reason = "達到最大回合數"
-        
+
         elif session.mode == "auto":
-            # 自動模式：觀察到一定回合數結束
-            if session.round_count >= 10:
+            # 自動模式：達到任一方 100 或觀察回合數上限
+            if session.trust_in_scammer >= 100:
+                game_over = True
+                winner = "scammer"
+                reason = "騙徒信任度達到100"
+            elif session.trust_in_expert >= 100:
+                game_over = True
+                winner = "expert"
+                reason = "專家信任度達到100"
+            elif session.round_count >= 10:
                 game_over = True
                 winner = "none"
                 reason = "觀察完成"

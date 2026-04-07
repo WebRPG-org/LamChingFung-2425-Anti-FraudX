@@ -20,12 +20,16 @@ google-cloud-firestore>=2.14.0
 google-cloud-storage>=2.14.0
 google-cloud-logging>=3.8.0
 google-auth>=2.25.2
+google-cloud-texttospeech>=2.16.3
 
 # Firebase Admin SDK
 firebase-admin>=6.2.0
 
 # LLM 依賴
 vertexai>=0.42.0
+
+# Database
+sqlalchemy>=2.0.23
 
 # 基本工具
 tqdm>=4.66.0
@@ -38,3 +42,6 @@ cryptography>=41.0.0
 # 數據處理
 numpy>=1.24.0
 pandas>=2.0.0
+
+# Phase 3 & 4 - Expert Evaluation System ✨ NEW
+# (Already included above: fastapi, uvicorn, pydantic, aiofiles, sqlalchemy)

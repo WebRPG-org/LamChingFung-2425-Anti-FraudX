@@ -1,109 +1,44 @@
-# ============================================================
-# docker-compose.yml — Local development with GPU + Ollama
-# Usage: docker compose up
-# ============================================================
+version: '3.8'
 
 services:
-
-  # ── Ollama (local LLM) ──────────────────────────────────
-  ollama:
-    build:
-      context: ./docker/ollama
-      dockerfile: Dockerfile
-    container_name: ai-antiscam-ollama
-    restart: unless-stopped
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu, compute, utility]
-    ports:
-      - "11434:11434"
-    environment:
-      - OLLAMA_HOST=0.0.0.0
-      - OLLAMA_ORIGINS=*
-      - OLLAMA_NUM_PARALLEL=2
-      - OLLAMA_MAX_LOADED_MODELS=2
-      - OLLAMA_KEEP_ALIVE=5m
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
-    volumes:
-      - ollama_models:/root/.ollama
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 120s
-    networks:
-      - antiscam-net
-    shm_size: '2gb'
-
-  # ── Backend ─────────────────────────────────────────────
   backend:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: ai-antiscam-backend
-    restart: unless-stopped
-    depends_on:
-      ollama:
-        condition: service_healthy
+    container_name: ai-agent-backend
     ports:
-      - "8000:8000"
+      - "8080:8080"
     environment:
-      # LLM provider
-      - GEMINI_ENABLED=false
-      - OLLAMA_BASE_URL=http://ollama:11434
-      # Optimised generation params
-      - OLLAMA_NUM_CTX=2048
-      - OLLAMA_NUM_PREDICT=400
-      - OLLAMA_TEMPERATURE=0.7
-      - OLLAMA_TOP_P=0.85
-      - OLLAMA_REPEAT_PENALTY=1.1
-      # Agent models (override with fine-tuned models after Tools Center)
-      - AGENT_MODEL=${AGENT_MODEL:-gemma3:4b}
-      - AGENT_MODEL_SCAMMER=${AGENT_MODEL_SCAMMER:-gemma3:4b}
-      - AGENT_MODEL_EXPERT=${AGENT_MODEL_EXPERT:-gemma3:4b}
-      - AGENT_MODEL_VICTIM=${AGENT_MODEL_VICTIM:-gemma3:4b}
-      - AGENT_MODEL_RECORDER=${AGENT_MODEL_RECORDER:-gemma3:4b}
-      # GPU
-      - NVIDIA_VISIBLE_DEVICES=all
-      - FORCE_GPU=0
-      # App
-      - APP_ENV=development
-      - LOG_LEVEL=info
-      - PORT=8000
+      - AGENT_MODEL=gemma3:4b
+      - APP_ENV=production
+      - PYTHONUNBUFFERED=1
     volumes:
-      # Hot-reload in development
-      - ./backend:/app/backend
-      - ./frontend:/app/frontend:ro
-      # Persistent data
-      - training_data:/app/backend/training_data
-      - models_data:/app/backend/models
-      - db_data:/app/backend/db
+      - ./backend/data:/app/data
+      - ./backend/logs:/app/logs
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 90s
+      start_period: 40s
+    restart: unless-stopped
     networks:
-      - antiscam-net
-    shm_size: '1gb'
+      - ai-agent-network
+
+  # 可選：Firestore模擬器（用於本地開發）
+  firestore-emulator:
+    image: google/cloud-sdk:emulators
+    container_name: firestore-emulator
+    ports:
+      - "8081:8081"
+    environment:
+      - FIRESTORE_EMULATOR_HOST=0.0.0.0:8081
+    command: gcloud beta emulators firestore start --host-port=0.0.0.0:8081
+    networks:
+      - ai-agent-network
+    profiles:
+      - dev
 
 networks:
-  antiscam-net:
+  ai-agent-network:
     driver: bridge
-
-volumes:
-  ollama_models:
-    name: ai-antiscam-ollama-models
-  training_data:
-    name: ai-antiscam-training-data
-  models_data:
-    name: ai-antiscam-models
-  db_data:
-    name: ai-antiscam-db

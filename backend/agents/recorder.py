@@ -1,4 +1,5 @@
 import os
+from typing import ClassVar, Dict, Any
 from dotenv import load_dotenv
 
 from llms.llm_factory import LlmFactory
@@ -16,8 +17,8 @@ class RecorderAgent(BaseAgent):
     class Config:
         extra = "allow"  # 允許額外字段
     
-    # 🔥 性能評分配置
-    PERFORMANCE_WEIGHTS = {
+    # 🔥 性能評分配置 - 使用 ClassVar 避免 Pydantic 驗證
+    PERFORMANCE_WEIGHTS: ClassVar[Dict[str, Dict[str, float]]] = {
         "scammer": {
             "persuasiveness": 0.30,
             "credibility": 0.25,
@@ -33,8 +34,8 @@ class RecorderAgent(BaseAgent):
         }
     }
     
-    # 🔥 結果判定標準
-    OUTCOME_CRITERIA = {
+    # 🔥 結果判定標準 - 使用 ClassVar 避免 Pydantic 驗證
+    OUTCOME_CRITERIA: ClassVar[Dict[str, Dict[str, Any]]] = {
         "SUCCESS": {
             "description": "受騙者成功拒絕騙徒要求",
             "indicators": [

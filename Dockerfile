@@ -7,31 +7,27 @@ RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
     make \
-    git \
-    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# 複製 requirements
-COPY requirements.txt .
+# 複製requirements文件
+COPY backend/requirements.txt .
 
-# 安裝 Python 依賴
+# 安裝Python依賴
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 複製應用代碼
-COPY backend/ ./backend/
-COPY rpg-platform-v2/ ./rpg-platform-v2/
-COPY frontend/ ./frontend/
+# 複製整個後端代碼
+COPY backend/ .
 
-# 設置工作目錄為 backend
-WORKDIR /app/backend
+# 複製前端代碼
+COPY frontend/ ../frontend/
+COPY rpg-platform-v2/ ../rpg-platform-v2/
 
 # 暴露端口
 EXPOSE 8080
 
-# 設置環境變量
-ENV PYTHONUNBUFFERED=1
-ENV PORT=8080
-ENV DEPLOYMENT_ENV=cloud
+# 健康檢查
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD python -c "import requests; requests.get('http://localhost:8080/health')" || exit 1
 
 # 啟動應用
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["python", "main.py"]

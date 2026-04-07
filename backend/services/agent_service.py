@@ -348,6 +348,7 @@ class AgentService:
         agent_type: str,
         message: str,
         session_id: Optional[str] = None,
+        conversation_history: Optional[List[Dict[str, str]]] = None,
         check_consistency: bool = True,
         track_performance: bool = True
     ) -> Dict[str, Any]:
@@ -398,10 +399,16 @@ class AgentService:
             else:
                 full_prompt = message
             
+            # 提取語言指令（從 message 首行）並追加到 system instruction
+            lang_extra = ''
+            first_line = message.split('\n')[0].strip()
+            if any(k in first_line for k in ['必ず日本語', 'MUST reply in English', 'reply in English', '请使用简体中文', '請使用繁體中文']):
+                lang_extra = first_line
+            
             log.info(f"🤖 {agent_type.upper()} 生成響應... (session={session_id}, turn={session.turn_count})")
             
             # 4. 調用 Agent 的 LLM 生成響應
-            response_text = await self._call_agent_llm(agent, full_prompt)
+            response_text = await self._call_agent_llm(agent, full_prompt, extra_system=lang_extra)
             
             log.info(f"✅ {agent_type.upper()} 生成完成 (長度: {len(response_text)})")
             
@@ -457,12 +464,13 @@ class AgentService:
             log.error(f"❌ {agent_type.upper()} 生成失敗: {e}", exc_info=True)
             raise
     
-    async def _call_agent_llm(self, agent, prompt: str) -> str:
+    async def _call_agent_llm(self, agent, prompt: str, extra_system: str = '') -> str:
         """直接調用 Agent 的 LLM
         
         Args:
             agent: Agent 實例
             prompt: 完整的 prompt（包含上下文）
+            extra_system: 額外追加到 system instruction 的文字（例如語言指令）
         
         Returns:
             LLM 生成的文本
@@ -475,11 +483,16 @@ class AgentService:
                 # 構建完整的 system + user prompt
                 system_instruction = getattr(agent, 'instruction', '')
                 
+                # 追加語言指令到 system instruction
+                if extra_system:
+                    system_instruction = system_instruction + '\n\n' + extra_system
+                
                 # VertexAILLM.generate() 是同步方法，用 asyncio.to_thread 包裝
+                # 正確的參數順序：prompt, system_instruction, temperature, max_tokens
                 response = await asyncio.to_thread(
                     llm.generate,
-                    prompt=prompt,
-                    system_instruction=system_instruction
+                    prompt,
+                    system_instruction
                 )
                 return response if isinstance(response, str) else str(response)
             else:

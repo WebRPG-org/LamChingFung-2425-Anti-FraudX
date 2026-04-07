@@ -397,38 +397,141 @@ class SessionPersistenceService:
             log.error(f"❌ 會話刪除失敗: {e}")
             return False
     
-    # ============ Firestore 操作（待實現） ============
+    # ============ Firestore 操作 ============
     
     async def _save_to_firestore(self, session_id: str, session_data: Dict[str, Any]) -> bool:
-        """保存到 Firestore"""
-        # TODO: 實現 Firestore 保存邏輯
-        log.info(f"⏳ Firestore 保存待實現: {session_id}")
-        return True
+        """保存Session到 Firestore"""
+        try:
+            from google.cloud import firestore
+            
+            db = firestore.Client()
+            
+            # 保存到 sessions 集合
+            db.collection('sessions').document(session_id).set({
+                'session_id': session_id,
+                'data': session_data,
+                'saved_at': datetime.now().isoformat(),
+                'updated_at': datetime.now().isoformat()
+            }, merge=True)
+            
+            log.info(f"💾 Session saved to Firestore: {session_id}")
+            return True
+        
+        except Exception as e:
+            log.error(f"❌ Firestore save failed: {e}")
+            return False
     
     async def _save_conversation_to_firestore(self, conversation_data: Dict[str, Any]) -> bool:
         """保存對話到 Firestore"""
-        # TODO: 實現 Firestore 對話保存邏輯
-        return True
+        try:
+            from google.cloud import firestore
+            
+            db = firestore.Client()
+            session_id = conversation_data.get('session_id')
+            
+            # 保存到 sessions/{session_id}/conversations 子集合
+            db.collection('sessions').document(session_id).collection('conversations').add({
+                **conversation_data,
+                'saved_at': datetime.now().isoformat()
+            })
+            
+            log.info(f"💬 Conversation saved to Firestore: {session_id}")
+            return True
+        
+        except Exception as e:
+            log.error(f"❌ Firestore conversation save failed: {e}")
+            return False
     
     async def _save_analysis_to_firestore(self, analysis_data: Dict[str, Any]) -> bool:
         """保存分析結果到 Firestore"""
-        # TODO: 實現 Firestore 分析保存邏輯
-        return True
+        try:
+            from google.cloud import firestore
+            
+            db = firestore.Client()
+            session_id = analysis_data.get('session_id')
+            
+            # 保存到 sessions/{session_id}/evaluations 子集合
+            db.collection('sessions').document(session_id).collection('evaluations').add({
+                **analysis_data,
+                'saved_at': datetime.now().isoformat()
+            })
+            
+            log.info(f"📊 Analysis saved to Firestore: {session_id}")
+            return True
+        
+        except Exception as e:
+            log.error(f"❌ Firestore analysis save failed: {e}")
+            return False
     
     async def _recover_from_firestore(self, session_id: str) -> Optional[Dict[str, Any]]:
-        """從 Firestore 恢復會話"""
-        # TODO: 實現 Firestore 恢復邏輯
-        return None
+        """從 Firestore 恢復Session"""
+        try:
+            from google.cloud import firestore
+            
+            db = firestore.Client()
+            
+            # 從 sessions 集合獲取
+            doc = db.collection('sessions').document(session_id).get()
+            
+            if doc.exists:
+                log.info(f"🔄 Session recovered from Firestore: {session_id}")
+                return doc.to_dict()
+            
+            log.warning(f"⚠️ Session not found in Firestore: {session_id}")
+            return None
+        
+        except Exception as e:
+            log.error(f"❌ Firestore session recovery failed: {e}")
+            return None
     
     async def _recover_conversations_from_firestore(self, session_id: str) -> List[Dict[str, Any]]:
         """從 Firestore 恢復對話"""
-        # TODO: 實現 Firestore 對話恢復邏輯
-        return []
+        try:
+            from google.cloud import firestore
+            
+            db = firestore.Client()
+            
+            # 從 sessions/{session_id}/conversations 子集合獲取
+            conversations = []
+            docs = db.collection('sessions').document(session_id).collection('conversations').stream()
+            
+            for doc in docs:
+                conversations.append(doc.to_dict())
+            
+            log.info(f"🔄 Conversations recovered from Firestore: {session_id} ({len(conversations)} items)")
+            return conversations
+        
+        except Exception as e:
+            log.error(f"❌ Firestore conversations recovery failed: {e}")
+            return []
     
     async def _delete_from_firestore(self, session_id: str) -> bool:
-        """從 Firestore 刪除會話"""
-        # TODO: 實現 Firestore 刪除邏輯
-        return True
+        """從 Firestore 刪除Session"""
+        try:
+            from google.cloud import firestore
+            
+            db = firestore.Client()
+            
+            # 刪除所有子集合中的文檔
+            # 1. 刪除對話
+            conversations = db.collection('sessions').document(session_id).collection('conversations').stream()
+            for doc in conversations:
+                doc.reference.delete()
+            
+            # 2. 刪除評估
+            evaluations = db.collection('sessions').document(session_id).collection('evaluations').stream()
+            for doc in evaluations:
+                doc.reference.delete()
+            
+            # 3. 刪除Session本身
+            db.collection('sessions').document(session_id).delete()
+            
+            log.info(f"🗑️ Session deleted from Firestore: {session_id}")
+            return True
+        
+        except Exception as e:
+            log.error(f"❌ Firestore session deletion failed: {e}")
+            return False
 
 
 # 全局實例

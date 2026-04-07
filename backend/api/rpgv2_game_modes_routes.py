@@ -5,7 +5,7 @@ RPGv2 完整遊戲模式 API 路由
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from typing import List, Dict, Optional, Literal
+from typing import List, Dict, Optional, Literal, Any
 import asyncio
 import uuid
 import sys
@@ -16,17 +16,39 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from services.agent_service import AgentService
 from utils.rpgv2_game_mode_manager import game_mode_manager, GameMode
 from utils.logger import log
+from utils.scam_scoring_hybrid import HybridScamScoring
 
 router = APIRouter(prefix="/api/rpgv2", tags=["RPGv2-GameModes"])
 
+# 每個遊戲會話對應一個混合評分器（PROJECT_COMPLETION_REPORT 判定邏輯實際應用）
+_hybrid_scorers: Dict[str, HybridScamScoring] = {}
 
-# ==================== 數據模型 ====================
+SUPPORTED_LANGUAGES = {"zh-HK", "zh-CN", "en-US", "ja-JP"}
+
+
+def _normalize_language(language: Optional[str]) -> str:
+    if not language:
+        return "zh-HK"
+    value = language.strip()
+    return value if value in SUPPORTED_LANGUAGES else "zh-HK"
+
+
+def _language_instruction(language: str) -> str:
+    if language == "zh-CN":
+        return "请使用简体中文对话；可理解繁体中文输入并用简体中文回复。"
+    if language == "en-US":
+        return "IMPORTANT: You MUST reply in English only. Do not use Chinese or any other language. All responses must be in natural English."
+    if language == "ja-JP":
+        return "重要：必ず日本語で返答してください。中国語や他の言語を使わないでください。すべての返答を自然な日本語で行ってください。"
+    return "請使用繁體中文（香港粵語語境）回覆；可理解簡體中文輸入。"
+
 
 class StartGameRequest(BaseModel):
     mode: GameMode  # "victim" | "expert" | "scammer" | "auto"
     scam_type: str
     victim_persona: str = "average"
     difficulty: Optional[str] = "normal"  # easy/normal/hard
+    language: str = "zh-HK"  # zh-HK | zh-CN | en-US | ja-JP
 
 class StartGameResponse(BaseModel):
     session_id: str
@@ -40,6 +62,7 @@ class PlayerActionRequest(BaseModel):
     session_id: str
     message: str
     action_type: Optional[str] = "message"  # message/hint/skip
+    language: Optional[str] = None
 
 class PlayerActionResponse(BaseModel):
     session_id: str
@@ -59,6 +82,7 @@ class AutoPlayRequest(BaseModel):
 class SwitchRoleRequest(BaseModel):
     session_id: str
     new_mode: GameMode  # 切換到的新模式
+    language: Optional[str] = None
 
 
 # ==================== API 端點 ====================
@@ -77,12 +101,15 @@ async def start_game(request: StartGameRequest):
     try:
         session_id = str(uuid.uuid4())
         
+        normalized_language = _normalize_language(request.language)
+
         # 創建遊戲會話
         session = game_mode_manager.create_session(
             session_id=session_id,
             mode=request.mode,
             scam_type=request.scam_type,
-            victim_persona=request.victim_persona
+            victim_persona=request.victim_persona,
+            language=normalized_language
         )
         
         # 初始化 AgentService
@@ -91,13 +118,17 @@ async def start_game(request: StartGameRequest):
             enable_tracking=True,
             scam_type=request.scam_type
         )
+
+        # 初始化混合評分器（把 PROJECT_COMPLETION_REPORT 的判定邏輯接入主流程）
+        hybrid_scorer = HybridScamScoring(victim_persona=request.victim_persona)
+        _hybrid_scorers[session_id] = hybrid_scorer
         
         # 獲取模式信息
         mode_info = game_mode_manager.get_mode_info(request.mode)
         
         log.info(
             f"[RPGv2] 開始遊戲 - 會話={session_id}, "
-            f"模式={request.mode}, 騙案={request.scam_type}"
+            f"模式={request.mode}, 騙案={request.scam_type}, 語言={normalized_language}"
         )
         
         # 根據模式生成開場消息
@@ -123,7 +154,8 @@ async def start_game(request: StartGameRequest):
             "alertness": session.alertness,
             "player_score": session.player_score,
             "ai_score": session.ai_score,
-            "mode": request.mode
+            "mode": request.mode,
+            "language": normalized_language
         }
         
         return StartGameResponse(
@@ -156,6 +188,9 @@ async def player_action(request: PlayerActionRequest):
         if not session:
             raise HTTPException(status_code=404, detail="會話不存在")
         
+        if request.language:
+            session.language = _normalize_language(request.language)
+
         # 初始化 AgentService
         agent_service = AgentService(
             persona_type=session.victim_persona,
@@ -165,7 +200,7 @@ async def player_action(request: PlayerActionRequest):
         
         log.info(
             f"[RPGv2] 玩家行動 - 會話={request.session_id}, "
-            f"模式={session.mode}, 回合={session.round_count + 1}"
+            f"模式={session.mode}, 回合={session.round_count + 1}, 語言={session.language}"
         )
         
         # 根據模式處理行動
@@ -221,7 +256,8 @@ async def player_action(request: PlayerActionRequest):
             "trust_in_expert": updated_session.trust_in_expert,
             "alertness": updated_session.alertness,
             "player_score": updated_session.player_score,
-            "ai_score": updated_session.ai_score
+            "ai_score": updated_session.ai_score,
+            "language": updated_session.language
         }
         
         log.info(
@@ -318,14 +354,25 @@ async def auto_play(request: AutoPlayRequest):
             session.conversation_history.append(victim_msg)
             all_messages.append(victim_msg)
             
-            # 更新信任度
-            trust_changes = calculate_auto_trust_changes(
-                scammer_msg["content"],
-                victim_msg["content"]
-            )
-            
-            session.trust_in_scammer += trust_changes["scammer"]
-            session.alertness += trust_changes["alertness"]
+            # 更新信任度（混合評分系統）
+            scorer = _hybrid_scorers.get(request.session_id)
+            if scorer:
+                scammer_tactics = detect_tactics(scammer_msg["content"])
+                scorer.add_scammer_message(scammer_msg["content"], scammer_tactics)
+                scorer.add_victim_response(victim_msg["content"])
+
+                hybrid_state = scorer.get_current_state()
+                session.trust_in_scammer = hybrid_state.get("trust_in_scammer", session.trust_in_scammer)
+                session.trust_in_expert = hybrid_state.get("trust_in_expert", session.trust_in_expert)
+                session.alertness = hybrid_state.get("alertness", session.alertness)
+            else:
+                trust_changes = calculate_auto_trust_changes(
+                    scammer_msg["content"],
+                    victim_msg["content"]
+                )
+                session.trust_in_scammer += trust_changes["scammer"]
+                session.alertness += trust_changes["alertness"]
+
             session.round_count += 1
         
         # 檢查遊戲狀態
@@ -360,6 +407,9 @@ async def get_game_state(session_id: str):
     """獲取遊戲狀態"""
     try:
         stats = game_mode_manager.get_session_stats(session_id)
+        scorer = _hybrid_scorers.get(session_id)
+        if scorer:
+            stats["hybrid"] = _build_hybrid_snapshot(session_id, scorer)
         return {
             "success": True,
             **stats
@@ -368,6 +418,22 @@ async def get_game_state(session_id: str):
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         log.error(f"[RPGv2] 獲取遊戲狀態失敗: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/game/hybrid-analysis/{session_id}")
+async def get_hybrid_analysis(session_id: str):
+    """輸出 PROJECT_COMPLETION_REPORT 對應的完整 Hybrid 分析"""
+    try:
+        scorer = _get_hybrid_scorer_or_404(session_id)
+        return {
+            "success": True,
+            "hybrid": _build_hybrid_snapshot(session_id, scorer)
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        log.error(f"[RPGv2] 獲取 Hybrid 分析失敗: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -390,6 +456,7 @@ async def end_game_session(session_id: str):
     """結束遊戲會話"""
     try:
         success = game_mode_manager.delete_session(session_id)
+        _hybrid_scorers.pop(session_id, None)
         if success:
             return {"success": True, "message": "會話已結束"}
         else:
@@ -402,28 +469,41 @@ async def end_game_session(session_id: str):
 
 
 @router.get("/performance/stats")
-async def get_performance_stats():
+async def get_performance_stats(session_id: Optional[str] = None):
     """
     獲取性能統計
-    
-    返回AI判定系統的性能數據，包括：
-    - 快速路徑命中率
-    - 緩存命中率
-    - AI調用率
-    - 平均響應時間
+
+    - 若提供 session_id，輸出該會話的 Hybrid 性能與分析
+    - 若未提供，輸出所有活躍會話的 Hybrid 摘要
     """
     try:
-        if _optimized_judgment is None:
+        if session_id:
+            scorer = _get_hybrid_scorer_or_404(session_id)
             return {
-                "status": "not_initialized",
-                "message": "優化判定系統尚未初始化"
+                "success": True,
+                "session_id": session_id,
+                "data": {
+                    "current_state": scorer.get_current_state(),
+                    "detailed_analysis": scorer.get_detailed_analysis(),
+                    "final_report": scorer.generate_final_report(),
+                }
             }
-        
-        report = _optimized_judgment.get_performance_report()
+
+        all_sessions = {
+            sid: {
+                "current_state": scorer.get_current_state(),
+                "game_outcome": scorer.get_game_outcome(),
+            }
+            for sid, scorer in _hybrid_scorers.items()
+        }
+
         return {
             "success": True,
-            "data": report
+            "total_active_sessions": len(_hybrid_scorers),
+            "data": all_sessions
         }
+    except HTTPException:
+        raise
     except Exception as e:
         log.error(f"[RPGv2] 獲取性能統計失敗: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -431,18 +511,12 @@ async def get_performance_stats():
 
 @router.post("/performance/clear-cache")
 async def clear_performance_cache():
-    """清空AI判定緩存"""
+    """清空 Hybrid 評分器緩存"""
     try:
-        if _optimized_judgment is None:
-            return {
-                "success": False,
-                "message": "優化判定系統尚未初始化"
-            }
-        
-        _optimized_judgment.clear_cache()
+        _hybrid_scorers.clear()
         return {
             "success": True,
-            "message": "緩存已清空"
+            "message": "Hybrid 緩存已清空"
         }
     except Exception as e:
         log.error(f"[RPGv2] 清空緩存失敗: {str(e)}")
@@ -465,6 +539,9 @@ async def switch_role(request: SwitchRoleRequest):
             raise HTTPException(status_code=404, detail="會話不存在")
         
         old_mode = session.mode
+
+        if request.language:
+            session.language = _normalize_language(request.language)
         
         # 不允許切換到自動模式
         if request.new_mode == "auto":
@@ -478,7 +555,7 @@ async def switch_role(request: SwitchRoleRequest):
         
         log.info(
             f"[RPGv2] 角色切換 - 會話={request.session_id}, "
-            f"{old_mode} -> {request.new_mode}"
+            f"{old_mode} -> {request.new_mode}, 語言={session.language}"
         )
         
         # 獲取新模式信息
@@ -490,6 +567,7 @@ async def switch_role(request: SwitchRoleRequest):
             "old_mode": old_mode,
             "new_mode": request.new_mode,
             "mode_info": mode_info,
+            "language": session.language,
             "message": f"已切換到{mode_info['name']}"
         }
         
@@ -534,11 +612,36 @@ async def generate_opening_messages(
         
         return text.strip()
     
+    lang_instruction = _language_instruction(session.language)
+    lang = session.language
     messages = []
-    
+
     if mode == "victim":
         # 受害人模式：只顯示騙徒開場白，專家在玩家首次發言後才介入
-        scammer_context = f"騙案類型：{scam_type}\n開始詐騙對話，用一句話引起受害者興趣（50字內）。"
+        if lang == 'en-US':
+            scammer_context = (
+                f"Scam type: {scam_type}\n"
+                f"{lang_instruction}\n"
+                f"Start the scam conversation with one sentence to attract the victim's interest (within 50 words)."
+            )
+        elif lang == 'ja-JP':
+            scammer_context = (
+                f"詐欺の種類：{scam_type}\n"
+                f"{lang_instruction}\n"
+                f"詐欺の会話を始めて、一文で被害者の興味を引いてください（50字以内）。"
+            )
+        elif lang == 'zh-CN':
+            scammer_context = (
+                f"诈骗类型：{scam_type}\n"
+                f"{lang_instruction}\n"
+                f"开始诈骗对话，用一句话引起受害者兴趣（50字内）。"
+            )
+        else:
+            scammer_context = (
+                f"騙案類型：{scam_type}\n"
+                f"{lang_instruction}\n"
+                f"開始詐騙對話，用一句話引起受害者興趣（50字內）。"
+            )
         
         scammer_response = await agent_service.generate_response(
             agent_type="scammer",
@@ -559,14 +662,134 @@ async def generate_opening_messages(
         # 注意：專家不在開場出現，等玩家首次發言後再介入
     
     elif mode == "scammer":
-        # 騙徒模式：玩家（騙徒）先開始對話，不需要AI開場白
-        # 返回空列表，等待玩家發起第一條消息
-        pass
+        # 騙徒模式：AI先代騙徒（玩家）生成開場白，然後受害者和專家回應，最後輪到玩家輸入
+        lang = session.language
+        if lang == 'en-US':
+            scammer_context = (
+                f"Scam type: {scam_type}\n"
+                f"{lang_instruction}\n"
+                f"You are the scammer. Generate a natural opening line to approach the victim (within 60 words)."
+            )
+            victim_ctx_tmpl = "The scammer said: {scammer}\n{lang}\nAs the victim, respond naturally (within 40 words)."
+            expert_ctx_tmpl = "Scam type: {scam_type}\n{lang}\nThe scammer said: {scammer}\nThe victim said: {victim}\nAs an anti-scam expert, warn the victim briefly that this may be a scam (within 40 words)."
+        elif lang == 'ja-JP':
+            scammer_context = (
+                f"詐欺の種類：{scam_type}\n"
+                f"{lang_instruction}\n"
+                f"あなたは詐欺師です。被害者に自然な日本語で話しかけてください（60字以内）。"
+            )
+            victim_ctx_tmpl = "詐欺師が言いました：{scammer}\n{lang}\n被害者として自然に返答してください（40字以内）。"
+            expert_ctx_tmpl = "詐欺の種類：{scam_type}\n{lang}\n詐欺師が言いました：{scammer}\n被害者が言いました：{victim}\n防詐欺の専門家として、被害者にこれが詐欺かもしれないと簡潔に警告してください（40字以内）。"
+        elif lang == 'zh-CN':
+            scammer_context = (
+                f"诈骗类型：{scam_type}\n"
+                f"{lang_instruction}\n"
+                f"你是骗徒，根据诈骗类型生成一句自然的开场白接触受害者（60字内）。"
+            )
+            victim_ctx_tmpl = "骗徒说：{scammer}\n{lang}\n你是受害者，自然地回应骗徒（40字内）。"
+            expert_ctx_tmpl = "诈骗类型：{scam_type}\n{lang}\n骗徒说：{scammer}\n受害者说：{victim}\n你是防诈专家，简短警告受害者这可能是诈骗（40字内）。"
+        else:  # zh-HK
+            scammer_context = (
+                f"騙案類型：{scam_type}\n"
+                f"{lang_instruction}\n"
+                f"你是騙徒，根據騙案類型生成一句真實的開場白來接觸受害者（60字內，自然口語化）。"
+            )
+            victim_ctx_tmpl = "騙徒說：{scammer}\n{lang}\n你是受害者，自然地回應騙徒（40字內）。"
+            expert_ctx_tmpl = "騙案類型：{scam_type}\n{lang}\n騙徒說：{scammer}\n受害者說：{victim}\n你是防詐專家，向受害者提出簡短警告，提醒他這可能是詐騙（旁白口吻，40字內）。"
+
+        scammer_response = await agent_service.generate_response(
+            agent_type="scammer",
+            message=scammer_context,
+            conversation_history=[],
+            check_consistency=False,
+            track_performance=False
+        )
+
+        scammer_content = clean_role_prefix(scammer_response.get("reply", "你好，我有個重要事項想告訴你..."))
+
+        messages.append({
+            "role": "scammer",
+            "content": scammer_content
+        })
+
+        log.info(f"[開場-騙徒模式] 騙徒開場: {scammer_content[:50]}...")
+
+        # 受害者初步回應
+        victim_context = victim_ctx_tmpl.format(
+            scammer=scammer_content, lang=lang_instruction, scam_type=scam_type, victim=""
+        )
+
+        victim_response = await agent_service.generate_response(
+            agent_type="victim",
+            message=victim_context,
+            conversation_history=messages,
+            check_consistency=False,
+            track_performance=False
+        )
+
+        victim_content = clean_role_prefix(victim_response.get("reply", "係咩事？"))
+
+        messages.append({
+            "role": "victim",
+            "content": victim_content
+        })
+
+        log.info(f"[開場-騙徒模式] 受害者回應: {victim_content[:50]}...")
+
+        # 專家向受害者提出警告
+        expert_context = expert_ctx_tmpl.format(
+            scammer=scammer_content, victim=victim_content,
+            lang=lang_instruction, scam_type=scam_type
+        )
+
+        expert_response = await agent_service.generate_response(
+            agent_type="expert",
+            message=expert_context,
+            conversation_history=messages,
+            check_consistency=False,
+            track_performance=False
+        )
+
+        expert_content = clean_role_prefix(expert_response.get("reply", "注意！這可能是詐騙！"))
+
+        messages.append({
+            "role": "expert",
+            "content": expert_content
+        })
+
+        log.info(f"[開場-騙徒模式] 專家旁白: {expert_content[:50]}...")
         
     elif mode == "expert":
         # 專家模式：騙徒先發起詐騙
-        scammer_context = f"騙案類型：{scam_type}\n開始詐騙對話。"
-        
+        if lang == 'en-US':
+            scammer_context = (
+                f"Scam type: {scam_type}\n"
+                f"{lang_instruction}\n"
+                f"Start the scam conversation."
+            )
+            victim_ctx = f"The scammer said: {'{scammer_content}'}\n{lang_instruction}\nAs the victim, respond naturally."
+        elif lang == 'ja-JP':
+            scammer_context = (
+                f"詐欺の種類：{scam_type}\n"
+                f"{lang_instruction}\n"
+                f"詐欺の会話を始めてください。"
+            )
+            victim_ctx = f"詐欺師が言いました：{{scammer_content}}\n{lang_instruction}\n被害者として自然に返答してください。"
+        elif lang == 'zh-CN':
+            scammer_context = (
+                f"诈骗类型：{scam_type}\n"
+                f"{lang_instruction}\n"
+                f"开始诈骗对话。"
+            )
+            victim_ctx = f"骗徒说：{{scammer_content}}\n{lang_instruction}\n你是受害者，自然地回应。"
+        else:
+            scammer_context = (
+                f"騙案類型：{scam_type}\n"
+                f"{lang_instruction}\n"
+                f"開始詐騙對話。"
+            )
+            victim_ctx = f"騙徒說：{{scammer_content}}\n{lang_instruction}"
+
         scammer_response = await agent_service.generate_response(
             agent_type="scammer",
             message=scammer_context,
@@ -585,7 +808,7 @@ async def generate_opening_messages(
         log.info(f"[開場] 騙徒: {scammer_content[:50]}...")
         
         # 受害者初步回應
-        victim_context = f"騙徒說：{scammer_content}"
+        victim_context = victim_ctx.format(scammer_content=scammer_content)
         
         victim_response = await agent_service.generate_response(
             agent_type="victim",
@@ -606,7 +829,30 @@ async def generate_opening_messages(
         
     elif mode == "auto":
         # 自動模式：騙徒開場
-        scammer_context = f"騙案類型：{scam_type}\n開始詐騙對話。"
+        if lang == 'en-US':
+            scammer_context = (
+                f"Scam type: {scam_type}\n"
+                f"{lang_instruction}\n"
+                f"Start the scam conversation."
+            )
+        elif lang == 'ja-JP':
+            scammer_context = (
+                f"詐欺の種類：{scam_type}\n"
+                f"{lang_instruction}\n"
+                f"詐欺の会話を始めてください。"
+            )
+        elif lang == 'zh-CN':
+            scammer_context = (
+                f"诈骗类型：{scam_type}\n"
+                f"{lang_instruction}\n"
+                f"开始诈骗对话。"
+            )
+        else:
+            scammer_context = (
+                f"騙案類型：{scam_type}\n"
+                f"{lang_instruction}\n"
+                f"開始詐騙對話。"
+            )
         
         scammer_response = await agent_service.generate_response(
             agent_type="scammer",
@@ -628,6 +874,120 @@ async def generate_opening_messages(
     return messages
 
 
+def detect_tactics(message: str) -> List[str]:
+    """從訊息抽取騙徒策略標籤（對應 HybridScamScoring）"""
+    text = (message or "")
+    tactics: List[str] = []
+
+    if any(k in text for k in ["銀行", "警察", "政府", "官方", "客服", "職員"]):
+        tactics.append("authority")
+    if any(k in text for k in ["立即", "馬上", "緊急", "即刻", "限時", "最後機會"]):
+        tactics.append("urgency")
+    if any(k in text for k in ["回贈", "獎金", "福利", "高回報", "賺錢", "補貼"]):
+        tactics.append("benefits")
+    if any(k in text for k in ["你唔敢", "你不敢", "唔信", "敢唔敢", "挑戰"]):
+        tactics.append("challenge")
+    if any(k in text for k in ["凍結", "封鎖", "風險", "會出事", "損失", "追究"]):
+        tactics.append("fear")
+
+    return tactics
+
+
+def detect_defenses(message: str) -> List[str]:
+    """從訊息抽取專家防騙標籤（對應 HybridScamScoring）"""
+    text = (message or "")
+    defenses: List[str] = []
+
+    if any(k in text for k in ["唔好驚", "冷靜", "放心", "我明白", "先冷靜"]):
+        defenses.append("empathy")
+    if any(k in text for k in ["銀行唔會", "這是詐騙", "常見手法", "官方不會"]):
+        defenses.append("evidence")
+    if any(k in text for k in ["報警", "打去銀行", "18222", "核實", "聯絡官方"]):
+        defenses.append("actionable")
+    if any(k in text for k in ["重點", "總結", "簡單講", "一句話"]):
+        defenses.append("clarity")
+
+    return defenses
+
+
+def _apply_hybrid_scorer(
+    session_id: str,
+    mode: str,
+    player_msg: str,
+    scammer_msg: str,
+    expert_msg: str,
+    victim_msg: Optional[str] = None,
+) -> Dict[str, float]:
+    """把 PROJECT_COMPLETION_REPORT 的混合判定實際套用到主流程信任變化"""
+    scorer = _hybrid_scorers.get(session_id)
+    if not scorer:
+        return {}
+
+    scammer_tactics = detect_tactics(scammer_msg)
+    expert_defenses = detect_defenses(expert_msg)
+
+    _, scammer_status = scorer.add_scammer_message(scammer_msg, scammer_tactics)
+    _, expert_status = scorer.add_expert_message(expert_msg, expert_defenses)
+
+    victim_input = victim_msg if victim_msg is not None else player_msg
+    scorer.add_victim_response(victim_input)
+
+    # 依報告中的即時勝負規則，映射到現有 winner 表示
+    if scammer_status == "scammer_win":
+        winner = "player" if mode == "scammer" else "ai"
+        return {
+            "instant_win": {
+                "instant_win": True,
+                "winner": winner,
+                "reason": "即時判定：騙徒勝利"
+            },
+            "scammer": 100,
+            "expert": -100,
+            "alertness": -100
+        }
+
+    if expert_status == "expert_win":
+        winner = "player" if mode in ["victim", "expert"] else "ai"
+        return {
+            "instant_win": {
+                "instant_win": True,
+                "winner": winner,
+                "reason": "即時判定：專家勝利"
+            },
+            "scammer": -100,
+            "expert": 100,
+            "alertness": 100
+        }
+
+    state = scorer.get_current_state()
+    return {
+        "scammer": state.get("trust_in_scammer", 50) - 50,
+        "expert": state.get("trust_in_expert", 50) - 50,
+        "alertness": state.get("alertness", 50) - 50,
+    }
+
+
+def _get_hybrid_scorer_or_404(session_id: str) -> HybridScamScoring:
+    scorer = _hybrid_scorers.get(session_id)
+    if not scorer:
+        raise HTTPException(status_code=404, detail="Hybrid 評分器不存在，請先開始遊戲")
+    return scorer
+
+
+def _build_hybrid_snapshot(session_id: str, scorer: HybridScamScoring) -> Dict[str, Any]:
+    """彙整 PROJECT_COMPLETION_REPORT 中所有核心輸出"""
+    return {
+        "session_id": session_id,
+        "current_state": scorer.get_current_state(),
+        "game_outcome": scorer.get_game_outcome(),
+        "detailed_analysis": scorer.get_detailed_analysis(),
+        "persona_analysis": scorer.get_persona_analysis(),
+        "optimal_expert_strategies": scorer.get_optimal_expert_strategies(),
+        "vulnerable_scammer_tactics": scorer.get_vulnerable_scammer_tactics(),
+        "all_personas_comparison": scorer.compare_all_personas(),
+    }
+
+
 async def handle_victim_mode(
     session,
     player_message: str,
@@ -645,17 +1005,57 @@ async def handle_victim_mode(
         "content": player_message
     }]
 
-    # 🔥 騙徒 context（不依賴專家，可並行）
-    scammer_context = (
-        f"騙案類型：{session.scam_type}\n"
-        f"受害者說：{player_message}\n"
-        f"繼續詐騙對話，回應要簡短有力（100字內）。"
-    )
-    # 🔥 專家 context（不依賴騙徒回應，可並行）
-    expert_context = (
-        f"受害者說：{player_message}\n"
-        f"請向受害者提供簡短防詐建議（100字內）。"
-    )
+    lang_instruction = _language_instruction(session.language)
+    lang = session.language
+
+    if lang == 'en-US':
+        scammer_context = (
+            f"Scam type: {session.scam_type}\n"
+            f"{lang_instruction}\n"
+            f"The victim said: {player_message}\n"
+            f"Continue the scam conversation, respond briefly and persuasively (within 80 words)."
+        )
+        expert_context = (
+            f"{lang_instruction}\n"
+            f"The victim said: {player_message}\n"
+            f"As an anti-scam expert, give brief advice to protect the victim (within 80 words)."
+        )
+    elif lang == 'ja-JP':
+        scammer_context = (
+            f"詐欺の種類：{session.scam_type}\n"
+            f"{lang_instruction}\n"
+            f"被害者が言いました：{player_message}\n"
+            f"詐欺の会話を続けて、簡潔かつ説得力のある返答をしてください（80字以内）。"
+        )
+        expert_context = (
+            f"{lang_instruction}\n"
+            f"被害者が言いました：{player_message}\n"
+            f"防詐欺の専門家として、被害者を守るための簡潔なアドバイスをしてください（80字以内）。"
+        )
+    elif lang == 'zh-CN':
+        scammer_context = (
+            f"诈骗类型：{session.scam_type}\n"
+            f"{lang_instruction}\n"
+            f"受害者说：{player_message}\n"
+            f"继续诈骗对话，回应要简短有力（80字内）。"
+        )
+        expert_context = (
+            f"{lang_instruction}\n"
+            f"受害者说：{player_message}\n"
+            f"请向受害者提供简短防诈建议（80字内）。"
+        )
+    else:  # zh-HK default
+        scammer_context = (
+            f"騙案類型：{session.scam_type}\n"
+            f"{lang_instruction}\n"
+            f"受害者說：{player_message}\n"
+            f"繼續詐騙對話，回應要簡短有力（100字內）。"
+        )
+        expert_context = (
+            f"{lang_instruction}\n"
+            f"受害者說：{player_message}\n"
+            f"請向受害者提供簡短防詐建議（100字內）。"
+        )
 
     # 🔥 並行生成騙徒和專家回應
     log.info(f"[RPGv2] 並行生成騙徒+專家回應...")
@@ -690,7 +1090,7 @@ async def handle_victim_mode(
     log.info(f"[RPGv2] 專家: {expert_reply[:80]}...")
     log.info(f"[RPGv2] ai_responses 數量: {len(ai_responses)}")
     
-    # 計算信任度變化（使用AI語意判定）
+    # 計算信任度變化（使用AI語意判定 + HybridScamScoring 實際判定）
     trust_changes = await calculate_victim_trust_changes(
         player_message,
         scammer_reply,
@@ -698,7 +1098,31 @@ async def handle_victim_mode(
         agent_service,
         conversation_with_player
     )
-    
+    hybrid_changes = _apply_hybrid_scorer(
+        session.session_id,
+        session.mode,
+        player_message,
+        scammer_reply,
+        expert_reply,
+        victim_msg=player_message,
+    )
+    if hybrid_changes:
+        has_instant_win = bool(hybrid_changes.get("instant_win"))
+        has_numeric_signal = any(
+            abs(float(hybrid_changes.get(k, 0))) > 1e-6
+            for k in ("scammer", "expert", "alertness")
+        )
+
+        if has_instant_win:
+            trust_changes["instant_win"] = hybrid_changes["instant_win"]
+
+        # Hybrid 沒有實質變化時，不覆蓋 AI 分析結果（避免長期卡 50/50/50）
+        if has_numeric_signal:
+            trust_changes.update({
+                "scammer": hybrid_changes.get("scammer", trust_changes.get("scammer", 0)),
+                "expert": hybrid_changes.get("expert", trust_changes.get("expert", 0)),
+                "alertness": hybrid_changes.get("alertness", trust_changes.get("alertness", 0)),
+            })    
     log.info(
         f"[受害人模式] 信任度變化計算完成 - "
         f"scammer={trust_changes.get('scammer', 0):+.1f}, "
@@ -725,14 +1149,53 @@ async def handle_scammer_mode(
         "content": player_message
     }]
 
-    expert_context = (
-        f"騙徒對受害者說：{player_message}\n"
-        f"請簡短警告受害者（100字內）。"
-    )
-    victim_context = (
-        f"騙徒說：{player_message}\n"
-        f"你作為受害者，如何簡短回應（100字內）？"
-    )
+    lang_instruction = _language_instruction(session.language)
+    lang = session.language
+
+    if lang == 'en-US':
+        expert_context = (
+            f"{lang_instruction}\n"
+            f"The scammer said to the victim: {player_message}\n"
+            f"As an anti-scam expert, warn the victim briefly (within 80 words)."
+        )
+        victim_context = (
+            f"{lang_instruction}\n"
+            f"The scammer said: {player_message}\n"
+            f"As the victim, respond briefly (within 80 words)."
+        )
+    elif lang == 'ja-JP':
+        expert_context = (
+            f"{lang_instruction}\n"
+            f"詐欺師が被害者に言いました：{player_message}\n"
+            f"防詐欺の専門家として、被害者に簡潔に警告してください（80字以内）。"
+        )
+        victim_context = (
+            f"{lang_instruction}\n"
+            f"詐欺師が言いました：{player_message}\n"
+            f"被害者として、簡潔に返答してください（80字以内）。"
+        )
+    elif lang == 'zh-CN':
+        expert_context = (
+            f"{lang_instruction}\n"
+            f"骗徒对受害者说：{player_message}\n"
+            f"作为防诈专家，请简短警告受害者（80字内）。"
+        )
+        victim_context = (
+            f"{lang_instruction}\n"
+            f"骗徒说：{player_message}\n"
+            f"作为受害者，请简短回应（80字内）。"
+        )
+    else:  # zh-HK default
+        expert_context = (
+            f"{lang_instruction}\n"
+            f"騙徒對受害者說：{player_message}\n"
+            f"請用粵語簡短警告受害者（80字內）。"
+        )
+        victim_context = (
+            f"{lang_instruction}\n"
+            f"騙徒說：{player_message}\n"
+            f"你作為受害者，如何簡短回應（80字內）？"
+        )
 
     # 🔥 並行生成
     log.info(f"[RPGv2] 並行生成受害者+專家回應...")
@@ -767,7 +1230,7 @@ async def handle_scammer_mode(
     log.info(f"[RPGv2] 受害者: {victim_reply[:80]}...")
     log.info(f"[RPGv2] ai_responses 數量: {len(ai_responses)}")
     
-    # 計算信任度變化（使用AI語意判定）
+    # 計算信任度變化（使用AI語意判定 + HybridScamScoring 實際判定）
     trust_changes = await calculate_scammer_trust_changes(
         player_message,
         victim_reply,
@@ -775,7 +1238,31 @@ async def handle_scammer_mode(
         agent_service,
         conversation_with_player
     )
-    
+    hybrid_changes = _apply_hybrid_scorer(
+        session.session_id,
+        session.mode,
+        player_message,
+        scammer_msg=player_message,
+        expert_msg=expert_reply,
+        victim_msg=victim_reply,
+    )
+    if hybrid_changes:
+        has_instant_win = bool(hybrid_changes.get("instant_win"))
+        has_numeric_signal = any(
+            abs(float(hybrid_changes.get(k, 0))) > 1e-6
+            for k in ("scammer", "expert", "alertness")
+        )
+
+        if has_instant_win:
+            trust_changes["instant_win"] = hybrid_changes["instant_win"]
+
+        # Hybrid 沒有實質變化時，不覆蓋 AI 分析結果（避免長期卡 50/50/50）
+        if has_numeric_signal:
+            trust_changes.update({
+                "scammer": hybrid_changes.get("scammer", trust_changes.get("scammer", 0)),
+                "expert": hybrid_changes.get("expert", trust_changes.get("expert", 0)),
+                "alertness": hybrid_changes.get("alertness", trust_changes.get("alertness", 0)),
+            })    
     log.info(
         f"[騙徒模式] 信任度變化計算完成 - "
         f"scammer={trust_changes.get('scammer', 0):+.1f}, "
@@ -802,15 +1289,57 @@ async def handle_expert_mode(
         "content": player_message
     }]
 
-    victim_context = (
-        f"專家建議：{player_message}\n"
-        f"你作為受害者，如何簡短回應（100字內）？"
-    )
-    scammer_context = (
-        f"騙案類型：{session.scam_type}\n"
-        f"專家對受害者說：{player_message}\n"
-        f"繼續詐騙並反擊專家（100字內）。"
-    )
+    lang_instruction = _language_instruction(session.language)
+    lang = session.language
+
+    if lang == 'en-US':
+        victim_context = (
+            f"{lang_instruction}\n"
+            f"Expert advice: {player_message}\n"
+            f"As the victim, respond briefly (within 80 words)."
+        )
+        scammer_context = (
+            f"Scam type: {session.scam_type}\n"
+            f"{lang_instruction}\n"
+            f"The expert said to the victim: {player_message}\n"
+            f"Continue the scam and counter the expert (within 80 words)."
+        )
+    elif lang == 'ja-JP':
+        victim_context = (
+            f"{lang_instruction}\n"
+            f"専門家のアドバイス：{player_message}\n"
+            f"被害者として、簡潔に返答してください（80字以内）。"
+        )
+        scammer_context = (
+            f"詐欺の種類：{session.scam_type}\n"
+            f"{lang_instruction}\n"
+            f"専門家が被害者に言いました：{player_message}\n"
+            f"詐欺を続けて専門家に反論してください（80字以内）。"
+        )
+    elif lang == 'zh-CN':
+        victim_context = (
+            f"{lang_instruction}\n"
+            f"专家建议：{player_message}\n"
+            f"作为受害者，请简短回应（80字内）。"
+        )
+        scammer_context = (
+            f"诈骗类型：{session.scam_type}\n"
+            f"{lang_instruction}\n"
+            f"专家对受害者说：{player_message}\n"
+            f"继续诈骗并反击专家（80字内）。"
+        )
+    else:  # zh-HK default
+        victim_context = (
+            f"{lang_instruction}\n"
+            f"專家建議：{player_message}\n"
+            f"你作為受害者，如何簡短回應（100字內）？"
+        )
+        scammer_context = (
+            f"騙案類型：{session.scam_type}\n"
+            f"{lang_instruction}\n"
+            f"專家對受害者說：{player_message}\n"
+            f"繼續詐騙並反擊專家（100字內）。"
+        )
 
     # 🔥 並行生成
     log.info(f"[RPGv2] 並行生成受害者+騙徒回應...")
@@ -845,7 +1374,7 @@ async def handle_expert_mode(
     log.info(f"[RPGv2] 騙徒: {scammer_reply[:80]}...")
     log.info(f"[RPGv2] ai_responses 數量: {len(ai_responses)}")
     
-    # 計算信任度變化（使用AI語意判定）
+    # 計算信任度變化（使用AI語意判定 + HybridScamScoring 實際判定）
     trust_changes = await calculate_expert_trust_changes(
         player_message,
         scammer_reply,
@@ -853,7 +1382,31 @@ async def handle_expert_mode(
         agent_service,
         conversation_with_player
     )
-    
+    hybrid_changes = _apply_hybrid_scorer(
+        session.session_id,
+        session.mode,
+        player_message,
+        scammer_msg=scammer_reply,
+        expert_msg=player_message,
+        victim_msg=victim_reply,
+    )
+    if hybrid_changes:
+        has_instant_win = bool(hybrid_changes.get("instant_win"))
+        has_numeric_signal = any(
+            abs(float(hybrid_changes.get(k, 0))) > 1e-6
+            for k in ("scammer", "expert", "alertness")
+        )
+
+        if has_instant_win:
+            trust_changes["instant_win"] = hybrid_changes["instant_win"]
+
+        # Hybrid 沒有實質變化時，不覆蓋 AI 分析結果（避免長期卡 50/50/50）
+        if has_numeric_signal:
+            trust_changes.update({
+                "scammer": hybrid_changes.get("scammer", trust_changes.get("scammer", 0)),
+                "expert": hybrid_changes.get("expert", trust_changes.get("expert", 0)),
+                "alertness": hybrid_changes.get("alertness", trust_changes.get("alertness", 0)),
+            })    
     log.info(
         f"[專家模式] 信任度變化計算完成 - "
         f"scammer={trust_changes.get('scammer', 0):+.1f}, "
@@ -891,6 +1444,14 @@ async def check_instant_win_by_recorder(
         Dict with instant_win, winner, reason
     """
     try:
+        # 🔥 修復：短寒暄（如 hi / hello）不應觸發即時勝負
+        if _is_short_greeting(message):
+            return {
+                "instant_win": False,
+                "winner": None,
+                "reason": ""
+            }
+
         # 構建簡化的判定 prompt（只要求即時勝負判定）
         judge_prompt = f"""請快速判定以下對話是否達到即時勝負條件。
 
@@ -1196,6 +1757,55 @@ def check_instant_win_condition(message: str, role: str, mode: str) -> Dict:
     return result
 
 
+def _is_refusal_of_sensitive_info(message: str) -> bool:
+    """判斷是否在拒絕提供敏感資料（避免被 '密碼' 等字眼誤判）"""
+    text = (message or "").lower().strip()
+
+    # 常見字形/用字正規化
+    normalized = (
+        text.replace("给", "給")
+            .replace("比", "俾")
+            .replace("戶口", "帳號")
+            .replace("账号", "帳號")
+    )
+
+    refusal_markers = [
+        "不會", "不会", "不", "唔", "唔會", "拒絕", "拒绝", "不要", "唔好", "唔會俾", "不會俾", "不會給", "不會畀"
+    ]
+    sensitive_markers = [
+        "資料", "信息", "帳號", "账号", "銀行", "密碼", "密码", "驗證碼", "验证码", "卡號", "信用卡"
+    ]
+
+    has_refusal = any(k in normalized for k in refusal_markers)
+    has_sensitive = any(k in normalized for k in sensitive_markers)
+    return has_refusal and has_sensitive
+
+
+def _is_short_greeting(message: str) -> bool:
+    """判斷是否為過短寒暄語（避免被誤判成勝負）"""
+    text = (message or "").strip().lower()
+    if not text:
+        return True
+
+    normalized = ''.join(ch for ch in text if ch.isalnum())
+    short_greetings = {
+        "hi", "hey", "hello", "yo", "ok", "okay",
+        "哈囉", "你好", "嗨", "安", "在嗎", "喂", "hello"
+    }
+
+    return len(normalized) <= 3 or normalized in short_greetings
+
+
+def _extract_last_int(segment: str) -> int:
+    """從一段文字中提取最後一個整數（避免抓到 1. 2. 這類編號）"""
+    import re
+
+    numbers = re.findall(r'-?\d+', segment)
+    if not numbers:
+        raise ValueError(f"無法從段落提取數字: {segment}")
+    return int(numbers[-1])
+
+
 async def calculate_victim_trust_changes(
     victim_msg: str,
     scammer_msg: str,
@@ -1212,10 +1822,24 @@ async def calculate_victim_trust_changes(
     }
     
     # 🔥 優先使用關鍵詞快速判定（更可靠）
+    # 修復：先檢查「拒絕提供敏感資料」語義，避免被 "密碼/銀行" 字眼反向誤判
+    if _is_refusal_of_sensitive_info(victim_msg):
+        changes["instant_win"] = {
+            "instant_win": True,
+            "winner": "player",
+            "reason": "受害者明確拒絕提供敏感資料"
+        }
+        changes["alertness"] += 100
+        changes["scammer"] -= 100
+        changes["expert"] += 50
+        log.info(f"[即時勝負-受害人模式] 拒絕敏感資料命中: {victim_msg[:50]}...")
+        return changes
+
     instant_result = check_instant_win_condition(victim_msg, "player", "victim")
     
     # 如果關鍵詞沒有命中，再使用 AI 判定
-    if not instant_result.get("instant_win"):
+    # 🔥 修復：短寒暄（如 hi / hello）不觸發即時勝負 AI 判定
+    if not instant_result.get("instant_win") and not _is_short_greeting(victim_msg):
         instant_result = await check_instant_win_by_recorder(
             victim_msg, 
             "player", 
@@ -1278,12 +1902,10 @@ async def calculate_victim_trust_changes(
         parts = first_line.split(",")
         
         if len(parts) >= 4:
-            # 🔥 修復：只提取數字部分，忽略其他文字
-            import re
-            follow_expert = int(re.search(r'-?\d+', parts[0].strip()).group())
-            scammer_success = int(re.search(r'-?\d+', parts[1].strip()).group())
-            expert_influence = int(re.search(r'-?\d+', parts[2].strip()).group())
-            alertness_change = int(re.search(r'-?\d+', parts[3].strip()).group())
+            follow_expert = _extract_last_int(parts[0].strip())
+            scammer_success = _extract_last_int(parts[1].strip())
+            expert_influence = _extract_last_int(parts[2].strip())
+            alertness_change = _extract_last_int(parts[3].strip())
             
             # 🔥 修復：直接使用「騙徒成功度」作為騙徒評分變化
             changes["scammer"] = scammer_success
@@ -1393,12 +2015,10 @@ async def calculate_scammer_trust_changes(
         parts = first_line.split(",")
         
         if len(parts) >= 4:
-            # 🔥 修復：只提取數字部分，忽略其他文字
-            import re
-            strategy_score = int(re.search(r'-?\d+', parts[0].strip()).group())
-            trust_change = int(re.search(r'-?\d+', parts[1].strip()).group())
-            alertness_change = int(re.search(r'-?\d+', parts[2].strip()).group())
-            expert_impact = int(re.search(r'-?\d+', parts[3].strip()).group())
+            strategy_score = _extract_last_int(parts[0].strip())
+            trust_change = _extract_last_int(parts[1].strip())
+            alertness_change = _extract_last_int(parts[2].strip())
+            expert_impact = _extract_last_int(parts[3].strip())
             
             # 🔥 修復邏輯：
             # trust_change: AI分析的受害者對騙徒的信任變化（-10到+10）
@@ -1519,12 +2139,10 @@ async def calculate_expert_trust_changes(
         parts = first_line.split(",")
         
         if len(parts) >= 4:
-            # 🔥 修復：只提取數字部分，忽略其他文字
-            import re
-            expert_effectiveness = int(re.search(r'-?\d+', parts[0].strip()).group())
-            expert_trust = int(re.search(r'-?\d+', parts[1].strip()).group())
-            scammer_trust = int(re.search(r'-?\d+', parts[2].strip()).group())
-            alertness_change = int(re.search(r'-?\d+', parts[3].strip()).group())
+            expert_effectiveness = _extract_last_int(parts[0].strip())
+            expert_trust = _extract_last_int(parts[1].strip())
+            scammer_trust = _extract_last_int(parts[2].strip())
+            alertness_change = _extract_last_int(parts[3].strip())
             
             changes["expert"] = expert_trust
             changes["scammer"] = scammer_trust

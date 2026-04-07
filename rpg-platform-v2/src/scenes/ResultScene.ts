@@ -7,9 +7,11 @@
 import Phaser from 'phaser';
 import { ScamType } from '../types/ScamTypes';
 import { TrustData } from '../systems/TrustSystem';
+import { localization } from '../systems/LocalizationManager';
 
 interface ResultSceneData {
   outcome: 'scammer_win' | 'expert_win' | 'ongoing';
+  playerRole?: 'victim' | 'expert' | 'scammer' | 'auto' | 'observer';
   analysis?: {
     success: boolean;
     session_id: string;
@@ -158,20 +160,65 @@ export class ResultScene extends Phaser.Scene {
 
   private createTitle(): Phaser.GameObjects.Container {
     const container = this.add.container(0, 0);
+    const lang = localization.getLanguage();
+    const mode = this.sceneData.playerRole ?? 'victim';
+    const outcome = this.sceneData.outcome;
 
-    let titleText, titleIcon, titleColor;
-    if (this.sceneData.outcome === 'expert_win') {
-      titleIcon = '✅';
-      titleText = '成功識破騙局！';
-      titleColor = '#08D9D6';
-    } else if (this.sceneData.outcome === 'scammer_win') {
-      titleIcon = '💀';
-      titleText = '不幸被騙了...';
-      titleColor = '#FF2E63';
+    let titleText: string;
+    let titleIcon: string;
+    let titleColor: string;
+
+    if (mode === 'victim') {
+      // 受害者模式
+      if (outcome === 'expert_win') {
+        titleIcon = '✅'; titleColor = '#08D9D6';
+        titleText = lang === 'en-US' ? 'You Saw Through the Scam!'
+          : lang === 'ja-JP' ? '詐欺を見抜きました！'
+          : lang === 'zh-CN' ? '你成功識破騙局！'
+          : '你成功識破騙局！';
+      } else {
+        titleIcon = '💀'; titleColor = '#FF2E63';
+        titleText = lang === 'en-US' ? 'You Were Scammed...'
+          : lang === 'ja-JP' ? '騙されました...'
+          : lang === 'zh-CN' ? '你被骗了...'
+          : '你被騙了...';
+      }
+    } else if (mode === 'scammer') {
+      // 騙徒模式
+      if (outcome === 'scammer_win') {
+        titleIcon = '🎭'; titleColor = '#FF2E63';
+        titleText = lang === 'en-US' ? 'Scam Successful! Victim Deceived!'
+          : lang === 'ja-JP' ? '詐欺成功！被害者を騙しました！'
+          : lang === 'zh-CN' ? '詐騙成功！受害者上鉤了！'
+          : '詐騙成功！受害者上釣咗！';
+      } else {
+        titleIcon = '🛡️'; titleColor = '#08D9D6';
+        titleText = lang === 'en-US' ? 'Scam Failed! Victim Was Alerted!'
+          : lang === 'ja-JP' ? '詐欺失敗！被害者に見破られました！'
+          : lang === 'zh-CN' ? '詐騙失敗！受害者識破了你！'
+          : '詐騙失敗！受害者識穿咗你！';
+      }
+    } else if (mode === 'expert') {
+      // 專家模式
+      if (outcome === 'expert_win') {
+        titleIcon = '🛡️'; titleColor = '#08D9D6';
+        titleText = lang === 'en-US' ? 'Anti-Scam Success! Victim Protected!'
+          : lang === 'ja-JP' ? '防犯成功！被害者を守りました！'
+          : lang === 'zh-CN' ? '防詐成功！成功保護受害者！'
+          : '防詐成功！成功保護受害者！';
+      } else {
+        titleIcon = '💀'; titleColor = '#FF2E63';
+        titleText = lang === 'en-US' ? 'Prevention Failed! Victim Was Deceived!'
+          : lang === 'ja-JP' ? '防犯失敗！被害者が騙されました！'
+          : lang === 'zh-CN' ? '防詐失敗！受害者被騙了！'
+          : '防詐失敗！受害者被騙咗！';
+      }
     } else {
-      titleIcon = '⏸️';
-      titleText = '對話結束';
-      titleColor = '#FFD700';
+      titleIcon = '⏸️'; titleColor = '#FFD700';
+      titleText = lang === 'en-US' ? 'Dialogue Ended'
+        : lang === 'ja-JP' ? '会話終了'
+        : lang === 'zh-CN' ? '对话结束'
+        : '對話結束';
     }
 
     const title = this.add.text(0, 0, `${titleIcon} ${titleText}`, {
@@ -183,7 +230,6 @@ export class ResultScene extends Phaser.Scene {
       strokeThickness: 2
     });
     title.setOrigin(0.5);
-
     container.add(title);
     return container;
   }
@@ -223,7 +269,7 @@ export class ResultScene extends Phaser.Scene {
     const trustData = this.sceneData.trustData ?? { trustInScammer: 0, trustInExpert: 0, alertness: 50 };
 
     // 標題
-    const title = this.add.text(0, -35, '📊 最終信任度數據', {
+    const title = this.add.text(0, -35, localization.t('trustPanel').replace('📊 ', '') !== localization.t('trustPanel') ? '📊 ' + (localization.getLanguage() === 'en-US' ? 'Final Trust Data' : localization.getLanguage() === 'ja-JP' ? '最終信頼度データ' : localization.getLanguage() === 'zh-CN' ? '📊 最终信任度数据' : '📊 最終信任度數據') : '📊 最終信任度數據', {
       fontFamily: 'Noto Sans TC, sans-serif',
       fontSize: '16px',
       color: '#08D9D6',
@@ -269,7 +315,7 @@ export class ResultScene extends Phaser.Scene {
     container.add(bg);
 
     // 標題
-    const title = this.add.text(0, -35, '💡 學習要點', {
+    const title = this.add.text(0, -35, localization.t('learningPoints'), {
       fontFamily: 'Noto Sans TC, sans-serif',
       fontSize: '16px',
       color: '#FFD700',
@@ -278,13 +324,57 @@ export class ResultScene extends Phaser.Scene {
     title.setOrigin(0.5);
 
     // 建議文字
+    const mode = this.sceneData.playerRole ?? 'victim';
+    const outcome = this.sceneData.outcome;
+    const lang = localization.getLanguage();
     let recommendationText = '';
-    if (this.sceneData.outcome === 'expert_win') {
-      recommendationText = '✅ 你成功識破了騙局！保持警覺，繼續學習防詐技巧。';
-    } else if (this.sceneData.outcome === 'scammer_win') {
-      recommendationText = '⚠️ 這次被騙了，記住騙徒的手法，下次要更加小心！';
+
+    if (mode === 'victim') {
+      if (outcome === 'expert_win') {
+        recommendationText = localization.t('successSummary');
+      } else if (outcome === 'scammer_win') {
+        recommendationText = localization.t('failSummary');
+      } else {
+        recommendationText = localization.t('neutralSummary');
+      }
+    } else if (mode === 'scammer') {
+      if (outcome === 'scammer_win') {
+        recommendationText = lang === 'en-US'
+          ? '🎭 You successfully manipulated the victim! Study how psychological tactics work to better defend against them.'
+          : lang === 'ja-JP'
+          ? '🎭 被害者の操作に成功！心理的な手法を理解することで、詐欺への防衛力が高まります。'
+          : lang === 'zh-CN'
+          ? '🎭 你成功骗到了受害者！了解骗术心理有助于在现实中识破类似手法。'
+          : '🎭 你成功騙到咗受害者！了解呢啲騙術手法，有助於喺現實中識破同類騙局。';
+      } else {
+        recommendationText = lang === 'en-US'
+          ? '🛡️ The victim saw through your scam. Real-world scammers adapt and persist — stay vigilant!'
+          : lang === 'ja-JP'
+          ? '🛡️ 被害者に見破られました。現実の詐欺師は手口を変えてきます。常に警戒を！'
+          : lang === 'zh-CN'
+          ? '🛡️ 受害者识破了你的骗局。现实骗徒会不断变换手法，保持警惕！'
+          : '🛡️ 受害者識穿咗你嘅騙局。現實騙徒會不斷變換手法，保持警覺！';
+      }
+    } else if (mode === 'expert') {
+      if (outcome === 'expert_win') {
+        recommendationText = lang === 'en-US'
+          ? '🛡️ Excellent! Your advice successfully protected the victim. Keep sharing anti-scam knowledge!'
+          : lang === 'ja-JP'
+          ? '🛡️ 素晴らしい！あなたのアドバイスが被害者を守りました。防犯知識を広め続けましょう！'
+          : lang === 'zh-CN'
+          ? '🛡️ 出色！你的建议成功保护了受害者。继续传播防骗知识！'
+          : '🛡️ 出色！你嘅建議成功保護咗受害者。繼續傳播防騙知識！';
+      } else {
+        recommendationText = lang === 'en-US'
+          ? '💡 The victim was still deceived. Try more direct and urgent warnings next time to break through the scammer\'s influence.'
+          : lang === 'ja-JP'
+          ? '💡 被害者はまだ騙されてしまいました。次回はより直接的で緊急性のある警告を試してみましょう。'
+          : lang === 'zh-CN'
+          ? '💡 受害者还是被骗了。下次试试更直接、更紧迫的警告，打破骗徒的心理控制。'
+          : '💡 受害者仍然俾人騙咗。下次試試更直接、更緊迫嘅警告，打破騙徒嘅心理控制。';
+      }
     } else {
-      recommendationText = '📚 繼續學習不同的詐騙手法，提高防範意識。';
+      recommendationText = localization.t('neutralSummary');
     }
 
     const recommendation = this.add.text(0, 10, recommendationText, {
@@ -304,12 +394,12 @@ export class ResultScene extends Phaser.Scene {
     const container = this.add.container(0, 0);
 
     // 返回地圖按鈕
-    const returnButton = this.createButton(-150, 0, '🏠 返回地圖', 0x08D9D6, () => {
+    const returnButton = this.createButton(-150, 0, localization.t('returnMap'), 0x08D9D6, () => {
       this.returnToWorld();
     });
 
     // 再試一次按鈕
-    const retryButton = this.createButton(150, 0, '🔄 再試一次', 0xFF2E63, () => {
+    const retryButton = this.createButton(150, 0, localization.t('tryAgain'), 0xFF2E63, () => {
       this.retryBattle();
     });
 
@@ -394,7 +484,15 @@ export class ResultScene extends Phaser.Scene {
   }
 
   private retryBattle(): void {
-    // 重新開始相同的騙案對話
+    // 重新開始相同的騙案對話，保持原來的角色
+    const mode = this.sceneData.playerRole ?? 'victim';
+    const roleMap: Record<string, { id: string; nameZh: string; color: string; colorHex: number; icon: string }> = {
+      victim:  { id: 'victim',  nameZh: '受害者',   color: '#08D9D6', colorHex: 0x08D9D6, icon: '🛡️' },
+      scammer: { id: 'scammer', nameZh: '騙徒',     color: '#FF2E63', colorHex: 0xFF2E63, icon: '🎭' },
+      expert:  { id: 'expert',  nameZh: '防詐專家', color: '#FFD93D', colorHex: 0xFFD93D, icon: '🔍' },
+    };
+    const playerRole = roleMap[mode] ?? roleMap['victim'];
+
     const overlay = this.add.rectangle(
       this.cameras.main.width / 2,
       this.cameras.main.height / 2,
@@ -413,7 +511,7 @@ export class ResultScene extends Phaser.Scene {
         this.scene.start('BattleScene', {
           scamType: this.sceneData.scamType.id,
           scamTypeInfo: this.sceneData.scamType,
-          playerRole: { id: 'victim', nameZh: '受害者', color: '#08D9D6', colorHex: 0x08D9D6, icon: '🛡️' }
+          playerRole
         });
       }
     });

@@ -69,7 +69,7 @@ class ExpertAgent(BaseAntifraudAgent):
         
         base_instruction = PromptBuilder.build_expert_prompt(
             persona_type=victim_persona,
-            include_examples=not use_simple,
+            include_examples=False,
             include_hotlines=not use_simple,
             simple_mode=use_simple,
         )

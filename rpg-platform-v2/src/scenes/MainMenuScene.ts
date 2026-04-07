@@ -1,9 +1,13 @@
 import Phaser from 'phaser';
 import { RoleManager } from '../systems/RoleManager';
+import { localization, AppLanguage } from '../systems/LocalizationManager';
 
 export class MainMenuScene extends Phaser.Scene {
   private roleManager: RoleManager;
   private particles!: Phaser.GameObjects.Particles.ParticleEmitter;
+  private languageButtonBg?: Phaser.GameObjects.Rectangle;
+  private languageButtonText?: Phaser.GameObjects.Text;
+  private languagePanel?: Phaser.GameObjects.Container;
 
   constructor() {
     super({ key: 'MainMenuScene' });
@@ -14,6 +18,8 @@ export class MainMenuScene extends Phaser.Scene {
     const width = this.cameras.main.width;
     const height = this.cameras.main.height;
 
+    this.roleManager.applyLocalization();
+
     // Animated gradient background
     this.createAnimatedBackground();
 
@@ -22,6 +28,8 @@ export class MainMenuScene extends Phaser.Scene {
 
     // Main title with glow effect
     this.createTitle();
+
+    this.createLanguageSwitcher();
 
     // Role selection cards with modern design
     this.createRoleCards();
@@ -107,7 +115,7 @@ export class MainMenuScene extends Phaser.Scene {
     titleBg.setStrokeStyle(2, 0x08D9D6, 0.5);
 
     // Main title
-    const title = this.add.text(0, -20, '🛡️ AI 防詐騙訓練', {
+    const title = this.add.text(0, -20, localization.t('title'), {
       fontFamily: 'Orbitron, sans-serif',
       fontSize: '52px',
       color: '#FFFFFF',
@@ -118,7 +126,7 @@ export class MainMenuScene extends Phaser.Scene {
     title.setOrigin(0.5);
 
     // Subtitle with gradient effect
-    const subtitle = this.add.text(0, 30, '互動式 RPG 平台', {
+    const subtitle = this.add.text(0, 30, localization.t('subtitle'), {
       fontFamily: 'Rajdhani, sans-serif',
       fontSize: '24px',
       color: '#B8C5D6',
@@ -155,7 +163,7 @@ export class MainMenuScene extends Phaser.Scene {
     const height = this.cameras.main.height;
 
     // Section title
-    const sectionTitle = this.add.text(width / 2, 220, '選擇你的角色', {
+    const sectionTitle = this.add.text(width / 2, 220, localization.t('chooseRole'), {
       fontFamily: 'Rajdhani, sans-serif',
       fontSize: '28px',
       color: '#FFD93D',
@@ -320,7 +328,7 @@ export class MainMenuScene extends Phaser.Scene {
     const autoBg = this.add.rectangle(0, 0, 280, 60, 0xFF2E63, 0.9);
     autoBg.setStrokeStyle(2, 0xFF6B9D, 0.8);
 
-    const autoText = this.add.text(0, 0, '🤖 自動訓練模式', {
+    const autoText = this.add.text(0, 0, localization.t('autoMode'), {
       fontFamily: 'Rajdhani, sans-serif',
       fontSize: '22px',
       color: '#FFFFFF',
@@ -383,7 +391,7 @@ export class MainMenuScene extends Phaser.Scene {
     const exitBg = this.add.rectangle(0, 0, 280, 60, 0x08D9D6, 0.9);
     exitBg.setStrokeStyle(2, 0x0BC9BF, 0.8);
 
-    const exitText = this.add.text(0, 0, '🏠 返回主頁', {
+    const exitText = this.add.text(0, 0, localization.t('backHome'), {
       fontFamily: 'Rajdhani, sans-serif',
       fontSize: '22px',
       color: '#0A0E27',
@@ -475,6 +483,79 @@ export class MainMenuScene extends Phaser.Scene {
         delay: 1200 + index * 100
       });
     });
+  }
+
+  private createLanguageSwitcher(): void {
+    const width = this.cameras.main.width;
+    const x = width - 100;
+    const y = 36;
+
+    const bg = this.add.rectangle(x, y, 160, 46, 0x16213E, 0.9);
+    bg.setStrokeStyle(2, 0x08D9D6, 0.7);
+    bg.setInteractive({ useHandCursor: true });
+
+    const text = this.add.text(x, y, `🌐 ${this.getCurrentLanguageLabel()}`, {
+      fontFamily: 'Rajdhani, sans-serif',
+      fontSize: '18px',
+      color: '#FFFFFF',
+      fontStyle: 'bold'
+    }).setOrigin(0.5);
+
+    bg.setDepth(50);
+    text.setDepth(51);
+
+    bg.on('pointerdown', () => this.toggleLanguagePanel());
+
+    this.languageButtonBg = bg;
+    this.languageButtonText = text;
+  }
+
+  private getCurrentLanguageLabel(): string {
+    const current = localization.getLanguage();
+    return localization.getLanguageOptions().find((item) => item.code === current)?.label ?? '繁體';
+  }
+
+  private toggleLanguagePanel(): void {
+    if (this.languagePanel?.active) {
+      this.languagePanel.destroy();
+      this.languagePanel = undefined;
+      return;
+    }
+
+    const width = this.cameras.main.width;
+    const startY = 72;
+    const panel = this.add.container(width - 100, startY);
+    panel.setDepth(80);
+
+    const options = localization.getLanguageOptions();
+    const panelBg = this.add.rectangle(0, 0, 170, options.length * 40 + 10, 0x0A0E27, 0.95);
+    panelBg.setStrokeStyle(2, 0x08D9D6, 0.65);
+    panelBg.setOrigin(0.5, 0);
+    panel.add(panelBg);
+
+    options.forEach((opt, index) => {
+      const y = 20 + index * 38;
+      const row = this.add.rectangle(0, y, 150, 32, 0x16213E, localization.getLanguage() === opt.code ? 1 : 0.75);
+      row.setStrokeStyle(1, 0x08D9D6, 0.45);
+      row.setInteractive({ useHandCursor: true });
+      const label = this.add.text(0, y, opt.label, {
+        fontFamily: 'Rajdhani, sans-serif',
+        fontSize: '17px',
+        color: '#FFFFFF',
+        fontStyle: 'bold'
+      }).setOrigin(0.5);
+
+      row.on('pointerdown', () => this.applyLanguage(opt.code));
+      panel.add([row, label]);
+    });
+
+    this.languagePanel = panel;
+  }
+
+  private applyLanguage(language: AppLanguage): void {
+    localization.setLanguage(language);
+    this.roleManager.applyLocalization();
+    this.scene.restart();
   }
 
   private startGameWithTransition(): void {

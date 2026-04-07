@@ -36,9 +36,15 @@ class FirestoreRAGService:
             
             self.firestore_service = FirestoreService()
             self.db = self.firestore_service.get_db()
-            log.info("[FIRESTORE_RAG] ✅ Firestore RAG 服務初始化完成")
+            
+            if self.db is None:
+                log.warning("[FIRESTORE_RAG] ⚠️ Firestore 連接失敗，將使用本地存儲")
+                self.firestore_service = None
+            else:
+                log.info("[FIRESTORE_RAG] ✅ Firestore RAG 服務初始化完成")
         except Exception as e:
             log.error(f"[FIRESTORE_RAG] ❌ 初始化失敗: {str(e)}")
+            log.warning("[FIRESTORE_RAG] ⚠️ 將使用本地存儲作為備用")
             self.firestore_service = None
             self.db = None
     

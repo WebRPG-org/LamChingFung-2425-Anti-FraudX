@@ -172,6 +172,21 @@ def init_database():
 
 init_database()
 
+def _is_short_greeting(message: str) -> bool:
+    """短寒暄（如 hi/hello）不應直接觸發終局判定"""
+    text = (message or "").strip().lower()
+    if not text:
+        return True
+
+    normalized = ''.join(ch for ch in text if ch.isalnum())
+    short_greetings = {
+        "hi", "hey", "hello", "yo", "ok", "okay",
+        "你好", "哈囉", "嗨", "安", "喂", "在嗎"
+    }
+
+    return len(normalized) <= 3 or normalized in short_greetings
+
+
 # API 路由
 
 @router.post("/start", response_model=GameStartResponse)
@@ -643,58 +658,60 @@ async def game_action(raw_request: Request):
     try:
         # 🔥 **先檢查玩家消息中的關鍵詞**
         message_lower = message.lower()
+        is_short_greeting = _is_short_greeting(message)
         INSTANT_SCAMMER_WIN = ["銀行密碼", "銀行戶口", "密碼", "驗證碼", "轉賬", "提供資料"]
         INSTANT_EXPERT_WIN = ["報警", "警察", "18222", "銀行號碼", "銀行帳號"]
         
-        logging.info(f"🔍 玩家消息檢查 - message: '{message}', message_lower: '{message_lower}'")
+        logging.info(f"🔍 玩家消息檢查 - message: '{message}', message_lower: '{message_lower}', short_greeting={is_short_greeting}")
         
-        for keyword in INSTANT_SCAMMER_WIN:
-            if keyword in message_lower:
-                logging.warning(f"✅ 玩家說出關鍵詞 '{keyword}'，騙徒立即贏！")
-                return {
-                    "success": True,
-                    "ai_responses": [
-                        {"role": "scammer", "content": f"遊戲結束！你說出了 '{keyword}'，騙徒贏了！"},
-                        {"role": "expert", "content": f"遊戲結束！你說出了 '{keyword}'，騙徒贏了！"}
-                    ],
-                    "game_state": {
-                        "round_count": 0,
-                        "player_score": 0,
-                        "ai_score": 100,
-                        "trust_in_scammer": 100,
-                        "trust_in_expert": 0,
-                        "alertness": 0
-                    },
-                    "game_status": {
-                        "game_over": True,
-                        "winner": "scammer",
-                        "reason": f"玩家說出關鍵詞：{keyword}，騙徒贏了"
+        if not is_short_greeting:
+            for keyword in INSTANT_SCAMMER_WIN:
+                if keyword in message_lower:
+                    logging.warning(f"✅ 玩家說出關鍵詞 '{keyword}'，騙徒立即贏！")
+                    return {
+                        "success": True,
+                        "ai_responses": [
+                            {"role": "scammer", "content": f"遊戲結束！你說出了 '{keyword}'，騙徒贏了！"},
+                            {"role": "expert", "content": f"遊戲結束！你說出了 '{keyword}'，騙徒贏了！"}
+                        ],
+                        "game_state": {
+                            "round_count": 0,
+                            "player_score": 0,
+                            "ai_score": 100,
+                            "trust_in_scammer": 100,
+                            "trust_in_expert": 0,
+                            "alertness": 0
+                        },
+                        "game_status": {
+                            "game_over": True,
+                            "winner": "scammer",
+                            "reason": f"玩家說出關鍵詞：{keyword}，騙徒贏了"
+                        }
                     }
-                }
-        
-        for keyword in INSTANT_EXPERT_WIN:
-            if keyword in message_lower:
-                logging.warning(f"✅ 玩家說出關鍵詞 '{keyword}'，專家立即贏！")
-                return {
-                    "success": True,
-                    "ai_responses": [
-                        {"role": "scammer", "content": f"遊戲結束！你說出了 '{keyword}'，專家贏了！"},
-                        {"role": "expert", "content": f"遊戲結束！你說出了 '{keyword}'，專家贏了！"}
-                    ],
-                    "game_state": {
-                        "round_count": 0,
-                        "player_score": 0,
-                        "ai_score": 100,
-                        "trust_in_scammer": 0,
-                        "trust_in_expert": 100,
-                        "alertness": 100
-                    },
-                    "game_status": {
-                        "game_over": True,
-                        "winner": "expert",
-                        "reason": f"玩家說出關鍵詞：{keyword}，專家贏了"
+            
+            for keyword in INSTANT_EXPERT_WIN:
+                if keyword in message_lower:
+                    logging.warning(f"✅ 玩家說出關鍵詞 '{keyword}'，專家立即贏！")
+                    return {
+                        "success": True,
+                        "ai_responses": [
+                            {"role": "scammer", "content": f"遊戲結束！你說出了 '{keyword}'，專家贏了！"},
+                            {"role": "expert", "content": f"遊戲結束！你說出了 '{keyword}'，專家贏了！"}
+                        ],
+                        "game_state": {
+                            "round_count": 0,
+                            "player_score": 0,
+                            "ai_score": 100,
+                            "trust_in_scammer": 0,
+                            "trust_in_expert": 100,
+                            "alertness": 100
+                        },
+                        "game_status": {
+                            "game_over": True,
+                            "winner": "expert",
+                            "reason": f"玩家說出關鍵詞：{keyword}，專家贏了"
+                        }
                     }
-                }
         
         # 獲取會話信息
         conn = sqlite3.connect(DATABASE_PATH)
@@ -754,20 +771,28 @@ async def game_action(raw_request: Request):
         
         trust_in_scammer = scammer_result.get("trust_in_scammer", 50)
         trust_in_expert = expert_result.get("trust_in_expert", 50)
+
+        # 🔥 修復：短寒暄（HI/hello）視作中性輸入，不應拉高/拉低信任分
+        if _is_short_greeting(message):
+            trust_in_scammer = 50
+            trust_in_expert = 50
+            logging.info("🟰 短寒暄輸入，信任度保持中性：scammer=50, expert=50")
         
         # 檢查遊戲是否結束
         game_over = False
         winner = None
         reason = None
-        
-        if scammer_result.get("game_status") == "scammer_win":
-            game_over = True
-            winner = "scammer"
-            reason = "騙徒信任度達到100"
-        elif expert_result.get("game_status") == "expert_win":
-            game_over = True
-            winner = "expert"
-            reason = "專家信任度達到100"
+
+        # 🔥 修復：短寒暄（例如 HI）永遠不會在本回合直接結束
+        if not _is_short_greeting(message):
+            if scammer_result.get("game_status") == "scammer_win":
+                game_over = True
+                winner = "scammer"
+                reason = "騙徒信任度達到100"
+            elif expert_result.get("game_status") == "expert_win":
+                game_over = True
+                winner = "expert"
+                reason = "專家信任度達到100"
         
         conn.close()
         

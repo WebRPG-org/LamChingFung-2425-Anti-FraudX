@@ -59,8 +59,15 @@ export class NPC {
     
     // 使用騙案類型的顏色
     const bgColor = parseInt(this.scamType.color.replace('#', '0x'));
-    const bg = scene.add.rectangle(0, 0, 100, 24, bgColor, 0.9);
+    const bg = scene.add.rectangle(0, 0, 110, 30, bgColor, 0.9);
     bg.setStrokeStyle(2, 0xffffff, 0.8);
+    bg.setInteractive({ useHandCursor: true });
+    bg.on('pointerdown', () => {
+      // 觸發場景的 checkInteraction（透過自定義事件）
+      scene.events.emit('npc-interact-click', this);
+    });
+    bg.on('pointerover', () => { bg.setAlpha(1); });
+    bg.on('pointerout',  () => { bg.setAlpha(0.9); });
     
     // 顯示騙案類型圖標和提示
     const text = scene.add.text(0, 0, `${this.scamType.icon} [E]`, {

@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { Player } from '../entities/Player';
 import { NPC } from '../entities/NPC';
 import { RoleManager } from '../systems/RoleManager';
+import { localization, AppLanguage } from '../systems/LocalizationManager';
 import { getAllScamTypes } from '../types/ScamTypes';
 
 export class WorldMapScene extends Phaser.Scene {
@@ -15,6 +16,8 @@ export class WorldMapScene extends Phaser.Scene {
   private homeButton!: Phaser.GameObjects.Container;
   private obstacles: Phaser.Physics.Arcade.StaticGroup | null = null;
   private roleChangeCallback: (() => void) | null = null;
+  private languageButton?: Phaser.GameObjects.Container;
+  private languagePanel?: Phaser.GameObjects.Container;
 
   constructor() {
     super({ key: 'WorldMapScene' });
@@ -65,6 +68,7 @@ export class WorldMapScene extends Phaser.Scene {
 
     // Create HUD
     this.createHUD();
+    this.createLanguageSwitcher();
     
     // Create home button in top right
     this.createHomeButton();
@@ -268,6 +272,11 @@ export class WorldMapScene extends Phaser.Scene {
     this.input.keyboard?.on('keydown-F3', () => {
       this.roleManager.switchRole('expert');
     });
+
+    // NPC 互動指示器點擊事件
+    this.events.on('npc-interact-click', (npc: import('../entities/NPC').NPC) => {
+      this.startBattle(npc);
+    });
   }
 
   private createHUD(): void {
@@ -297,7 +306,7 @@ export class WorldMapScene extends Phaser.Scene {
     this.roleText.setOrigin(0, 0.5);
     
     // Role label
-    const roleLabel = this.add.text(85, 15, '當前角色', {
+    const roleLabel = this.add.text(85, 15, localization.t('currentRole'), {
       fontFamily: 'Noto Sans TC, sans-serif',
       fontSize: '11px',
       color: '#B8C5D6'
@@ -324,17 +333,19 @@ export class WorldMapScene extends Phaser.Scene {
     const instructionsBox = this.add.rectangle(0, 0, 300, 90, 0x16213E, 0.85);
     instructionsBox.setOrigin(0, 0);
     instructionsBox.setStrokeStyle(2, 0xFF2E63, 0.5);
+    instructionsBox.setInteractive({ useHandCursor: true });
+    instructionsBox.on('pointerover', () => { instructionsBox.setStrokeStyle(2, 0xFF2E63, 1); instructionsBox.setFillStyle(0xFF2E63, 0.15); });
+    instructionsBox.on('pointerout',  () => { instructionsBox.setStrokeStyle(2, 0xFF2E63, 0.5); instructionsBox.setFillStyle(0x16213E, 0.85); });
+    instructionsBox.on('pointerdown', () => this.toggleInstructions());
     
-    const instructionsTitle = this.add.text(15, 12, '⌨️ 操作提示', {
+    const instructionsTitle = this.add.text(15, 12, localization.t('controls'), {
       fontFamily: 'Rajdhani, sans-serif',
       fontSize: '14px',
       color: '#FFD93D',
       fontStyle: 'bold'
     });
     
-    const instructionsText = this.add.text(15, 35, 
-      '方向鍵/WASD - 移動\n' +
-      'E - 互動 | H - 說明 | F1/F2/F3 - 切換角色', {
+    const instructionsText = this.add.text(15, 35, localization.t('controlsBody'), {
       fontFamily: 'Noto Sans TC, sans-serif',
       fontSize: '11px',
       color: '#B8C5D6',
@@ -344,6 +355,16 @@ export class WorldMapScene extends Phaser.Scene {
     
     instructionsContainer.add([instructionsBox, instructionsTitle, instructionsText]);
     this.hud.add(instructionsContainer);
+
+    // 讓控制說明面板可以點擊（直接加透明覆蓋層到 scene，繞開 Container 的 pointer 問題）
+    const hClickZone = this.add.rectangle(20, 100, 300, 90, 0x000000, 0);
+    hClickZone.setOrigin(0, 0);
+    hClickZone.setScrollFactor(0);
+    hClickZone.setDepth(110);
+    hClickZone.setInteractive({ useHandCursor: true });
+    hClickZone.on('pointerdown', () => this.toggleInstructions());
+    hClickZone.on('pointerover', () => { instructionsBox.setStrokeStyle(2, 0xFF2E63, 1); instructionsBox.setFillStyle(0xFF2E63, 0.15); });
+    hClickZone.on('pointerout',  () => { instructionsBox.setStrokeStyle(2, 0xFF2E63, 0.5); instructionsBox.setFillStyle(0x16213E, 0.85); });
 
     // Entrance animation
     roleContainer.setAlpha(0);
@@ -366,6 +387,8 @@ export class WorldMapScene extends Phaser.Scene {
       delay: 200,
       ease: 'Back.easeOut'
     });
+
+    // E/H 鍵互動已透過 NPC indicator 點擊和鍵盤快捷鍵支援
   }
 
   private createHomeButton(): void {
@@ -389,7 +412,7 @@ export class WorldMapScene extends Phaser.Scene {
     icon.setDepth(101);
     
     // Text
-    const text = this.add.text(buttonX + 15, buttonY, '返回主頁', {
+    const text = this.add.text(buttonX + 15, buttonY, localization.t('backHome'), {
       fontFamily: 'Rajdhani, sans-serif',
       fontSize: '18px',
       color: '#FFFFFF',
@@ -504,6 +527,87 @@ export class WorldMapScene extends Phaser.Scene {
     });
   }
 
+  private createLanguageSwitcher(): void {
+    const width = this.cameras.main.width;
+    const container = this.add.container(width - 270, 50);
+    container.setScrollFactor(0);
+    container.setDepth(102);
+
+    const bg = this.add.rectangle(0, 0, 130, 44, 0x16213E, 0.9);
+    bg.setStrokeStyle(2, 0x08D9D6, 0.6);
+    bg.setInteractive({ useHandCursor: true });
+
+    const text = this.add.text(0, 0, `🌐 ${this.getCurrentLanguageLabel()}`, {
+      fontFamily: 'Rajdhani, sans-serif',
+      fontSize: '16px',
+      color: '#FFFFFF',
+      fontStyle: 'bold'
+    }).setOrigin(0.5);
+
+    container.add([bg, text]);
+    this.languageButton = container;
+
+    bg.on('pointerdown', () => this.toggleLanguagePanel());
+
+    // 監聽語言變化，同步更新按鈕文字
+    const onLangChange = () => {
+      text.setText(`🌐 ${this.getCurrentLanguageLabel()}`);
+    };
+    localization.onLanguageChange(onLangChange);
+    // 場景關閉時移除監聽器
+    this.events.once('shutdown', () => localization.offLanguageChange(onLangChange));
+    this.events.once('destroy', () => localization.offLanguageChange(onLangChange));
+  }
+
+  private getCurrentLanguageLabel(): string {
+    const current = localization.getLanguage();
+    return localization.getLanguageOptions().find((item) => item.code === current)?.label ?? '繁體';
+  }
+
+  private toggleLanguagePanel(): void {
+    if (this.languagePanel?.active) {
+      this.languagePanel.destroy();
+      this.languagePanel = undefined;
+      return;
+    }
+
+    const width = this.cameras.main.width;
+    const panel = this.add.container(width - 270, 80);
+    panel.setScrollFactor(0);
+    panel.setDepth(110);
+
+    const options = localization.getLanguageOptions();
+    const panelBg = this.add.rectangle(0, 0, 140, options.length * 34 + 10, 0x0A0E27, 0.95);
+    panelBg.setOrigin(0.5, 0);
+    panelBg.setStrokeStyle(2, 0x08D9D6, 0.7);
+    panel.add(panelBg);
+
+    options.forEach((option, index) => {
+      const y = 18 + index * 32;
+      const row = this.add.rectangle(0, y, 122, 28, 0x16213E, localization.getLanguage() === option.code ? 1 : 0.8);
+      row.setStrokeStyle(1, 0x08D9D6, 0.4);
+      row.setInteractive({ useHandCursor: true });
+
+      const label = this.add.text(0, y, option.label, {
+        fontFamily: 'Rajdhani, sans-serif',
+        fontSize: '15px',
+        color: '#FFFFFF',
+        fontStyle: 'bold'
+      }).setOrigin(0.5);
+
+      row.on('pointerdown', () => this.applyLanguage(option.code));
+      panel.add([row, label]);
+    });
+
+    this.languagePanel = panel;
+  }
+
+  private applyLanguage(language: AppLanguage): void {
+    localization.setLanguage(language);
+    this.roleManager.applyLocalization();
+    this.scene.restart();
+  }
+
   private updateRoleDisplay(): void {
     // 檢查場景是否還在運行
     if (!this.scene.isActive('WorldMapScene') || !this.roleText) {
@@ -533,7 +637,7 @@ export class WorldMapScene extends Phaser.Scene {
     if (nearbyNPCs.length > 0) {
       this.startBattle(nearbyNPCs[0]);
     } else {
-      this.showMessage('附近沒有可互動的NPC');
+      this.showMessage(localization.t('noNpc'));
     }
   }
 
@@ -545,7 +649,8 @@ export class WorldMapScene extends Phaser.Scene {
       npc: npc,
       scamType: npc.scamId,
       scamTypeInfo: npc.scamType,
-      playerRole: this.roleManager.getCurrentRole()
+      playerRole: this.roleManager.getCurrentRole(),
+      language: localization.getLanguage()
     });
     this.scene.pause('WorldMapScene');
   }
@@ -591,7 +696,7 @@ export class WorldMapScene extends Phaser.Scene {
     });
     
     // Title with glow
-    const title = this.add.text(0, -220, '🎮 遊戲指南', {
+    const title = this.add.text(0, -220, localization.t('guideTitle'), {
       fontFamily: 'Orbitron, sans-serif',
       fontSize: '38px',
       color: '#08D9D6',
@@ -603,7 +708,7 @@ export class WorldMapScene extends Phaser.Scene {
     this.instructionsContainer.add(title);
 
     // Subtitle
-    const subtitle = this.add.text(0, -175, '香港反詐騙 AI 模擬對話系統', {
+    const subtitle = this.add.text(0, -175, localization.t('guideSubtitle'), {
       fontFamily: 'Rajdhani, sans-serif',
       fontSize: '18px',
       color: '#FFD93D',
@@ -616,18 +721,18 @@ export class WorldMapScene extends Phaser.Scene {
     const sections = [
       {
         icon: '🎯',
-        title: '遊戲目標',
-        content: '與 NPC 互動，學習識別和防範各種詐騙手法'
+        title: localization.t('gameGoal'),
+        content: localization.t('gameGoalDesc')
       },
       {
         icon: '🕹️',
-        title: '操作說明',
-        content: 'E 鍵 - 與 NPC 互動\nH 鍵 - 顯示/隱藏說明\nF1/F2/F3 - 切換角色（受害者/騙徒/專家）'
+        title: localization.t('gameControls'),
+        content: localization.t('gameControlsDesc')
       },
       {
         icon: '💡',
-        title: '遊戲提示',
-        content: '靠近 NPC 會顯示互動提示\n不同角色有不同的對話選項\n完成對話可獲得訓練數據'
+        title: localization.t('gameTips'),
+        content: localization.t('gameTipsDesc')
       }
     ];
 
@@ -672,7 +777,7 @@ export class WorldMapScene extends Phaser.Scene {
     closeBg.setOrigin(0.5, 0.5);
     closeBg.setStrokeStyle(2, 0xFF6B9D, 0.8);
     
-    const closeText = this.add.text(0, 220, '開始遊戲 (H)', {
+    const closeText = this.add.text(0, 220, localization.t('gameGuideStart'), {
       fontFamily: 'Rajdhani, sans-serif',
       fontSize: '20px',
       color: '#FFFFFF',
@@ -681,11 +786,7 @@ export class WorldMapScene extends Phaser.Scene {
     closeText.setOrigin(0.5, 0.5);
     
     // Make button interactive with proper hit area
-    closeBg.setInteractive({ 
-      useHandCursor: true,
-      hitArea: new Phaser.Geom.Rectangle(80, 360, 200, 50),
-      hitAreaCallback: Phaser.Geom.Rectangle.Contains
-    });
+    closeBg.setInteractive({ useHandCursor: true });
     
     // Hover effect
     closeBg.on('pointerover', () => {
@@ -737,6 +838,32 @@ export class WorldMapScene extends Phaser.Scene {
 
     // Add button last (on top)
     this.instructionsContainer.add([closeBg, closeText]);
+
+    // 透明覆蓋層讓紅色按鈕可以點擊（繞開 Container pointer 問題）
+    const closeClickZone = this.add.rectangle(width / 2, height / 2 + 220, 200, 50, 0x000000, 0);
+    closeClickZone.setScrollFactor(0);
+    closeClickZone.setDepth(210);
+    closeClickZone.setInteractive({ useHandCursor: true });
+    closeClickZone.on('pointerdown', () => {
+      closeClickZone.destroy();
+      this.tweens.add({
+        targets: this.instructionsContainer,
+        alpha: 0,
+        scale: 0.9,
+        duration: 300,
+        ease: 'Back.easeIn',
+        onComplete: () => {
+          if (this.instructionsContainer) {
+            this.instructionsContainer.destroy();
+            this.instructionsContainer = null;
+          }
+        }
+      });
+    });
+    closeClickZone.on('pointerover', () => { closeBg.setFillStyle(0xFF2E63, 1); closeBg.setStrokeStyle(3, 0xFF6B9D, 1); });
+    closeClickZone.on('pointerout',  () => { closeBg.setFillStyle(0xFF2E63, 0.9); closeBg.setStrokeStyle(2, 0xFF6B9D, 0.8); });
+    // instructionsContainer 關閉時同步移除覆蓋層
+    this.events.once('instructions-close', () => closeClickZone.destroy());
 
     // Entrance animation
     this.instructionsContainer.setAlpha(0);
@@ -881,6 +1008,15 @@ export class WorldMapScene extends Phaser.Scene {
     // 清理返回按鈕
     if (this.homeButton) {
       this.homeButton.destroy();
+    }
+
+    if (this.languagePanel) {
+      this.languagePanel.destroy();
+      this.languagePanel = null as any;
+    }
+    if (this.languageButton) {
+      this.languageButton.destroy();
+      this.languageButton = null as any;
     }
     
     // 移除所有鍵盤事件監聽

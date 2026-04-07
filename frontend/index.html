@@ -42,6 +42,16 @@
                 </div>
                 <div class="version-badge">v2.0</div>
                 <button class="settings-btn" onclick="openSettings()" title="系統設定">⚙️ 設定</button>
+                <!-- Language Switcher -->
+                <div id="langSwitcher" style="position:relative;display:inline-block;">
+                  <button id="langBtn" onclick="toggleLangPanel()" style="background:rgba(8,217,214,.15);border:1.5px solid rgba(8,217,214,.4);color:#08D9D6;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:700;">&#127760; <span id="langLabel">&#32321;&#39636;</span></button>
+                  <div id="langPanel" style="display:none;position:absolute;right:0;top:110%;background:rgba(10,14,39,.97);border:1.5px solid rgba(8,217,214,.5);border-radius:10px;min-width:130px;z-index:999;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.4);">
+                    <div class="lang-opt" data-lang="zh-HK" data-label="&#32321;&#39636;">HK &#32321;&#39636;</div>
+                    <div class="lang-opt" data-lang="zh-CN" data-label="&#31616;&#20307;">CN &#31616;&#20307;</div>
+                    <div class="lang-opt" data-lang="en-US" data-label="EN">EN English</div>
+                    <div class="lang-opt" data-lang="ja-JP" data-label="&#26085;&#26412;&#35486;">JP &#26085;&#26412;&#35486;</div>
+                  </div>
+                </div>
             </div>
         </div>
     </div>
@@ -408,6 +418,53 @@
     window.closeSettings = closeSettings;
     window.saveSettings  = saveSettings;
     window.toggleReveal  = toggleReveal;
+    </script>
+
+    <style>
+    .lang-opt{padding:10px 16px;font-size:14px;color:#fff;cursor:pointer;transition:background .15s;font-weight:600;}
+    .lang-opt:hover{background:rgba(8,217,214,.2);color:#08D9D6;}
+    .lang-opt.active{background:rgba(8,217,214,.15);color:#08D9D6;}
+    #langBtn:hover{background:rgba(8,217,214,.3)!important;}
+    </style>
+    <script>
+    (function(){
+      var LANG_KEY='rpgv2_language';
+      var LANG_MAP={'zh-HK':'繁體','zh-CN':'简体','en-US':'EN','ja-JP':'日本語'};
+      function initLangSwitcher(){
+        var saved=localStorage.getItem(LANG_KEY)||'zh-HK';
+        var lbl=document.getElementById('langLabel');
+        if(lbl) lbl.textContent=LANG_MAP[saved]||'繁體';
+        document.querySelectorAll('.lang-opt').forEach(function(el){
+          if(el.dataset.lang===saved) el.classList.add('active');
+          el.addEventListener('click',function(){ applyLang(el.dataset.lang,el.dataset.label); });
+        });
+      }
+      function toggleLangPanel(){
+        var p=document.getElementById('langPanel');
+        if(p) p.style.display=p.style.display==='none'?'block':'none';
+      }
+      function applyLang(code,label){
+        localStorage.setItem(LANG_KEY,code);
+        var lbl=document.getElementById('langLabel');
+        if(lbl) lbl.textContent=label;
+        var p=document.getElementById('langPanel');
+        if(p) p.style.display='none';
+        document.querySelectorAll('.lang-opt').forEach(function(el){
+          el.classList.toggle('active',el.dataset.lang===code);
+        });
+      }
+      document.addEventListener('click',function(e){
+        var sw=document.getElementById('langSwitcher');
+        if(sw&&!sw.contains(e.target)){
+          var p=document.getElementById('langPanel');
+          if(p) p.style.display='none';
+        }
+      });
+      window.toggleLangPanel=toggleLangPanel;
+      if(document.readyState==='loading'){
+        document.addEventListener('DOMContentLoaded',initLangSwitcher);
+      } else { initLangSwitcher(); }
+    })();
     </script>
 </body>
 </html> 

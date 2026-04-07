@@ -1,3 +1,5 @@
+import { localization } from './LocalizationManager';
+
 export type RoleType = 'victim' | 'scammer' | 'expert';
 
 export interface Role {
@@ -56,6 +58,7 @@ export class RoleManager {
 
   private constructor() {
     this.currentRole = this.roles.get('victim')!;
+    this.applyLocalization();
   }
 
   static getInstance(): RoleManager {
@@ -92,5 +95,26 @@ export class RoleManager {
 
   private notifyListeners(): void {
     this.listeners.forEach(callback => callback(this.currentRole));
+  }
+
+  applyLocalization(): void {
+    const victim = this.roles.get('victim');
+    const scammer = this.roles.get('scammer');
+    const expert = this.roles.get('expert');
+
+    if (victim) {
+      victim.nameZh = localization.t('roleVictim');
+      victim.descriptionZh = localization.t('roleDescVictim');
+    }
+    if (scammer) {
+      scammer.nameZh = localization.t('roleScammer');
+      scammer.descriptionZh = localization.t('roleDescScammer');
+    }
+    if (expert) {
+      expert.nameZh = localization.t('roleExpert');
+      expert.descriptionZh = localization.t('roleDescExpert');
+    }
+
+    this.notifyListeners();
   }
 }

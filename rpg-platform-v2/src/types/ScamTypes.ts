@@ -7,8 +7,10 @@
 // 騙案類型接口
 export interface ScamType {
   id: string;                    // 唯一標識
-  nameZh: string;                // 中文名稱
+  nameZh: string;                // 繁體中文名稱
+  nameZhCN?: string;             // 簡體中文名稱
   nameEn: string;                // 英文名稱
+  nameJa?: string;               // 日文名稱
   icon: string;                  // 圖標 emoji
   description: string;           // 簡短描述
   targetVictims: string[];       // 目標受害者類型
@@ -26,7 +28,9 @@ export const SCAM_TYPES: Record<string, ScamType> = {
   investment: {
     id: 'investment',
     nameZh: '虛假投資詐騙',
+    nameZhCN: '虚假投资诈骗',
     nameEn: 'Investment Scam',
+    nameJa: '偽投資詐欺',
     icon: '💰',
     description: '聲稱有穩賺不賠的投資機會，誘騙受害者投入大量金錢',
     targetVictims: ['elderly', 'average', 'overconfident'],
@@ -44,7 +48,9 @@ export const SCAM_TYPES: Record<string, ScamType> = {
   phishing: {
     id: 'phishing',
     nameZh: '釣魚短訊詐騙',
+    nameZhCN: '钓鱼短信诈骗',
     nameEn: 'Phishing SMS',
+    nameJa: 'フィッシングSMS詐欺',
     icon: '📱',
     description: '假冒銀行、政府機構發送短訊，誘騙點擊惡意連結或提供個人資料',
     targetVictims: ['elderly', 'average', 'student'],
@@ -62,7 +68,9 @@ export const SCAM_TYPES: Record<string, ScamType> = {
   romance: {
     id: 'romance',
     nameZh: '愛情詐騙',
+    nameZhCN: '爱情诈骗',
     nameEn: 'Romance Scam',
+    nameJa: 'ロマンス詐欺',
     icon: '💕',
     description: '在交友平台建立虛假感情關係，取得信任後騙取金錢',
     targetVictims: ['average', 'student'],
@@ -80,7 +88,9 @@ export const SCAM_TYPES: Record<string, ScamType> = {
   impersonation: {
     id: 'impersonation',
     nameZh: '假冒官員詐騙',
+    nameZhCN: '假冒官员诈骗',
     nameEn: 'Impersonation Scam',
+    nameJa: '公務員なりすまし詐欺',
     icon: '👮',
     description: '假冒警察、法官、檢察官，聲稱受害者涉及刑事案件',
     targetVictims: ['elderly', 'average'],
@@ -98,7 +108,9 @@ export const SCAM_TYPES: Record<string, ScamType> = {
   shopping: {
     id: 'shopping',
     nameZh: '虛假購物詐騙',
+    nameZhCN: '虚假购物诈骗',
     nameEn: 'Shopping Scam',
+    nameJa: 'ネット通販詐欺',
     icon: '🛒',
     description: '在網上販賣不存在的商品，收款後不發貨或發送假貨',
     targetVictims: ['average', 'student'],
@@ -116,7 +128,9 @@ export const SCAM_TYPES: Record<string, ScamType> = {
   job: {
     id: 'job',
     nameZh: '求職詐騙',
+    nameZhCN: '求职诈骗',
     nameEn: 'Job Scam',
+    nameJa: '求人詐欺',
     icon: '💼',
     description: '發布虛假招聘廣告，騙取培訓費、保證金或個人資料',
     targetVictims: ['student', 'average'],
@@ -134,7 +148,9 @@ export const SCAM_TYPES: Record<string, ScamType> = {
   prize: {
     id: 'prize',
     nameZh: '中獎詐騙',
+    nameZhCN: '中奖诈骗',
     nameEn: 'Prize Scam',
+    nameJa: '懸賞詐欺',
     icon: '🎁',
     description: '聲稱受害者中獎，要求先支付稅金、手續費或運費',
     targetVictims: ['elderly', 'average'],
@@ -152,7 +168,9 @@ export const SCAM_TYPES: Record<string, ScamType> = {
   whatsapp: {
     id: 'whatsapp',
     nameZh: 'WhatsApp 詐騙',
+    nameZhCN: 'WhatsApp 诈骗',
     nameEn: 'WhatsApp Scam',
+    nameJa: 'WhatsApp詐欺',
     icon: '💬',
     description: '假冒親友在 WhatsApp 要求緊急匯款或借錢',
     targetVictims: ['elderly', 'average'],
@@ -170,7 +188,9 @@ export const SCAM_TYPES: Record<string, ScamType> = {
   banking: {
     id: 'banking',
     nameZh: '假冒銀行詐騙',
+    nameZhCN: '假冒银行诈骗',
     nameEn: 'Banking Scam',
+    nameJa: '銀行なりすまし詐欺',
     icon: '🏦',
     description: '假冒銀行職員，聲稱帳戶有問題需要驗證或更新資料',
     targetVictims: ['elderly', 'average'],
@@ -188,7 +208,9 @@ export const SCAM_TYPES: Record<string, ScamType> = {
   crypto: {
     id: 'crypto',
     nameZh: '加密貨幣詐騙',
+    nameZhCN: '加密货币诈骗',
     nameEn: 'Crypto Scam',
+    nameJa: '暗号通貨詐欺',
     icon: '₿',
     description: '虛假加密貨幣投資平台或龐氏騙局，承諾暴利回報',
     targetVictims: ['overconfident', 'average', 'student'],
@@ -206,7 +228,9 @@ export const SCAM_TYPES: Record<string, ScamType> = {
   rental: {
     id: 'rental',
     nameZh: '租屋詐騙',
+    nameZhCN: '租房诈骗',
     nameEn: 'Rental Scam',
+    nameJa: '賃貸詐欺',
     icon: '🏠',
     description: '發布虛假租屋廣告，騙取訂金後失聯',
     targetVictims: ['student', 'average'],
@@ -224,7 +248,9 @@ export const SCAM_TYPES: Record<string, ScamType> = {
   tech_support: {
     id: 'tech_support',
     nameZh: '技術支援詐騙',
+    nameZhCN: '技术支持诈骗',
     nameEn: 'Tech Support Scam',
+    nameJa: 'テクニカルサポート詐欺',
     icon: '💻',
     description: '假冒技術支援人員，聲稱電腦有病毒需要付費修復',
     targetVictims: ['elderly', 'average'],
@@ -242,7 +268,9 @@ export const SCAM_TYPES: Record<string, ScamType> = {
   charity: {
     id: 'charity',
     nameZh: '虛假慈善詐騙',
+    nameZhCN: '虚假慈善诈骗',
     nameEn: 'Charity Scam',
+    nameJa: '偽慈善詐欺',
     icon: '❤️',
     description: '假冒慈善機構募款，利用同情心騙取捐款',
     targetVictims: ['elderly', 'average'],
