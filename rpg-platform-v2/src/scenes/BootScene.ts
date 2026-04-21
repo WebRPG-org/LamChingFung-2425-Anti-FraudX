@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+const ASSET_BASE = `${import.meta.env.BASE_URL}assets/`;
+
 export class BootScene extends Phaser.Scene {
   constructor() {
     super({ key: 'BootScene' });
@@ -61,52 +63,52 @@ export class BootScene extends Phaser.Scene {
     console.log('[BootScene] Loading professional RPG Maker MV assets...');
     
     // Load character spritesheets (48x48, 3 columns x 4 rows)
-    this.load.spritesheet('player', 'assets/characters/Actor1.png', {
+    this.load.spritesheet('player', `${ASSET_BASE}characters/Actor1.png`, {
       frameWidth: 48,
       frameHeight: 48
     });
     
-    this.load.spritesheet('npc-elderly', 'assets/characters/People3.png', {
+    this.load.spritesheet('npc-elderly', `${ASSET_BASE}characters/People3.png`, {
       frameWidth: 48,
       frameHeight: 48
     });
     
-    this.load.spritesheet('npc-student', 'assets/characters/People2.png', {
+    this.load.spritesheet('npc-student', `${ASSET_BASE}characters/People2.png`, {
       frameWidth: 48,
       frameHeight: 48
     });
     
-    this.load.spritesheet('npc-average', 'assets/characters/People1.png', {
+    this.load.spritesheet('npc-average', `${ASSET_BASE}characters/People1.png`, {
       frameWidth: 48,
       frameHeight: 48
     });
     
     // Use People4 for overconfident type
-    this.load.spritesheet('npc-overconfident', 'assets/characters/People4.png', {
+    this.load.spritesheet('npc-overconfident', `${ASSET_BASE}characters/People4.png`, {
       frameWidth: 48,
       frameHeight: 48
     });
     
-    this.load.spritesheet('npc-scammer', 'assets/characters/Evil.png', {
+    this.load.spritesheet('npc-scammer', `${ASSET_BASE}characters/Evil.png`, {
       frameWidth: 48,
       frameHeight: 48
     });
     
-    this.load.spritesheet('npc-expert', 'assets/characters/People4.png', {
+    this.load.spritesheet('npc-expert', `${ASSET_BASE}characters/People4.png`, {
       frameWidth: 48,
       frameHeight: 48
     });
     
     // Load tilesets
-    this.load.image('tileset-outside', 'assets/tilesets/Outside_A2.png');
-    this.load.image('tileset-outside-b', 'assets/tilesets/tileset-outside-b.png');
+    this.load.image('tileset-outside', `${ASSET_BASE}tilesets/Outside_A2.png`);
+    this.load.image('tileset-outside-b', `${ASSET_BASE}tilesets/tileset-outside-b.png`);
     
     // Load RPG Maker maps
-    this.load.tilemapTiledJSON('forest-town', 'assets/maps/Forest_Town.json');
-    this.load.tilemapTiledJSON('test-minimal', 'assets/maps/test-minimal.json');
+    this.load.tilemapTiledJSON('forest-town', `${ASSET_BASE}maps/Forest_Town.json`);
+    this.load.tilemapTiledJSON('test-minimal', `${ASSET_BASE}maps/test-minimal.json`);
     
     // Load world map background image
-    this.load.image('world-map-bg', 'assets/outside_map.jpg');
+    this.load.image('world-map-bg', `${ASSET_BASE}outside_map.jpg`);
     
     console.log('[BootScene] Essential assets loaded');
   }

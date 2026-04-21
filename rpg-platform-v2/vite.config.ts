@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import path from 'path';
 
 export default defineConfig({
+  base: '/rpgv2-static/',
   root: '.',
   index: 'index.html',
   server: {

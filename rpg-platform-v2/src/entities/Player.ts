@@ -16,6 +16,7 @@ export class Player {
   private isMoving = false;
   private collisionSystem: CollisionSystem | null = null;
   private arrowIndicator: Phaser.GameObjects.Graphics;
+  private arrowFloatPhase = 0;
 
   // State tracking for animation optimization
   private lastIsMoving = false;
@@ -33,23 +34,13 @@ export class Player {
     this.sprite.setSize(32, 32);
     this.sprite.setOffset(8, 16);
     
-    // Play idle animation
-    this.sprite.play('player-idle-down');
+    // Play idle frame directly to avoid runtime animation issues
+    this.sprite.setFrame(1);
     
     // Create green arrow indicator above player
     this.arrowIndicator = this.scene.add.graphics();
     this.arrowIndicator.setDepth(15);
     this.drawArrow();
-    
-    // Add floating animation to arrow
-    this.scene.tweens.add({
-      targets: this.arrowIndicator,
-      y: -5,
-      duration: 800,
-      yoyo: true,
-      repeat: -1,
-      ease: 'Sine.easeInOut'
-    });
     
     // Setup input
     this.cursors = this.scene.input.keyboard!.createCursorKeys();
@@ -170,14 +161,29 @@ export class Player {
     }
     
     // Update arrow indicator position to follow player
-    this.arrowIndicator.setPosition(this.sprite.x, this.sprite.y - 35);
+    this.arrowFloatPhase += 0.08;
+    const arrowOffsetY = 35 + Math.sin(this.arrowFloatPhase) * 5;
+    this.arrowIndicator.setPosition(this.sprite.x, this.sprite.y - arrowOffsetY);
   }
 
   private updateAnimation(): void {
-    const animKey = this.isMoving 
-      ? `player-walk-${this.currentDirection}`
-      : `player-idle-${this.currentDirection}`;
-    
+    if (!this.isMoving) {
+      const idleFrames: Record<'down' | 'left' | 'right' | 'up', number> = {
+        down: 1,
+        left: 13,
+        right: 25,
+        up: 37
+      };
+      this.sprite.anims.stop();
+      this.sprite.setFrame(idleFrames[this.currentDirection]);
+      return;
+    }
+
+    const animKey = `player-walk-${this.currentDirection}`;
+    if (!this.scene.anims.exists(animKey)) {
+      return;
+    }
+
     // Only change animation if it's different from current
     if (this.sprite.anims.currentAnim?.key !== animKey) {
       this.sprite.play(animKey);

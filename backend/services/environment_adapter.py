@@ -1,6 +1,6 @@
 """
 Environment Adapter - 環境適配層
-根據部署環境自動選擇本地或 Cloud 服務
+根據部署環境與 AI_PROVIDER 自動選擇服務
 """
 
 import os
@@ -175,24 +175,13 @@ class EnvironmentAdapter:
     def get_llm_service(agent_type: str = "expert"):
         """
         獲取 LLM 服務
-        
-        Returns:
-            VertexAILLM (Cloud) 或 GeminiLLM/OllamaLLM (Local)
+        根據 AI_PROVIDER 選擇 Vertex AI / Bedrock / Azure OpenAI
         """
         try:
             from llms.llm_factory import LlmFactory
-            
-            if EnvironmentAdapter.is_cloud():
-                # Cloud 使用 Vertex AI
-                use_gemini = False
-                log.info("[ENVIRONMENT_ADAPTER] ✅ 使用 Vertex AI LLM")
-            else:
-                # 本地使用 Gemini 或 Ollama
-                use_gemini = os.getenv("GEMINI_ENABLED", "true").lower() == "true"
-                provider = "Gemini" if use_gemini else "Ollama"
-                log.info(f"[ENVIRONMENT_ADAPTER] ✅ 使用 {provider} LLM")
-            
-            return LlmFactory.create_llm(agent_type, use_gemini=use_gemini)
+            provider = LlmFactory.get_current_provider()
+            log.info(f"[ENVIRONMENT_ADAPTER] ✅ 使用 LLM provider: {provider}")
+            return LlmFactory.create_llm(agent_type)
         except Exception as e:
             log.error(f"[ENVIRONMENT_ADAPTER] ❌ 獲取 LLM 服務失敗: {str(e)}")
             raise

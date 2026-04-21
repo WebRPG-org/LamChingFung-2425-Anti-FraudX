@@ -90,7 +90,12 @@ export class BackendClient {
   private sessionId: string = '';
   private isConnected: boolean = false;
 
-  constructor(baseURL: string = 'https://anti-fraudx-backend-5gznvtwxga-uc.a.run.app') {
+  constructor(
+    baseURL: string =
+      (import.meta as any).env?.VITE_BACKEND_URL ||
+      (window as any).__APP_CONFIG__?.backendBaseUrl ||
+      window.location.origin
+  ) {
     this.baseURL = baseURL;
   }
 

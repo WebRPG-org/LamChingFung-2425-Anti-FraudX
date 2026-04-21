@@ -1,0 +1,11 @@
+# global-dns example tfvars
+aws_region           = "ap-east-1"
+root_domain          = "example.com"
+global_record_name   = "app"
+fallback_record_name = "fallback-app"
+aws_endpoint         = "aws.antifraudx.example.com"
+gcp_endpoint         = "gcp.antifraudx.example.com"
+azure_endpoint       = "azure.antifraudx.example.com"
+health_check_path    = "/health"
+record_ttl           = 60
+# existing_route53_zone_id = "Z1234567890ABCDEFG"

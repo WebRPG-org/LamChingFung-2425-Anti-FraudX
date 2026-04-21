@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: anti-fraudx-local-cert
+  namespace: anti-fraudx
+spec:
+  secretName: anti-fraudx-tls
+  commonName: anti-fraudx.local
+  dnsNames:
+    - anti-fraudx.local
+  issuerRef:
+    name: selfsigned-local
+    kind: ClusterIssuer

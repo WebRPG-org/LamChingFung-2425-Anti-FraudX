@@ -1,0 +1,14 @@
+# local-k8s example tfvars
+# Required variables
+project_id       = "your-gcp-project-id"
+db_password      = "replace-with-strong-password"
+
+# Optional variables with recommended values
+gcp_region                 = "us-central1"
+gcp_location               = "us-central1"
+vertex_model               = "gemini-2.5-flash-lite"
+vertex_service_account_id  = "vertex-local-runtime"
+app_image                  = "andy19982001/anti-fraudx:terraform"
+app_host                   = "anti-fraudx.local"
+kubeconfig_path            = "~/.kube/config"
+install_local_metrics_server = false

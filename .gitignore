@@ -1,4 +1,4 @@
-﻿# Python
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -37,10 +37,41 @@ env/
 *~
 .DS_Store
 
-# Environment variables
+# Environment variables / secrets
 .env
 .env.local
 .env.*.local
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+
+# Terraform / infrastructure state / local overrides
+**/.terraform/
+**/.terraform.lock.hcl
+**/terraform.tfstate
+**/terraform.tfstate.*
+**/*.tfstate
+**/*.tfstate.*
+**/*.tfvars
+**/*.tfvars.json
+!**/terraform.tfvars.example
+**/crash.log
+**/crash.*.log
+**/override.tf
+**/override.tf.json
+**/*_override.tf
+**/*_override.tf.json
+
+# Kubernetes / cloud local configs
+.kube/
+*.kubeconfig
+
+# AWS / Azure / GCP local auth files
+.aws/
+.azure/
+.config/gcloud/
 
 # Logs
 logs/

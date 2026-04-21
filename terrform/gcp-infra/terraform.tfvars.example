@@ -1,0 +1,14 @@
+# gcp-infra example tfvars
+# Required variables
+project_id   = "your-gcp-project-id"
+db_password  = "replace-with-strong-password"
+
+# Optional variables with recommended values
+project_name = "anti-fraudx"
+region       = "asia-east2"
+zone         = "asia-east2-a"
+machine_type = "e2-standard-2"
+db_tier      = "db-custom-1-3840"
+db_name      = "antifraudx"
+db_user      = "antifraudx"
+domain_name  = "gcp.antifraudx.example.com"

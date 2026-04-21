@@ -1,0 +1,194 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: anti-fraudx
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: anti-fraudx-secret
+  namespace: anti-fraudx
+type: Opaque
+stringData:
+  AI_PROVIDER: vertex
+  DATABASE_URL: postgresql://antifraudx:240302611@postgres.anti-fraudx.svc.cluster.local:5432/antifraudx
+  GCP_PROJECT_ID: your-gcp-project-id
+  GCP_LOCATION: asia-east2
+  VERTEX_AI_MODEL: gemini-2.5-flash-lite
+  GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/service-account.json
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gcp-vertex-service-account
+  namespace: anti-fraudx
+type: Opaque
+stringData:
+  service-account.json: |
+    {
+      "type": "service_account",
+      "project_id": "replace-me",
+      "private_key_id": "replace-me",
+      "private_key": "-----BEGIN PRIVATE KEY-----\nREPLACE_ME\n-----END PRIVATE KEY-----\n",
+      "client_email": "replace-me@replace-me.iam.gserviceaccount.com",
+      "client_id": "replace-me",
+      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+      "token_uri": "https://oauth2.googleapis.com/token",
+      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/replace-me"
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scraped-alerts
+  namespace: anti-fraudx
+binaryData: {}
+data:
+  scraped_alerts.json: |
+    []
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: anti-fraudx
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: postgres
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: anti-fraudx
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          env:
+            - name: POSTGRES_DB
+              value: antifraudx
+            - name: POSTGRES_USER
+              value: antifraudx
+            - name: POSTGRES_PASSWORD
+              value: "240302611"
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: pgdata
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: anti-fraudx
+  namespace: anti-fraudx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: anti-fraudx
+  template:
+    metadata:
+      labels:
+        app: anti-fraudx
+    spec:
+      containers:
+        - name: anti-fraudx
+          image: andy19982001/anti-fraudx:terraform
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: anti-fraudx-secret
+          volumeMounts:
+            - name: alerts
+              mountPath: /app/backend/data/scraped_alerts.json
+              subPath: scraped_alerts.json
+            - name: gcp-vertex-credentials
+              mountPath: /var/secrets/google
+              readOnly: true
+      volumes:
+        - name: alerts
+          configMap:
+            name: scraped-alerts
+        - name: gcp-vertex-credentials
+          secret:
+            secretName: gcp-vertex-service-account
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: anti-fraudx
+  namespace: anti-fraudx
+spec:
+  selector:
+    app: anti-fraudx
+  ports:
+    - port: 80
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: anti-fraudx
+  namespace: anti-fraudx
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+spec:
+  rules:
+    - host: anti-fraudx.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: anti-fraudx
+                port:
+                  number: 80
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: anti-fraudx
+  namespace: anti-fraudx
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: anti-fraudx
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

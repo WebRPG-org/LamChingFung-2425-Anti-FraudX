@@ -432,7 +432,7 @@ export class MainMenuScene extends Phaser.Scene {
         yoyo: true,
         onComplete: () => {
           // 返回到主頁
-          window.location.href = 'https://anti-fraudx-backend-5gznvtwxga-uc.a.run.app';
+          window.location.href = '/';
         }
       });
     });

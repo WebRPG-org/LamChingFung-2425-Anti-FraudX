@@ -1,334 +1,109 @@
 """
-LLM Factory - 統一管理 LLM 提供者選擇
-支持 Vertex AI（主要）、Ollama 和 Gemini API（備用）
-使用 RAG 系統代替文件上傳（優化 Token 使用）
+Unified LLM Factory for multi-cloud AI providers.
+Supports Vertex AI, Amazon Bedrock, and Azure OpenAI.
 """
 
 import os
-from typing import Optional, Dict
-from config import config
+from typing import Optional
 from utils.logger import log
 
 
-def _is_cloud_deployment() -> bool:
-    """檢查是否為 Cloud 部署"""
-    return os.getenv("DEPLOYMENT_ENV", "local").lower() == "cloud"
-
-
 class LlmFactory:
-    """
-    LLM 工廠類
-    根據配置動態創建 Vertex AI、Ollama 或 Gemini LLM 實例
-    使用 RAG 系統進行知識檢索，避免上傳大文件
-    """
-    
-    # 類變量：RAG 輔助類實例（單例）
-    _rag_helper: Optional[any] = None
-    
+    """Create provider-specific LLM clients based on AI_PROVIDER."""
+
     @staticmethod
-    def _get_rag_helper():
-        """
-        獲取 RAG 輔助類實例（單例模式）
-        
-        Returns:
-            GeminiRAGHelper: RAG 輔助類實例
-        """
-        if LlmFactory._rag_helper is None:
-            try:
-                from llms.rag_integration import GeminiRAGHelper
-                LlmFactory._rag_helper = GeminiRAGHelper(n_results=5, max_distance=10.0)
-                log.info("[LLM_FACTORY] ✅ RAG 系統已初始化")
-            except Exception as e:
-                log.error(f"[LLM_FACTORY] ❌ RAG 系統初始化失敗: {e}")
-                LlmFactory._rag_helper = None
-        
-        return LlmFactory._rag_helper
-    
-    @staticmethod
-    def get_rag_context(scam_type: str = "", context: str = "") -> str:
-        """
-        使用 RAG 系統檢索相關案例（代替文件上傳）
-        
-        Args:
-            scam_type: 騙案類型
-            context: 額外上下文
-        
-        Returns:
-            str: 格式化的相關案例文本
-        """
-        rag_helper = LlmFactory._get_rag_helper()
-        
-        if rag_helper is None:
-            log.warning("[LLM_FACTORY] RAG 系統不可用，返回空上下文")
-            return ""
-        
-        try:
-            if scam_type:
-                return rag_helper.format_for_prompt(scam_type, context)
-            elif context:
-                return rag_helper.get_relevant_cases(context)
-            else:
-                return ""
-        except Exception as e:
-            log.error(f"[LLM_FACTORY] RAG 檢索失敗: {e}")
-            return ""
-    
+    def get_current_provider() -> str:
+        provider = os.getenv("AI_PROVIDER", "vertex").strip().lower()
+        provider_aliases = {
+            "vertex_ai": "vertex",
+            "google_vertex": "vertex",
+            "amazon_bedrock": "bedrock",
+            "azure": "azure_openai",
+            "azure_openai": "azure_openai",
+        }
+        normalized = provider_aliases.get(provider, provider)
+        if normalized not in {"vertex", "bedrock", "azure_openai"}:
+            log.warning(f"[LLM_FACTORY] Unknown AI_PROVIDER={provider}, fallback to vertex")
+            return "vertex"
+        return normalized
+
     @staticmethod
     def create_llm(agent_type: str, use_gemini: Optional[bool] = None, scam_type: str = "", context: str = ""):
-        """
-        創建 LLM 實例（只使用 Vertex AI）
-        
-        Args:
-            agent_type: Agent 類型 ("scammer" | "victim" | "expert" | "recorder")
-            use_gemini: 已棄用（保留向後兼容性，但會被忽略）
-            scam_type: 騙案類型（用於 RAG 檢索）
-            context: 額外上下文（用於 RAG 檢索）
-        
-        Returns:
-            VertexAILLM: Vertex AI LLM 實例
-        
-        Raises:
-            ValueError: 如果 agent_type 無效或配置錯誤
-        """
-        # 驗證 agent_type
         valid_types = ["scammer", "victim", "expert", "recorder"]
         if agent_type not in valid_types:
             raise ValueError(f"無效的 agent_type: {agent_type}. 必須是 {valid_types} 之一")
-        
-        # 只使用 Vertex AI
-        log.info("[LLM_FACTORY] 使用 Vertex AI LLM")
-        return LlmFactory._create_vertex_ai_llm(agent_type, scam_type, context)
-    
+
+        provider = LlmFactory.get_current_provider()
+        log.info(f"[LLM_FACTORY] 使用 AI provider: {provider}")
+
+        if provider == "vertex":
+            return LlmFactory._create_vertex_ai_llm(agent_type, scam_type, context)
+        if provider == "bedrock":
+            return LlmFactory._create_bedrock_llm(agent_type)
+        if provider == "azure_openai":
+            return LlmFactory._create_azure_openai_llm(agent_type)
+
+        raise ValueError(f"不支持的 AI provider: {provider}")
+
     @staticmethod
     def _create_vertex_ai_llm(agent_type: str, scam_type: str = "", context: str = ""):
-        """創建 Vertex AI LLM 實例"""
-        try:
-            from llms.vertex_ai_llm import VertexAILLM
-            
-            # 獲取 System Instruction
-            try:
-                from agents.system_instructions import get_system_instruction
-                system_instruction = get_system_instruction(agent_type)
-                log.info(f"[LLM_FACTORY] 載入 System Instruction: {len(system_instruction)} 字")
-            except Exception as e:
-                log.warning(f"[LLM_FACTORY] 無法載入 System Instruction: {e}")
-                system_instruction = ""
-            
-            # ✅ 使用 RAG 系統注入相關案例到 System Instruction
-            rag_context = ""
-            if agent_type in ["scammer", "expert"] and (scam_type or context):
-                rag_context = LlmFactory.get_rag_context(scam_type, context)
-                if rag_context:
-                    log.info(f"[LLM_FACTORY] ✅ RAG 檢索成功，注入 {len(rag_context)} 字上下文")
-                    system_instruction = f"{system_instruction}\n\n{rag_context}"
-                else:
-                    log.warning(f"[LLM_FACTORY] ⚠️ RAG 檢索失敗或無結果")
-            
-            log.info(
-                f"[LLM_FACTORY] 創建 Vertex AI LLM (使用 RAG) - "
-                f"Agent: {agent_type}, "
-                f"System Instruction: {len(system_instruction)} 字"
-            )
-            
-            # 創建實例
-            return VertexAILLM(
-                model_name=os.getenv("VERTEX_AI_MODEL", "gemini-2.5-flash-lite"),
-                project_id=os.getenv("GCP_PROJECT_ID", "anti-fraudx"),
-                location=os.getenv("GCP_LOCATION", "us-central1"),
-                temperature=0.7,
-                top_p=0.95,
-                top_k=40,
-                max_output_tokens=2048,
-                timeout=60.0,
-                max_retries=3
-            )
-            
-        except ImportError as e:
-            log.error(f"[LLM_FACTORY] 無法導入 VertexAILLM: {e}")
-            raise ValueError(
-                "Vertex AI LLM 模塊未安裝。請運行: pip install google-cloud-aiplatform"
-            )
-        except Exception as e:
-            log.error(f"[LLM_FACTORY] 創建 Vertex AI LLM 失敗: {e}")
-            raise
+        from llms.vertex_ai_llm import VertexAILLM
 
-    # ========== 以下方法已注解（備用）==========
-    
-    # @staticmethod
-    # def _create_gemini_llm(agent_type: str, scam_type: str = "", context: str = ""):
-    #     """創建 Gemini LLM 實例，使用 RAG 系統代替文件上傳"""
-    #     try:
-    #         from llms.gemini_llm import GeminiLlm
-    #         
-    #         # 檢查 API Key
-    #         if not config.gemini.is_configured():
-    #             raise ValueError(
-    #                 "Gemini API Key 未配置。請設置 GEMINI_API_KEY 環境變量。"
-    #             )
-    #         
-    #         # 獲取模型 ID
-    #         model_id = config.gemini.get_model_id(agent_type)
-    #         
-    #         # 獲取 System Instruction
-    #         try:
-    #             from agents.system_instructions import get_system_instruction
-    #             system_instruction = get_system_instruction(agent_type)
-    #             log.info(f"[LLM_FACTORY] 載入 System Instruction: {len(system_instruction)} 字")
-    #         except Exception as e:
-    #             log.warning(f"[LLM_FACTORY] 無法載入 System Instruction: {e}")
-    #             system_instruction = ""
-    #         
-    #         # ✅ 使用 RAG 系統注入相關案例到 System Instruction
-    #         rag_context = ""
-    #         if agent_type in ["scammer", "expert"] and (scam_type or context):
-    #             rag_context = LlmFactory.get_rag_context(scam_type, context)
-    #             if rag_context:
-    #                 log.info(f"[LLM_FACTORY] ✅ RAG 檢索成功，注入 {len(rag_context)} 字上下文")
-    #                 system_instruction = f"{system_instruction}\n\n{rag_context}"
-    #             else:
-    #                 log.warning(f"[LLM_FACTORY] ⚠️ RAG 檢索失敗或無結果")
-    #         
-    #         log.info(
-    #             f"[LLM_FACTORY] 創建 Gemini LLM (使用 RAG) - "
-    #             f"Agent: {agent_type}, 模型: {model_id}, "
-    #             f"System Instruction: {len(system_instruction)} 字"
-    #         )
-    #         
-    #         # 創建實例（不傳入 uploaded_files）
-    #         return GeminiLlm(
-    #             model=model_id,
-    #             api_key=config.gemini.GEMINI_API_KEY,
-    #             system_instruction=system_instruction,
-    #             uploaded_files=[],  # ✅ 空列表，不上傳文件
-    #             temperature=config.gemini.TEMPERATURE,
-    #             top_p=config.gemini.TOP_P,
-    #             top_k=config.gemini.TOP_K,
-    #             max_output_tokens=config.gemini.MAX_OUTPUT_TOKENS,
-    #             timeout=config.gemini.TIMEOUT,
-    #             max_retries=config.gemini.MAX_RETRIES
-    #         )
-    #         
-    #     except ImportError as e:
-    #         log.error(f"[LLM_FACTORY] 無法導入 GeminiLlm: {e}")
-    #         raise ValueError(
-    #             "Gemini LLM 模塊未安裝。請運行: pip install google-generativeai"
-    #         )
-    #     except Exception as e:
-    #         log.error(f"[LLM_FACTORY] 創建 Gemini LLM 失敗: {e}")
-    #         raise
-    
-    # @staticmethod
-    # def _create_ollama_llm(agent_type: str):
-    #     """創建 Ollama LLM 實例"""
-    #     try:
-    #         from llms.ollama_llm import OllamaLlm
-    #         
-    #         # 獲取模型名稱和 URL
-    #         model_mapping = {
-    #             "scammer": config.llm.SCAMMER_MODEL,
-    #             "victim": config.llm.VICTIM_MODEL,
-    #             "expert": config.llm.EXPERT_MODEL,
-    #             "recorder": config.llm.RECORDER_MODEL
-    #         }
-    #         
-    #         url_mapping = {
-    #             "scammer": config.llm.SCAMMER_BASE_URL,
-    #             "victim": config.llm.VICTIM_BASE_URL,
-    #             "expert": config.llm.EXPERT_BASE_URL,
-    #             "recorder": config.llm.RECORDER_BASE_URL
-    #         }
-    #         
-    #         model_name = model_mapping.get(agent_type, config.llm.DEFAULT_MODEL)
-    #         base_url = url_mapping.get(agent_type, config.llm.DEFAULT_BASE_URL)
-    #         
-    #         log.info(
-    #             f"[LLM_FACTORY] 創建 Ollama LLM - "
-    #             f"Agent: {agent_type}, 模型: {model_name}, URL: {base_url}"
-    #         )
-    #         
-    #         # 創建實例
-    #         return OllamaLlm(
-    #             model=model_name,
-    #             base_url=base_url
-    #         )
-    #         
-    #     except ImportError as e:
-    #         log.error(f"[LLM_FACTORY] 無法導入 OllamaLlm: {e}")
-    #         raise ValueError("Ollama LLM 模塊未找到")
-    #     except Exception as e:
-    #         log.error(f"[LLM_FACTORY] 創建 Ollama LLM 失敗: {e}")
-    #         raise
-    
+        return VertexAILLM(
+            model_name=os.getenv("VERTEX_AI_MODEL", "gemini-2.5-flash-lite"),
+            project_id=os.getenv("GCP_PROJECT_ID", "anti-fraudx"),
+            location=os.getenv("GCP_LOCATION", "asia-east2"),
+            temperature=0.7,
+            top_p=0.95,
+            top_k=40,
+            max_output_tokens=2048,
+            timeout=60.0,
+            max_retries=3,
+        )
+
     @staticmethod
-    def get_current_provider() -> str:
-        """
-        獲取當前使用的 LLM 提供者
-        
-        Returns:
-            str: "vertex_ai"（唯一選項）
-        """
-        return "vertex_ai"
-    
+    def _create_bedrock_llm(agent_type: str):
+        from llms.bedrock_llm import BedrockLLM
+
+        return BedrockLLM(
+            model_id=os.getenv("BEDROCK_MODEL_ID", "anthropic.claude-3-haiku-20240307-v1:0"),
+            region=os.getenv("AWS_REGION", "ap-east-1"),
+            temperature=0.7,
+            max_output_tokens=2048,
+        )
+
+    @staticmethod
+    def _create_azure_openai_llm(agent_type: str):
+        from llms.azure_openai_llm import AzureOpenAILLM
+
+        return AzureOpenAILLM(
+            endpoint=os.getenv("AZURE_OPENAI_ENDPOINT", ""),
+            api_key=os.getenv("AZURE_OPENAI_API_KEY", ""),
+            deployment=os.getenv("AZURE_OPENAI_DEPLOYMENT", "gpt-4o-mini"),
+            api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15-preview"),
+            temperature=0.7,
+            max_output_tokens=2048,
+        )
+
     @staticmethod
     def get_provider_info() -> dict:
-        """
-        獲取當前提供者的詳細信息
-        
-        Returns:
-            dict: Vertex AI 提供者信息
-        """
-        return {
-            "provider": "vertex_ai",
-            "enabled": True,
-            "configured": True,
-            "model": os.getenv("VERTEX_AI_MODEL", "gemini-2.5-flash-lite"),
-            "project_id": os.getenv("GCP_PROJECT_ID", "anti-fraudx"),
-            "location": os.getenv("GCP_LOCATION", "us-central1"),
-            "parameters": {
-                "temperature": 0.7,
-                "top_p": 0.95,
-                "top_k": 40,
-                "max_output_tokens": 2048
+        provider = LlmFactory.get_current_provider()
+        if provider == "vertex":
+            return {
+                "provider": "vertex",
+                "model": os.getenv("VERTEX_AI_MODEL", "gemini-2.5-flash-lite"),
+                "project_id": os.getenv("GCP_PROJECT_ID", "anti-fraudx"),
+                "location": os.getenv("GCP_LOCATION", "asia-east2"),
             }
+        if provider == "bedrock":
+            return {
+                "provider": "bedrock",
+                "model": os.getenv("BEDROCK_MODEL_ID", "anthropic.claude-3-haiku-20240307-v1:0"),
+                "region": os.getenv("AWS_REGION", "ap-east-1"),
+            }
+        return {
+            "provider": "azure_openai",
+            "deployment": os.getenv("AZURE_OPENAI_DEPLOYMENT", "gpt-4o-mini"),
+            "endpoint": os.getenv("AZURE_OPENAI_ENDPOINT", ""),
+            "api_version": os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15-preview"),
         }
-    
-    # @staticmethod
-    # def validate_gemini_config() -> dict:
-    #     """
-    #     驗證 Gemini 配置是否有效
-    #     
-    #     Returns:
-    #         dict: 驗證結果
-    #     """
-    #     result = {
-    #         "valid": False,
-    #         "errors": [],
-    #         "warnings": []
-    #     }
-    #     
-    #     # 檢查 API Key
-    #     if not config.gemini.GEMINI_API_KEY:
-    #         result["errors"].append("GEMINI_API_KEY 未設置")
-    #     elif len(config.gemini.GEMINI_API_KEY) < 10:
-    #         result["errors"].append("GEMINI_API_KEY 格式無效（長度過短）")
-    #     
-    #     # 檢查模型 ID
-    #     models = {
-    #         "scammer": config.gemini.SCAMMER_MODEL_ID,
-    #         "victim": config.gemini.VICTIM_MODEL_ID,
-    #         "expert": config.gemini.EXPERT_MODEL_ID,
-    #         "recorder": config.gemini.RECORDER_MODEL_ID
-    #     }
-    #     
-    #     for agent_type, model_id in models.items():
-    #         if not model_id:
-    #             result["errors"].append(f"{agent_type} 模型 ID 未設置")
-    #         elif model_id in ("gemini-2.0-flash-exp", "gemini-3-flash-preview", "gemini-2.5-flash"):
-    #             result["warnings"].append(
-    #                 f"{agent_type} 使用默認模型（未使用 System Instructions 優化）"
-    #             )
-    #     
-    #     # 如果沒有錯誤，則配置有效
-    #     result["valid"] = len(result["errors"]) == 0
-    #     
-    #     return result

@@ -1,6 +1,7 @@
 // RPGv2 遊戲模式 JavaScript
 
-const API_BASE_URL = 'https://anti-fraudx-backend-5gznvtwxga-uc.a.run.app/api/rpgv2';
+const APP_CONFIG = window.__APP_CONFIG__ || {};
+const API_BASE_URL = APP_CONFIG.rpgv2ApiBaseUrl || `${APP_CONFIG.backendBaseUrl || window.location.origin}/api/rpgv2`;
 
 // 全局狀態
 let currentSessionId = null;

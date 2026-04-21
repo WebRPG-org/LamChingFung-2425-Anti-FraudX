@@ -1,0 +1,24 @@
+# gcp-app example tfvars
+# Required: run this before apply
+# gcloud container clusters get-credentials <cluster_name> --zone <cluster_location> --project <project_id>
+#
+# Required variables
+project_id                = "your-gcp-project-id"
+db_password               = "replace-with-strong-password"
+gke_service_account_email = "from-gcp-infra-output"
+gke_service_account_name  = "projects/your-gcp-project-id/serviceAccounts/anti-fraudx-gke-vertex@your-gcp-project-id.iam.gserviceaccount.com"
+cloud_sql_private_ip      = "from-gcp-infra-output"
+
+# Optional variables with recommended values
+project_name              = "anti-fraudx"
+region                    = "asia-east2"
+db_name                   = "antifraudx"
+db_user                   = "antifraudx"
+domain_name               = "gcp.antifraudx.example.com"
+vertex_model              = "gemini-2.5-flash-lite"
+app_image                 = "andy19982001/anti-fraudx:terraform"
+namespace                 = "anti-fraudx-terraform"
+kubeconfig_path           = "~/.kube/config"
+dns_zone_name             = "from-gcp-infra-output"
+gcp_log_name              = "anti-fraudx-logs"
+gcp_monitoring_namespace  = "anti_fraudx"

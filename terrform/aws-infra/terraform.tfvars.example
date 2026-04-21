@@ -1,0 +1,15 @@
+# aws infra example tfvars
+aws_region              = "us-east-1"
+db_password             = "replace-with-strong-password"
+project_name            = "anti-fraudx"
+kubernetes_version      = "1.29"
+vpc_cidr                = "10.10.0.0/16"
+private_subnets         = ["10.10.1.0/24", "10.10.2.0/24"]
+public_subnets          = ["10.10.101.0/24", "10.10.102.0/24"]
+node_instance_type      = "t3.medium"
+db_instance_class       = "db.t3.micro"
+db_name                 = "antifraudx"
+db_user                 = "antifraudx"
+domain_name             = "aws.anti-fraudx.us.ci"
+eks_log_retention_days  = 30
+app_log_retention_days  = 30

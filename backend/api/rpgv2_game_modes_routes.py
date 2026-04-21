@@ -26,6 +26,20 @@ _hybrid_scorers: Dict[str, HybridScamScoring] = {}
 SUPPORTED_LANGUAGES = {"zh-HK", "zh-CN", "en-US", "ja-JP"}
 
 
+def _is_bedrock_quota_error(exc: Exception) -> bool:
+    text = str(exc)
+    return "ThrottlingException" in text or "Too many tokens per day" in text
+
+
+def _raise_http_for_runtime_error(exc: Exception) -> None:
+    if _is_bedrock_quota_error(exc):
+        raise HTTPException(
+            status_code=429,
+            detail="AWS Bedrock 今日 token 配額已用完，請稍後再試。"
+        )
+    raise HTTPException(status_code=500, detail=f"開始遊戲失敗: {str(exc)}")
+
+
 def _normalize_language(language: Optional[str]) -> str:
     if not language:
         return "zh-HK"
@@ -169,7 +183,7 @@ async def start_game(request: StartGameRequest):
         
     except Exception as e:
         log.error(f"[RPGv2] 開始遊戲失敗: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"開始遊戲失敗: {str(e)}")
+        _raise_http_for_runtime_error(e)
 
 
 @router.post("/game/action", response_model=PlayerActionResponse)

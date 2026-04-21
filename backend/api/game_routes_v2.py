@@ -9,7 +9,6 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, field_validator
 from typing import List, Optional, Dict, Any
 import json
-import sqlite3
 import os
 import uuid
 import sys
@@ -24,10 +23,12 @@ except Exception as e:
     log = logging.getLogger(__name__)
     log.warning(f"Failed to import custom logger: {e}")
 
+from utils.db import execute, fetchall, fetchone, initialize_game_tables, placeholder
+
 router = APIRouter(prefix="/api/rpgv2/game", tags=["Game V2"])
 
 # 配置
-DATABASE_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'anti_fraud_game.db')
+SESSION_PLACEHOLDER = placeholder()
 
 # 騙案類型定義（與前端 ScamTypes.ts 保持一致）
 SCAM_TYPES = {
@@ -142,33 +143,9 @@ PERSONAS = {
     }
 }
 
-# 數據庫初始化（與 v1 相同）
+# 數據庫初始化（SQLite / Postgres）
 def init_database():
-    conn = sqlite3.connect(DATABASE_PATH)
-    cursor = conn.cursor()
-    
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS sessions (
-            id TEXT PRIMARY KEY,
-            persona_type TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            status TEXT DEFAULT 'active'
-        )
-    ''')
-    
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS conversations (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            session_id TEXT NOT NULL,
-            role TEXT NOT NULL,
-            message TEXT NOT NULL,
-            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (session_id) REFERENCES sessions (id)
-        )
-    ''')
-    
-    conn.commit()
-    conn.close()
+    initialize_game_tables()
 
 init_database()
 
@@ -214,14 +191,10 @@ async def start_game(request: GameStartRequest):
     session_id = str(uuid.uuid4())
     
     # 保存到數據庫
-    conn = sqlite3.connect(DATABASE_PATH)
-    cursor = conn.cursor()
-    cursor.execute(
-        "INSERT INTO sessions (id, persona_type, status) VALUES (?, ?, ?)",
+    execute(
+        f"INSERT INTO sessions (id, persona_type, status) VALUES ({SESSION_PLACEHOLDER}, {SESSION_PLACEHOLDER}, {SESSION_PLACEHOLDER})",
         (session_id, persona_type, 'active')
     )
-    conn.commit()
-    conn.close()
     
     # 🔥 **新流程：騙徒直接開始騙局**
     try:
@@ -319,36 +292,33 @@ async def send_message(raw_request: Request):
                 }
         
         # 驗證 session
-        conn = sqlite3.connect(DATABASE_PATH)
-        cursor = conn.cursor()
-        
-        # 容錯處理：session_id=0 自動創建
         if request.session_id == "0":
-            cursor.execute("SELECT persona_type FROM sessions WHERE id = ?", ("0",))
-            result = cursor.fetchone()
+            result = fetchone(
+                f"SELECT persona_type FROM sessions WHERE id = {SESSION_PLACEHOLDER}",
+                ("0",),
+            )
             if not result:
-                cursor.execute(
-                    "INSERT INTO sessions (id, persona_type, status) VALUES (?, ?, ?)",
-                    ("0", request.persona_type or "A", 'active')
+                execute(
+                    f"INSERT INTO sessions (id, persona_type, status) VALUES ({SESSION_PLACEHOLDER}, {SESSION_PLACEHOLDER}, {SESSION_PLACEHOLDER})",
+                    ("0", request.persona_type or "A", 'active'),
                 )
-                conn.commit()
                 result = (request.persona_type or "A",)
         else:
-            cursor.execute("SELECT persona_type FROM sessions WHERE id = ?", (request.session_id,))
-            result = cursor.fetchone()
-        
+            result = fetchone(
+                f"SELECT persona_type FROM sessions WHERE id = {SESSION_PLACEHOLDER}",
+                (request.session_id,),
+            )
+
         if not result:
-            conn.close()
             raise HTTPException(status_code=404, detail=f"會話不存在: {request.session_id}")
-        
+
         persona_type = request.persona_type or result[0]
-        
+
         # 獲取歷史對話
-        cursor.execute(
-            "SELECT role, message FROM conversations WHERE session_id = ? ORDER BY timestamp",
-            (request.session_id,)
+        history_rows = fetchall(
+            f"SELECT role, message FROM conversations WHERE session_id = {SESSION_PLACEHOLDER} ORDER BY timestamp",
+            (request.session_id,),
         )
-        history_rows = cursor.fetchall()
         history = [
             {"role": "user" if r[0] == "user" else "assistant", "content": r[1]}
             for r in history_rows
@@ -386,16 +356,14 @@ async def send_message(raw_request: Request):
         
         # 保存對話
         user_role = request.role if request.role else "user"
-        cursor.execute(
-            "INSERT INTO conversations (session_id, role, message) VALUES (?, ?, ?)",
-            (request.session_id, user_role, request.message)
+        execute(
+            f"INSERT INTO conversations (session_id, role, message) VALUES ({SESSION_PLACEHOLDER}, {SESSION_PLACEHOLDER}, {SESSION_PLACEHOLDER})",
+            (request.session_id, user_role, request.message),
         )
-        cursor.execute(
-            "INSERT INTO conversations (session_id, role, message) VALUES (?, ?, ?)",
-            (request.session_id, request.target_ai, ai_reply)
+        execute(
+            f"INSERT INTO conversations (session_id, role, message) VALUES ({SESSION_PLACEHOLDER}, {SESSION_PLACEHOLDER}, {SESSION_PLACEHOLDER})",
+            (request.session_id, request.target_ai, ai_reply),
         )
-        conn.commit()
-        conn.close()
         
         # 返回響應（與 v1 兼容，但新增可選字段）
         response = {
@@ -432,35 +400,28 @@ async def send_message(raw_request: Request):
 @router.post("/end")
 async def end_game(session_id: str):
     """結束遊戲"""
-    conn = sqlite3.connect(DATABASE_PATH)
-    cursor = conn.cursor()
-    cursor.execute("UPDATE sessions SET status = ? WHERE id = ?", ('completed', session_id))
-    conn.commit()
-    conn.close()
-    
+    execute(
+        f"UPDATE sessions SET status = {SESSION_PLACEHOLDER} WHERE id = {SESSION_PLACEHOLDER}",
+        ('completed', session_id),
+    )
     return {"success": True, "message": "遊戲已結束"}
 
 @router.get("/session/{session_id}")
 async def get_session(session_id: str):
     """獲取會話資訊"""
-    conn = sqlite3.connect(DATABASE_PATH)
-    cursor = conn.cursor()
-    
-    cursor.execute("SELECT * FROM sessions WHERE id = ?", (session_id,))
-    session = cursor.fetchone()
-    
-    if not session:
-        conn.close()
-        raise HTTPException(status_code=404, detail="會話不存在")
-    
-    cursor.execute(
-        "SELECT role, message, timestamp FROM conversations WHERE session_id = ? ORDER BY timestamp",
-        (session_id,)
+    session = fetchone(
+        f"SELECT * FROM sessions WHERE id = {SESSION_PLACEHOLDER}",
+        (session_id,),
     )
-    conversations = cursor.fetchall()
-    
-    conn.close()
-    
+
+    if not session:
+        raise HTTPException(status_code=404, detail="會話不存在")
+
+    conversations = fetchall(
+        f"SELECT role, message, timestamp FROM conversations WHERE session_id = {SESSION_PLACEHOLDER} ORDER BY timestamp",
+        (session_id,),
+    )
+
     return {
         "session_id": session[0],
         "persona_type": session[1],
@@ -485,25 +446,21 @@ async def analyze_session(request: AnalyzeRequest):
     session_id = request.session_id
     try:
         # 獲取會話對話歷史
-        conn = sqlite3.connect(DATABASE_PATH)
-        cursor = conn.cursor()
-        
-        cursor.execute("SELECT * FROM sessions WHERE id = ?", (session_id,))
-        session = cursor.fetchone()
-        
-        if not session:
-            conn.close()
-            raise HTTPException(status_code=404, detail="會話不存在")
-        
-        persona_type = session[1]
-        
-        # 獲取完整對話歷史
-        cursor.execute(
-            "SELECT role, message FROM conversations WHERE session_id = ? ORDER BY timestamp",
-            (session_id,)
+        session = fetchone(
+            f"SELECT * FROM sessions WHERE id = {SESSION_PLACEHOLDER}",
+            (session_id,),
         )
-        history_rows = cursor.fetchall()
-        conn.close()
+
+        if not session:
+            raise HTTPException(status_code=404, detail="會話不存在")
+
+        persona_type = session[1]
+
+        # 獲取完整對話歷史
+        history_rows = fetchall(
+            f"SELECT role, message FROM conversations WHERE session_id = {SESSION_PLACEHOLDER} ORDER BY timestamp",
+            (session_id,),
+        )
         
         # 構建對話歷史
         conversation_history = []
@@ -714,16 +671,14 @@ async def game_action(raw_request: Request):
                     }
         
         # 獲取會話信息
-        conn = sqlite3.connect(DATABASE_PATH)
-        cursor = conn.cursor()
-        
-        cursor.execute("SELECT persona_type FROM sessions WHERE id = ?", (session_id,))
-        result = cursor.fetchone()
-        
+        result = fetchone(
+            f"SELECT persona_type FROM sessions WHERE id = {SESSION_PLACEHOLDER}",
+            (session_id,),
+        )
+
         if not result:
-            conn.close()
             raise HTTPException(status_code=404, detail="會話不存在")
-        
+
         persona_type = result[0]
         
         # 使用 AgentService 生成響應
@@ -750,24 +705,25 @@ async def game_action(raw_request: Request):
         expert_reply = expert_result["reply"]
         
         # 保存對話
-        cursor.execute(
-            "INSERT INTO conversations (session_id, role, message) VALUES (?, ?, ?)",
-            (session_id, "player", message)
+        execute(
+            f"INSERT INTO conversations (session_id, role, message) VALUES ({SESSION_PLACEHOLDER}, {SESSION_PLACEHOLDER}, {SESSION_PLACEHOLDER})",
+            (session_id, "player", message),
         )
-        cursor.execute(
-            "INSERT INTO conversations (session_id, role, message) VALUES (?, ?, ?)",
-            (session_id, "scammer", scammer_reply)
+        execute(
+            f"INSERT INTO conversations (session_id, role, message) VALUES ({SESSION_PLACEHOLDER}, {SESSION_PLACEHOLDER}, {SESSION_PLACEHOLDER})",
+            (session_id, "scammer", scammer_reply),
         )
-        cursor.execute(
-            "INSERT INTO conversations (session_id, role, message) VALUES (?, ?, ?)",
-            (session_id, "expert", expert_reply)
+        execute(
+            f"INSERT INTO conversations (session_id, role, message) VALUES ({SESSION_PLACEHOLDER}, {SESSION_PLACEHOLDER}, {SESSION_PLACEHOLDER})",
+            (session_id, "expert", expert_reply),
         )
-        conn.commit()
-        
+
         # 計算遊戲狀態
-        round_count = len(list(cursor.execute(
-            "SELECT * FROM conversations WHERE session_id = ?", (session_id,)
-        ))) // 3
+        round_count_rows = fetchall(
+            f"SELECT role, message FROM conversations WHERE session_id = {SESSION_PLACEHOLDER}",
+            (session_id,),
+        )
+        round_count = len(round_count_rows) // 3
         
         trust_in_scammer = scammer_result.get("trust_in_scammer", 50)
         trust_in_expert = expert_result.get("trust_in_expert", 50)
@@ -793,8 +749,6 @@ async def game_action(raw_request: Request):
                 game_over = True
                 winner = "expert"
                 reason = "專家信任度達到100"
-        
-        conn.close()
         
         return {
             "success": True,
@@ -842,16 +796,14 @@ async def auto_play(raw_request: Request):
         raise HTTPException(status_code=400, detail="缺少 session_id")
     
     try:
-        conn = sqlite3.connect(DATABASE_PATH)
-        cursor = conn.cursor()
-        
-        cursor.execute("SELECT persona_type FROM sessions WHERE id = ?", (session_id,))
-        result = cursor.fetchone()
-        
+        result = fetchone(
+            f"SELECT persona_type FROM sessions WHERE id = {SESSION_PLACEHOLDER}",
+            (session_id,),
+        )
+
         if not result:
-            conn.close()
             raise HTTPException(status_code=404, detail="會話不存在")
-        
+
         persona_type = result[0]
         service = get_agent_service(persona_type)
         
@@ -887,8 +839,6 @@ async def auto_play(raw_request: Request):
                 "content": victim_result["reply"]
             })
         
-        conn.close()
-        
         return {
             "success": True,
             "messages": messages,
@@ -915,23 +865,19 @@ async def get_game_state(session_id: str):
     獲取遊戲狀態
     """
     try:
-        conn = sqlite3.connect(DATABASE_PATH)
-        cursor = conn.cursor()
-        
-        cursor.execute("SELECT * FROM sessions WHERE id = ?", (session_id,))
-        session = cursor.fetchone()
-        
-        if not session:
-            conn.close()
-            raise HTTPException(status_code=404, detail="會話不存在")
-        
-        cursor.execute(
-            "SELECT COUNT(*) FROM conversations WHERE session_id = ?",
-            (session_id,)
+        session = fetchone(
+            f"SELECT * FROM sessions WHERE id = {SESSION_PLACEHOLDER}",
+            (session_id,),
         )
-        message_count = cursor.fetchone()[0]
-        
-        conn.close()
+
+        if not session:
+            raise HTTPException(status_code=404, detail="會話不存在")
+
+        message_count_row = fetchone(
+            f"SELECT COUNT(*) FROM conversations WHERE session_id = {SESSION_PLACEHOLDER}",
+            (session_id,),
+        )
+        message_count = message_count_row[0] if message_count_row else 0
         
         return {
             "success": True,
@@ -955,15 +901,15 @@ async def delete_session(session_id: str):
     刪除會話
     """
     try:
-        conn = sqlite3.connect(DATABASE_PATH)
-        cursor = conn.cursor()
-        
-        cursor.execute("DELETE FROM conversations WHERE session_id = ?", (session_id,))
-        cursor.execute("DELETE FROM sessions WHERE id = ?", (session_id,))
-        
-        conn.commit()
-        conn.close()
-        
+        execute(
+            f"DELETE FROM conversations WHERE session_id = {SESSION_PLACEHOLDER}",
+            (session_id,),
+        )
+        execute(
+            f"DELETE FROM sessions WHERE id = {SESSION_PLACEHOLDER}",
+            (session_id,),
+        )
+
         return {
             "success": True,
             "message": "會話已刪除"

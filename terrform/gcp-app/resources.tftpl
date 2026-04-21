@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: anti-fraudx-app
+  namespace: ${namespace}
+  annotations:
+    iam.gke.io/gcp-service-account: ${gcp_service_account_email}
+---
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: anti-fraudx-cert
+  namespace: ${namespace}
+spec:
+  domains:${join("", [for domain in managed_certificate_domains : "\n    - ${domain}"])}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: anti-fraudx
+  namespace: ${namespace}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: anti-fraudx
+  template:
+    metadata:
+      labels:
+        app: anti-fraudx
+    spec:
+      serviceAccountName: anti-fraudx-app
+      containers:
+        - name: anti-fraudx
+          image: ${app_image}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "150m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          envFrom:
+            - secretRef:
+                name: anti-fraudx-secret
+          volumeMounts:
+            - name: alerts
+              mountPath: /app/backend/data/scraped_alerts.json
+              subPath: scraped_alerts.json
+      volumes:
+        - name: alerts
+          configMap:
+            name: scraped-alerts
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: anti-fraudx
+  namespace: ${namespace}
+spec:
+  selector:
+    app: anti-fraudx
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: anti-fraudx
+  namespace: ${namespace}
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: ${static_ip_name}
+    networking.gke.io/managed-certificates: anti-fraudx-cert
+spec:
+  rules:${join("", [for host in ingress_hosts : "\n    - host: ${host}\n      http:\n        paths:\n          - path: /\n            pathType: Prefix\n            backend:\n              service:\n                name: anti-fraudx\n                port:\n                  number: 80"]) }
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: anti-fraudx
+  namespace: ${namespace}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: anti-fraudx
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

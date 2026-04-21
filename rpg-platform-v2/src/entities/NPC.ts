@@ -16,6 +16,7 @@ export class NPC {
   private currentDirection: 'down' | 'left' | 'right' | 'up' = 'down';
   private wanderTimer: Phaser.Time.TimerEvent | null = null;
   private isWandering = false;
+  private indicatorFloatPhase = 0;
 
   /**
    * 創建 NPC
@@ -40,9 +41,10 @@ export class NPC {
     }
     
     // Create sprite based on scam type
-    // 暫時使用舊的 sprite key，之後會替換為騙案類型專用的圖片
-    const spriteKey = this.getSpriteKeyForScamType(scamId);
+    const preferredSpriteKey = this.getSpriteKeyForScamType(this.scamId);
+    const spriteKey = scene.textures.exists(preferredSpriteKey) ? preferredSpriteKey : 'player';
     this.sprite = scene.physics.add.sprite(x, y, spriteKey);
+    this.sprite.setData('spriteKey', spriteKey);
     this.sprite.setImmovable(true);
     this.sprite.setDepth(5);
     
@@ -50,8 +52,8 @@ export class NPC {
     this.sprite.setSize(32, 32);
     this.sprite.setOffset(8, 16);
     
-    // Play idle animation
-    this.sprite.play(`${spriteKey}-idle-down`);
+    // Set idle frame directly to avoid runtime animation issues
+    this.setIdleFrame('down');
     
     // Create interaction indicator (hidden by default)
     this.interactionIndicator = scene.add.container(x, y - 50);
@@ -80,16 +82,6 @@ export class NPC {
     this.interactionIndicator.add([bg, text]);
     this.interactionIndicator.setVisible(false);
     
-    // Add subtle floating animation to indicator
-    scene.tweens.add({
-      targets: this.interactionIndicator,
-      y: y - 55,
-      duration: 1000,
-      yoyo: true,
-      repeat: -1,
-      ease: 'Sine.easeInOut'
-    });
-    
     // Start wandering behavior
     this.startWandering();
   }
@@ -116,6 +108,28 @@ export class NPC {
     };
     
     return spriteMapping[scamId] || 'npc-average';
+  }
+
+  private setIdleFrame(direction: 'down' | 'left' | 'right' | 'up'): void {
+    const idleFrames: Record<'down' | 'left' | 'right' | 'up', number> = {
+      down: 1,
+      left: 13,
+      right: 25,
+      up: 37
+    };
+    this.sprite.anims.stop();
+    this.sprite.setFrame(idleFrames[direction]);
+  }
+
+  private playWalkAnimation(direction: 'down' | 'left' | 'right' | 'up'): void {
+    const spriteKey = String(this.sprite.getData('spriteKey') || 'player');
+    const animKey = `${spriteKey}-walk-${direction}`;
+    if (!this.scene.anims.exists(animKey)) {
+      return;
+    }
+    if (this.sprite.anims.currentAnim?.key !== animKey) {
+      this.sprite.play(animKey);
+    }
   }
 
   /**
@@ -160,8 +174,7 @@ export class NPC {
     this.currentDirection = Phaser.Utils.Array.GetRandom(directions);
     
     // Play walk animation
-    const spriteKey = this.getSpriteKeyForScamType(this.scamId);
-    this.sprite.play(`${spriteKey}-walk-${this.currentDirection}`);
+    this.playWalkAnimation(this.currentDirection);
     
     // Move in that direction
     const speed = 50;
@@ -195,8 +208,7 @@ export class NPC {
       ease: 'Linear',
       onComplete: () => {
         this.isWandering = false;
-        // Play idle animation
-        this.sprite.play(`${spriteKey}-idle-${this.currentDirection}`);
+        this.setIdleFrame(this.currentDirection);
       }
     });
   }
@@ -211,7 +223,9 @@ export class NPC {
 
   update(): void {
     // Update interaction indicator position to follow NPC
-    this.interactionIndicator.setPosition(this.sprite.x, this.sprite.y - 50);
+    this.indicatorFloatPhase += 0.06;
+    const indicatorOffsetY = 50 + Math.sin(this.indicatorFloatPhase) * 5;
+    this.interactionIndicator.setPosition(this.sprite.x, this.sprite.y - indicatorOffsetY);
   }
 
   stopWandering(): void {
@@ -221,8 +235,7 @@ export class NPC {
     }
     this.isWandering = false;
     this.scene.tweens.killTweensOf(this.sprite);
-    const spriteKey = this.getSpriteKeyForScamType(this.scamId);
-    this.sprite.play(`${spriteKey}-idle-${this.currentDirection}`);
+    this.setIdleFrame(this.currentDirection);
   }
 
   destroy(): void {

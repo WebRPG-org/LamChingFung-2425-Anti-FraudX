@@ -1,0 +1,151 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: ${namespace}
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: postgres
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: ${namespace}
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          env:
+            - name: POSTGRES_DB
+              value: antifraudx
+            - name: POSTGRES_USER
+              value: antifraudx
+            - name: POSTGRES_PASSWORD
+              value: "${db_password}"
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: pgdata
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: anti-fraudx
+  namespace: ${namespace}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: anti-fraudx
+  template:
+    metadata:
+      labels:
+        app: anti-fraudx
+    spec:
+      containers:
+        - name: anti-fraudx
+          image: ${app_image}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "150m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          envFrom:
+            - secretRef:
+                name: anti-fraudx-secret
+          volumeMounts:
+            - name: alerts
+              mountPath: /app/backend/data/scraped_alerts.json
+              subPath: scraped_alerts.json
+            - name: gcp-vertex-credentials
+              mountPath: /var/secrets/google
+              readOnly: true
+      volumes:
+        - name: alerts
+          configMap:
+            name: scraped-alerts
+        - name: gcp-vertex-credentials
+          secret:
+            secretName: gcp-vertex-service-account
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: anti-fraudx
+  namespace: ${namespace}
+spec:
+  selector:
+    app: anti-fraudx
+  ports:
+    - port: 80
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: anti-fraudx
+  namespace: ${namespace}
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+spec:
+  rules:
+    - host: ${app_host}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: anti-fraudx
+                port:
+                  number: 80
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: anti-fraudx
+  namespace: ${namespace}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: anti-fraudx
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

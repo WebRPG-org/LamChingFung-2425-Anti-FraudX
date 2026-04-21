@@ -1,0 +1,70 @@
+$ErrorActionPreference = 'Stop'
+
+function Get-Platform {
+  if ($PSVersionTable.PSEdition -eq 'Desktop' -or $env:OS -eq 'Windows_NT') { return 'windows' }
+  if ($IsMacOS) { return 'macos' }
+  if ($IsLinux) { return 'linux' }
+  return 'unknown'
+}
+
+function Install-ToolIfMissing($name, $command, $wingetId, $manualHint) {
+  if (Get-Command $command -ErrorAction SilentlyContinue) {
+    return
+  }
+
+  $platform = Get-Platform
+  Write-Warning "$name ($command) not found."
+
+  if ($platform -eq 'windows' -and $wingetId -and (Get-Command winget -ErrorAction SilentlyContinue)) {
+    Write-Host "Attempting to install $name via winget..." -ForegroundColor Yellow
+    winget install -e --id $wingetId --accept-package-agreements --accept-source-agreements
+    $env:Path = [System.Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path', 'User')
+  }
+
+  if (-not (Get-Command $command -ErrorAction SilentlyContinue)) {
+    throw "Missing required tool: $name ($command). $manualHint"
+  }
+}
+
+function Require-MinVersion($name, $actual, $minimum) {
+  try {
+    $actualVersion = [version]$actual
+    $minimumVersion = [version]$minimum
+  }
+  catch {
+    throw "Unable to parse $name version. Actual: $actual"
+  }
+
+  if ($actualVersion -lt $minimumVersion) {
+    throw "$name version $actualVersion is below required minimum $minimumVersion"
+  }
+}
+
+Write-Host 'Setting up aws-app prerequisites...' -ForegroundColor Cyan
+
+Install-ToolIfMissing 'Terraform' 'terraform' 'Hashicorp.Terraform' 'Install Terraform from https://developer.hashicorp.com/terraform/install'
+Install-ToolIfMissing 'AWS CLI' 'aws' 'Amazon.AWSCLI' 'Install AWS CLI from https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html'
+Install-ToolIfMissing 'kubectl' 'kubectl' 'Kubernetes.kubectl' 'Install kubectl from https://kubernetes.io/docs/tasks/tools/'
+
+$terraformVersion = (terraform version -json | ConvertFrom-Json).terraform_version
+Require-MinVersion 'Terraform' $terraformVersion '1.6.0'
+
+$kubectlVersion = ((kubectl version --client -o json | ConvertFrom-Json).clientVersion.gitVersion).TrimStart('v')
+Require-MinVersion 'kubectl' $kubectlVersion '1.29.0'
+
+$awsVersionText = (& aws --version) 2>&1
+if ($awsVersionText -match 'aws-cli/([0-9]+\.[0-9]+\.[0-9]+)') {
+  $awsVersion = $matches[1]
+} else {
+  throw "Unable to parse AWS CLI version. Actual: $awsVersionText"
+}
+Require-MinVersion 'AWS CLI' $awsVersion '2.15.0'
+
+aws sts get-caller-identity | Out-Null
+$ctx = kubectl config current-context
+if (-not $ctx) {
+  throw 'No active kubectl context found. Configure EKS context before running aws-app setup.'
+}
+
+terraform init
+Write-Host 'aws-app prerequisites and minimum versions look good.' -ForegroundColor Green

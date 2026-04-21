@@ -1,91 +1,50 @@
-// 打開指定模式
-function openMode(mode) {
+function getFrontendRoute(mode) {
+    const config = window.__APP_CONFIG__ || {};
     const routes = {
-        'rpg': '/RPG_Project/rpg_game.html',
-        'rpgv2': 'https://anti-fraudx-frontend-5gznvtwxga-uc.a.run.app/',
-        'simulation': '/app',
-        'chat': '/personal_chat.html',
-        'test': '/test',
-        'tools': '/tools'
+        rpgv2: config.rpgv2Path || '/rpgv2'
     };
-    
-    if (routes[mode]) {
-        // RPGv2 在新標籤頁打開
-        if (mode === 'rpgv2') {
-            window.open(routes[mode], '_blank');
-        } else {
-            window.location.href = routes[mode];
-        }
-    }
+
+    return routes[mode];
 }
 
-// 檢查後端服務狀態
+function getBackendBaseURL() {
+    const config = window.__APP_CONFIG__ || {};
+    return config.backendBaseUrl || window.location.origin;
+}
+
+function openMode(mode) {
+    const url = getFrontendRoute(mode);
+    if (!url) return;
+
+    window.open(url, '_blank', 'noopener,noreferrer');
+}
+
 async function checkBackendStatus() {
     try {
-        const response = await fetch('https://anti-fraudx-backend-5gznvtwxga-uc.a.run.app');
+        const response = await fetch(`${getBackendBaseURL()}/health`);
         if (response.ok) {
-            console.log('✅ 後端服務運行正常');
+            console.log('✅ RPG v2 backend service available');
             return true;
         }
     } catch (error) {
-        console.warn('⚠️ 後端服務未運行，部分功能可能無法使用');
-        console.log('請執行: python backend/main.py');
-        
-        // 顯示警告提示
-        const warning = document.createElement('div');
-        warning.style.cssText = `
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ff9800;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 9999;
-            font-weight: bold;
-        `;
-        warning.textContent = '⚠️ 後端服務未運行，請先啟動: python backend/main.py';
-        document.body.appendChild(warning);
-        
-        setTimeout(() => warning.remove(), 5000);
-        return false;
+        console.warn('⚠️ RPG v2 backend service unavailable');
     }
+    return false;
 }
 
-// 頁面加載時檢查
 window.addEventListener('load', () => {
     checkBackendStatus();
 });
 
-// 添加鍵盤快捷鍵
 document.addEventListener('keydown', function(e) {
-    if (e.key === '1') openMode('rpg');
-    if (e.key === '2') openMode('rpgv2');
-    if (e.key === '3') openMode('simulation');
-    if (e.key === '4') openMode('chat');
-    if (e.key === '5') openMode('test');
-    
-    // ESC 鍵返回首頁（如果在子頁面）
-    if (e.key === 'Escape') {
-        if (window.location.pathname !== '/') {
-            window.location.href = '/';
-        }
-    }
+    if (e.key === 'Enter' || e.key === '2') openMode('rpgv2');
 });
 
-// 添加工具提示
 console.log(`
 ╔════════════════════════════════════════╗
-║   🛡️  AI 防詐騙訓練系統 v2.0          ║
+║        Anti-FraudX RPG v2 Only        ║
 ╠════════════════════════════════════════╣
 ║  快捷鍵：                               ║
-║  1 - RPG 遊戲模式 v1                   ║
-║  2 - RPG 遊戲模式 v2                   ║
-║  3 - 自動模擬模式                      ║
-║  4 - 個人對話模式                      ║
-║  5 - API 測試模式                      ║
-║  ESC - 返回首頁                        ║
+║  Enter / 2 - 打開 RPG v2               ║
 ╚════════════════════════════════════════╝
 `);
