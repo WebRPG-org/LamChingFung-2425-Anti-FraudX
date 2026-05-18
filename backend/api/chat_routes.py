@@ -39,7 +39,7 @@ async def call_ollama(role: str, message: str, history: List[Dict] = None) -> st
     messages.append({"role": "user", "content": message})
     
     # 使用環境變量或默認模型
-    model_name = os.getenv("AGENT_MODEL", "gemma3:4b")
+    model_name = os.getenv("AGENT_MODEL", "gemma4:e4b")
     
     payload = {
         "model": model_name,

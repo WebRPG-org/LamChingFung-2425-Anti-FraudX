@@ -14,7 +14,7 @@ class VisionService:
     使用 Ollama 的原生視覺 API
     """
     
-    def __init__(self, model: str = "gemma3:4b"):
+    def __init__(self, model: str = "gemma4:e4b"):
         self.model = model
         log.info(f"🎨 VisionService 初始化 - 模型: {model}")
     

@@ -10,9 +10,9 @@ try:
     print(f"可用模型數量: {len(models.get('models', []))}")
     
     # 測試 2: 簡單對話
-    print("\n測試 gemma3:4b 模型...")
+    print("\n測試 gemma4:e4b 模型...")
     response = ollama.chat(
-        model='gemma3:4b',
+        model='gemma4:e4b',
         messages=[{
             'role': 'user',
             'content': '你好，請簡單介紹你自己。'

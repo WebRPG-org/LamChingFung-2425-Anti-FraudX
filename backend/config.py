@@ -116,7 +116,7 @@ class LLMConfig:
     """Configuration for LLM behavior"""
     
     # Model names
-    DEFAULT_MODEL: str = os.getenv("AGENT_MODEL", "gemma3:4b")
+    DEFAULT_MODEL: str = os.getenv("AGENT_MODEL", "gemma4:e4b")
     SCAMMER_MODEL: str = os.getenv("AGENT_MODEL_SCAMMER", DEFAULT_MODEL)
     VICTIM_MODEL: str = os.getenv("AGENT_MODEL_VICTIM", DEFAULT_MODEL)
     EXPERT_MODEL: str = os.getenv("AGENT_MODEL_EXPERT", DEFAULT_MODEL)

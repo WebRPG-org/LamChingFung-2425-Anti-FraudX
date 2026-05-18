@@ -51,7 +51,7 @@ except Exception as e:
         sys.exit(1)
 
 # Setting the agent model name from environment variables
-AGENT_MODEL_NAME = os.getenv("AGENT_MODEL", "gemma3:4b")
+AGENT_MODEL_NAME = os.getenv("AGENT_MODEL", "gemma4:e4b")
 
 # Setting up FastAPI application instance
 app = FastAPI(

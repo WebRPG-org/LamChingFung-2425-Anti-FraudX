@@ -1,5 +1,5 @@
 """
-測試 Gemma 3 4B 視覺功能
+測試 Gemma 4 E4B 視覺功能
 """
 
 import ollama
@@ -14,7 +14,7 @@ def test_vision_with_text():
     
     try:
         response = ollama.chat(
-            model='gemma3:4b',
+            model='gemma4:e4b',
             messages=[{
                 'role': 'user',
                 'content': '你好，請介紹一下你的能力。'
@@ -59,7 +59,7 @@ def test_vision_with_image(image_path: str = None):
         
         # 使用視覺功能
         response = ollama.chat(
-            model='gemma3:4b',
+            model='gemma4:e4b',
             messages=[{
                 'role': 'user',
                 'content': '請詳細描述這張圖片的內容。如果圖片中有文字，請識別出來。',
@@ -118,7 +118,7 @@ def test_scam_detection(image_path: str = None):
 - 建議措施"""
         
         response = ollama.chat(
-            model='gemma3:4b',
+            model='gemma4:e4b',
             messages=[{
                 'role': 'user',
                 'content': prompt,
@@ -139,7 +139,7 @@ def main():
     import sys
     
     print("\n" + "=" * 60)
-    print("🎯 Gemma 3 4B 視覺功能測試")
+    print("🎯 Gemma 4 E4B 視覺功能測試")
     print("=" * 60 + "\n")
     
     # 檢查 Ollama 服務
@@ -151,16 +151,16 @@ def main():
         models = models_response.get('models', [])
         model_names = [m.get('name', m.get('model', '')) for m in models]
         
-        # 檢查 gemma3:4b 是否存在（可能有不同的標籤）
-        has_gemma3 = any('gemma3' in name and '4b' in name for name in model_names)
+        # 檢查 gemma4:e4b 是否存在（可能有不同的標籤）
+        has_gemma4 = any('gemma4' in name and 'e4b' in name for name in model_names)
         
-        if not has_gemma3:
-            print("❌ gemma3:4b 模型未安裝")
-            print("   請運行：ollama pull gemma3:4b")
+        if not has_gemma4:
+            print("❌ gemma4:e4b 模型未安裝")
+            print("   請運行：ollama pull gemma4:e4b")
             print(f"\n   已安裝的模型：{', '.join(model_names[:5])}")
             return
         
-        print("✅ gemma3:4b 模型已安裝\n")
+        print("✅ gemma4:e4b 模型已安裝\n")
         
     except Exception as e:
         print(f"❌ 無法連接到 Ollama 服務：{e}")

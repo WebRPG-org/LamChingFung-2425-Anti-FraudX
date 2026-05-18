@@ -77,7 +77,7 @@ def sample_victim_responses():
 def mock_ollama_response():
     """Mock Ollama API response"""
     return {
-        "model": "gemma3:4b",
+        "model": "gemma4:e4b",
         "created_at": "2026-02-03T10:00:00Z",
         "response": "你好，我係銀行職員。",
         "done": True,

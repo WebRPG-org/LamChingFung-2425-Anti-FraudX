@@ -69,7 +69,7 @@ def test_ollama_service():
             print(f"   已安裝模型: {len(models)} 個")
             
             # 檢查基礎模型
-            required_models = ['gemma3:4b']
+            required_models = ['gemma4:e4b']
             for model in required_models:
                 if any(model in m for m in models):
                     print(f"   ✅ 模型 {model} 已安裝")

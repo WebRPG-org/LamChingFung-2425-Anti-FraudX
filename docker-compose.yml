@@ -64,11 +64,11 @@ services:
       - OLLAMA_TOP_P=0.85
       - OLLAMA_REPEAT_PENALTY=1.1
       # Agent models (override with fine-tuned models after Tools Center)
-      - AGENT_MODEL=${AGENT_MODEL:-gemma3:4b}
+      - AGENT_MODEL=${AGENT_MODEL:-gemma4:e4b}
       - AGENT_MODEL_SCAMMER=${AGENT_MODEL_SCAMMER:-gemma3:4b}
       - AGENT_MODEL_EXPERT=${AGENT_MODEL_EXPERT:-gemma3:4b}
-      - AGENT_MODEL_VICTIM=${AGENT_MODEL_VICTIM:-gemma3:4b}
-      - AGENT_MODEL_RECORDER=${AGENT_MODEL_RECORDER:-gemma3:4b}
+      - AGENT_MODEL_VICTIM=${AGENT_MODEL_VICTIM:-gemma4:e4b}
+      - AGENT_MODEL_RECORDER=${AGENT_MODEL_RECORDER:-gemma4:e4b}
       # GPU
       - NVIDIA_VISIBLE_DEVICES=all
       - FORCE_GPU=0
